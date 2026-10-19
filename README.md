@@ -26,6 +26,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 22 | IndexedDB y Web Crypto API | A |
 | 23 | Workbox y auditoría | A |
 | 24 | APIs de dispositivo (1/2): cámara y ubicación | A |
+| 25 | APIs de dispositivo (2/2): sensores de movimiento | A |
 
 ## Proyectos
 
