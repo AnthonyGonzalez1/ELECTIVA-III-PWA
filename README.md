@@ -29,6 +29,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 25 | APIs de dispositivo (2/2): sensores de movimiento | A |
 | 27 | Arranque del proyecto y su manifiesto | B |
 | 28 | Service Worker del proyecto (1/2) | B |
+| 29 | Service Worker del proyecto (2/2) | B |
 
 ## Proyectos
 
