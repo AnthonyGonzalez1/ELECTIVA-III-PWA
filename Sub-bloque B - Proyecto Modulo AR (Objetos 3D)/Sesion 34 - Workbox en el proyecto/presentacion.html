@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 34 · Workbox en el proyecto · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .callout.win{background:#f1f9f1; border-color:#2e7d32; border-left-color:#1b5e20;}
+  .callout.win b{color:#1b5e20;}
+  .term-emph{color:var(--gold); font-weight:700;}
+  .rev-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .rev-card{border-radius:10px; padding:.9em 1em; font-size:.84em; line-height:1.45;}
+  .rev-card.has{background:#fff; border:1px solid var(--line);}
+  .rev-card.null{background:#EAF2FD; border:1px solid #8FBBEE;}
+  .rev-card .tag{display:inline-block; font-size:.68em; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:.15em .55em; border-radius:20px; margin-bottom:.5em;}
+  .rev-card.has .tag{background:#F0F0F0; color:#555;}
+  .rev-card.null .tag{background:#E9F1FC; color:#1B5FAD; border:1px solid #8FBBEE;}
+  .rev-card code{font-size:.92em;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 8 de 18</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+
+        <section class="slide slide--title active" data-section="portada" data-section-label="Portada">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR</div>
+          <h1>Workbox en el proyecto</h1>
+          <div class="lead">Sesión 8 de 18 — migramos el Service Worker manual del Atlas 3D a Workbox, integrado al build de Vite con vite-plugin-pwa. Cierra la limitación abierta desde la Sesión 29. Espejo de la Sesión 23.</div>
+          <div class="meta">
+            <div><span>Asignatura</span>Electiva - PWA</div>
+            <div><span>Sesión</span>08 de 18 · Proyecto Módulo AR</div>
+            <div><span>Institución</span>UPTC</div>
+          </div>
+          <div class="title-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+              <rect x="110" y="70" width="180" height="200" rx="10" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <rect x="110" y="70" width="180" height="34" rx="10" fill="#1A1A1A"/>
+              <circle cx="128" cy="87" r="5" fill="#ff5f57"/>
+              <circle cx="146" cy="87" r="5" fill="#febc2e"/>
+              <circle cx="164" cy="87" r="5" fill="#28c840"/>
+              <line x1="130" y1="130" x2="270" y2="130" stroke="#E4DDC8" stroke-width="3"/>
+              <line x1="130" y1="155" x2="250" y2="155" stroke="#E4DDC8" stroke-width="3"/>
+              <rect x="130" y="190" width="140" height="55" rx="8" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2.5"/>
+              <circle cx="235" cy="217" r="13" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2"/>
+              <path d="M228 217 l5 6 l11 -12" stroke="#1A1A1A" stroke-width="2.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="title-goldbar"></div>
+        </section>
+
+        <section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Hoy cerramos la Sesión 29">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SESIÓN 08</div>
+            <h2>Por fin, offline de verdad</h2>
+            <p>Desde la Sesión 29 el Atlas 3D tenía un Service Worker manual que no sobrevivía al build real de Vite. Hoy lo reemplazamos por uno generado con Workbox, y lo verificamos contra el build — no contra el servidor de desarrollo.</p>
+            <div class="tb-preview"><span>Workbox ya visto en S23</span><span>vite-plugin-pwa</span><span>Offline verificado</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <line x1="40" y1="270" x2="360" y2="60" stroke="#373435" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+              <circle cx="40" cy="270" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="40" y="274" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S29</text>
+              <circle cx="200" cy="165" r="22" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="200" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A1A">S34</text>
+              <circle cx="360" cy="60" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="360" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S35</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Objetivos de la sesión">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Objetivos de aprendizaje</h2>
+          <hr class="rule">
+          <ul class="clean">
+            <li><b>Reemplazar</b> el <code>sw.js</code> escrito a mano por uno generado con Workbox, integrado al build de Vite mediante <code>vite-plugin-pwa</code>.</li>
+            <li><b>Explicar</b> por qué un precaché generado después del build resuelve el problema del bundle con hash que no se podía escribir a mano desde la Sesión 29.</li>
+            <li><b>Verificar</b>, contra el build real (no el servidor de desarrollo), que el Atlas 3D funciona sin conexión de verdad por primera vez.</li>
+          </ul>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Recursos de esta sesión">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Recursos de esta sesión</h2>
+          <hr class="rule">
+          <div class="activity-card">
+            <div class="a-head"><div class="a-num">.zip</div><h4>pwa-ar-objetos3d-sesion33.zip</h4></div>
+            <div class="meta-row">CHECKPOINT · CIERRE DE LA SESIÓN 33</div>
+            <p>El Atlas 3D con IndexedDB, favoritos y la nota de estudio cifrada ya integrados. Hoy reemplazamos el Service Worker manual por uno generado con Workbox — esa es la única pieza que cambia.</p>
+          </div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Ya lo viste en la Sesión 23">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Esto ya lo viste a fondo en la Sesión 23</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Qué es Workbox, sus módulos, la diferencia entre <code>GenerateSW</code> e <code>InjectManifest</code>, compatibilidad de navegadores, UX/UI y Lighthouse, ya lo estudiaste con calma en la Sesión 23, sobre el Gestor de Tareas. No repetimos nada de esa teoría aquí.</p></div>
+          <div class="callout" style="margin-top:1em;">Lo que sí toca hoy es distinto, y es el motivo por el que esta sesión importa más que un simple "aplicarlo al proyecto": el Gestor de Tareas no tiene bundler, así que Workbox generó su <code>sw.js</code> leyendo archivos planos. El Atlas 3D sí tiene un bundler — Vite — y es exactamente ese bundler el que rompió el offline manual en la Sesión 29. Hoy vemos por qué Workbox integrado al build sí lo resuelve.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="problema" data-section-label="El problema de la Sesión 29" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 02</div>
+            <h2>Recordando el problema exacto de la Sesión 29</h2>
+            <p>Un <code>sw.js</code> manual no sobrevive a un bundler que renombra sus archivos en cada build.</p>
+            <div class="tb-preview"><span>CORE_ASSETS a mano</span><span>Hash que cambia</span><span>/@vite/client</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="110" y="70" width="180" height="140" rx="10" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="200" y="120" text-anchor="middle" font-family="Consolas,monospace" font-size="16" font-weight="700" fill="#1A1A1A">index-<tspan fill="#c0392b">?????</tspan>.js</text>
+              <line x1="140" y1="150" x2="260" y2="150" stroke="#E4DDC8" stroke-width="3"/>
+              <circle cx="200" cy="225" r="26" fill="#fff" stroke="#c0392b" stroke-width="4"/>
+              <path d="M190 215 l20 20 M210 215 l-20 20" stroke="#c0392b" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="problema" data-section-label="El problema de la Sesión 29" data-slide-label="Dev vs. build real">
+          <div class="kicker">El problema · 2.1</div>
+          <h2 class="slide-title">Dos formas distintas de fallar sin conexión</h2>
+          <hr class="rule">
+          <div class="body-text"><p>En la Sesión 29 el <code>sw.js</code> manual listaba <code>CORE_ASSETS</code> a mano. Eso funcionaba para archivos con nombre fijo, pero fallaba en los dos escenarios reales:</p></div>
+          <div class="grid-2">
+            <div class="activity-card">
+              <h4>En desarrollo (npm run dev)</h4>
+              <p>Vite sirve <code>/src/main.ts</code> y <code>/@vite/client</code> al vuelo. No son archivos reales — no se pueden precachear.</p>
+            </div>
+            <div class="activity-card">
+              <h4>En build real (npm run build)</h4>
+              <p><code>npm run build</code> genera un bundle con un hash que cambia en cada compilación — imposible de escribir a mano de forma estable.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" data-section="problema" data-section-label="El problema de la Sesión 29" data-slide-label="Por qué vite-plugin-pwa">
+          <div class="kicker">El problema · 2.2</div>
+          <h2 class="slide-title">Por qué instalamos vite-plugin-pwa</h2>
+          <hr class="rule">
+          <div class="callout"><b>No escribimos el bundle a mano en <code>globPatterns</code>:</b> ese plugin ejecuta Workbox <i>después</i> de que Vite termina su propio build, cuando los nombres de archivo con hash ya existen de verdad. La lista de precaché nunca queda desactualizada porque nunca se escribió a mano — se lee del resultado real del build, cada vez.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="configuracion" data-section-label="Instalación y configuración" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 03</div>
+            <h2>Instalación y configuración real</h2>
+            <p>Un paquete, un bloque en vite.config.ts, y un cambio de una línea en main.ts.</p>
+            <div class="tb-preview"><span>npm install</span><span>vite.config.ts</span><span>main.ts</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="70" fill="none" stroke="#1A1A1A" stroke-width="4"/>
+              <circle cx="200" cy="160" r="22" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <rect x="190" y="60" width="20" height="30" fill="#1A1A1A"/>
+              <rect x="190" y="230" width="20" height="30" fill="#1A1A1A"/>
+              <rect x="90" y="150" width="30" height="20" fill="#1A1A1A"/>
+              <rect x="280" y="150" width="30" height="20" fill="#1A1A1A"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="configuracion" data-section-label="Instalación y configuración" data-slide-label="npm install">
+          <div class="kicker">Configuración · 3.1</div>
+          <h2 class="slide-title">Instalar el plugin</h2>
+          <hr class="rule">
+          <div class="code-block">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code>npm install -D vite-plugin-pwa</code></pre>
+          </div>
+          <div class="callout" style="margin-top:1em;">El <code>sw.js</code> manual de las Sesiones 28-32 se elimina de <code>public/</code> — lo genera el plugin dentro de <code>dist/</code> en cada build.</div>
+        </section>
+
+        <section class="slide" data-section="configuracion" data-section-label="Instalación y configuración" data-slide-label="vite.config.ts">
+          <div class="kicker">Configuración · 3.2</div>
+          <h2 class="slide-title">vite.config.ts: qué le pedimos a Workbox</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>vite.config.ts</div>
+            <pre><code><span class="tok-kw">import</span> { defineConfig } <span class="tok-kw">from</span> <span class="tok-str">'vite'</span>;
+<span class="tok-kw">import</span> { VitePWA } <span class="tok-kw">from</span> <span class="tok-str">'vite-plugin-pwa'</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">default</span> <span class="tok-fn">defineConfig</span>({
+  plugins: [
+    <span class="tok-fn">VitePWA</span>({
+      manifest: <span class="tok-kw">false</span>,
+      registerType: <span class="tok-str">'autoUpdate'</span>,
+      injectRegister: <span class="tok-kw">false</span>, <span class="tok-com">// registramos nosotros mismos en main.ts</span>
+      workbox: {
+        globPatterns: [<span class="tok-str">'**/*.{html,js,css,png,json}'</span>],
+        <span class="tok-com">// ... runtimeCaching: ver la lámina siguiente</span>
+      },
+    }),
+  ],
+});</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="configuracion" data-section-label="Instalación y configuración" data-slide-label="runtimeCaching">
+          <div class="kicker">Configuración · 3.3</div>
+          <h2 class="slide-title">vite.config.ts: las estrategias en tiempo de ejecución</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>vite.config.ts (continuación, dentro de workbox)</div>
+            <pre><code>runtimeCaching: [
+          {
+            urlPattern: <span class="tok-punct">/</span>\/iconos\/<span class="tok-punct">/</span>,
+            handler: <span class="tok-str">'CacheFirst'</span>,
+            options: { cacheName: <span class="tok-str">'imagenes'</span>, expiration: { maxEntries: <span class="tok-str">60</span>, maxAgeSeconds: <span class="tok-str">30</span> * <span class="tok-str">24</span> * <span class="tok-str">60</span> * <span class="tok-str">60</span> } },
+          },
+          { urlPattern: <span class="tok-punct">/</span>\/api\/<span class="tok-punct">/</span>, handler: <span class="tok-str">'NetworkFirst'</span>, options: { cacheName: <span class="tok-str">'api-atlas3d'</span> } },
+        ],
+      },
+    }),
+  ],
+});</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="configuracion" data-section-label="Instalación y configuración" data-slide-label="main.ts: el registro">
+          <div class="kicker">Configuración · 3.3</div>
+          <h2 class="slide-title">main.ts: el módulo virtual reemplaza al register() manual</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>main.ts</div>
+            <pre><code><span class="tok-kw">import</span> { registerSW } <span class="tok-kw">from</span> <span class="tok-str">'virtual:pwa-register'</span>;
+
+<span class="tok-fn">registerSW</span>({
+  immediate: <span class="tok-kw">true</span>,
+  <span class="tok-fn">onRegisteredSW</span>(swUrl, registration) {
+    console.<span class="tok-fn">log</span>(<span class="tok-str">'SW de Workbox registrado:'</span>, swUrl, registration);
+  },
+  <span class="tok-fn">onRegisterError</span>(error) {
+    console.<span class="tok-fn">error</span>(<span class="tok-str">'Error al registrar el SW de Workbox:'</span>, error);
+  },
+});</code></pre>
+          </div>
+          <div class="callout" style="margin-top:.8em;">En vez de <code>navigator.serviceWorker.register('/sw.js')</code> a mano, se usa el módulo virtual que el plugin provee. También hace falta agregar <code>/// &lt;reference types="vite-plugin-pwa/client" /&gt;</code> en <code>src/vite-env.d.ts</code>, para que TypeScript reconozca <code>virtual:pwa-register</code>.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="build" data-section-label="El build real" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 04</div>
+            <h2>El build real: así se ve la solución funcionando</h2>
+            <p>No es teoría — es la salida real de correr <code>npm run build</code> en el Atlas 3D con esta configuración.</p>
+            <div class="tb-preview"><span>PWA v1.3.0</span><span>precache 8 entries</span><span>dist/sw.js</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="80" y="60" width="240" height="200" rx="10" fill="#1c1c1e" stroke="#000" stroke-width="3"/>
+              <rect x="80" y="60" width="240" height="30" rx="10" fill="#141416"/>
+              <circle cx="100" cy="75" r="5" fill="#ff5f57"/>
+              <circle cx="118" cy="75" r="5" fill="#febc2e"/>
+              <circle cx="136" cy="75" r="5" fill="#28c840"/>
+              <text x="100" y="120" font-family="Consolas,monospace" font-size="11" fill="#6ad06a">$ npm run build</text>
+              <text x="100" y="145" font-family="Consolas,monospace" font-size="11" fill="#FFCC29">PWA v1.3.0</text>
+              <text x="100" y="167" font-family="Consolas,monospace" font-size="10" fill="#cfcac0">precache 8 entries</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="build" data-section-label="El build real" data-slide-label="La salida del build">
+          <div class="kicker">El build real · 4.1</div>
+          <h2 class="slide-title">npm run build, sin editar nada después</h2>
+          <hr class="rule">
+          <div class="code-block">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code><span class="tok-com">$ npm run build</span>
+vite v5.4.21 building for production...
+✓ 9 modules transformed.
+dist/index.html                     0.59 kB
+dist/assets/index-COBG-ZA2.css       1.48 kB
+dist/assets/index-DDQN0Bif.js        7.91 kB
+✓ built in 192ms
+
+<span class="term-emph">PWA v1.3.0</span>
+<span class="term-emph">mode     generateSW</span>
+<span class="term-emph">precache 8 entries (25.40 KiB)</span>
+<span class="term-emph">files generated</span>
+<span class="term-emph">  dist/sw.js</span>
+<span class="term-emph">  dist/workbox-3a3a58c4.js</span></code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="build" data-section-label="El build real" data-slide-label="dist/sw.js: la lista de precaché">
+          <div class="kicker">El build real · 4.2</div>
+          <h2 class="slide-title">dist/sw.js: la lista que Workbox generó sola</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>dist/sw.js (fragmento, formateado)</div>
+            <pre><code><span class="tok-fn">precacheAndRoute</span>([
+  { url: <span class="tok-str">"manifest.json"</span>, revision: <span class="tok-str">"1aa61cc8ef180b7e9a1d14c45f81f46c"</span> },
+  { url: <span class="tok-str">"index.html"</span>, revision: <span class="tok-str">"97366fdbf8c3745fe1945cc2b14f85dd"</span> },
+  { url: <span class="tok-str">"iconos/icon-512.png"</span>, revision: <span class="tok-str">"bebb48aabd0d797c05f250f20e26cd85"</span> },
+  { url: <span class="tok-str">"iconos/icon-512-maskable.png"</span>, revision: <span class="tok-str">"c380a180109dea2bb27a3ca6875be047"</span> },
+  { url: <span class="tok-str">"iconos/icon-192.png"</span>, revision: <span class="tok-str">"a9b0715397c6ecd59ca5eeb1250af77d"</span> },
+  { url: <span class="tok-str">"assets/index-DDQN0Bif.js"</span>, revision: <span class="tok-kw">null</span> },
+  { url: <span class="tok-str">"assets/index-COBG-ZA2.css"</span>, revision: <span class="tok-kw">null</span> },
+  { url: <span class="tok-str">"assets/workbox-window.prod.es5-BqEJf4Xk.js"</span>, revision: <span class="tok-kw">null</span> },
+]);</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="build" data-section-label="El build real" data-slide-label="revision vs. revision: null">
+          <div class="kicker">El build real · 4.3</div>
+          <h2 class="slide-title">La respuesta a la Sesión 29: revision vs. revision: null</h2>
+          <hr class="rule">
+          <div class="rev-grid">
+            <div class="rev-card has"><span class="tag">revision calculado</span><code>index.html</code>, <code>manifest.json</code>, los íconos — Workbox calculó el hash de su contenido, igual que hizo con el Gestor de Tareas en la Sesión 23.</div>
+            <div class="rev-card null"><span class="tag">revision: null</span><code>assets/index-DDQN0Bif.js</code> — ese nombre YA incluye el hash de Vite (<code>DDQN0Bif</code>). Workbox no necesita calcular nada más.</div>
+          </div>
+          <div class="callout win"><b>Aquí está la respuesta a la Sesión 29:</b> si el contenido de <code>index-DDQN0Bif.js</code> cambia, Vite le pone un nombre distinto en el próximo build, y la URL cambia sola. Nadie escribió ese nombre a mano, y nadie tiene que actualizarlo a mano tampoco.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="verificacion" data-section-label="Verificando offline" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 05</div>
+            <h2>Verificando que ahora sí funciona sin conexión</h2>
+            <p>Contra el build real — npm run dev sigue sin tener un Service Worker útil para esto.</p>
+            <div class="tb-preview"><span>build + preview</span><span>DevTools Offline</span><span>Recargar</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="90" fill="none" stroke="#1A1A1A" stroke-width="4"/>
+              <path d="M160 160 l25 25 l55 -55" fill="none" stroke="#2e7d32" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="verificacion" data-section-label="Verificando offline" data-slide-label="Los pasos">
+          <div class="kicker">Verificación · 5.1</div>
+          <h2 class="slide-title">Los pasos, en orden</h2>
+          <hr class="rule">
+          <div class="code-block">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code>npm run build
+npm run preview</code></pre>
+          </div>
+          <ul class="clean" style="margin-top:1em;">
+            <li>Abre la URL que imprime <code>vite preview</code> (normalmente <code>http://localhost:4173</code>).</li>
+            <li>DevTools → Application → Service Workers: debe aparecer activo y con el scope correcto.</li>
+            <li>DevTools → Network → casilla <b>Offline</b>.</li>
+            <li>Recarga la página (F5 o Ctrl+R).</li>
+          </ul>
+        </section>
+
+        <section class="slide" data-section="verificacion" data-section-label="Verificando offline" data-slide-label="Resultado real, verificado">
+          <div class="kicker">Verificación · 5.2</div>
+          <h2 class="slide-title">Resultado real, verificado</h2>
+          <hr class="rule">
+          <div class="callout win"><b>Con el build de esta sesión, la página recarga completa sin conexión</b> — título, estilos y la demo de progreso de la Sesión 33 siguen ahí.</div>
+          <div class="grid-2" style="margin-top:1em;">
+            <div class="activity-card">
+              <h4>Sesión 29 — sw.js manual</h4>
+              <p>Esta misma prueba (build + preview + Offline + recargar) dejaba la pantalla en blanco.</p>
+            </div>
+            <div class="activity-card">
+              <h4>Sesión 34 — Workbox + vite-plugin-pwa</h4>
+              <p>La página recarga completa sin conexión. La diferencia es exactamente la pieza que cambió hoy.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide" data-section="verificacion" data-section-label="Verificando offline" data-slide-label="Una limitación honesta">
+          <div class="kicker">Verificación · 5.3</div>
+          <h2 class="slide-title">Una limitación que sigue existiendo, y es honesta</h2>
+          <hr class="rule">
+          <div class="body-text"><p>IndexedDB (Sesión 33) no es parte del precaché — los datos que ya estaban guardados localmente siguen disponibles sin conexión porque IndexedDB vive en el disco del usuario, independiente del Service Worker, pero cualquier operación que dependiera de red (no hay ninguna todavía en este proyecto) seguiría sin funcionar offline.</p></div>
+          <div class="callout" style="margin-top:1em;">Lo que esta sesión resuelve es el <i>shell</i> de la aplicación — HTML, CSS, JS, íconos — no una sincronización con un servidor que este proyecto, hoy, no tiene.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="actividad" data-section-label="Actividad" data-slide-label="Actividad">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 06</div>
+            <h2>Actividad para la clase</h2>
+            <p>Migra tu Atlas 3D a Workbox y verifica el offline real, sobre tu propio proyecto.</p>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="200" cy="215" rx="130" ry="32" fill="#FFF6DC" stroke="#EEB32D" stroke-width="3"/>
+              <circle cx="200" cy="108" r="26" fill="#373435"/>
+              <rect x="168" y="132" width="64" height="58" rx="22" fill="#4fd1ff"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="actividad" data-section-label="Actividad" data-slide-label="Migra tu Atlas 3D">
+          <div class="kicker">Actividad</div>
+          <h2 class="slide-title">Migra tu Atlas 3D a Workbox y verifica el offline real</h2>
+          <hr class="rule">
+          <div class="activity-card">
+            <div class="a-head"><div class="a-num">1</div><h4>Sobre tu propio proyecto</h4></div>
+            <div class="meta-row">INDIVIDUAL · 25 MIN</div>
+            <p>Sobre el checkpoint de la Sesión 33 (o tu propio avance): instala <code>vite-plugin-pwa</code>, agrega la configuración de la sección 3, elimina el <code>sw.js</code> manual de <code>public/</code>, y cambia el registro en <code>main.ts</code> por <code>registerSW()</code> de <code>virtual:pwa-register</code>.</p>
+            <p style="margin-top:.7em;"><b>Verifica, en este orden:</b> (1) <code>npm run build</code> — revisa cuántas entradas precacheó Workbox; (2) <code>npm run preview</code>, DevTools → Application → Service Workers → confirmar que está activo; (3) DevTools → Network → Offline → recargar — la página debe seguir mostrando el título y la demo de progreso.</p>
+          </div>
+          <div class="callout" style="margin-top:1em;"><b>Si te quedas atrás:</b> el checkpoint de Recursos (<code>pwa-ar-objetos3d-sesion33.zip</code>) es el punto de partida correcto de hoy — cotéjalo contra tu propio código para encontrar la diferencia, en vez de reemplazar tu proyecto por el checkpoint.</p>
+          <p style="margin-top:.5em;"><b>Entregable:</b> captura de la terminal tras el build (mostrando las entradas precacheadas) + captura de la app funcionando con Offline marcado en DevTools, revisadas por el docente antes de salir de clase.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="cierre" data-section-label="Cierre" data-slide-label="Cierre">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 07</div>
+            <h2>Cierre de la sesión</h2>
+            <p>Tu commit de hoy, el resumen, y hacia dónde vamos en la Sesión 35.</p>
+            <div class="tb-preview"><span>Commit y push</span><span>Resumen</span><span>Próxima sesión</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="120" y="50" width="160" height="220" rx="14" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <rect x="160" y="34" width="80" height="32" rx="8" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <circle cx="150" cy="112" r="10" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2"/>
+              <path d="M144 112 l4 5 l9 -10" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="172" y1="112" x2="250" y2="112" stroke="#373435" stroke-width="4"/>
+              <line x1="305" y1="90" x2="305" y2="250" stroke="#373435" stroke-width="5"/>
+              <path d="M305 90 L305 122 L347 105 Z" fill="#EEB32D" stroke="#1A1A1A" stroke-width="2"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Actualiza tu repositorio">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Actualiza tu repositorio</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Como en cada sesión del Sub-bloque B: sube el cambio de hoy a tu propio repositorio.</p></div>
+          <div class="code-block">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code>git add .
+git commit -m <span class="tok-str">"Migrar el Service Worker a Workbox con vite-plugin-pwa: offline real, por fin"</span>
+git push</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen y próxima sesión">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Resumen y próxima sesión</h2>
+          <hr class="rule">
+          <ul class="clean">
+            <li class="fragment">Workbox, sus módulos y GenerateSW/InjectManifest se estudiaron a fondo en la Sesión 23 — hoy solo se aplican al Atlas 3D, sin repetir la teoría.</li>
+            <li class="fragment"><code>vite-plugin-pwa</code> ejecuta Workbox DESPUÉS del build de Vite, cuando los nombres de archivo con hash ya existen — por eso la lista de precaché nunca se escribe a mano ni queda desactualizada.</li>
+            <li class="fragment">En el <code>sw.js</code> generado, los archivos con nombre fijo (HTML, manifest, íconos) llevan un <code>revision</code> calculado por Workbox; los archivos que Vite ya nombra con hash (<code>assets/index-DDQN0Bif.js</code>) llevan <code>revision: null</code>, porque el nombre del archivo ya hace ese trabajo.</li>
+            <li class="fragment">La verificación de offline real se hace contra <code>npm run build</code> + <code>npm run preview</code>, nunca contra <code>npm run dev</code> — y, verificado hoy, el Atlas 3D recarga completo sin conexión por primera vez.</li>
+            <li class="fragment">Esto cierra la limitación documentada desde la Sesión 29: lo que antes era "cada recurso usa la estrategia correcta" ahora sí es "la aplicación funciona sin conexión de verdad".</li>
+          </ul>
+          <div class="callout fragment" style="margin-top:1.1em;font-size:1.05em;"><b>Sesión 35: APIs de dispositivo en el proyecto (1/2).</b> Sensores de orientación para rotar el visor 3D sin touch. Espejo de la Sesión 25.</div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Referencias</h2>
+          <hr class="rule">
+          <div class="ref-list">
+            <div><b>[1]</b> vite-plugin-pwa, "Guide — Service Worker generation," vite-pwa-org.netlify.app.</div>
+            <div><b>[2]</b> Web.dev, "Workbox," web.dev, 2023.</div>
+            <div><b>[3]</b> MDN Web Docs, "Using Service Workers."</div>
+          </div>
+        </section>
+
+        <div class="fragment-hint" id="fragHint">
+          <svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+        </div>
+
+        <div class="floatnav">
+          <button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+          <span class="count" id="slideCount">01 / 26</span>
+          <button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+          <button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>
