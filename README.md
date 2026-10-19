@@ -25,6 +25,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 21 | Las 5 estrategias de caché (2/2) | A |
 | 22 | IndexedDB y Web Crypto API | A |
 | 23 | Workbox y auditoría | A |
+| 24 | APIs de dispositivo (1/2): cámara y ubicación | A |
 
 ## Proyectos
 
