@@ -19,6 +19,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 15 | ¿Qué es una PWA? | A |
 | 16 | El Manifiesto de aplicación | A |
 | 17 | Service Workers (1/2): registro y ciclo de vida | A |
+| 18 | Service Workers (2/2): cacheo de rutas | A |
 
 ## Proyectos
 
