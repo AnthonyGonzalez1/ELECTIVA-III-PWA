@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 32 · Caché de modelos 3D (3/3) · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .compare-wrap{overflow-x:auto;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 6 de 18</div>
+    <h1>Caché de modelos 3D (3/3)</h1>
+    <div class="lead">Network First y Stale-While-Revalidate, y las 5 estrategias combinadas por tipo de recurso en el Atlas 3D — con una aclaración honesta sobre qué significa, y qué no, "funcionar sin conexión" en este proyecto todavía.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Aplicar</b> Network First y Stale-While-Revalidate al <code>sw.js</code> del Atlas 3D.</span></li>
+      <li><span class="chk">✓</span><span><b>Combinar</b> las 5 estrategias en el mismo Service Worker, enrutando por tipo de recurso.</span></li>
+      <li><span class="chk">✓</span><span><b>Distinguir</b> "el Service Worker aplica la estrategia correcta a cada recurso" de "la aplicación funciona sin conexión de verdad" — no son lo mismo en un proyecto con Vite.</span></li>
+      <li><span class="chk">✓</span><span><b>Verificar</b> en DevTools qué estrategia respondió cada petición del Atlas 3D.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion31.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 31.</b> El <code>sw.js</code> ya responde con <code>cacheFirst()</code> para todo. Hoy dejamos de aplicar una sola estrategia a todo, y enrutamos varias según el tipo de recurso.</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Esto ya lo viste a fondo en la Sesión 21</h2>
+    <div class="body-text"><p>Network First, Stale-While-Revalidate, la comparación completa de las 5 estrategias y el patrón de enrutar por <code>path</code> dentro de <code>fetch</code> ya los estudiaste con calma en la <a href="../../Sub-bloque%20A%20-%20Fundamentos%20PWA/Sesion%2021%20-%20Las%205%20estrategias%20de%20cache%20(2%20de%202)/guia.html">Sesión 21</a>, sobre el Gestor de tareas. No repetimos nada de esa teoría aquí: si el porqué de alguna estrategia no te suena, vuelve primero a esa guía.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Lo que sí toca hoy es distinto: aplicar el mismo patrón de enrutamiento al <code>sw.js</code> real del Atlas 3D, que hasta la Sesión 31 solo usaba <code>cacheFirst()</code> para absolutamente todo.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">2</span>El sw.js del Atlas 3D, enrutado por tipo de recurso</h2>
+    <div class="body-text"><p>El Atlas 3D todavía no tiene una ruta <code>/api/</code> ni modelos <code>.glb</code> reales, pero ya tiene dos tipos de recurso claramente distintos: los íconos del manifest (binarios, inmutables) y el shell HTML/JS que Vite sirve. Eso alcanza para un enrutamiento real con dos estrategias, y para dejar preparado el tercer caso (una futura ruta de datos del catálogo) con Network First, exactamente como hizo la Sesión 21 con el Gestor de tareas:</p></div>
+    <div class="code-block" style="margin-top:1em;">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>public/sw.js</div>
+      <pre><code>self.<span class="tok-fn">addEventListener</span>(<span class="tok-str">'fetch'</span>, event <span class="tok-punct">=&gt;</span> {
+  <span class="tok-kw">const</span> url <span class="tok-punct">=</span> <span class="tok-kw">new</span> <span class="tok-fn">URL</span>(event.request.url);
+
+  <span class="tok-kw">if</span> (url.pathname.<span class="tok-fn">startsWith</span>(<span class="tok-str">'/iconos/'</span>)) {
+    <span class="tok-com">// Íconos y, más adelante, modelos .glb: inmutables → Cache First</span>
+    event.<span class="tok-fn">respondWith</span>(<span class="tok-fn">cacheFirst</span>(event.request));
+  } <span class="tok-kw">else if</span> (url.pathname.<span class="tok-fn">startsWith</span>(<span class="tok-str">'/api/'</span>)) {
+    <span class="tok-com">// Futuro catálogo de modelos: debe verse al día → Network First</span>
+    event.<span class="tok-fn">respondWith</span>(<span class="tok-fn">networkFirst</span>(event.request));
+  } <span class="tok-kw">else</span> {
+    <span class="tok-com">// Shell (HTML, manifest): rápido, y se actualiza solo → Stale-While-Revalidate</span>
+    event.<span class="tok-fn">respondWith</span>(<span class="tok-fn">staleWhileRevalidate</span>(event.request));
+  }
+});</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Las tres funciones (<code>cacheFirst</code>, <code>networkFirst</code>, <code>staleWhileRevalidate</code>) son exactamente las de la Sesión 21, sin ningún cambio — lo único nuevo es la condición que decide cuál usar según <code>url.pathname</code>. La rama <code>/api/</code> no tiene todavía ninguna ruta real detrás: queda ahí preparada para cuando el catálogo de modelos exista.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>Por qué esto no es lo mismo que "el visor funciona sin conexión"</h2>
+    <div class="body-text"><p>Aplicar correctamente las 5 estrategias — y el <code>sw.js</code> de la sección 2 sí las aplica correctamente — resuelve el problema de <i>qué estrategia usa cada recurso cacheado</i>. No resuelve el problema, todavía abierto desde la Sesión 29, de que el propio Service Worker no logra interceptar ni <code>/src/main.ts</code> ni <code>/@vite/client</code> en modo desarrollo, ni el nombre con hash del bundle en producción (<code>assets/index-BXm8pqCz.js</code>, distinto en cada build). Ese problema no es de estrategia: es de <i>qué rutas exactas puede conocer de antemano el <code>sw.js</code></i>, y una lista de estrategias perfectamente elegidas no ayuda si la ruta que hay que cachear cambia de nombre en cada compilación.</p></div>
+    <div class="callout">
+      <b>La distinción que importa hoy:</b> "cada recurso usa la estrategia correcta" (cierto, desde hoy) no es lo mismo que "la aplicación funciona sin conexión de verdad" (todavía falso, para el bundle real de producción). Ambas cosas suenan parecido, pero la primera es sobre <i>cómo</i> se cachea, y la segunda es sobre <i>qué</i> se puede cachear — y eso último es exactamente lo que Workbox resuelve, generando la lista de precaché en cada build en vez de escribirla a mano. Eso es la Sesión 34.
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Lo que sí puedes verificar hoy, honestamente: con <code>npm run dev</code> detenido y sirviendo solo los archivos estáticos de <code>public/</code> (shell mínimo, manifest, íconos), el enrutamiento por tipo de recurso de la sección 2 funciona exactamente como se describe, estrategia por estrategia. La limitación es específica de las rutas que Vite genera dinámicamente, no del enrutamiento en sí.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>Actividad</h2>
+
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>Enruta tu propio Atlas 3D</h4></div>
+      <div class="meta-row">INDIVIDUAL · 20 MIN</div>
+      <p>Sobre tu propio proyecto (el checkpoint de la Sesión 31, o tu propio avance si ya lo tienes): reemplaza el <code>cacheFirst()</code> global por el enrutamiento de la sección 2, con al menos Cache First para íconos y Stale-While-Revalidate para el resto del shell.</p>
+      <p style="margin-top:.8em;"><b>Verifica:</b> DevTools → Network, filtro "Service Worker" activado — cada ícono debe venir de Cache First, y el shell de Stale-While-Revalidate. Luego, en una frase escrita, explica por qué esto no equivale todavía a "el proyecto funciona sin conexión" (sección 3).</p>
+      <p style="margin-top:.8em;"><b>Si te quedas atrás:</b> el checkpoint de Recursos (<code>pwa-ar-objetos3d-sesion31.zip</code>) es el punto de partida correcto de hoy — cotéjalo contra tu propio código para encontrar la diferencia, en vez de reemplazar tu proyecto por el checkpoint.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> proyecto corriendo localmente con el enrutamiento aplicado, y la frase de explicación, revisados por el docente antes de salir de clase.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="body-text"><p>Como en cada sesión del Sub-bloque B, cierra hoy subiendo el cambio a tu propio repositorio en GitHub:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>git add .
+git commit -m "Enrutamiento de estrategias de caché por tipo de recurso en el Atlas 3D"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>Network First, Stale-While-Revalidate y el patrón de enrutar por <code>path</code> ya se estudiaron en la Sesión 21 — hoy solo se aplican al Atlas 3D.</li>
+      <li>El <code>sw.js</code> del Atlas 3D ahora enruta por tipo de recurso: Cache First para íconos, Stale-While-Revalidate para el shell, Network First preparado para un futuro <code>/api/</code>.</li>
+      <li>Aplicar bien las 5 estrategias no es lo mismo que "funcionar sin conexión de verdad": el <code>sw.js</code> no puede cachear de antemano rutas que Vite genera con nombre distinto en cada build.</li>
+      <li>Esa limitación —abierta desde la Sesión 29— se resuelve generando la lista de precaché automáticamente, en vez de escribirla a mano: eso es exactamente lo que hace Workbox, en la Sesión 34.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 33: IndexedDB en el proyecto.</b> Espejo de la Sesión 22 — guardar el progreso y las preferencias del usuario de forma estructurada en el Atlas 3D.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> Google, "Workbox Strategies," web.dev / Google Developers.</div>
+      <div><b>[2]</b> J. Wargo, <i>Learning Progressive Web Apps</i>, Addison-Wesley/Pearson Education, 2020.</div>
+      <div><b>[3]</b> S. Chacon, B. Straub, <i>Pro Git</i>, 2nd ed., Apress, 2014 — disponible en git-scm.com/book.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 6 de 18</span>
+  </div>
+</div>
+</body>
+</html>

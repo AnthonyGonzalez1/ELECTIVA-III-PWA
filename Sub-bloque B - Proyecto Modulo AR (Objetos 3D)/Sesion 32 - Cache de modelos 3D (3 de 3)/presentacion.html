@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 32 · Caché de modelos 3D (3/3) · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .honest-label{display:inline-block; font-size:.68em; font-weight:800; letter-spacing:.06em; text-transform:uppercase; padding:.2em .6em; border-radius:20px; margin-bottom:.5em;}
+  .honest-label.ok{background:#E9F7EE; color:#1E7B3C; border:1px solid #8FD19E;}
+  .honest-label.open{background:#FDEDEA; color:#B23A24; border:1px solid #F0A896;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 6 de 18</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+
+        <section class="slide slide--title active" data-section="portada" data-section-label="Portada">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR</div>
+          <h1>Caché de modelos 3D<br>(3/3)</h1>
+          <div class="lead">Sesión 6 de 18 — Network First, Stale-While-Revalidate y las 5 estrategias combinadas por tipo de recurso. Espejo de la Sesión 21.</div>
+          <div class="meta">
+            <div><span>Asignatura</span>Electiva - PWA</div>
+            <div><span>Sesión</span>06 de 18 · Proyecto Módulo AR</div>
+            <div><span>Institución</span>UPTC</div>
+          </div>
+          <div class="title-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+              <rect x="110" y="90" width="180" height="140" rx="12" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <rect x="140" y="115" width="45" height="45" rx="6" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2.5"/>
+              <rect x="195" y="115" width="45" height="45" rx="6" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2.5"/>
+              <rect x="140" y="170" width="45" height="45" rx="6" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2.5"/>
+              <rect x="195" y="170" width="45" height="45" rx="6" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="title-goldbar"></div>
+        </section>
+
+        <section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Recap y hoy">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SESIÓN 06</div>
+            <h2>De una sola estrategia a un sw.js enrutado</h2>
+            <p>La Sesión 31 dejó al Atlas 3D respondiendo con cacheFirst() para todo. Hoy enrutamos varias estrategias por tipo de recurso — y aclaramos qué significa, y qué no, "funcionar sin conexión".</p>
+            <div class="tb-preview"><span>Recap S31</span><span>Ya visto en S21</span><span>Honestidad sobre offline</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <line x1="40" y1="270" x2="360" y2="60" stroke="#373435" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+              <circle cx="40" cy="270" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="40" y="274" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S31</text>
+              <circle cx="200" cy="165" r="22" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="200" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A1A">S32</text>
+              <circle cx="360" cy="60" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="360" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S33</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Recap S31 + ya visto en S21">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Lo que ya tenemos, y lo que ya viste</h2>
+          <hr class="rule">
+          <div class="grid-3">
+            <div class="mini-card fragment"><b>Sesión 31</b><span style="font-size:.78em;color:#555;">cacheFirst() responde a toda petición del Atlas 3D — una sola estrategia para todo, sin distinguir tipo de recurso.</span></div>
+            <div class="mini-card fragment"><b>Sesión 21 (fundamentación)</b><span style="font-size:.78em;color:#555;">Network First, Stale-While-Revalidate y el enrutamiento por path, a fondo, sobre el Gestor de tareas. No se repite hoy.</span></div>
+            <div class="mini-card fragment"><b>Hoy</b><span style="font-size:.78em;color:#555;">El sw.js del Atlas 3D enruta por tipo de recurso — y aclaramos qué significa realmente "funcionar sin conexión".</span></div>
+          </div>
+          <div class="callout fragment" style="margin-top:1.1em;"><b>Dato clave:</b> hoy no re-explicamos qué es cada estrategia — eso está en la guía de la Sesión 21. Vamos directo al código real y a la aclaración honesta de la sección 2.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="enrutamiento" data-section-label="Enrutamiento por recurso" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 01</div>
+            <h2>El sw.js del Atlas 3D, enrutado por tipo de recurso</h2>
+            <p>Cache First para íconos, Network First para un futuro /api/, Stale-While-Revalidate para el shell.</p>
+            <div class="tb-preview"><span>url.pathname</span><span>cacheFirst · networkFirst · staleWhileRevalidate</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="140" cy="160" r="26" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <path d="M166 160 h50" stroke="#373435" stroke-width="4" stroke-linecap="round"/>
+              <path d="M216 160 l60 -60 M216 160 l60 60" stroke="#373435" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <rect x="276" y="70" width="80" height="50" rx="8" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <rect x="276" y="170" width="80" height="50" rx="8" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="316" y="100" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">íconos</text>
+              <text x="316" y="200" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">shell</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="enrutamiento" data-section-label="Enrutamiento por recurso" data-slide-label="El código">
+          <div class="kicker">Enrutamiento · 1.1</div>
+          <h2 class="slide-title">Enrutar por url.pathname dentro de fetch</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>public/sw.js</div>
+            <pre><code>self.<span class="tok-fn">addEventListener</span>(<span class="tok-str">'fetch'</span>, event <span class="tok-punct">=&gt;</span> {
+  <span class="tok-kw">const</span> url <span class="tok-punct">=</span> <span class="tok-kw">new</span> <span class="tok-fn">URL</span>(event.request.url);
+
+  <span class="tok-kw">if</span> (url.pathname.<span class="tok-fn">startsWith</span>(<span class="tok-str">'/iconos/'</span>)) {
+    <span class="tok-com">// Íconos y, más adelante, modelos .glb: inmutables → Cache First</span>
+    event.<span class="tok-fn">respondWith</span>(<span class="tok-fn">cacheFirst</span>(event.request));
+  } <span class="tok-kw">else if</span> (url.pathname.<span class="tok-fn">startsWith</span>(<span class="tok-str">'/api/'</span>)) {
+    <span class="tok-com">// Futuro catálogo de modelos: debe verse al día → Network First</span>
+    event.<span class="tok-fn">respondWith</span>(<span class="tok-fn">networkFirst</span>(event.request));
+  } <span class="tok-kw">else</span> {
+    <span class="tok-com">// Shell (HTML, manifest): rápido, y se actualiza solo → Stale-While-Revalidate</span>
+    event.<span class="tok-fn">respondWith</span>(<span class="tok-fn">staleWhileRevalidate</span>(event.request));
+  }
+});</code></pre>
+          </div>
+          <div class="callout" style="margin-top:.6em;">Las tres funciones son exactamente las de la Sesión 21, sin ningún cambio — lo único nuevo es la condición que decide cuál usar.</div>
+        </section>
+
+        <section class="slide" data-section="enrutamiento" data-section-label="Enrutamiento por recurso" data-slide-label="La rama /api/, preparada">
+          <div class="kicker">Enrutamiento · 1.2</div>
+          <h2 class="slide-title">Una rama que todavía no tiene ruta real detrás</h2>
+          <hr class="rule">
+          <div class="body-text"><p>El Atlas 3D todavía no tiene una ruta <code>/api/</code> ni modelos <code>.glb</code> reales, pero ya tiene dos tipos de recurso claramente distintos: los íconos del manifest (binarios, inmutables) y el shell HTML/JS que Vite sirve.</p></div>
+          <div class="callout" style="margin-top:1em;">La rama <code>/api/</code> no tiene todavía ninguna ruta real detrás: queda ahí preparada para cuando el catálogo de modelos exista — exactamente como hizo la Sesión 21 con el Gestor de tareas.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="honestidad" data-section-label="La aclaración honesta" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 02</div>
+            <h2>Por qué esto no es lo mismo que "el visor funciona sin conexión"</h2>
+            <p>Aplicar bien las 5 estrategias no resuelve el problema abierto desde la Sesión 29.</p>
+            <div class="tb-preview"><span>Estrategia correcta ≠ offline real</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="140" cy="160" r="60" fill="#FFF6DC" stroke="#EEB32D" stroke-width="3"/>
+              <path d="M120 160 l14 14 l28 -30" stroke="#1E7B3C" stroke-width="6" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="280" cy="160" r="60" fill="#FDEDEA" stroke="#F0A896" stroke-width="3"/>
+              <path d="M258 138 l44 44 M302 138 l-44 44" stroke="#B23A24" stroke-width="6" fill="none" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="honestidad" data-section-label="La aclaración honesta" data-slide-label="Qué resuelve, qué no resuelve">
+          <div class="kicker">La aclaración honesta · 2.1</div>
+          <h2 class="slide-title">Qué resuelve el enrutamiento de hoy — y qué no</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Aplicar correctamente las 5 estrategias — y el <code>sw.js</code> de la sección 1 sí las aplica correctamente — resuelve el problema de <i>qué estrategia usa cada recurso cacheado</i>.</p></div>
+          <div class="body-text" style="margin-top:.9em;"><p>No resuelve el problema, todavía abierto desde la Sesión 29, de que el propio Service Worker no logra interceptar ni <code>/src/main.ts</code> ni <code>/@vite/client</code> en modo desarrollo, ni el nombre con hash del bundle en producción (<code>assets/index-BXm8pqCz.js</code>, distinto en cada build).</p></div>
+          <div class="callout" style="margin-top:1em;">Ese problema no es de estrategia: es de <i>qué rutas exactas puede conocer de antemano el sw.js</i> — y una lista de estrategias perfectamente elegidas no ayuda si la ruta que hay que cachear cambia de nombre en cada compilación.</div>
+        </section>
+
+        <section class="slide" data-section="honestidad" data-section-label="La aclaración honesta" data-slide-label="Logrado vs. todavía abierto">
+          <div class="kicker">La aclaración honesta · 2.2</div>
+          <h2 class="slide-title">Dos afirmaciones que suenan parecido, y no lo son</h2>
+          <hr class="rule">
+          <div class="grid-2">
+            <div class="activity-card">
+              <span class="honest-label ok">Cierto, desde hoy</span>
+              <h4>"Cada recurso usa la estrategia correcta"</h4>
+              <p>Los íconos vienen de Cache First, el shell de Stale-While-Revalidate, y la rama /api/ queda lista para Network First. Esto es sobre <b>cómo</b> se cachea — y hoy sí se hace bien.</p>
+            </div>
+            <div class="activity-card">
+              <span class="honest-label open">Todavía falso</span>
+              <h4>"La aplicación funciona sin conexión de verdad"</h4>
+              <p>El sw.js no puede cachear de antemano /src/main.ts ni /@vite/client (desarrollo), ni un bundle con hash que cambia en cada build (producción). Esto es sobre <b>qué</b> se puede cachear — y eso sigue abierto.</p>
+            </div>
+          </div>
+          <div class="callout" style="margin-top:1.1em;">Eso último es exactamente lo que Workbox resuelve, generando la lista de precaché en cada build en vez de escribirla a mano. Eso es la Sesión 34.</div>
+        </section>
+
+        <section class="slide" data-section="honestidad" data-section-label="La aclaración honesta" data-slide-label="Lo que sí puedes verificar hoy">
+          <div class="kicker">La aclaración honesta · 2.3</div>
+          <h2 class="slide-title">Lo que sí puedes verificar hoy, honestamente</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Con <code>npm run dev</code> detenido y sirviendo solo los archivos estáticos de <code>public/</code> (shell mínimo, manifest, íconos), el enrutamiento por tipo de recurso de la sección 1 funciona exactamente como se describe, estrategia por estrategia.</p></div>
+          <div class="callout" style="margin-top:1em;">La limitación es específica de las rutas que Vite genera dinámicamente, no del enrutamiento en sí. No es un error de tu código — es la misma razón, documentada desde la Sesión 29, por la que un proyecto con empaquetador genera su lista de precaché automáticamente en vez de escribirla a mano.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="actividad" data-section-label="Actividad" data-slide-label="Actividad">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 03</div>
+            <h2>Actividad para la clase</h2>
+            <p>Enruta tu propio sw.js, verifica en DevTools, y explica por escrito la distinción de la sección 2.</p>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="200" cy="215" rx="130" ry="32" fill="#FFF6DC" stroke="#EEB32D" stroke-width="3"/>
+              <circle cx="200" cy="108" r="26" fill="#373435"/>
+              <rect x="168" y="132" width="64" height="58" rx="22" fill="#4fd1ff"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="actividad" data-section-label="Actividad" data-slide-label="La actividad">
+          <div class="kicker">Actividad</div>
+          <h2 class="slide-title">Enruta tu propio Atlas 3D</h2>
+          <hr class="rule">
+          <div class="activity-card">
+            <div class="a-head"><div class="a-num">1</div><h4>Sobre tu propio proyecto</h4></div>
+            <div class="meta-row">INDIVIDUAL · 20 MIN</div>
+            <p>Reemplaza el <code>cacheFirst()</code> global por el enrutamiento de la sección 1, con al menos Cache First para íconos y Stale-While-Revalidate para el resto del shell.</p>
+          </div>
+          <div class="callout" style="margin-top:1em;"><b>Verifica:</b> DevTools → Network, filtro "Service Worker" activado — cada ícono debe venir de Cache First, y el shell de Stale-While-Revalidate. Luego, en una frase escrita, explica por qué esto no equivale todavía a "el proyecto funciona sin conexión" (sección 2).</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="cierre" data-section-label="Cierre" data-slide-label="Cierre">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 04</div>
+            <h2>Cierre de la sesión</h2>
+            <p>Tu commit de hoy, el resumen, y hacia dónde vamos en la Sesión 33.</p>
+            <div class="tb-preview"><span>Commit y push</span><span>Resumen</span><span>Próxima sesión</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="120" y="50" width="160" height="220" rx="14" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <rect x="160" y="34" width="80" height="32" rx="8" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <circle cx="150" cy="112" r="10" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2"/>
+              <path d="M144 112 l4 5 l9 -10" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="172" y1="112" x2="250" y2="112" stroke="#373435" stroke-width="4"/>
+              <line x1="305" y1="90" x2="305" y2="250" stroke="#373435" stroke-width="5"/>
+              <path d="M305 90 L305 122 L347 105 Z" fill="#EEB32D" stroke="#1A1A1A" stroke-width="2"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Actualiza tu repositorio">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Actualiza tu repositorio</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Como en cada sesión del Sub-bloque B: sube el cambio de hoy a tu propio repositorio.</p></div>
+          <div class="code-block">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code>git add .
+git commit -m <span class="tok-str">"Enrutamiento de estrategias de caché por tipo de recurso en el Atlas 3D"</span>
+git push</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen y próxima sesión">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Resumen y próxima sesión</h2>
+          <hr class="rule">
+          <ul class="clean">
+            <li class="fragment">Network First, Stale-While-Revalidate y el patrón de enrutar por path ya se estudiaron en la Sesión 21 — hoy solo se aplican al Atlas 3D.</li>
+            <li class="fragment">El sw.js del Atlas 3D ahora enruta por tipo de recurso: Cache First para íconos, Stale-While-Revalidate para el shell, Network First preparado para un futuro /api/.</li>
+            <li class="fragment">Aplicar bien las 5 estrategias no es lo mismo que "funcionar sin conexión de verdad": el sw.js no puede cachear de antemano rutas que Vite genera con nombre distinto en cada build.</li>
+            <li class="fragment">Esa limitación —abierta desde la Sesión 29— se resuelve generando la lista de precaché automáticamente: eso es exactamente lo que hace Workbox, en la Sesión 34.</li>
+          </ul>
+          <div class="callout fragment" style="margin-top:1.1em;font-size:1.05em;"><b>Sesión 33: IndexedDB en el proyecto.</b> Espejo de la Sesión 22 — guardar el progreso y las preferencias del usuario de forma estructurada en el Atlas 3D.</div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Referencias</h2>
+          <hr class="rule">
+          <div class="ref-list">
+            <div><b>[1]</b> Google, "Workbox Strategies," web.dev / Google Developers.</div>
+            <div><b>[2]</b> J. Wargo, <i>Learning Progressive Web Apps</i>, Addison-Wesley/Pearson Education, 2020.</div>
+            <div><b>[3]</b> S. Chacon, B. Straub, <i>Pro Git</i>, 2nd ed., Apress, 2014.</div>
+          </div>
+        </section>
+
+        <div class="fragment-hint" id="fragHint">
+          <svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+        </div>
+
+        <div class="floatnav">
+          <button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+          <span class="count" id="slideCount">01 / 16</span>
+          <button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+          <button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>
