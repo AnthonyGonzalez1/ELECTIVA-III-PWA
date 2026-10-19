@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 36 · APIs de dispositivo en el proyecto (2/2) · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .compare-wrap{overflow-x:auto;}
+  .warn-box{border:1px solid #e0a800; background:#fff8e1; border-radius:10px; padding:1em 1.2em; margin:1em 0; font-size:.92em;}
+  .warn-box b{color:#9a6b00;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  .term-box{background:#1c1c1e; color:#cfcac0; border-radius:10px; padding:.9em 1.1em; font-size:.82em; font-family:"Cascadia Code",Consolas,monospace; line-height:1.55; margin:1em 0; overflow-x:auto;}
+  .term-box .prompt{color:#6ad06a;}
+  .win-box{border:2px solid #2e7d32; background:#f1f9f1; border-radius:10px; padding:1em 1.2em; margin:1.2em 0; font-size:.92em;}
+  .win-box b{color:#1b5e20;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 10 de 18</div>
+    <h1>APIs de dispositivo en el proyecto (2/2)</h1>
+    <div class="lead">La cámara se convierte en el fondo vivo del visor 3D: el primer paso hacia la realidad aumentada de las próximas sesiones. Es el espejo de la Sesión 24 — pero un flujo de video abierto es una responsabilidad distinta a una foto, y hoy se nota.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Colocar</b> el video de la cámara como fondo vivo detrás del canvas de Three.js, con las dos capas bien apiladas.</span></li>
+      <li><span class="chk">✓</span><span><b>Explicar</b> por qué la transparencia del canvas se decide al crear el renderer (<code>alpha: true</code>) y qué papel juega <code>scene.background</code>.</span></li>
+      <li><span class="chk">✓</span><span><b>Gestionar</b> el ciclo de vida de un flujo de video abierto: apagarlo al salir de la página y al terminar, y degradar con elegancia si el permiso se niega.</span></li>
+      <li><span class="chk">✓</span><span><b>Distinguir</b>, con honestidad, "un modelo dibujado sobre la cámara" de la realidad aumentada de verdad.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion35.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 35.</b> El Atlas 3D con su primer visor de Three.js (cubo de prueba) controlado por sensores de orientación, con <code>OrbitControls</code> como respaldo. Hoy le agregamos <code>camara.ts</code> y la cámara como fondo.</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Esto ya lo viste a fondo en la Sesión 24</h2>
+    <div class="body-text"><p>El modelo de permisos (contexto seguro, gesto del usuario, estados <code>granted</code>/<code>denied</code>/<code>prompt</code>), <code>getUserMedia</code> y sus constraints (<code>ideal</code> contra <code>exact</code>), los errores (<code>NotAllowedError</code>, <code>NotFoundError</code>, <code>NotReadableError</code>, <code>TypeError</code> en HTTP) y la obligación de detener las pistas, se estudiaron a fondo en la <a href="../../Sub-bloque%20A%20-%20Fundamentos%20PWA/Sesion%2024%20-%20APIs%20de%20dispositivo%20(1%20de%202)%20-%20camara%20y%20ubicacion/guia.html">Sesión 24</a>, sobre el Gestor de Tareas. Aquí no se repiten.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>La diferencia que importa hoy es de <b>duración</b>. En el Gestor la cámara se abría un instante, tomaba <i>una</i> foto y se cerraba. En el Atlas 3D el flujo queda <b>abierto todo el tiempo</b> como fondo del visor — y eso convierte detalles menores en problemas reales: batería, LED encendido, y qué pasa cuando el usuario cambia de pestaña.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Dos capas: video detrás, canvas encima</h2>
+    <div class="body-text"><p>La idea es la más simple posible: un <code>&lt;video&gt;</code> ocupando todo el contenedor, y el <code>&lt;canvas&gt;</code> de Three.js apilado encima. Si el canvas es transparente donde no hay modelo, se ve el video a través de él. En el HTML, el video vive dentro del mismo contenedor que el visor, oculto hasta que haya cámara:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>index.html y style.css (fragmentos)</div>
+      <pre><code>&lt;div id="visor" class="visor"&gt;
+  &lt;video id="fondo-camara" class="fondo-camara" playsinline muted hidden&gt;&lt;/video&gt;
+&lt;/div&gt;
+
+.visor { position: relative; background: #0b1220; }
+.fondo-camara { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.fondo-camara[hidden] { display: none; }
+.visor canvas { position: relative; z-index: 1; }</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p><code>object-fit: cover</code> hace que el video llene el contenedor sin deformarse (recortando lo que sobre). <code>playsinline</code> evita que iOS lo abra a pantalla completa, y <code>muted</code> es necesario: sin sonido, el navegador permite reproducirlo sin que haya un gesto previo. Y la regla <code>[hidden]</code> existe por una razón práctica: al darle <code>display</code> propio a una clase, el atributo <code>hidden</code> deja de ocultar el elemento; hay que restituirlo.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>La transparencia: dos decisiones, en lugares distintos</h2>
+    <div class="body-text"><p>Que el canvas deje ver el video depende de dos cosas, y fallar en cualquiera deja la pantalla con el fondo oscuro de siempre:</p></div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>El renderer debe crearse con <code>alpha: true</code>.</b> Es una decisión de creación: el contexto WebGL se configura con o sin canal alfa <i>una sola vez</i>. Si lo creaste sin alfa, ningún ajuste posterior lo vuelve transparente.</li>
+      <li><b><code>scene.background</code> debe ser <code>null</code></b> mientras la cámara esté activa. Mientras tenga un color, Three.js pinta ese color opaco sobre todo el canvas y tapa el video.</li>
+    </ol>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (fragmentos)</div>
+      <pre><code>const COLOR_FONDO = new THREE.Color(0x0b1220);
+escena.background = COLOR_FONDO;
+
+// alpha se decide AL CREAR el renderer (no se puede cambiar después)
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setClearColor(0x000000, 0);          // limpiar con alfa 0 = transparente
+
+// ... dentro del objeto que devuelve crearVisor():
+fondoTransparente(activo: boolean) {
+  escena.background = activo ? null : COLOR_FONDO;
+},</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Fíjate en la asimetría: <code>alpha</code> se fija al crear, pero el fondo se alterna en caliente. Por eso el renderer se crea <i>siempre</i> con alfa, aunque en la Sesión 35 no se necesitaba, y la cámara solo cambia <code>scene.background</code>.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>La cámara como fondo: camara.ts</h2>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/camara.ts</div>
+      <pre><code>export async function iniciarCamaraDeFondo(video: HTMLVideoElement): Promise&lt;MediaStream&gt; {
+  const stream = await navigator.mediaDevices.getUserMedia({
+    video: { facingMode: { ideal: "environment" }, width: { ideal: 1280 }, height: { ideal: 720 } },
+    audio: false,
+  });
+  video.srcObject = stream;
+  await video.play();
+  return stream;
+}
+
+export function detenerCamaraDeFondo(video: HTMLVideoElement, stream: MediaStream | null): void {
+  stream?.getTracks().forEach((pista) =&gt; pista.stop());
+  video.srcObject = null;
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Es la misma llamada de la Sesión 24, con <code>facingMode: { ideal: "environment" }</code> (cámara trasera si existe; si no, la que haya), sin audio y sin capturar fotos: aquí solo se muestra. El botón del visor la activa dentro del clic, y un segundo clic la apaga.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>Ciclo de vida: apagarla a tiempo</h2>
+    <div class="body-text"><p>Un flujo abierto que nadie mira es un problema: gasta batería, mantiene el LED de la cámara encendido, y le dice al usuario "esta app te está grabando" cuando ya ni la está usando. La regla razonable: <b>apagar la cámara cuando la página deja de estar visible</b>. El evento <code>visibilitychange</code> avisa cuando el usuario cambia de pestaña o minimiza el navegador:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (fragmento)</div>
+      <pre><code>document.addEventListener("visibilitychange", () =&gt; {
+  if (document.hidden &amp;&amp; streamFondo) {
+    apagarCamara();
+    avisarVisor("La cámara se apagó al salir de la página. Vuelve a activarla cuando quieras.");
+  }
+});</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Decisión de diseño: no se reactiva sola al volver. Reactivarla sin un clic implicaría volver a abrir la cámara sin que el usuario lo pida, justo lo que la Sesión 24 enseñó a evitar. El mensaje le dice qué pasó y qué hacer.</p></div>
+    <div class="warn-box"><b>Una corrección que salió de leer la documentación.</b> Mi primer borrador de <code>describirErrorCamara</code> asociaba <code>SecurityError</code> con "solo funciona en HTTPS". Al contrastarlo con MDN resultó falso: en una página HTTP, <code>navigator.mediaDevices</code> es <code>undefined</code> y lo que se lanza es <code>TypeError</code>; <code>SecurityError</code> significa otra cosa (el navegador tiene deshabilitado el acceso a medios en ese documento). El código de hoy y el checkpoint de la Sesión 24 ya llevan el mapeo corregido.</div>
+
+    <h2 class="section-title"><span class="num-badge">6</span>Verificado contra el build real</h2>
+    <div class="body-text"><p>Todo se ejecutó contra <code>npm run build</code> + <code>npm run preview</code>, en Chromium con una cámara falsa (el navegador genera un video sintético), con WebGL por software. Salida literal:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build<br>
+dist/assets/index-BfFPq1Qd.js&nbsp;&nbsp;&nbsp;501.10 kB │ gzip: 127.34 kB<br>
+✓ built in 2.16s<br>
+<b>precache&nbsp;8 entries (508.80 KiB)</b><br>
+<br>
+<span class="prompt">$</span> node test_s36.js<br>
+boton: 📷 Cámara: ACTIVA (toca para apagar)<br>
+video: { hidden: false, w: 1280, h: 720, reproduciendo: true, pistasVivas: 1 }<br>
+al ocultar la pagina -&gt; boton: 📷 Cámara de fondo | srcObject null: true | aviso: La cámara se apagó al salir de la página. Vuelve a activarla cuando quieras.<br>
+DENEGADA -&gt; Bloqueaste el permiso de cámara. El visor sigue funcionando sin ella. | visor sigue (canvas): 1<br>
+errores: []</div>
+    <div class="win-box"><b>Qué demuestra:</b> (1) con la cámara activa, el video llega a 1280×720, se reproduce y hay una pista viva; (2) al ocultarse la página, el botón vuelve a su estado inicial, el video queda sin fuente (<code>srcObject</code> es <code>null</code>) y el usuario ve el aviso; (3) con el permiso denegado, el mensaje es claro y el visor sigue con su canvas — la función es una mejora, no un requisito; (4) cero errores de página.</div>
+    <div class="body-text" style="margin-top:1em;"><p><b>Y se vio, no solo se midió.</b> Una captura de pantalla de la página con la cámara activa mostró el cubo dorado dibujado sobre el video sintético verde del navegador, con los bordes del cubo nítidos y el video visible alrededor — es decir, el canvas era transparente donde no había modelo. Sin la cámara, el mismo visor mostraba el fondo azul oscuro.</p></div>
+    <div class="warn-box"><b>Límites honestos de esta prueba:</b> (1) el "cambio de pestaña" se simuló fijando <code>document.hidden</code> y disparando <code>visibilitychange</code>; no se cambió de pestaña de verdad. (2) La cámara es sintética: no se probó la cámara trasera de un teléfono, ni cómo <code>object-fit: cover</code> recorta una imagen vertical real. (3) No se midió el consumo de batería. Esas tres comprobaciones son de la actividad de hoy.</div>
+
+    <h2 class="section-title"><span class="num-badge">7</span>Esto todavía NO es realidad aumentada</h2>
+    <div class="body-text"><p>Con la cámara de fondo y el cubo encima, el aviso de la pantalla lo dice: <b>el cubo no está anclado a nada del mundo</b>. Si mueves el teléfono, el cubo se queda donde está dentro del canvas, no sobre la mesa que estás viendo. Lo que tenemos es un <i>fondo</i> de video y un modelo 3D dibujado encima — la base sobre la que se construye la realidad aumentada, no la realidad aumentada. Para que un objeto parezca estar en la mesa hace falta saber dónde está la cámara en el espacio y cómo se mueve (seguimiento), algo que ni la cámara ni los sensores de hoy resuelven por sí solos. Cómo se logrará en este proyecto se decide en las sesiones de realidad aumentada.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Por la misma razón, de la Sesión 24 <b>no se aplica hoy la ubicación</b>: ninguna parte del Atlas 3D la necesita todavía, y pedir un permiso que no se usa es lo contrario de lo que enseña esa sesión.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">8</span>Probar en un teléfono real</h2>
+    <div class="body-text"><p>Aplica lo mismo que en las dos sesiones anteriores: la cámara solo existe en contexto seguro, así que <code>npm run dev</code> por la red local (HTTP) no sirve en el teléfono. Usa uno de los caminos de la <a href="../../Sub-bloque%20A%20-%20Fundamentos%20PWA/Sesion%2024%20-%20APIs%20de%20dispositivo%20(1%20de%202)%20-%20camara%20y%20ubicacion/guia.html">Sesión 24, sección 9</a> sirviendo el <i>build</i> (<code>npm run build</code> + <code>npm run preview</code> detrás de un túnel o reenvío de puerto), no el servidor de desarrollo. Con <code>facingMode: { ideal: "environment" }</code> deberías ver la cámara trasera.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">9</span>Actividad</h2>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>Cámara de fondo, apagada con responsabilidad</h4></div>
+      <div class="meta-row">INDIVIDUAL · 30 MIN</div>
+      <p>Sobre tu propio proyecto (o el checkpoint de la Sesión 35): agrega <code>camara.ts</code>, el <code>&lt;video&gt;</code> dentro del contenedor del visor con el CSS de la sección 2, y el botón en <code>main.ts</code>. Comprueba con <code>npm run build</code> que compila sin errores de TypeScript.</p>
+      <p style="margin-top:.8em;"><b>Verifica, en este orden:</b> (1) con la cámara activa, el cubo se ve sobre el video (si ves el fondo oscuro, revisa <code>alpha: true</code> y <code>scene.background</code>); (2) cambia de pestaña de verdad y vuelve: la cámara debe haberse apagado y el aviso debe aparecer; (3) en el candado del navegador, bloquea la cámara y vuelve a pulsar el botón: el visor debe seguir funcionando con un mensaje claro; (4) <b>si tienes un teléfono</b> y HTTPS, comprueba qué cámara se abre y cómo se recorta el video, y anota cualquier diferencia con lo que predijo esta guía.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> capturas de (1) y (3), y una frase sobre qué hace distinto un flujo de video abierto frente a la foto única de la Sesión 24. Revisado por el docente antes de salir de clase.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>git add .
+git commit -m "Cámara como fondo del visor 3D, con apagado al salir de la página"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>El permiso, los errores y las constraints de <code>getUserMedia</code> ya se estudiaron en la Sesión 24; hoy se aplican sobre un flujo que queda abierto, no sobre una foto.</li>
+      <li>El fondo de cámara son dos capas: un <code>&lt;video&gt;</code> con <code>object-fit: cover</code> detrás, y el canvas de Three.js encima.</li>
+      <li>La transparencia exige <code>alpha: true</code> al <b>crear</b> el renderer y <code>scene.background = null</code> mientras la cámara esté activa.</li>
+      <li>Un flujo abierto se apaga cuando la página deja de ser visible (<code>visibilitychange</code>) y no se reactiva sin un clic.</li>
+      <li>Verificado contra el build real con cámara sintética: 1280×720, pista viva, apagado al ocultarse, permiso denegado sin romper el visor — y cubo visible sobre el video en la captura.</li>
+      <li>Esto es la <b>base</b> de la realidad aumentada, no la RA: el cubo no está anclado al mundo. Quedan por probar en hardware real la cámara trasera, el recorte de video vertical y la batería.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 37: Notificaciones push en el proyecto.</b> Avisos de progreso e instalación del Módulo AR usando Notification API y Background Sync. Espejo de la Sesión 26.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> MDN Web Docs, "MediaDevices: getUserMedia() method," developer.mozilla.org.</div>
+      <div><b>[2]</b> MDN Web Docs, "Document: visibilitychange event," developer.mozilla.org.</div>
+      <div><b>[3]</b> Three.js, "WebGLRenderer" (parámetro <code>alpha</code>) y "Scene.background," threejs.org/docs.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 10 de 18</span>
+  </div>
+</div>
+</body>
+</html>
