@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 35 · APIs de dispositivo en el proyecto (1/2) · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .callout.win{background:#f1f9f1; border-color:#2e7d32; border-left-color:#1b5e20;}
+  .callout.win b{color:#1b5e20;}
+  .term-emph{color:var(--gold); font-weight:700;}
+  .callout.warn{background:#fff8e1; border-color:#e0a800; border-left-color:#9a6b00;}
+  .callout.warn b{color:#9a6b00;}
+  .code-block.compact.tight pre{padding:.4em 1.1em; line-height:1.2;}
+  .rev-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .rev-card{border-radius:10px; padding:.9em 1em; font-size:.84em; line-height:1.45;}
+  .rev-card.has{background:#fff; border:1px solid var(--line);}
+  .rev-card.null{background:#EAF2FD; border:1px solid #8FBBEE;}
+  .rev-card .tag{display:inline-block; font-size:.68em; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:.15em .55em; border-radius:20px; margin-bottom:.5em;}
+  .rev-card.has .tag{background:#F0F0F0; color:#555;}
+  .rev-card.null .tag{background:#E9F1FC; color:#1B5FAD; border:1px solid #8FBBEE;}
+  .rev-card code{font-size:.92em;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 9 de 18</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+
+        <section class="slide slide--title active" data-section="portada" data-section-label="Portada">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR · Sesión 9 de 18</div>
+          <h1 style="font-size:3em;max-width:11em;">APIs de dispositivo en el proyecto (1/2)</h1>
+          <div class="lead">El Atlas 3D estrena su primer visor de Three.js y lo mueve con los sensores de orientación: inclinas el teléfono y el modelo gira, sin tocar la pantalla. Espejo de la Sesión 25, aplicado al proyecto — y nos obliga a ser honestos con lo que el visor todavía no tiene.</div>
+          <div class="meta">
+            <div><span>Asignatura</span>Electiva - PWA</div>
+            <div><span>Sesión</span>09 de 18 · Proyecto Módulo AR</div>
+            <div><span>Institución</span>UPTC</div>
+          </div>
+          <div class="title-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+              <rect x="135" y="40" width="130" height="240" rx="18" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <rect x="150" y="62" width="100" height="170" rx="6" fill="#0b1220"/>
+              <path d="M200 100 L238 122 L238 166 L200 188 L162 166 L162 122 Z" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/>
+              <path d="M162 122 L200 144 L238 122 M200 144 L200 188" fill="none" stroke="#1A1A1A" stroke-width="2.5" stroke-linejoin="round"/>
+              <circle cx="200" cy="256" r="9" fill="none" stroke="#1A1A1A" stroke-width="3"/>
+              <path d="M290 110 A 110 110 0 0 1 300 200" fill="none" stroke="#EEB32D" stroke-width="5" stroke-linecap="round" stroke-dasharray="2 10"/>
+              <path d="M300 200 l-4 -14 M300 200 l-14 -4" stroke="#EEB32D" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="title-goldbar"></div>
+        </section>
+
+        <section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Hoy nace el primer visor">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SESIÓN 09</div>
+            <h2>Un visor que se mueve con el teléfono</h2>
+            <p>El Atlas 3D no tenía visor 3D: hoy nace el primero, con un cubo de prueba declarado como tal, y se mueve con los sensores de orientación. Lo verificamos contra el build real, con sensores simulados, y decimos con claridad qué todavía no es.</p>
+            <div class="tb-preview"><span>Sensores ya vistos en S25</span><span>Primer visor con Three.js</span><span>Verificado con sensores simulados</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <line x1="40" y1="270" x2="360" y2="60" stroke="#373435" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+              <circle cx="40" cy="270" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="40" y="274" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S25</text>
+              <circle cx="200" cy="165" r="22" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="200" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A1A">S35</text>
+              <circle cx="360" cy="60" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="360" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S36</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Objetivos de la sesión">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Objetivos de aprendizaje</h2>
+          <hr class="rule">
+          <ul class="clean">
+            <li><b>Montar</b> el primer visor de Three.js del Atlas 3D, con un modelo de prueba y control manual de respaldo.</li>
+            <li><b>Convertir</b> los ángulos absolutos de <code>deviceorientation</code> en una rotación relativa a una posición de referencia, con calibración.</li>
+            <li><b>Suavizar</b> el movimiento del modelo para filtrar el temblor del sensor, y apagar los sensores cuando no se usan.</li>
+            <li><b>Verificar</b> el resultado contra el build real, con sensores simulados, y declarar con honestidad qué todavía no es.</li>
+          </ul>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Recursos de esta sesión">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Recursos de esta sesión</h2>
+          <hr class="rule">
+          <div class="activity-card">
+            <div class="a-head"><div class="a-num">.zip</div><h4>pwa-ar-objetos3d-sesion34.zip</h4></div>
+            <div class="meta-row">CHECKPOINT · CIERRE DE LA SESIÓN 34</div>
+            <p>El Atlas 3D con IndexedDB (Sesión 33) y el Service Worker generado por <code>vite-plugin-pwa</code> (Sesión 34). Todavía no tiene ningún visor 3D: hoy nace el primero.</p>
+          </div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Ya lo viste en la Sesión 25">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Esto ya lo viste a fondo en la Sesión 25</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Qué miden <code>deviceorientation</code> y <code>devicemotion</code>, los rangos de <code>alpha</code>, <code>beta</code> y <code>gamma</code>, el permiso especial de iOS (<code>requestPermission</code> dentro de un clic), cómo detectar que un computador no tiene sensores reales y por qué se limita la frecuencia de lectura, está todo en la Sesión 25, aplicado al Gestor de Tareas. Aquí no se repite: en este proyecto se reutilizan las mismas ideas, escritas ahora en TypeScript en <code>src/sensores.ts</code>.</p></div>
+          <div class="callout" style="margin-top:1em;">Lo que sí es nuevo hoy es la <i>pregunta</i>: en el Gestor, el sensor deshacía una eliminación; en el Atlas 3D, tiene que <b>mover un modelo</b>. Y para eso primero hace falta que exista algo que mover.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="visor" data-section-label="Primero, un visor" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 02</div>
+            <h2>Primero, un visor (y una advertencia honesta)</h2>
+            <p>Antes de mover un modelo hay que tener uno. El visor vive en su propio módulo y muestra un cubo de prueba.</p>
+            <div class="tb-preview"><span>src/visor.ts</span><span>Cubo de prueba</span><span>OrbitControls</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <path d="M200 70 L290 115 L290 205 L200 250 L110 205 L110 115 Z" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="4" stroke-linejoin="round"/>
+              <path d="M110 115 L200 160 L290 115 M200 160 L200 250" fill="none" stroke="#1A1A1A" stroke-width="4" stroke-linejoin="round"/>
+              <circle cx="320" cy="75" r="14" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="visor" data-section-label="Primero, un visor" data-slide-label="El Atlas 3D todavía no tiene visor">
+          <div class="kicker">El visor · 2.1</div>
+          <h2 class="slide-title">El Atlas 3D todavía no tiene visor</h2>
+          <hr class="rule">
+          <div class="callout warn"><b>El Atlas 3D todavía no tiene visor.</b> <code>three</code> está en <code>package.json</code> desde el andamiaje de la Sesión 27, pero hasta hoy ninguna línea lo importaba; y el catálogo de modelos reales (dominio, vista, controlador) es trabajo de sesiones futuras. Por eso el visor de hoy muestra un <b>cubo de prueba</b>, y la pantalla lo dice.</div>
+          <div class="callout" style="margin-top:1em;">Inventar un archivo <code>.glb</code> que no está en el proyecto sería peor que mostrar un cubo honesto.</div>
+        </section>
+
+        <section class="slide" data-section="visor" data-section-label="Primero, un visor" data-slide-label="visor.ts: la interfaz">
+          <div class="kicker">El visor · 2.2</div>
+          <h2 class="slide-title">src/visor.ts: una interfaz mínima</h2>
+          <hr class="rule">
+          <div class="body-text"><p>El visor vive en su propio módulo, <code>src/visor.ts</code>, y expone una interfaz mínima — el resto de la app no sabe nada de Three.js:</p></div>
+          <div class="code-block compact" style="margin-top:.6em;">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (fragmento)</div>
+            <pre><code><span class="tok-kw">export</span> <span class="tok-kw">interface</span> Visor {
+  <span class="tok-fn">rotarHacia</span>(rotX: number, rotY: number): void;   <span class="tok-com">// rotación objetivo, en radianes</span>
+  <span class="tok-fn">controlPorSensores</span>(activo: boolean): void;      <span class="tok-com">// true: sensores; false: ratón/dedo</span>
+  <span class="tok-fn">rotacionActualGrados</span>(): { x: number; y: number };
+  <span class="tok-fn">destruir</span>(): void;
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="visor" data-section-label="Primero, un visor" data-slide-label="visor.ts: crearVisor">
+          <div class="kicker">El visor · 2.3</div>
+          <h2 class="slide-title">crearVisor y el respaldo sin sensores</h2>
+          <hr class="rule">
+
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (fragmento)</div>
+            <pre><code><span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">crearVisor</span>(contenedor: HTMLElement): Visor {
+  <span class="tok-kw">const</span> escena = <span class="tok-kw">new</span> THREE.<span class="tok-fn">Scene</span>();
+  escena.background = <span class="tok-kw">new</span> THREE.<span class="tok-fn">Color</span>(<span class="tok-num">0x0b1220</span>);
+  <span class="tok-kw">const</span> camara = <span class="tok-kw">new</span> THREE.<span class="tok-fn">PerspectiveCamera</span>(<span class="tok-num">50</span>, <span class="tok-num">1</span>, <span class="tok-num">0.1</span>, <span class="tok-num">100</span>);
+  camara.position.<span class="tok-fn">set</span>(<span class="tok-num">0</span>, <span class="tok-num">0</span>, <span class="tok-num">4</span>);
+  <span class="tok-kw">const</span> renderer = <span class="tok-kw">new</span> THREE.<span class="tok-fn">WebGLRenderer</span>({ antialias: <span class="tok-kw">true</span> });
+  contenedor.<span class="tok-fn">append</span>(renderer.domElement);
+  <span class="tok-com">// ... luces, el cubo de prueba (BoxGeometry + MeshStandardMaterial) ...</span>
+  <span class="tok-kw">const</span> controles = <span class="tok-kw">new</span> <span class="tok-fn">OrbitControls</span>(camara, renderer.domElement);  <span class="tok-com">// respaldo sin sensores</span>
+  <span class="tok-com">// ... bucle con requestAnimationFrame ...</span>
+}</code></pre>
+          </div>
+          <div class="callout" style="margin-top:.8em;"><code>OrbitControls</code> (ratón o dedo) es la <b>mejora progresiva</b> de la Sesión 25 vista desde el otro lado: aquí el control manual es la base, y los sensores el atajo. Un portátil sin sensores sigue pudiendo girar el visor.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="rotacion" data-section-label="De absoluto a relativo" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 03</div>
+            <h2>De ángulos absolutos a rotación relativa</h2>
+            <p>Nadie sostiene el teléfono exactamente a 0°: el modelo no puede copiar el ángulo tal cual.</p>
+            <div class="tb-preview"><span>Referencia</span><span>Calibrar</span><span>Límite de ±90°</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <line x1="60" y1="240" x2="340" y2="240" stroke="#373435" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+              <g transform="rotate(-22 200 170)">
+                <rect x="150" y="80" width="100" height="180" rx="14" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+                <rect x="162" y="98" width="76" height="130" rx="5" fill="#0b1220"/>
+              </g>
+              <path d="M262 82 A 90 90 0 0 1 312 150" fill="none" stroke="#EEB32D" stroke-width="5" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="rotacion" data-section-label="De absoluto a relativo" data-slide-label="Medir relativo a una referencia">
+          <div class="kicker">Rotación relativa · 3.1</div>
+          <h2 class="slide-title">Medir relativo a una referencia</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Si mapeas <code>beta</code> directo a la rotación del cubo, al activar los sensores el modelo salta de golpe a una posición rara. La solución es medir <b>relativo a una referencia</b>: la primera lectura que llega (o la que fije el usuario con "Calibrar") pasa a ser el cero. Dos ajustes más:</p></div>
+          <ul class="clean" style="margin-top:.8em;">
+            <li><b>Conversión:</b> los ángulos llegan en grados; Three.js rota en radianes (<code>grados × π / 180</code>).</li>
+            <li><b>Límite de ±90°:</b> con ángulos de Euler (alpha/beta/gamma), cuando el teléfono se acerca a la vertical (<code>beta</code> cerca de ±90°) los ejes se vuelven inestables — el famoso bloqueo de cardán. Limitar el rango evita los saltos; una solución más robusta usaría cuaterniones, y hoy no la implementamos.</li>
+          </ul>
+        </section>
+
+        <section class="slide" data-section="rotacion" data-section-label="De absoluto a relativo" data-slide-label="sensores.ts: el manejador">
+          <div class="kicker">Rotación relativa · 3.2</div>
+          <h2 class="slide-title">src/sensores.ts: la referencia y el límite</h2>
+          <hr class="rule">
+
+          <div class="code-block compact tight">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sensores.ts (fragmento)</div>
+            <pre><code><span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">iniciarControlOrientacion</span>(
+  onRotacion: (rotX: number, rotY: number) =&gt; void,
+  intervaloMs = <span class="tok-num">33</span>
+): ControlOrientacion {
+  <span class="tok-kw">let</span> referencia: { beta: number; gamma: number } | <span class="tok-kw">null</span> = <span class="tok-kw">null</span>;
+  <span class="tok-kw">let</span> ultimaLectura: { beta: number; gamma: number } | <span class="tok-kw">null</span> = <span class="tok-kw">null</span>;
+  <span class="tok-kw">let</span> ultimoAviso = <span class="tok-num">0</span>;
+
+  <span class="tok-kw">const</span> manejador = (e: DeviceOrientationEvent) =&gt; {
+    <span class="tok-kw">if</span> (e.beta === <span class="tok-kw">null</span> || e.gamma === <span class="tok-kw">null</span>) <span class="tok-kw">return</span>;
+    ultimaLectura = { beta: e.beta, gamma: e.gamma };
+    <span class="tok-kw">if</span> (!referencia) referencia = { ...ultimaLectura };       <span class="tok-com">// la primera lectura = cero</span>
+    <span class="tok-kw">const</span> ahora = performance.<span class="tok-fn">now</span>();
+    <span class="tok-kw">if</span> (ahora - ultimoAviso &lt; intervaloMs) <span class="tok-kw">return</span>;            <span class="tok-com">// ~30 avisos por segundo</span>
+    ultimoAviso = ahora;
+    <span class="tok-kw">const</span> dBeta  = <span class="tok-fn">limitar</span>(e.beta  - referencia.beta,  -<span class="tok-num">90</span>, <span class="tok-num">90</span>);
+    <span class="tok-kw">const</span> dGamma = <span class="tok-fn">limitar</span>(e.gamma - referencia.gamma, -<span class="tok-num">90</span>, <span class="tok-num">90</span>);
+    <span class="tok-fn">onRotacion</span>(dBeta * GRADOS_A_RAD, dGamma * GRADOS_A_RAD);   <span class="tok-com">// beta → eje X, gamma → eje Y</span>
+  };
+</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="rotacion" data-section-label="De absoluto a relativo" data-slide-label="calibrar() y el error">
+          <div class="kicker">Rotación relativa · 3.3</div>
+          <h2 class="slide-title">calibrar(), y un error que apareció al verificar</h2>
+          <hr class="rule">
+
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sensores.ts (continuación)</div>
+            <pre><code>  window.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"deviceorientation"</span>, manejador);
+  <span class="tok-kw">return</span> {
+    <span class="tok-fn">calibrar</span>() {
+      referencia = ultimaLectura ? { ...ultimaLectura } : <span class="tok-kw">null</span>;
+      <span class="tok-fn">onRotacion</span>(<span class="tok-num">0</span>, <span class="tok-num">0</span>);       <span class="tok-com">// vuelve a neutro al instante</span>
+    },
+    <span class="tok-fn">detener</span>() { window.<span class="tok-fn">removeEventListener</span>(<span class="tok-str">"deviceorientation"</span>, manejador); },
+  };
+}</code></pre>
+          </div>
+          <div class="callout win" style="margin-top:.6em;font-size:.88em;"><b>Un error que apareció al verificar, y por qué está arreglado.</b> La primera versión de <code>calibrar()</code> solo cambiaba la referencia, sin avisar al visor. Con un sensor simulado — que solo dispara un evento cuando su valor cambia — el modelo se quedaba en su posición vieja hasta la lectura siguiente. En un teléfono real no se nota (el sensor nunca está del todo quieto), pero un comportamiento que depende de que algo "se mueva solo" es frágil. Ahora <code>calibrar()</code> emite <code>(0, 0)</code> de inmediato.</div>
+        </section>
+
+        <section class="slide" data-section="suavizado" data-section-label="Suavizar el movimiento" data-slide-label="Filtrar el temblor">
+          <div class="kicker">Suavizado · 4.1</div>
+          <h2 class="slide-title">Suavizar: filtrar el temblor</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Los sensores reales tiemblan, aunque tengas el teléfono quieto. Si el cubo copia cada lectura, vibra. El visor, en cambio, no salta a la rotación objetivo: en cada fotograma avanza un 15 % del camino que le falta (interpolación lineal). Es un filtro muy simple, y suficiente para que el movimiento se vea fluido:</p></div>
+          <div class="code-block compact" style="margin-top:.6em;">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (fragmento)</div>
+            <pre><code><span class="tok-kw">function</span> <span class="tok-fn">bucle</span>() {
+  animacion = <span class="tok-fn">requestAnimationFrame</span>(bucle);
+  <span class="tok-kw">if</span> (porSensores) {
+    grupo.rotation.x += (objetivoX - grupo.rotation.x) * <span class="tok-num">0.15</span>;
+    grupo.rotation.y += (objetivoY - grupo.rotation.y) * <span class="tok-num">0.15</span>;
+  }
+  controles.<span class="tok-fn">update</span>();
+  renderer.<span class="tok-fn">render</span>(escena, camara);
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="suavizado" data-section-label="Suavizar el movimiento" data-slide-label="Un 0,15 es un punto de partida">
+          <div class="kicker">Suavizado · 4.2</div>
+          <h2 class="slide-title">Un 0,15 es un punto de partida</h2>
+          <hr class="rule">
+          <div class="callout">Un 0,15 es un punto de partida, no una verdad: más bajo es más suave pero con más retraso; más alto es más reactivo pero tiembla más. Ajustarlo con un teléfono en la mano es la actividad de hoy.</div>
+        </section>
+
+        <section class="slide" data-section="conexion" data-section-label="Conectar en main.ts" data-slide-label="Conectar todo en main.ts">
+          <div class="kicker">Conexión · 5.1</div>
+          <h2 class="slide-title">Conectar todo en main.ts</h2>
+          <hr class="rule">
+          <div class="body-text"><p>El botón "📱 Rotar con el teléfono" sigue el mismo flujo de la Sesión 25: permiso dentro del clic, comprobación de sensores reales, mensaje claro en cada rama, y un segundo clic que apaga.</p></div>
+          <div class="callout" style="margin-top:1em;">La diferencia es que cuando los sensores se activan, <code>visor.controlPorSensores(true)</code> desactiva <code>OrbitControls</code> (dos controles peleando por el mismo modelo se ven fatal) y lo reactiva al apagar.</div>
+        </section>
+
+        <section class="slide" data-section="conexion" data-section-label="Conectar en main.ts" data-slide-label="main.ts y los dos mensajes de fallo">
+          <div class="kicker">Conexión · 5.2</div>
+          <h2 class="slide-title">main.ts: dos mensajes de fallo distintos</h2>
+          <hr class="rule">
+
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (fragmento)</div>
+            <pre><code><span class="tok-fn">btnOrientacion</span>.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, <span class="tok-kw">async</span> () =&gt; {
+  <span class="tok-kw">if</span> (control) { <span class="tok-fn">apagarSensores</span>(); <span class="tok-kw">return</span>; }          <span class="tok-com">// segundo clic: volver al control manual</span>
+  <span class="tok-kw">const</span> permiso = <span class="tok-kw">await</span> <span class="tok-fn">pedirPermisoOrientacion</span>();    <span class="tok-com">// en iOS, dentro del clic</span>
+  <span class="tok-kw">if</span> (permiso === <span class="tok-str">"denied"</span>) {
+    <span class="tok-fn">avisarVisor</span>(<span class="tok-str">"Denegaste el acceso a los sensores. Sigue disponible el control con ratón o dedo."</span>);
+    <span class="tok-kw">return</span>;
+  }
+  <span class="tok-kw">if</span> (permiso === <span class="tok-str">"no-soportado"</span> || !(<span class="tok-kw">await</span> <span class="tok-fn">hayOrientacionReal</span>())) {
+    <span class="tok-fn">avisarVisor</span>(<span class="tok-str">"Este dispositivo no tiene sensores de orientación. Usa el ratón o el dedo para girar el visor."</span>);
+    <span class="tok-kw">return</span>;
+  }
+  visor.<span class="tok-fn">controlPorSensores</span>(<span class="tok-kw">true</span>);
+  control = <span class="tok-fn">iniciarControlOrientacion</span>((x, y) =&gt; visor.<span class="tok-fn">rotarHacia</span>(x, y));
+  btnCalibrar.disabled = <span class="tok-kw">false</span>;
+});</code></pre>
+          </div>
+          <div class="callout warn" style="margin-top:.6em;font-size:.88em;"><b>Por qué dos mensajes de fallo distintos:</b> "denegaste el acceso" (el usuario eligió no) y "no hay sensores" (el dispositivo no puede) son situaciones distintas, y el usuario necesita saber cuál es para reaccionar.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 06</div>
+            <h2>Verificado contra el build real</h2>
+            <p>Todo se ejecutó contra npm run build + npm run preview, no contra el servidor de desarrollo.</p>
+            <div class="tb-preview"><span>build + preview</span><span>Sensores simulados</span><span>Salida literal</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="90" fill="none" stroke="#1A1A1A" stroke-width="4"/>
+              <path d="M160 160 l25 25 l55 -55" fill="none" stroke="#2e7d32" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="La salida literal">
+          <div class="kicker">Verificación · 6.1</div>
+          <h2 class="slide-title">La salida literal, sin editar</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Chromium con WebGL por software, y sensores simulados vía protocolo de DevTools: una inclinación inicial de 20°, luego 50° (30° más), calibración, y luego 60° (10° más que la nueva referencia). Salida literal:</p></div>
+          <div class="code-block compact" style="margin-top:.2em;">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code><span class="tok-str">$</span> npm run build
+✓ built in 2.08s
+PWA v1.3.0  mode generateSW
+<span class="term-emph">precache 8 entries (506.87 KiB)</span>
+
+<span class="tok-str">$</span> node test_s35.js
+canvas presente: 1 | tam: 608x365
+SIN SENSORES -&gt; Este dispositivo no tiene sensores de orientación. Usa el ratón o el dedo para girar el visor.
+boton: 📱 Sensores: ACTIVOS (toca para apagar) | calibrar habilitado: true
+lectura inicial (referencia = primera lectura): rotación X 0° · Y 0°
+tras inclinar +30°: rotación X 30° · Y 0°
+tras calibrar (posicion actual = neutra): rotación X 10° · Y 0°
+apagado: 📱 Rotar con el teléfono | lectura: ""
+OFFLINE: canvas = 1 | h1 = Atlas 3D de Arquitectura de Software
+errores: []</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="Qué demuestra">
+          <div class="kicker">Verificación · 6.2</div>
+          <h2 class="slide-title">Qué demuestra</h2>
+          <hr class="rule">
+          <div class="callout win"><b>Qué demuestra:</b></div>
+          <ul class="clean" style="margin-top:.8em;">
+            <li>(1) Sin sensores, el visor lo detecta y recomienda ratón o dedo.</li>
+            <li>(2) Con sensores, la referencia es la primera lectura (rotación 0°) y una inclinación de +30° produce exactamente 30°.</li>
+            <li>(3) Tras calibrar, el cero pasa a ser la posición actual y +10° físicos dan 10°.</li>
+            <li>(4) Al apagar, el visor vuelve a neutro y el indicador se limpia.</li>
+            <li>(5) <b>Con la conexión cortada</b>, la página recarga con el visor montado — el Service Worker de la Sesión 34 sigue cumpliendo.</li>
+            <li>(6) Cero errores de página.</li>
+          </ul>
+        </section>
+
+        <section class="slide" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="Un dato de ingeniería, y lo que NO es">
+          <div class="kicker">Verificación · 6.3</div>
+          <h2 class="slide-title">Un dato de ingeniería, y lo que esto NO es</h2>
+          <hr class="rule">
+          <div class="callout"><b>Un dato de ingeniería que apareció gratis:</b> el precaché pasó de 25,40 KiB (Sesión 34) a unos 507 KiB. No es un error: es el peso de Three.js, que por fin se importa de verdad. Es el primer número real del costo de un visor 3D en una PWA — y una razón concreta para vigilar el tamaño del bundle en las próximas sesiones.</div>
+          <div class="callout warn" style="margin-top:1em;"><b>Lo que esta verificación NO es:</b> una prueba con un teléfono real. Los sensores simulados no tienen ruido, y en un teléfono el suavizado de 0,15 y el límite de ±90° se sentirán distinto. Tampoco se probó el permiso de iOS (ver la Sesión 25, sección 2).</div>
+        </section>
+
+        <section class="slide" data-section="telefono" data-section-label="Probar en un teléfono real" data-slide-label="Probar en un teléfono real">
+          <div class="kicker">Teléfono real · 7</div>
+          <h2 class="slide-title">Probar en un teléfono real</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Los sensores solo existen en un teléfono y solo se entregan en contexto seguro.</p></div>
+          <div class="callout warn" style="margin-top:1em;"><b>Ojo:</b> <code>npm run dev</code> servido por la red local (<code>http://192.168.x.x:5173</code>) es HTTP, así que en el teléfono no habrá sensores.</div>
+          <ul class="clean" style="margin-top:1em;">
+            <li>Usa alguno de los caminos de la Sesión 24, sección 9: reenvío de puerto por USB, túnel HTTPS, o publicar en GitHub Pages.</li>
+            <li>Y recuerda que el Service Worker solo existe en el build: para ver lo que ve el usuario, <code>npm run build</code> y <code>npm run preview</code>.</li>
+          </ul>
+        </section>
+
+        <section class="slide" data-section="actividad" data-section-label="Actividad" data-slide-label="Pon a girar tu visor">
+          <div class="kicker">Actividad · 8</div>
+          <h2 class="slide-title">Pon a girar tu visor, y ajústalo con tus propias manos</h2>
+          <hr class="rule">
+          <div class="activity-card">
+            <div class="a-head"><div class="a-num">1</div><h4>Pon a girar tu visor, y ajústalo con tus propias manos</h4></div>
+            <div class="meta-row">INDIVIDUAL · 30 MIN</div>
+            <p>Sobre tu propio proyecto (o el checkpoint de la Sesión 34): agrega <code>visor.ts</code> y <code>sensores.ts</code>, conecta los botones en <code>main.ts</code>, y comprueba con <code>npm run build</code> que compila sin errores de TypeScript.</p>
+            <p style="margin-top:.6em;"><b>Verifica, en este orden:</b> (1) en tu computador, el botón de sensores debe mostrar el mensaje de "no hay sensores" y el cubo debe poder girarse con el ratón; (2) en Chrome, abre DevTools → Sensors → Orientation y cambia beta/gamma: el indicador debe seguir los cambios, y "Calibrar" debe volver el cubo a neutro; (3) <b>si tienes un teléfono</b> y HTTPS, repite la prueba con el movimiento real y prueba otro factor de suavizado (por ejemplo 0,05 y 0,4): describe cómo se siente cada uno.</p>
+            <p style="margin-top:.6em;"><b>Entregable:</b> captura de DevTools con el indicador mostrando una rotación distinta de cero, y — si lo probaste en teléfono — una frase sobre qué factor de suavizado prefieres y por qué. Revisado por el docente antes de salir de clase.</p>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Actualiza tu repositorio">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Actualiza tu repositorio</h2>
+          <hr class="rule">
+
+          <div class="code-block">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code>git add .
+git commit -m <span class="tok-str">"Primer visor 3D del Atlas, controlado por sensores de orientación"</span>
+git push</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen y próxima sesión">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Resumen y próxima sesión</h2>
+          <hr class="rule">
+          <ul class="clean">
+            <li class="fragment">Los permisos, el caso de iOS y la detección de sensores reales ya se estudiaron en la Sesión 25; hoy se aplican en TypeScript, sin repetir la teoría.</li>
+            <li class="fragment">El Atlas 3D no tenía visor: hoy nace uno, con un cubo de prueba explícitamente declarado (el catálogo real no existe todavía), y <code>OrbitControls</code> como respaldo sin sensores.</li>
+            <li class="fragment">La rotación se calcula <b>relativa a una referencia</b> (primera lectura o calibración), convertida a radianes y limitada a ±90° para evitar inestabilidades de ángulos de Euler.</li>
+            <li class="fragment">El modelo avanza un 15 % por fotograma hacia su objetivo, suavizando el temblor del sensor; apagar los sensores devuelve el visor al control manual.</li>
+            <li class="fragment">Verificado contra el build real con sensores simulados: inclinación, calibración, apagado y recarga sin conexión; el precaché creció a unos 507 KiB por el peso de Three.js.</li>
+            <li class="fragment">Pendiente de verificar en hardware real: ruido de sensores, la calibración fina del suavizado y la rama de iOS.</li>
+          </ul>
+          <div class="callout fragment" style="margin-top:1.1em;font-size:1.05em;"><b>Sesión 36: APIs de dispositivo en el proyecto (2/2).</b> La cámara como base para la realidad aumentada de las próximas sesiones. Espejo de la Sesión 24.</div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Referencias</h2>
+          <hr class="rule">
+          <div class="ref-list">
+            <div><b>[1]</b> MDN Web Docs, "DeviceOrientationEvent," developer.mozilla.org.</div>
+            <div><b>[2]</b> Three.js, "OrbitControls" y "WebGLRenderer," threejs.org/docs.</div>
+            <div><b>[3]</b> W3C, "Device Orientation and Motion," w3.org/TR/orientation-event.</div>
+          </div>
+        </section>
+
+        <div class="fragment-hint" id="fragHint">
+          <svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+        </div>
+
+        <div class="floatnav">
+          <button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+          <span class="count" id="slideCount">01 / 26</span>
+          <button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+          <button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>
