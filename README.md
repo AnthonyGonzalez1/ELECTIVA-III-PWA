@@ -22,6 +22,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 18 | Service Workers (2/2): cacheo de rutas | A |
 | 19 | Almacenamiento y caché | A |
 | 20 | Las 5 estrategias de caché (1/2) | A |
+| 21 | Las 5 estrategias de caché (2/2) | A |
 
 ## Proyectos
 
