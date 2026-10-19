@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 33 · IndexedDB en el proyecto · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  .warn-box{border:1px solid #e0a800; background:#fff8e1; border-radius:10px; padding:1em 1.2em; margin:1em 0; font-size:.92em;}
+  .warn-box b{color:#9a6b00;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} .db-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 7 de 18</div>
+    <h1>IndexedDB en el proyecto</h1>
+    <div class="lead">Guardar el progreso y las preferencias del usuario del Atlas 3D de forma estructurada y consultable — favoritos, últimos modelos vistos, y una nota de estudio personal por modelo, cifrada con la misma clave derivada por contraseña de la Sesión 22.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Diseñar</b> el esquema de IndexedDB del Atlas 3D: object store, índices, y su justificación según cómo se consulta cada dato.</span></li>
+      <li><span class="chk">✓</span><span><b>Aplicar</b> CRUD y consultas con índice/cursor al progreso real del usuario: modelos vistos, favoritos, última visita.</span></li>
+      <li><span class="chk">✓</span><span><b>Reconocer</b> que el mismo patrón de cifrado con clave derivada de la Sesión 22 aplica aquí, para el único campo del Atlas 3D que es genuinamente privado: una nota de estudio personal.</span></li>
+      <li><span class="chk">✓</span><span><b>Verificar</b> en DevTools → Application → IndexedDB el esquema y los datos reales del Atlas 3D.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion32.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 32.</b> El Atlas 3D con las 5 estrategias de caché ya enrutadas por tipo de recurso. Hoy no tocamos el caché — agregamos almacenamiento estructurado aparte, con IndexedDB.</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Esto ya lo viste a fondo en la Sesión 22</h2>
+    <div class="body-text"><p>Qué es IndexedDB, cómo se abre y versiona una base de datos, las operaciones CRUD, los cursores, y cómo derivar una clave real con PBKDF2 para cifrar campos sensibles con AES-GCM, ya lo estudiaste con calma en la <a href="../../Sub-bloque%20A%20-%20Fundamentos%20PWA/Sesion%2022%20-%20IndexedDB%20y%20Web%20Crypto%20API/guia.html">Sesión 22</a>, sobre el Gestor de tareas. No repetimos nada de esa teoría aquí: si el porqué de <code>onupgradeneeded</code>, un índice, un cursor, o <code>deriveKey()</code> no te suena, vuelve primero a esa guía.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Lo que sí toca hoy es distinto: diseñar el esquema real que el Atlas 3D necesita, y aplicarlo — con las mismas funciones de la Sesión 22, sin reinventarlas.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Qué necesita guardar el Atlas 3D, y por qué cada pieza va donde va</h2>
+    <div class="body-text"><p>El Atlas 3D es, hasta hoy, un catálogo que el usuario navega — sin cuenta de usuario ni servidor detrás. Lo que sí tiene sentido guardar localmente, por usuario y por dispositivo, es su <b>progreso</b>: qué modelos ya vio, cuáles marcó como favoritos, y una nota de estudio personal por modelo. Ninguno de esos tres datos es un archivo — son registros estructurados que se consultan por distintos criterios, exactamente el caso de uso para el que existe IndexedDB y no la Cache Storage API de las Sesiones 27-32.</p></div>
+    <div class="code-block" style="margin-top:1em;">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>db.js</div>
+      <pre><code>function abrirBaseDeDatos() {
+  return new Promise((resolve, reject) => {
+    const peticion = indexedDB.open('atlas3d-progreso-db', 1);
+
+    peticion.onupgradeneeded = event => {
+      const db = event.target.result;
+      const store = db.createObjectStore('progreso', { keyPath: 'modeloId' });
+      store.createIndex('porFavorito', 'favorito', { unique: false });
+      store.createIndex('porUltimaVisita', 'ultimaVisita', { unique: false });
+    };
+
+    peticion.onsuccess = event => resolve(event.target.result);
+    peticion.onerror = event => reject(event.target.error);
+  });
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>La clave del store es directamente <code>modeloId</code> (sin <code>autoIncrement</code>, a diferencia del Gestor de tareas): un registro de progreso siempre pertenece a un modelo concreto del catálogo, así que su propio identificador ya es la clave natural. El índice <code>porFavorito</code> permite pintar la sección "Tus favoritos" sin recorrer todo el store; <code>porUltimaVisita</code> permite un "Continuar viendo" ordenado por lo más reciente.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>CRUD y consultas sobre el progreso real</h2>
+    <div class="body-text"><p>Las mismas funciones de envoltura de la Sesión 22 — <code>agregarTarea()</code>, <code>obtenerTarea()</code>, cursores con índice — se reescriben aquí con los nombres reales del Atlas 3D, sin ningún cambio de fondo en cómo funcionan:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>db.js</div>
+      <pre><code>function marcarModeloVisto(db, modeloId) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('progreso', 'readwrite');
+    const store = tx.objectStore('progreso');
+    const peticion = store.get(modeloId);
+
+    peticion.onsuccess = () => {
+      const registro = peticion.result || { modeloId, favorito: false, notaCifrada: null, notaIv: null };
+      registro.ultimaVisita = Date.now();
+      const escritura = store.put(registro);  // put(): crea o actualiza, nunca falla por clave repetida
+      escritura.onsuccess = () => resolve(registro);
+      escritura.onerror = () => reject(escritura.error);
+    };
+    peticion.onerror = () => reject(peticion.error);
+  });
+}
+
+function alternarFavorito(db, modeloId) {
+  return new Promise((resolve, reject) => {
+    const tx = db.transaction('progreso', 'readwrite');
+    const store = tx.objectStore('progreso');
+    const peticion = store.get(modeloId);
+
+    peticion.onsuccess = () => {
+      const registro = peticion.result || { modeloId, favorito: false, ultimaVisita: null, notaCifrada: null, notaIv: null };
+      registro.favorito = !registro.favorito;
+      const escritura = store.put(registro);
+      escritura.onsuccess = () => resolve(registro.favorito);
+      escritura.onerror = () => reject(escritura.error);
+    };
+  });
+}
+
+function obtenerFavoritos(db) {
+  return new Promise((resolve) => {
+    const resultado = [];
+    const indice = db.transaction('progreso', 'readonly').objectStore('progreso').index('porFavorito');
+    const cursor = indice.openCursor(IDBKeyRange.only(true));
+
+    cursor.onsuccess = event => {
+      const c = event.target.result;
+      if (c) { resultado.push(c.value); c.continue(); }
+      else resolve(resultado);
+    };
+  });
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p><code>marcarModeloVisto()</code> usa <code>put()</code> deliberadamente, no <code>add()</code>: la primera vez que se visita un modelo crea el registro, y cada visita siguiente solo actualiza <code>ultimaVisita</code> — con <code>add()</code>, la segunda visita fallaría por clave repetida. <code>obtenerFavoritos()</code> es exactamente el mismo patrón de cursor-con-índice de la Sesión 22, aplicado al índice <code>porFavorito</code> en vez de <code>porPrioridad</code>.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>La nota de estudio: el único campo que sí vale la pena cifrar</h2>
+    <div class="body-text"><p>De los tres datos que guarda el Atlas 3D, dos son inofensivos si alguien más los ve (qué modelos visitaste, cuáles marcaste favoritos). El tercero — una nota de estudio personal por modelo, que el usuario escribe para sí mismo mientras repasa — sí es un campo privado en el mismo sentido que la "notaPrivada" del Gestor de tareas en la Sesión 22. Se cifra con exactamente la misma clave derivada por contraseña de esa sesión, reutilizando <code>cifrarTexto()</code> y <code>descifrarTexto()</code> sin cambiarles una línea:</p></div>
+    <div class="code-block" style="margin-top:1em;">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>db.js</div>
+      <pre><code>async function guardarNotaDeEstudio(db, clave, modeloId, texto) {
+  const { cifrado, iv } = await cifrarTexto(clave, texto);  // función de la Sesión 22, sin cambios
+  const tx = db.transaction('progreso', 'readwrite');
+  const store = tx.objectStore('progreso');
+  const registro = (await new Promise(r => { store.get(modeloId).onsuccess = e => r(e.target.result); }))
+    || { modeloId, favorito: false, ultimaVisita: null };
+  registro.notaCifrada = cifrado;
+  registro.notaIv = iv;
+  return new Promise((resolve, reject) => {
+    const escritura = store.put(registro);
+    escritura.onsuccess = () => resolve();
+    escritura.onerror = () => reject(escritura.error);
+  });
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>No se reinventa ningún algoritmo ni se deriva una segunda clave: es la misma clave, la misma sal, y las mismas funciones <code>cifrarTexto()</code>/<code>descifrarTexto()</code> de la Sesión 22, aplicadas a un campo distinto. Ese es exactamente el punto de haber aprendido el patrón por separado de cualquier proyecto: se reutiliza tal cual, sin volver a resolver el problema criptográfico.</p></div>
+    <div class="body-text" style="margin-top:.8em;"><p><b>Para verificarlo:</b> DevTools → Application → IndexedDB → <code>atlas3d-progreso-db</code> → <code>progreso</code>. Cada registro debe mostrar <code>favorito</code> y <code>ultimaVisita</code> en texto plano y legible, y <code>notaCifrada</code> como un <code>ArrayBuffer</code> de bytes — nunca el texto de la nota.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>Actividad</h2>
+
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>Implementa el progreso del Atlas 3D</h4></div>
+      <div class="meta-row">INDIVIDUAL · 25 MIN</div>
+      <p>Sobre tu propio proyecto (el checkpoint de la Sesión 32, o tu propio avance si ya lo tienes): agrega <code>db.js</code> con <code>abrirBaseDeDatos()</code>, <code>marcarModeloVisto()</code>, <code>alternarFavorito()</code> y <code>obtenerFavoritos()</code> de la sección 3. Si tu catálogo del Atlas 3D todavía no tiene modelos reales, usa dos o tres IDs de prueba (por ejemplo <code>'modelo-demo-1'</code>, <code>'modelo-demo-2'</code>) para probar el flujo completo.</p>
+      <p style="margin-top:.8em;"><b>Opcional (profundiza):</b> agrega <code>guardarNotaDeEstudio()</code> de la sección 4, reutilizando <code>cifrarTexto()</code>/<code>descifrarTexto()</code> de tu propia Sesión 22.</p>
+      <p style="margin-top:.8em;"><b>Verifica:</b> DevTools → Application → IndexedDB debe mostrar <code>atlas3d-progreso-db</code> con al menos dos registros, uno marcado favorito.</p>
+      <p style="margin-top:.8em;"><b>Si te quedas atrás:</b> el checkpoint de Recursos (<code>pwa-ar-objetos3d-sesion32.zip</code>) es el punto de partida correcto de hoy — cotéjalo contra tu propio código para encontrar la diferencia, en vez de reemplazar tu proyecto por el checkpoint.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> proyecto corriendo localmente con el progreso guardándose en IndexedDB, revisado por el docente antes de salir de clase.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="body-text"><p>Como en cada sesión del Sub-bloque B, cierra hoy subiendo el cambio a tu propio repositorio en GitHub:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>git add .
+git commit -m "IndexedDB: progreso, favoritos y nota de estudio cifrada del Atlas 3D"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>IndexedDB, sus operaciones CRUD, los cursores y la derivación de claves con PBKDF2 se estudiaron a fondo en la Sesión 22 — hoy solo se aplican al Atlas 3D, sin repetir la teoría.</li>
+      <li>El esquema real del Atlas 3D: un store <code>progreso</code> con clave <code>modeloId</code>, e índices por <code>favorito</code> y por <code>ultimaVisita</code> — cada uno justificado por cómo se va a consultar.</li>
+      <li><code>put()</code>, no <code>add()</code>, es la operación correcta para "crear o actualizar el progreso de este modelo", porque una misma clave se escribe muchas veces.</li>
+      <li>De todo lo que guarda el Atlas 3D, solo la nota de estudio personal justifica cifrarse — se reutiliza, sin cambios, la clave y las funciones de cifrado de la Sesión 22.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 34: Workbox en el proyecto.</b> Espejo de la Sesión 23 — migrar el Service Worker manual a Workbox, con rutas y estrategias por tipo de recurso. Aquí por fin se resuelve la limitación de offline pendiente desde la Sesión 29.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> MDN web docs, "IndexedDB API," MDN Web Docs.</div>
+      <div><b>[2]</b> Mozilla MDN, "Web Crypto API," MDN Web Docs.</div>
+      <div><b>[3]</b> S. Chacon, B. Straub, <i>Pro Git</i>, 2nd ed., Apress, 2014 — disponible en git-scm.com/book.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 7 de 18</span>
+  </div>
+</div>
+</body>
+</html>

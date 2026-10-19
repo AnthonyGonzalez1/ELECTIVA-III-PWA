@@ -1,0 +1,35 @@
+Atlas 3D de Arquitectura de Software — checkpoint al cierre de la Sesión 32
+Electiva - PWA · UPTC (Sub-bloque B)
+
+Qué es esto
+-----------
+El Atlas 3D con las 5 estrategias de caché completas y enrutadas por
+tipo de recurso (Sesión 32, espejo de la Sesión 21): Cache First para
+/iconos/, Network First preparado para un futuro /api/ del catálogo de
+modelos, y Stale-While-Revalidate para el resto del shell. Recordatorio
+importante (Sesión 29/32): esto no significa que el proyecto funcione
+sin conexión de verdad — esa limitación (rutas de Vite en desarrollo,
+nombre de bundle con hash en producción) sigue abierta hasta Workbox en
+la Sesión 34. Es el punto de partida de la Sesión 33 (IndexedDB en el
+proyecto) — el caché no cambia en esa sesión, lo que se agrega es
+almacenamiento estructurado aparte, con IndexedDB. No lo reemplaces,
+cotéjalo contra tu propio proyecto si te quedaste atrás.
+
+Cómo abrirlo
+------------
+  npm install
+  npm run dev
+
+Abre la URL que Vite imprime en la terminal (normalmente
+http://localhost:5173).
+
+Estructura
+----------
+  index.html               documento HTML raíz
+  public/manifest.json      el manifest de la Sesión 27
+  public/sw.js              Service Worker de la Sesión 32 (enrutado)
+  public/iconos/            icon-192.png, icon-512.png, icon-512-maskable.png
+  src/main.ts               punto de entrada + registro del Service Worker
+  src/style.css             estilos base del andamiaje
+
+UPTC · Facultad de Ingeniería · Electiva - PWA

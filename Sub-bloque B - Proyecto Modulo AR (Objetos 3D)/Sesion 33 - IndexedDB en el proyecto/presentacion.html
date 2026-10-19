@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 33 · IndexedDB en el proyecto · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .field-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:.8em; margin:1.1em 0;}
+  .field-card{border:1px solid var(--line); border-radius:10px; padding:.9em 1em; background:#fff;}
+  .field-card.enc{border-color:#3178C6; background:#EAF2FD;}
+  .field-card .fname{display:block; font-family:"Cascadia Code",Consolas,monospace; font-weight:800; font-size:.92em; margin-bottom:.3em;}
+  .field-card .ftag{display:inline-block; font-size:.68em; font-weight:800; letter-spacing:.05em; text-transform:uppercase; padding:.15em .55em; border-radius:20px; margin-bottom:.5em;}
+  .field-card .ftag.plain{background:#F0F0F0; color:#555;}
+  .field-card .ftag.cipher{background:#E9F1FC; color:#1B5FAD; border:1px solid #8FBBEE;}
+  .field-card p{margin:0; font-size:.82em; color:#444; line-height:1.4;}
+  @media (max-width:760px){ .field-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 7 de 18</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+
+        <section class="slide slide--title active" data-section="portada" data-section-label="Portada">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR</div>
+          <h1>IndexedDB en el proyecto</h1>
+          <div class="lead">Sesión 7 de 18 — diseñar y aplicar un esquema real de IndexedDB al Atlas 3D: progreso, favoritos, y una nota de estudio cifrada. Espejo de la Sesión 22.</div>
+          <div class="meta">
+            <div><span>Asignatura</span>Electiva - PWA</div>
+            <div><span>Sesión</span>07 de 18 · Proyecto Módulo AR</div>
+            <div><span>Institución</span>UPTC</div>
+          </div>
+          <div class="title-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+              <rect x="120" y="80" width="160" height="190" rx="10" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <line x1="140" y1="115" x2="260" y2="115" stroke="#1A1A1A" stroke-width="3"/>
+              <line x1="140" y1="150" x2="260" y2="150" stroke="#1A1A1A" stroke-width="3"/>
+              <rect x="140" y="180" width="120" height="55" rx="6" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2.5"/>
+              <circle cx="230" cy="207" r="12" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2"/>
+              <path d="M224 207 l4 5 l9 -10" stroke="#1A1A1A" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+          <div class="title-goldbar"></div>
+        </section>
+
+        <section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Recap y hoy">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SESIÓN 07</div>
+            <h2>De un catálogo a un catálogo con memoria</h2>
+            <p>Hasta la Sesión 32, el Atlas 3D solo cachea archivos. Hoy le damos almacenamiento estructurado real: qué vio el usuario, qué marcó como favorito, y una nota personal por modelo.</p>
+            <div class="tb-preview"><span>Ya visto en S22</span><span>Esquema real del Atlas 3D</span><span>Un solo campo cifrado</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <line x1="40" y1="270" x2="360" y2="60" stroke="#373435" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+              <circle cx="40" cy="270" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="40" y="274" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S32</text>
+              <circle cx="200" cy="165" r="22" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="200" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A1A">S33</text>
+              <circle cx="360" cy="60" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="360" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S34</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Ya lo viste en la Sesión 22">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Esto ya lo viste a fondo en la Sesión 22</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Qué es IndexedDB, cómo se abre y versiona una base de datos, las operaciones CRUD, los cursores, y cómo derivar una clave real con PBKDF2 para cifrar campos sensibles con AES-GCM, ya lo estudiaste con calma en la Sesión 22, sobre el Gestor de tareas.</p></div>
+          <div class="callout" style="margin-top:1em;"><b>No repetimos nada de esa teoría aquí:</b> si el porqué de <code>onupgradeneeded</code>, un índice, un cursor, o <code>deriveKey()</code> no te suena, vuelve primero a esa guía. Lo que sí toca hoy: diseñar el esquema real que el Atlas 3D necesita, y aplicarlo — con las mismas funciones de la Sesión 22, sin reinventarlas.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="esquema" data-section-label="El esquema del Atlas 3D" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 01</div>
+            <h2>Qué necesita guardar el Atlas 3D, y por qué</h2>
+            <p>Un store <code>progreso</code>, clave <code>modeloId</code>, dos índices — cada uno justificado por cómo se va a consultar.</p>
+            <div class="tb-preview"><span>progreso</span><span>porFavorito</span><span>porUltimaVisita</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="90" y="70" width="220" height="180" rx="10" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <rect x="90" y="70" width="220" height="36" rx="10" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="200" y="94" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1A1A">progreso</text>
+              <line x1="90" y1="140" x2="310" y2="140" stroke="#E4DDC8" stroke-width="2"/>
+              <line x1="90" y1="180" x2="310" y2="180" stroke="#E4DDC8" stroke-width="2"/>
+              <line x1="90" y1="220" x2="310" y2="220" stroke="#E4DDC8" stroke-width="2"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="esquema" data-section-label="El esquema del Atlas 3D" data-slide-label="Qué guarda, y por qué ahí">
+          <div class="kicker">El esquema · 1.1</div>
+          <h2 class="slide-title">Progreso, no archivos</h2>
+          <hr class="rule">
+          <div class="body-text"><p>El Atlas 3D es, hasta hoy, un catálogo que el usuario navega — sin cuenta ni servidor detrás. Lo que sí tiene sentido guardar localmente es su <b>progreso</b>: qué modelos ya vio, cuáles marcó como favoritos, y una nota de estudio personal por modelo.</p></div>
+          <div class="callout" style="margin-top:1em;">Ninguno de esos tres datos es un archivo — son registros estructurados que se consultan por distintos criterios. Exactamente el caso de uso de IndexedDB, no de la Cache Storage API de las Sesiones 27-32.</div>
+        </section>
+
+        <section class="slide" data-section="esquema" data-section-label="El esquema del Atlas 3D" data-slide-label="abrirBaseDeDatos()">
+          <div class="kicker">El esquema · 1.2</div>
+          <h2 class="slide-title">abrirBaseDeDatos(): el store y sus dos índices</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>db.js</div>
+            <pre><code><span class="tok-kw">function</span> <span class="tok-fn">abrirBaseDeDatos</span>() {
+  <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve, reject) <span class="tok-punct">=&gt;</span> {
+    <span class="tok-kw">const</span> peticion <span class="tok-punct">=</span> indexedDB.<span class="tok-fn">open</span>(<span class="tok-str">'atlas3d-progreso-db'</span>, 1);
+
+    peticion.onupgradeneeded <span class="tok-punct">=</span> event <span class="tok-punct">=&gt;</span> {
+      <span class="tok-kw">const</span> db <span class="tok-punct">=</span> event.target.result;
+      <span class="tok-kw">const</span> store <span class="tok-punct">=</span> db.<span class="tok-fn">createObjectStore</span>(<span class="tok-str">'progreso'</span>, { keyPath: <span class="tok-str">'modeloId'</span> });
+      store.<span class="tok-fn">createIndex</span>(<span class="tok-str">'porFavorito'</span>, <span class="tok-str">'favorito'</span>, { unique: <span class="tok-kw">false</span> });
+      store.<span class="tok-fn">createIndex</span>(<span class="tok-str">'porUltimaVisita'</span>, <span class="tok-str">'ultimaVisita'</span>, { unique: <span class="tok-kw">false</span> });
+    };
+
+    peticion.onsuccess <span class="tok-punct">=</span> event <span class="tok-punct">=&gt;</span> <span class="tok-fn">resolve</span>(event.target.result);
+    peticion.onerror <span class="tok-punct">=</span> event <span class="tok-punct">=&gt;</span> <span class="tok-fn">reject</span>(event.target.error);
+  });
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="esquema" data-section-label="El esquema del Atlas 3D" data-slide-label="Por qué esos índices">
+          <div class="kicker">El esquema · 1.3</div>
+          <h2 class="slide-title">Cada pieza, justificada por cómo se consulta</h2>
+          <hr class="rule">
+          <div class="grid-3">
+            <div class="mini-card fragment"><b><code>modeloId</code> como clave</b><span style="font-size:.78em;color:#555;">Sin <code>autoIncrement</code>: un registro de progreso siempre pertenece a un modelo concreto — su propio id ya es la clave natural.</span></div>
+            <div class="mini-card fragment"><b><code>porFavorito</code></b><span style="font-size:.78em;color:#555;">Pinta "Tus favoritos" sin recorrer todo el store.</span></div>
+            <div class="mini-card fragment"><b><code>porUltimaVisita</code></b><span style="font-size:.78em;color:#555;">Permite un "Continuar viendo" ordenado por lo más reciente.</span></div>
+          </div>
+        </section>
+
+        <section class="slide slide--divider" data-section="crud" data-section-label="CRUD sobre el progreso" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 02</div>
+            <h2>CRUD y consultas sobre el progreso real</h2>
+            <p>Las mismas funciones de envoltura de la Sesión 22, con los nombres reales del Atlas 3D.</p>
+            <div class="tb-preview"><span>marcarModeloVisto()</span><span>alternarFavorito()</span><span>obtenerFavoritos()</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="140" cy="160" r="26" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <path d="M166 160 h50" stroke="#373435" stroke-width="4" stroke-linecap="round"/>
+              <path d="M216 160 l60 -60 M216 160 l60 60" stroke="#373435" stroke-width="4" stroke-linecap="round" fill="none"/>
+              <rect x="276" y="70" width="80" height="50" rx="8" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <rect x="276" y="170" width="80" height="50" rx="8" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="316" y="100" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">visto</text>
+              <text x="316" y="200" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">favorito</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="crud" data-section-label="CRUD sobre el progreso" data-slide-label="marcarModeloVisto() y alternarFavorito()">
+          <div class="kicker">CRUD · 2.1</div>
+          <h2 class="slide-title">marcarModeloVisto() y alternarFavorito()</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>db.js</div>
+            <pre><code><span class="tok-kw">function</span> <span class="tok-fn">marcarModeloVisto</span>(db, modeloId) {
+  <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve, reject) <span class="tok-punct">=&gt;</span> {
+    <span class="tok-kw">const</span> tx <span class="tok-punct">=</span> db.<span class="tok-fn">transaction</span>(<span class="tok-str">'progreso'</span>, <span class="tok-str">'readwrite'</span>);
+    <span class="tok-kw">const</span> store <span class="tok-punct">=</span> tx.<span class="tok-fn">objectStore</span>(<span class="tok-str">'progreso'</span>);
+    <span class="tok-kw">const</span> peticion <span class="tok-punct">=</span> store.<span class="tok-fn">get</span>(modeloId);
+
+    peticion.onsuccess <span class="tok-punct">=</span> () <span class="tok-punct">=&gt;</span> {
+      <span class="tok-kw">const</span> registro <span class="tok-punct">=</span> peticion.result <span class="tok-punct">||</span> { modeloId, favorito: <span class="tok-kw">false</span>, notaCifrada: <span class="tok-kw">null</span>, notaIv: <span class="tok-kw">null</span> };
+      registro.ultimaVisita <span class="tok-punct">=</span> Date.<span class="tok-fn">now</span>();
+      <span class="tok-kw">const</span> escritura <span class="tok-punct">=</span> store.<span class="tok-fn">put</span>(registro);  <span class="tok-com">// put(): crea o actualiza, nunca falla por clave repetida</span>
+      escritura.onsuccess <span class="tok-punct">=</span> () <span class="tok-punct">=&gt;</span> <span class="tok-fn">resolve</span>(registro);
+    };
+  });
+}</code></pre>
+          </div>
+          <div class="callout" style="margin-top:.6em;"><code>put()</code>, no <code>add()</code>: la primera visita crea el registro, cada visita siguiente solo actualiza <code>ultimaVisita</code> — con <code>add()</code> la segunda visita fallaría por clave repetida.</div>
+        </section>
+
+        <section class="slide" data-section="crud" data-section-label="CRUD sobre el progreso" data-slide-label="obtenerFavoritos() con cursor">
+          <div class="kicker">CRUD · 2.2</div>
+          <h2 class="slide-title">obtenerFavoritos(): el mismo patrón de cursor-con-índice</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>db.js</div>
+            <pre><code><span class="tok-kw">function</span> <span class="tok-fn">obtenerFavoritos</span>(db) {
+  <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve) <span class="tok-punct">=&gt;</span> {
+    <span class="tok-kw">const</span> resultado <span class="tok-punct">=</span> [];
+    <span class="tok-kw">const</span> indice <span class="tok-punct">=</span> db.<span class="tok-fn">transaction</span>(<span class="tok-str">'progreso'</span>, <span class="tok-str">'readonly'</span>).<span class="tok-fn">objectStore</span>(<span class="tok-str">'progreso'</span>).<span class="tok-fn">index</span>(<span class="tok-str">'porFavorito'</span>);
+    <span class="tok-kw">const</span> cursor <span class="tok-punct">=</span> indice.<span class="tok-fn">openCursor</span>(IDBKeyRange.<span class="tok-fn">only</span>(<span class="tok-kw">true</span>));
+
+    cursor.onsuccess <span class="tok-punct">=</span> event <span class="tok-punct">=&gt;</span> {
+      <span class="tok-kw">const</span> c <span class="tok-punct">=</span> event.target.result;
+      <span class="tok-kw">if</span> (c) { resultado.<span class="tok-fn">push</span>(c.value); c.<span class="tok-fn">continue</span>(); }
+      <span class="tok-kw">else</span> <span class="tok-fn">resolve</span>(resultado);
+    };
+  });
+}</code></pre>
+          </div>
+          <div class="callout" style="margin-top:.6em;">Exactamente el mismo patrón de cursor-con-índice de la Sesión 22, aplicado al índice <code>porFavorito</code> en vez de <code>porPrioridad</code>.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="cifrado" data-section-label="La nota de estudio" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 03</div>
+            <h2>La nota de estudio: el único campo que sí vale la pena cifrar</h2>
+            <p>De tres datos que guarda el Atlas 3D, solo uno es genuinamente privado.</p>
+            <div class="tb-preview"><span>favorito → plano</span><span>ultimaVisita → plano</span><span>notaEstudio → cifrada</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="130" y="90" width="140" height="110" rx="10" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <path d="M155 90 v-24 a45 45 0 0 1 90 0 v24" fill="none" stroke="#1A1A1A" stroke-width="6"/>
+              <circle cx="200" cy="140" r="12" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2"/>
+              <line x1="200" y1="150" x2="200" y2="168" stroke="#1A1A1A" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cifrado" data-section-label="La nota de estudio" data-slide-label="Solo un campo es privado">
+          <div class="kicker">La nota de estudio · 3.1</div>
+          <h2 class="slide-title">De tres campos, solo uno se cifra — y esto es exactamente el punto</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Dos de los tres datos son inofensivos si alguien más los ve: qué modelos visitaste, cuáles marcaste favoritos. El tercero — una nota de estudio personal, que el usuario escribe para sí mismo mientras repasa — sí es privado, en el mismo sentido que la <code>notaPrivada</code> del Gestor de tareas en la Sesión 22.</p></div>
+          <div class="field-grid">
+            <div class="field-card"><span class="ftag plain">Texto plano</span><span class="fname">favorito</span><p>Consultable por el índice <code>porFavorito</code>. No hay nada que perder si alguien más lo ve.</p></div>
+            <div class="field-card"><span class="ftag plain">Texto plano</span><span class="fname">ultimaVisita</span><p>Consultable por el índice <code>porUltimaVisita</code>. Tampoco es privado.</p></div>
+            <div class="field-card enc"><span class="ftag cipher">Cifrada · AES-GCM</span><span class="fname">notaCifrada</span><p>El único campo genuinamente privado — protegido con la clave PBKDF2 y las funciones de la Sesión 22, sin cambios.</p></div>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cifrado" data-section-label="La nota de estudio" data-slide-label="guardarNotaDeEstudio()">
+          <div class="kicker">La nota de estudio · 3.2</div>
+          <h2 class="slide-title">guardarNotaDeEstudio(): la misma clave, las mismas funciones</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>db.js</div>
+            <pre><code><span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">guardarNotaDeEstudio</span>(db, clave, modeloId, texto) {
+  <span class="tok-kw">const</span> { cifrado, iv } <span class="tok-punct">=</span> <span class="tok-kw">await</span> <span class="tok-fn">cifrarTexto</span>(clave, texto);  <span class="tok-com">// función de la Sesión 22, sin cambios</span>
+  <span class="tok-kw">const</span> tx <span class="tok-punct">=</span> db.<span class="tok-fn">transaction</span>(<span class="tok-str">'progreso'</span>, <span class="tok-str">'readwrite'</span>);
+  <span class="tok-kw">const</span> store <span class="tok-punct">=</span> tx.<span class="tok-fn">objectStore</span>(<span class="tok-str">'progreso'</span>);
+  <span class="tok-kw">const</span> registro <span class="tok-punct">=</span> (<span class="tok-kw">await</span> <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>(r <span class="tok-punct">=&gt;</span> { store.<span class="tok-fn">get</span>(modeloId).onsuccess <span class="tok-punct">=</span> e <span class="tok-punct">=&gt;</span> r(e.target.result); }))
+    <span class="tok-punct">||</span> { modeloId, favorito: <span class="tok-kw">false</span>, ultimaVisita: <span class="tok-kw">null</span> };
+  registro.notaCifrada <span class="tok-punct">=</span> cifrado;
+  registro.notaIv <span class="tok-punct">=</span> iv;
+  <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve, reject) <span class="tok-punct">=&gt;</span> { <span class="tok-kw">const</span> escritura <span class="tok-punct">=</span> store.<span class="tok-fn">put</span>(registro); escritura.onsuccess <span class="tok-punct">=</span> () <span class="tok-punct">=&gt;</span> <span class="tok-fn">resolve</span>(); });
+}</code></pre>
+          </div>
+          <div class="callout" style="margin-top:.6em;">No se reinventa ningún algoritmo ni se deriva una segunda clave: es la misma clave, la misma sal, y las mismas funciones <code>cifrarTexto()</code>/<code>descifrarTexto()</code> de la Sesión 22, aplicadas a un campo distinto.</div>
+        </section>
+
+        <section class="slide" data-section="cifrado" data-section-label="La nota de estudio" data-slide-label="Verificarlo en DevTools">
+          <div class="kicker">La nota de estudio · 3.3</div>
+          <h2 class="slide-title">Para verificarlo en DevTools</h2>
+          <hr class="rule">
+          <div class="body-text"><p>DevTools → Application → IndexedDB → <code>atlas3d-progreso-db</code> → <code>progreso</code>.</p></div>
+          <div class="grid-2">
+            <div class="activity-card">
+              <span class="honest-label ok">Correcto</span>
+              <h4>favorito y ultimaVisita en texto plano</h4>
+              <p>Deben verse legibles, como cualquier otro campo del registro.</p>
+            </div>
+            <div class="activity-card">
+              <span class="honest-label ok">Correcto</span>
+              <h4>notaCifrada como ArrayBuffer</h4>
+              <p>Bytes ilegibles — nunca el texto de la nota. Si se ve el texto plano ahí, el cifrado no se está aplicando antes de guardar.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide slide--divider" data-section="actividad" data-section-label="Actividad" data-slide-label="Actividad">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 04</div>
+            <h2>Actividad para la clase</h2>
+            <p>Implementa el progreso del Atlas 3D en tu propio proyecto, y verifica en DevTools.</p>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="200" cy="215" rx="130" ry="32" fill="#FFF6DC" stroke="#EEB32D" stroke-width="3"/>
+              <circle cx="200" cy="108" r="26" fill="#373435"/>
+              <rect x="168" y="132" width="64" height="58" rx="22" fill="#4fd1ff"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="actividad" data-section-label="Actividad" data-slide-label="La actividad">
+          <div class="kicker">Actividad</div>
+          <h2 class="slide-title">Implementa el progreso del Atlas 3D</h2>
+          <hr class="rule">
+          <div class="activity-card">
+            <div class="a-head"><div class="a-num">1</div><h4>Sobre tu propio proyecto</h4></div>
+            <div class="meta-row">INDIVIDUAL · 25 MIN</div>
+            <p>Agrega <code>db.js</code> con <code>abrirBaseDeDatos()</code>, <code>marcarModeloVisto()</code>, <code>alternarFavorito()</code> y <code>obtenerFavoritos()</code>. Sin modelos reales todavía, usa dos o tres IDs de prueba.</p>
+            <p style="margin-top:.7em;"><b>Opcional (profundiza):</b> agrega <code>guardarNotaDeEstudio()</code>, reutilizando <code>cifrarTexto()</code>/<code>descifrarTexto()</code> de tu propia Sesión 22.</p>
+          </div>
+          <div class="callout" style="margin-top:1em;"><b>Verifica:</b> DevTools → Application → IndexedDB debe mostrar <code>atlas3d-progreso-db</code> con al menos dos registros, uno marcado favorito.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="cierre" data-section-label="Cierre" data-slide-label="Cierre">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 05</div>
+            <h2>Cierre de la sesión</h2>
+            <p>Tu commit de hoy, el resumen, y hacia dónde vamos en la Sesión 34.</p>
+            <div class="tb-preview"><span>Commit y push</span><span>Resumen</span><span>Próxima sesión</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="120" y="50" width="160" height="220" rx="14" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <rect x="160" y="34" width="80" height="32" rx="8" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <circle cx="150" cy="112" r="10" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2"/>
+              <path d="M144 112 l4 5 l9 -10" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="172" y1="112" x2="250" y2="112" stroke="#373435" stroke-width="4"/>
+              <line x1="305" y1="90" x2="305" y2="250" stroke="#373435" stroke-width="5"/>
+              <path d="M305 90 L305 122 L347 105 Z" fill="#EEB32D" stroke="#1A1A1A" stroke-width="2"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Actualiza tu repositorio">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Actualiza tu repositorio</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Como en cada sesión del Sub-bloque B: sube el cambio de hoy a tu propio repositorio.</p></div>
+          <div class="code-block">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code>git add .
+git commit -m <span class="tok-str">"IndexedDB: progreso, favoritos y nota de estudio cifrada del Atlas 3D"</span>
+git push</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen y próxima sesión">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Resumen y próxima sesión</h2>
+          <hr class="rule">
+          <ul class="clean">
+            <li class="fragment">IndexedDB, sus operaciones CRUD, los cursores y la derivación de claves con PBKDF2 ya se estudiaron a fondo en la Sesión 22 — hoy solo se aplican al Atlas 3D.</li>
+            <li class="fragment">El esquema real: un store <code>progreso</code> con clave <code>modeloId</code>, e índices por <code>favorito</code> y por <code>ultimaVisita</code> — cada uno justificado por cómo se consulta.</li>
+            <li class="fragment"><code>put()</code>, no <code>add()</code>, porque una misma clave se escribe muchas veces al visitar un modelo repetidamente.</li>
+            <li class="fragment">De todo lo que guarda el Atlas 3D, solo la nota de estudio personal justifica cifrarse — se reutiliza, sin cambios, la clave y las funciones de la Sesión 22.</li>
+          </ul>
+          <div class="callout fragment" style="margin-top:1.1em;font-size:1.05em;"><b>Sesión 34: Workbox en el proyecto.</b> Espejo de la Sesión 23 — migrar el Service Worker manual a Workbox. Aquí por fin se resuelve la limitación de offline pendiente desde la Sesión 29.</div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Referencias</h2>
+          <hr class="rule">
+          <div class="ref-list">
+            <div><b>[1]</b> MDN web docs, "IndexedDB API," MDN Web Docs.</div>
+            <div><b>[2]</b> Mozilla MDN, "Web Crypto API," MDN Web Docs.</div>
+            <div><b>[3]</b> S. Chacon, B. Straub, <i>Pro Git</i>, 2nd ed., Apress, 2014.</div>
+          </div>
+        </section>
+
+        <div class="fragment-hint" id="fragHint">
+          <svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+        </div>
+
+        <div class="floatnav">
+          <button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+          <span class="count" id="slideCount">01 / 20</span>
+          <button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+          <button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>

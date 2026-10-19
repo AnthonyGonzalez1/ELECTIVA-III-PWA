@@ -33,6 +33,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 30 | Caché de modelos 3D (1/3) | B |
 | 31 | Caché de modelos 3D (2/3) | B |
 | 32 | Caché de modelos 3D (3/3) | B |
+| 33 | IndexedDB en el proyecto | B |
 
 ## Proyectos
 
