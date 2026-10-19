@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 31 · Caché de modelos 3D (2/3) · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .strategy-head{display:flex; align-items:center; gap:.7em; margin:0 0 .5em;}
+  .strategy-badge{flex:0 0 auto; font-size:.72em; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:.25em .7em; border-radius:20px; border:1px solid var(--gold); background:var(--gold-tint); color:var(--gold-deep);}
+  .strategy-flow{margin:1em 0 .3em;}
+  .step-box em{display:block; font-style:normal; font-size:.72em; color:#888; margin-top:.15em;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 5 de 18</div>
+    <h1>Caché de modelos 3D (2/3)</h1>
+    <div class="lead">Cache Only, Network Only y Cache First, aplicadas por primera vez al Atlas 3D — sobre los assets que el proyecto ya tiene hoy, como ensayo de lo que viene cuando lleguen los modelos 3D pesados.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Aplicar</b> Cache Only, Network Only y Cache First al <code>sw.js</code> real del Atlas 3D.</span></li>
+      <li><span class="chk">✓</span><span><b>Reconocer</b> que la elección de estrategia depende del tipo de recurso, no del proyecto — el mismo criterio de la Sesión 20 sobre el Gestor de tareas.</span></li>
+      <li><span class="chk">✓</span><span><b>Anticipar</b> qué estrategia le tocará a cada tipo de archivo del catálogo 3D cuando los modelos existan de verdad.</span></li>
+      <li><span class="chk">✓</span><span><b>Verificar</b> en DevTools (Network, modo offline) el comportamiento real de Cache First sobre el Atlas 3D.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion30.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 30.</b> El <code>sw.js</code> ya guarda los íconos uno por uno con <code>put()</code> y tiene el caché versionado (<code>atlas3d-v2</code>), pero el manejador de <code>fetch</code> sigue siendo el mismo <code>match()</code> con respaldo a la red — hoy le pones nombre a esa lógica, y la mejoras.</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Esto ya lo viste a fondo en la Sesión 20</h2>
+    <div class="body-text"><p>Qué es cada una de las tres estrategias más simples — <b>Cache Only</b>, <b>Network Only</b> y <b>Cache First</b> — y qué problema resuelve cada una, ya lo estudiaste con calma en la <a href="../../Sub-bloque%20A%20-%20Fundamentos%20PWA/Sesion%2020%20-%20Las%205%20estrategias%20de%20cache%20(1%20de%202)/guia.html">Sesión 20</a>, con las funciones <code>cacheOnly()</code>, <code>networkOnly()</code> y <code>cacheFirst()</code> implementadas y probadas sobre el Gestor de tareas. No repetimos nada de esa teoría aquí: si el porqué de alguna de las tres no te suena, vuelve primero a esa guía.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Lo que sí toca hoy es distinto: <b>aplicar</b> esas mismas tres funciones al <code>sw.js</code> real del Atlas 3D, que hasta la Sesión 30 solo usaba un <code>match()</code> genérico sin ninguna estrategia con nombre.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Todavía no hay modelos 3D reales — por eso se ensaya con los íconos</h2>
+    <div class="body-text"><p>El Atlas 3D, tal como está al cierre de la Sesión 30, sigue sin ningún archivo <code>.glb</code> o <code>.gltf</code>. Lo único que existe para cachear son las tres rutas del shell (<code>'/'</code>, <code>'/index.html'</code>, <code>'/manifest.json'</code>) y los tres íconos del manifest, guardados con <code>put()</code> desde la sesión pasada. Eso alcanza para el ensayo de hoy: los íconos son, exactamente como serán los modelos 3D más adelante, archivos binarios que rara vez cambian una vez publicados — el candidato natural para Cache First.</p></div>
+    <div class="callout">
+      <b>El mapeo que vale la pena recordar:</b> hoy, "recurso inmutable" = ícono PNG. Más adelante en el Sub-bloque B, "recurso inmutable" = archivo <code>.glb</code> de un modelo publicado. La estrategia que le conviene a uno le conviene al otro — por eso practicar sobre los íconos no es una simplificación artificial, es literalmente el mismo tipo de recurso a menor escala.
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>Cache First para los íconos del Atlas 3D</h2>
+    <div class="body-text"><p>Reemplazamos el manejador de <code>fetch</code> genérico por Cache First — la misma función de la Sesión 20, sin ningún cambio:</p></div>
+    <div class="code-block" style="margin-top:1em;">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>public/sw.js (fragmento)</div>
+      <pre><code><span class="tok-kw">function</span> <span class="tok-fn">cacheFirst</span>(peticion) {
+  <span class="tok-kw">return</span> caches.<span class="tok-fn">match</span>(peticion).<span class="tok-fn">then</span>(enCache <span class="tok-punct">=&gt;</span> {
+    <span class="tok-kw">if</span> (enCache) <span class="tok-kw">return</span> enCache;
+    <span class="tok-kw">return</span> <span class="tok-fn">fetch</span>(peticion).<span class="tok-fn">then</span>(respuesta <span class="tok-punct">=&gt;</span> {
+      <span class="tok-kw">const</span> clon <span class="tok-punct">=</span> respuesta.<span class="tok-fn">clone</span>();
+      caches.<span class="tok-fn">open</span>(CACHE_NAME).<span class="tok-fn">then</span>(cache <span class="tok-punct">=&gt;</span> cache.<span class="tok-fn">put</span>(peticion, clon));
+      <span class="tok-kw">return</span> respuesta;
+    });
+  });
+}
+
+self.<span class="tok-fn">addEventListener</span>(<span class="tok-str">'fetch'</span>, event <span class="tok-punct">=&gt;</span> {
+  event.<span class="tok-fn">respondWith</span>(<span class="tok-fn">cacheFirst</span>(event.request));
+});</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>La diferencia con la Sesión 30 es sutil pero real: antes, si un recurso no estaba en caché, se pedía a la red y ya — sin guardarlo. Ahora, Cache First guarda esa respuesta con <code>put()</code> la primera vez que se pide, así que la segunda vez ya no toca la red en absoluto. Para el shell y los íconos actuales no se nota mucho porque ya estaban precacheados en <code>install</code> — pero es exactamente el mecanismo que hará falta cuando un modelo 3D nuevo se pida por primera vez sin haber sido parte del precache inicial.</p></div>
+    <div class="body-text" style="margin-top:.8em;"><p><b>Para verificarlo:</b> F12 → pestaña Network, con el filtro "Service Worker" activado. Tras la primera carga, activa el modo offline (Application → Service Workers → Offline) y recarga: el shell y los íconos siguen apareciendo, servidos desde caché.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>Actividad</h2>
+
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>Aplica Cache First a tu propio Atlas 3D</h4></div>
+      <div class="meta-row">INDIVIDUAL · 20 MIN</div>
+      <p>Sobre tu propio proyecto (el checkpoint de la Sesión 30, o tu propio avance si ya lo tienes): reemplaza el manejador de <code>fetch</code> por la función <code>cacheFirst()</code> de la sección 3. Enrutar varias estrategias distintas según el tipo de recurso —como hizo la Sesión 21 sobre el Gestor de tareas— es el trabajo de la Sesión 32.</p>
+      <p style="margin-top:.8em;"><b>Verifica:</b> DevTools → Network, con modo offline activado tras la primera carga, debe seguir mostrando el shell y los íconos.</p>
+      <p style="margin-top:.8em;"><b>Si te quedas atrás:</b> el checkpoint de Recursos (<code>pwa-ar-objetos3d-sesion30.zip</code>) es el punto de partida correcto de hoy — cotéjalo contra tu propio código para encontrar la diferencia, en vez de reemplazar tu proyecto por el checkpoint.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> proyecto corriendo localmente con <code>cacheFirst()</code> como manejador de fetch, revisado por el docente antes de salir de clase.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="body-text"><p>Como en cada sesión del Sub-bloque B, cierra hoy subiendo el cambio a tu propio repositorio en GitHub:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>git add .
+git commit -m "Cache First para el manejador de fetch del Atlas 3D"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>Cache Only, Network Only y Cache First se estudiaron a fondo en la Sesión 20 — hoy solo se aplican al Atlas 3D, sin repetir la teoría.</li>
+      <li>Los íconos del manifest cumplen hoy el mismo rol que cumplirán los modelos <code>.glb</code>/<code>.gltf</code> más adelante: recursos binarios inmutables, candidatos naturales a Cache First.</li>
+      <li>El manejador de <code>fetch</code> del Atlas 3D pasó de un <code>match()</code> genérico a <code>cacheFirst()</code>, que ahora sí guarda con <code>put()</code> lo que faltaba en caché.</li>
+      <li>Enrutar varias estrategias distintas según el tipo de recurso, como en la Sesión 21, es el trabajo de la Sesión 32.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 32: Caché de modelos 3D (3/3).</b> Espejo de la Sesión 21 — las 5 estrategias combinadas por tipo de recurso, aplicadas al Atlas 3D.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> Google, "Workbox Strategies," web.dev / Google Developers.</div>
+      <div><b>[2]</b> J. Wargo, <i>Learning Progressive Web Apps</i>, Addison-Wesley/Pearson Education, 2020.</div>
+      <div><b>[3]</b> S. Chacon, B. Straub, <i>Pro Git</i>, 2nd ed., Apress, 2014 — disponible en git-scm.com/book.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 5 de 18</span>
+  </div>
+</div>
+</body>
+</html>
