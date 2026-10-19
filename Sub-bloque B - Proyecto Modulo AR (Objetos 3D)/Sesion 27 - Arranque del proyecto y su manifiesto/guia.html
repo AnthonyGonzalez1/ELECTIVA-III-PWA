@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 27 · Arranque del proyecto y su manifiesto · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .recursos-box{border:1px solid var(--gold); border-radius:12px; background:var(--gold-tint); padding:1.1em 1.3em; margin:1.4em 0;}
+  .recursos-box h3{margin:0 0 .3em; font-family:var(--serif); font-size:1.05em; color:var(--ink);}
+  .recursos-box p.rb-lead{margin:0 0 .8em; font-size:.88em; color:#444;}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.5em;}
+  .recursos-list li{display:flex; align-items:center; gap:.7em; font-size:.88em;}
+  .recursos-list a{font-weight:700; color:var(--ink); background:#fff; border:1px solid var(--gold); border-radius:999px; padding:.35em .9em; text-decoration:none; flex:0 0 auto;}
+  .recursos-list a:hover{background:var(--gold);}
+  .recursos-list span.rb-desc{color:#555;}
+  .arbol-folder{background:#1A1A1A; color:#e8e2cf; border-radius:10px; padding:1.1em 1.3em; font-family:"Cascadia Code",Consolas,monospace; font-size:.82em; line-height:1.65; overflow-x:auto; margin:1em 0; white-space:pre;}
+  .arbol-folder .capa{color:#FFCC29; font-weight:700;}
+  .arbol-folder .comentario{color:#9a9a8c;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 1 de 18</div>
+    <h1>Arranque del proyecto y su manifiesto</h1>
+    <div class="lead">Hoy nace tu propio proyecto: el Atlas 3D de Arquitectura de Software. Lo creas desde cero con Vite y TypeScript — no lo clonas — y cierras la sesión con su manifest.json, aplicando exactamente lo que aprendiste en la Sesión 16, pero sobre tu propio código.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Crear</b> un proyecto Vite + TypeScript desde cero con la terminal, entendiendo qué genera cada archivo del andamiaje (scaffolding) — sin clonar un repositorio ya hecho.</span></li>
+      <li><span class="chk">✓</span><span><b>Conocer</b> el mapa de arquitectura por capas (dominio, datos, vista, controlador) hacia el que camina el proyecto, y cómo se relaciona con el patrón MVC — el destino, no el punto de partida de hoy.</span></li>
+      <li><span class="chk">✓</span><span><b>Aplicar</b> lo aprendido en la Sesión 16 para escribir el manifest.json de tu propio proyecto, con sus propios íconos y valores.</span></li>
+      <li><span class="chk">✓</span><span><b>Inicializar</b> el repositorio Git del proyecto y registrar el primer commit.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <p class="rb-lead">Los íconos no se diseñan en clase — descárgalos antes de empezar. El checkpoint es exactamente el resultado esperado al final de hoy — ni más ni menos —, no el proyecto completo del Sub-bloque B.</p>
+      <ul class="recursos-list">
+        <li><a href="recursos/iconos-manifest-sesion27.zip">Descargar .zip</a><span class="rb-desc"><b>Íconos del manifest.</b> icon-192.png, icon-512.png e icon-512-maskable.png, ya listos para el proyecto de hoy.</span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-base.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint de referencia.</b> El andamiaje de Vite + TypeScript, con Three.js instalado y tu manifest.json — el resultado esperado al final de esta sesión, nada más.</span></li>
+      </ul>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Agenda de la sesión · 120 minutos en clase</h3>
+    <table class="uptc">
+      <tr><th>Momento</th><th>Duración</th></tr>
+      <tr><td>Bienvenida: qué es el Módulo AR y por qué corre en paralelo con Sub-bloque A</td><td class="num">15 min</td></tr>
+      <tr><td>Por qué crear el proyecto (y no clonarlo) — scaffolding con Vite (explicación + demo en vivo)</td><td class="num">20 min</td></tr>
+      <tr><td>Arquitectura de carpetas: el mapa de destino, capas + MVC (explicación)</td><td class="num">15 min</td></tr>
+      <tr><td>El manifest.json del proyecto, aplicando la Sesión 16 (demo)</td><td class="num">15 min</td></tr>
+      <tr><td>Actividad 1 · Crea tu proyecto (individual, con apoyo del docente)</td><td class="num">40 min</td></tr>
+      <tr><td>Primer commit de Git y cierre</td><td class="num">15 min</td></tr>
+    </table>
+    <p class="small-note" style="margin-top:.6em;">La Actividad 2 es tarea individual fuera de clase: no está contada en los 120 minutos.</p>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Bienvenida: el proyecto del Sub-bloque B</h2>
+    <div class="body-text"><p>Desde hoy trabajas en paralelo sobre dos frentes: en el Sub-bloque A el docente guía la teoría de PWA en vivo, sesión por sesión; en el Sub-bloque B tú construyes un proyecto real que aplica, ese mismo día, el tema que se acaba de ver en fundamentación. El proyecto se llama <b>Atlas 3D de Arquitectura de Software</b>: un catálogo interactivo en 3D de ocho patrones y arquitecturas de software — Arquitectura en Capas, MVC, Árbol Binario, Cliente-Servidor, Cliente-Caché-Servidor, Microservicios, Publicador-Suscriptor y Repositorio — con soporte de realidad aumentada más adelante en el bloque.</p></div>
+    <div class="callout"><b>El proyecto se enseña a sí mismo:</b> los ocho objetos que vas a poder ver en 3D, al final del Sub-bloque B, van a ser ni más ni menos los mismos patrones que va a usar el código de tu propio proyecto para organizarse. La arquitectura en capas va a ser literalmente la arquitectura de tus carpetas; el árbol binario va a ser literalmente la estructura de datos que guarda el catálogo. No es una coincidencia — es la forma más directa que encontramos de que el contenido y el código se expliquen entre sí. Hoy, sin embargo, arrancamos por la pieza más simple: el proyecto vacío y su manifiesto.</div>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Por qué crear el proyecto (y no clonarlo)</h2>
+    <div class="body-text"><p>Clonar un repositorio ya armado es rápido, pero te deja sin entender qué archivo hace qué. Hoy usamos <code>npm create vite@latest</code>, la herramienta oficial de <i>scaffolding</i> de Vite: genera el andamiaje mínimo de un proyecto (configuración, punto de entrada, estructura de carpetas) y te deja ver, uno por uno, los archivos que aparecen [1].</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>npm create vite@latest pwa-ar-objetos3d -- --template vanilla-ts
+cd pwa-ar-objetos3d
+npm install
+npm install three
+npm install --save-dev @types/three</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>El primer comando pregunta el nombre del proyecto y la plantilla — <code>vanilla-ts</code> significa "sin framework, con TypeScript": exactamente lo que necesitamos, porque la interfaz la construimos con Three.js directamente, no con React ni Angular (esos llegan como comparación al final del Sub-bloque B). <code>npm install three</code> agrega la librería de gráficos 3D — la misma API que en las Sesiones 38-39 se reutiliza para realidad aumentada, porque su bucle de dibujo (<code>renderer.setAnimationLoop</code>) es el mismo que exige WebXR [2].</p></div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>Arquitectura de carpetas: capas + MVC</h2>
+    <div class="body-text"><p>Organizamos <code>src/</code> en cuatro capas, cada una con una única responsabilidad — el mismo patrón <b>Arquitectura en Capas</b> que vas a poder ver en 3D en el propio catálogo [3]:</p></div>
+    <div class="arbol-folder">src/
+├── <span class="capa">dominio/</span>       <span class="comentario">// Modelo — qué es un PatronArquitectura, y el árbol que los guarda</span>
+│   ├── PatronArquitectura.ts
+│   └── ArbolCatalogo.ts
+├── <span class="capa">datos/</span>         <span class="comentario">// Los 8 patrones iniciales (seed data)</span>
+│   └── patrones.ts
+├── <span class="capa">vista/</span>         <span class="comentario">// Vista — la escena 3D, la lista, y un constructor por patrón</span>
+│   ├── escena3d.ts
+│   ├── listaCatalogo.ts
+│   └── constructores/
+└── <span class="capa">controlador/</span>   <span class="comentario">// Controlador — conecta la lista con el Modelo y la Vista</span>
+    └── ControladorVisor.ts</div>
+    <div class="body-text"><p>Esas mismas cuatro capas son, además, el patrón <b>MVC</b>: <code>dominio/</code> + <code>datos/</code> son el <b>Modelo</b>, <code>vista/</code> es la <b>Vista</b>, <code>controlador/</code> es el <b>Controlador</b>. La regla que hace que esto funcione es simple: una capa solo puede importar de la capa que tiene justo debajo (el controlador conoce a la vista y al modelo; la vista y el modelo no se conocen entre sí; nadie conoce al controlador) [3][4].</p></div>
+    <div class="callout"><b>Mapa de destino, no el punto de partida de hoy:</b> ninguna de estas carpetas existe todavía. Al terminar la sesión de hoy tu proyecto solo tiene el andamiaje que genera <code>npm create vite</code> (<code>src/main.ts</code>, <code>src/style.css</code>, etc.) más tu <code>manifest.json</code>. Cada capa aparece, con su primer archivo real, a medida que el Sub-bloque B avanza — nunca antes de que la guía correspondiente la explique y la construyas en clase.</div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>El manifest.json del proyecto</h2>
+    <div class="body-text"><p>Esto ya lo sabes hacer — lo construiste en la Sesión 16. Aplícalo directamente a tu propio proyecto, con sus propios valores:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>public/manifest.json</div>
+      <pre><code>{
+  <span class="tok-prop">"name"</span><span class="tok-punct">:</span> <span class="tok-str">"Atlas 3D de Arquitectura de Software"</span>,
+  <span class="tok-prop">"short_name"</span><span class="tok-punct">:</span> <span class="tok-str">"Atlas 3D"</span>,
+  <span class="tok-prop">"description"</span><span class="tok-punct">:</span> <span class="tok-str">"Catálogo interactivo en 3D de patrones y arquitecturas de software, con soporte de realidad aumentada."</span>,
+  <span class="tok-prop">"start_url"</span><span class="tok-punct">:</span> <span class="tok-str">"/"</span>,
+  <span class="tok-prop">"scope"</span><span class="tok-punct">:</span> <span class="tok-str">"/"</span>,
+  <span class="tok-prop">"display"</span><span class="tok-punct">:</span> <span class="tok-str">"standalone"</span>,
+  <span class="tok-prop">"background_color"</span><span class="tok-punct">:</span> <span class="tok-str">"#0b1220"</span>,
+  <span class="tok-prop">"theme_color"</span><span class="tok-punct">:</span> <span class="tok-str">"#0b1220"</span>,
+  <span class="tok-prop">"icons"</span><span class="tok-punct">:</span> [
+    <span class="tok-punct">{</span> <span class="tok-prop">"src"</span><span class="tok-punct">:</span> <span class="tok-str">"/iconos/icon-192.png"</span>, <span class="tok-prop">"sizes"</span><span class="tok-punct">:</span> <span class="tok-str">"192x192"</span>, <span class="tok-prop">"type"</span><span class="tok-punct">:</span> <span class="tok-str">"image/png"</span> <span class="tok-punct">},</span>
+    <span class="tok-punct">{</span> <span class="tok-prop">"src"</span><span class="tok-punct">:</span> <span class="tok-str">"/iconos/icon-512.png"</span>, <span class="tok-prop">"sizes"</span><span class="tok-punct">:</span> <span class="tok-str">"512x512"</span>, <span class="tok-prop">"type"</span><span class="tok-punct">:</span> <span class="tok-str">"image/png"</span> <span class="tok-punct">},</span>
+    <span class="tok-punct">{</span> <span class="tok-prop">"src"</span><span class="tok-punct">:</span> <span class="tok-str">"/iconos/icon-512-maskable.png"</span>, <span class="tok-prop">"sizes"</span><span class="tok-punct">:</span> <span class="tok-str">"512x512"</span>, <span class="tok-prop">"type"</span><span class="tok-punct">:</span> <span class="tok-str">"image/png"</span>, <span class="tok-prop">"purpose"</span><span class="tok-punct">:</span> <span class="tok-str">"maskable"</span> <span class="tok-punct">}</span>
+  ]
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Nótalo bien: en un proyecto Vite, el manifest y los íconos van en <code>public/</code> — todo lo que pones ahí se sirve tal cual, desde la raíz (<code>/manifest.json</code>, <code>/iconos/...</code>), sin que Vite lo procese. Enlázalo en <code>index.html</code> igual que en el Gestor de tareas: <code>&lt;link rel="manifest" href="/manifest.json"&gt;</code>. Verifícalo en DevTools → Application → Manifest: hoy va a marcar el Service Worker en rojo (llega en la Sesión 28) — el resto debería estar en verde.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>Actividades</h2>
+
+    <div class="activity-card" style="margin-bottom:1em;">
+      <div class="a-head"><div class="a-num">1</div><h4>Crea tu proyecto</h4></div>
+      <div class="meta-row">INDIVIDUAL, CON APOYO DEL DOCENTE · 40 MIN</div>
+      <p>Sigue los pasos de las secciones 2 y 4: crea el proyecto con <code>npm create vite@latest</code>, instala <code>three</code>, y agrega tu <code>manifest.json</code> con los íconos de Recursos. Ejecuta <code>npm run dev</code> y confirma que el proyecto abre sin errores en el navegador. La arquitectura por capas de la sección 3 todavía no se construye — es el mapa de lo que viene.</p>
+      <p style="margin-top:.8em;"><b>Si te quedas atrás:</b> el checkpoint de Recursos (<code>pwa-ar-objetos3d-base.zip</code>) tiene el resultado esperado — cotéjalo contra tu propio código para encontrar la diferencia, en vez de reemplazar tu proyecto por el checkpoint.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> proyecto corriendo localmente, revisado por el docente antes de salir de clase.</p>
+    </div>
+
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">2</div><h4>Primer commit y repositorio en GitHub</h4></div>
+      <div class="meta-row">TAREA INDIVIDUAL · FUERA DE CLASE · 20 MIN</div>
+      <p>Inicializa git en tu proyecto (ya trae un <code>.gitignore</code> con <code>node_modules/</code> y <code>dist/</code> excluidos) y sube tu primer commit a un repositorio propio en GitHub:</p>
+      <div class="code-block" style="margin-top:.6em;">
+        <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+        <pre><code>git init
+git add .
+git commit -m "Arranque del proyecto: Vite + TypeScript, three instalado, manifest.json"
+git branch -M main
+git remote add origin https://github.com/TU-USUARIO/pwa-ar-objetos3d.git
+git push -u origin main</code></pre>
+      </div>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el enlace a tu repositorio en GitHub, con este primer commit visible, subido a la plataforma del curso antes de la próxima sesión.</p>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>El proyecto se crea con <code>npm create vite@latest</code> (plantilla <code>vanilla-ts</code>) — nunca clonado — para entender cada pieza del andamiaje.</li>
+      <li><b>Arquitectura en capas</b> (dominio/datos/vista/controlador) y <b>patrón MVC</b> son el mapa de destino del proyecto — se construyen, capa por capa, a lo largo del Sub-bloque B, nunca antes de que la guía correspondiente las explique.</li>
+      <li>El <code>manifest.json</code> del proyecto aplica exactamente lo aprendido en la Sesión 16, con íconos y valores propios.</li>
+      <li>La sesión cierra con el primer commit de Git y un repositorio propio en GitHub — el punto de partida que cada guía siguiente actualiza.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 28: Service Worker del proyecto (1/2).</b> Espejo de la Sesión 17 — el registro y el ciclo de vida del Service Worker, aplicados al Atlas 3D. Con eso, el manifest de hoy cumple el último criterio de instalabilidad que hoy queda pendiente.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> Vite, "Getting Started," Vite Documentation, vite.dev.</div>
+      <div><b>[2]</b> Three.js, "Manual — Creating a scene," three.js docs, threejs.org.</div>
+      <div><b>[3]</b> M. Fowler, <i>Patterns of Enterprise Application Architecture</i>, Addison-Wesley, 2002.</div>
+      <div><b>[4]</b> E. Gamma, R. Helm, R. Johnson, J. Vlissides, <i>Design Patterns: Elements of Reusable Object-Oriented Software</i>, Addison-Wesley, 1994.</div>
+      <div><b>[5]</b> MDN Web Docs, "Web app manifests," MDN Web Docs.</div>
+      <div><b>[6]</b> S. Chacon, B. Straub, <i>Pro Git</i>, 2nd ed., Apress, 2014 — disponible en git-scm.com/book.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 1 de 18</span>
+  </div>
+</div>
+</body>
+</html>

@@ -27,7 +27,9 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 23 | Workbox y auditoría | A |
 | 24 | APIs de dispositivo (1/2): cámara y ubicación | A |
 | 25 | APIs de dispositivo (2/2): sensores de movimiento | A |
+| 27 | Arranque del proyecto y su manifiesto | B |
 
 ## Proyectos
 
 - `Proyectos/gestor-de-tareas/`: Gestor de Tareas (Sub-bloque A).
+- `Proyectos/pwa-ar-objetos3d/`: Atlas 3D / Módulo AR (Sub-bloque B).

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 27 · Arranque del proyecto y su manifiesto · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .arbol-mini{background:#1A1A1A; color:#e8e2cf; border-radius:10px; padding:1em 1.2em; font-family:"Cascadia Code",Consolas,monospace; font-size:.75em; line-height:1.6; white-space:pre; overflow-x:auto;}
+  .arbol-mini .capa{color:#FFCC29; font-weight:700;}
+  .arbol-mini .comentario{color:#9a9a8c;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 1 de 18</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+
+        <section class="slide slide--title active" data-section="portada" data-section-label="Portada">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR</div>
+          <h1>Arranque del proyecto<br>y su manifiesto</h1>
+          <div class="lead">Sesión 1 de 18 — nace el Atlas 3D de Arquitectura de Software: un proyecto Vite + TypeScript, creado desde cero, que se construye en paralelo con cada sesión del Sub-bloque A.</div>
+          <div class="meta">
+            <div><span>Asignatura</span>Electiva - PWA</div>
+            <div><span>Sesión</span>01 de 18 · Proyecto Módulo AR</div>
+            <div><span>Institución</span>UPTC</div>
+          </div>
+          <div class="title-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+              <circle cx="200" cy="110" r="26" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="3.5"/>
+              <circle cx="140" cy="210" r="20" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3.5"/>
+              <circle cx="260" cy="210" r="20" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3.5"/>
+              <path d="M200 136 L140 190 M200 136 L260 190 M140 210 L260 210" stroke="#373435" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="title-goldbar"></div>
+        </section>
+
+        <section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="El proyecto del Sub-bloque B">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SESIÓN 01</div>
+            <h2>Dos frentes, un mismo día</h2>
+            <p>El Sub-bloque A enseña la teoría en vivo; el Sub-bloque B la aplica ese mismo día, en un proyecto real.</p>
+            <div class="tb-preview"><span>Qué es el Atlas 3D</span><span>Agenda de hoy</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="60" y="70" width="130" height="180" rx="12" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+              <rect x="210" y="70" width="130" height="180" rx="12" fill="#FFF6DC" stroke="#EEB32D" stroke-width="3.5"/>
+              <text x="125" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#1A1A1A">SUB-A</text>
+              <text x="275" y="60" text-anchor="middle" font-size="13" font-weight="700" fill="#1A1A1A">SUB-B</text>
+              <path d="M100 110 h50 M100 130 h50 M100 150 h50" stroke="#373435" stroke-width="4" stroke-linecap="round" opacity=".5"/>
+              <circle cx="275" cy="140" r="22" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="3"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="El Atlas 3D">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Atlas 3D de Arquitectura de Software</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Un catálogo interactivo en 3D de ocho patrones y arquitecturas de software. Cada uno se ve como un modelo 3D construido con formas simples — y el propio proyecto está organizado usando varios de esos mismos patrones.</p></div>
+          <div class="grid-3" style="margin-top:1em;">
+            <div class="mini-card fragment"><b>8 patrones</b><span style="font-size:.78em;color:#555;">Capas, MVC, Árbol Binario, Cliente-Servidor, Cliente-Caché-Servidor, Microservicios, Pub/Sub, Repositorio.</span></div>
+            <div class="mini-card fragment"><b>Se enseña a sí mismo</b><span style="font-size:.78em;color:#555;">El contenido (los patrones) y el código (cómo está armado) son la misma idea, vista dos veces.</span></div>
+            <div class="mini-card fragment"><b>18 sesiones</b><span style="font-size:.78em;color:#555;">Cada una espejo de un tema de fundamentación, aplicado a este mismo proyecto.</span></div>
+          </div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Agenda (120 min)">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Agenda de la sesión</h2>
+          <hr class="rule">
+          <table class="uptc">
+            <tr><th>Momento</th><th>Duración</th></tr>
+            <tr><td>Bienvenida: qué es el Módulo AR</td><td class="num">10 min</td></tr>
+            <tr><td>Por qué crear el proyecto (scaffolding con Vite)</td><td class="num">20 min</td></tr>
+            <tr><td>Arquitectura de carpetas: capas + MVC</td><td class="num">15 min</td></tr>
+            <tr><td>El catálogo como árbol binario</td><td class="num">10 min</td></tr>
+            <tr><td>Caso real: recorrido por el código</td><td class="num">15 min</td></tr>
+            <tr><td>El manifest.json del proyecto</td><td class="num">10 min</td></tr>
+            <tr><td>Actividad 1 · Crea tu proyecto</td><td class="num">30 min</td></tr>
+            <tr><td>Primer commit de Git y cierre</td><td class="num">10 min</td></tr>
+          </table>
+        </section>
+
+        <section class="slide slide--divider" data-section="scaffolding" data-section-label="Scaffolding" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 01</div>
+            <h2>Por qué crear (y no clonar)</h2>
+            <p>npm create vite@latest genera el andamiaje mínimo, archivo por archivo — para entender cada pieza.</p>
+            <div class="tb-preview"><span>vanilla-ts</span><span>+ three</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="90" y="70" width="220" height="180" rx="10" fill="#1A1A1A"/>
+              <text x="110" y="100" font-size="14" font-family="monospace" fill="#FFCC29">$</text>
+              <path d="M130 96 h100" stroke="#e8e2cf" stroke-width="3" stroke-linecap="round"/>
+              <path d="M110 130 h150 M110 150 h120 M110 170 h150 M110 190 h90" stroke="#4fd1ff" stroke-width="3" stroke-linecap="round" opacity=".7"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="scaffolding" data-section-label="Scaffolding" data-slide-label="Los comandos">
+          <div class="kicker">Scaffolding · 1.1</div>
+          <h2 class="slide-title">Cuatro comandos, un proyecto real</h2>
+          <hr class="rule">
+          <div class="code-block">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code>npm create vite@latest pwa-ar-objetos3d -- --template vanilla-ts
+cd pwa-ar-objetos3d
+npm install
+npm install three</code></pre>
+          </div>
+          <div class="callout" style="margin-top:1em;"><b>Dato clave:</b> <code>three</code> es la misma librería, y <code>renderer.setAnimationLoop</code> el mismo bucle de dibujo, que en las Sesiones 38-39 se reutiliza para realidad aumentada con WebXR.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="arquitectura" data-section-label="Arquitectura" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 02</div>
+            <h2>Arquitectura de carpetas: capas + MVC</h2>
+            <p>Cuatro capas con una única responsabilidad cada una — y el mismo patrón MVC visto desde otro ángulo.</p>
+            <div class="tb-preview"><span>dominio</span><span>datos</span><span>vista</span><span>controlador</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="110" y="70" width="180" height="35" rx="6" fill="#ff8a4c" stroke="#1A1A1A" stroke-width="2.5"/>
+              <rect x="110" y="115" width="180" height="35" rx="6" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2.5"/>
+              <rect x="110" y="160" width="180" height="35" rx="6" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2.5"/>
+              <rect x="110" y="205" width="180" height="35" rx="6" fill="#e63eff" stroke="#1A1A1A" stroke-width="2.5"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="arquitectura" data-section-label="Arquitectura" data-slide-label="Las 4 capas">
+          <div class="kicker">Arquitectura · 2.1</div>
+          <h2 class="slide-title">src/, en cuatro capas</h2>
+          <hr class="rule">
+          <div class="arbol-mini">src/
+├── <span class="capa">dominio/</span>       <span class="comentario">// Modelo</span>
+├── <span class="capa">datos/</span>         <span class="comentario">// Los 8 patrones (seed)</span>
+├── <span class="capa">vista/</span>         <span class="comentario">// Vista — escena 3D</span>
+└── <span class="capa">controlador/</span>   <span class="comentario">// Controlador</span></div>
+        </section>
+
+        <section class="slide" data-section="arquitectura" data-section-label="Arquitectura" data-slide-label="Capas = MVC">
+          <div class="kicker">Arquitectura · 2.2</div>
+          <h2 class="slide-title">Las mismas 4 capas son MVC</h2>
+          <hr class="rule">
+          <div class="grid-3">
+            <div class="card fragment"><h3>Modelo</h3><p><code>dominio/</code> + <code>datos/</code></p></div>
+            <div class="card fragment"><h3>Vista</h3><p><code>vista/</code></p></div>
+            <div class="card fragment"><h3>Controlador</h3><p><code>controlador/</code></p></div>
+          </div>
+          <div class="callout" style="margin-top:1em;"><b>Mapa de destino:</b> ninguna de estas capas existe todavía — hoy el proyecto solo tiene el andamiaje de Vite y el manifest. Cada capa llega, con su primer archivo real, a lo largo del Sub-bloque B.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="manifest" data-section-label="Manifest" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 03</div>
+            <h2>El manifest.json del proyecto</h2>
+            <p>Esto ya lo sabes hacer — lo construiste en la Sesión 16. Aplícalo a tu propio proyecto.</p>
+            <div class="tb-preview"><span>public/manifest.json</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="130" fill="#FFF6DC"/>
+              <rect x="140" y="90" width="120" height="160" rx="10" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+              <text x="200" y="140" text-anchor="middle" font-size="22" font-weight="700" fill="#1A1A1A" font-family="monospace">{ }</text>
+              <path d="M160 175 h80 M160 195 h60 M160 215 h80" stroke="#373435" stroke-width="4" stroke-linecap="round" opacity=".6"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="manifest" data-section-label="Manifest" data-slide-label="manifest.json">
+          <div class="kicker">Manifest · 3.1</div>
+          <h2 class="slide-title">El manifest.json del Atlas 3D</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>public/manifest.json</div>
+            <pre><code>{
+  <span class="tok-prop">"name"</span><span class="tok-punct">:</span> <span class="tok-str">"Atlas 3D de Arquitectura de Software"</span>,
+  <span class="tok-prop">"short_name"</span><span class="tok-punct">:</span> <span class="tok-str">"Atlas 3D"</span>,
+  <span class="tok-prop">"display"</span><span class="tok-punct">:</span> <span class="tok-str">"standalone"</span>,
+  <span class="tok-prop">"background_color"</span><span class="tok-punct">:</span> <span class="tok-str">"#0b1220"</span>,
+  <span class="tok-prop">"icons"</span><span class="tok-punct">:</span> [ <span class="tok-com">/* 192, 512, 512 maskable */</span> ]
+}</code></pre>
+          </div>
+          <div class="callout" style="margin-top:1em;">En Vite, todo lo que va en <code>public/</code> se sirve tal cual desde la raíz — sin que Vite lo procese.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="actividades" data-section-label="Actividades" data-slide-label="Actividades">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 04</div>
+            <h2>Actividades para la clase</h2>
+            <p>Crea tu proyecto paso a paso, y ciérralo con tu primer commit en tu propio repositorio.</p>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="200" cy="215" rx="130" ry="32" fill="#FFF6DC" stroke="#EEB32D" stroke-width="3"/>
+              <circle cx="200" cy="108" r="26" fill="#373435"/>
+              <rect x="168" y="132" width="64" height="58" rx="22" fill="#4fd1ff"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="actividades" data-section-label="Actividades" data-slide-label="Las 2 actividades">
+          <div class="kicker">Actividades</div>
+          <h2 class="slide-title">Pongamos en práctica lo aprendido</h2>
+          <hr class="rule">
+          <div class="grid-3">
+            <div class="activity-card fragment">
+              <div class="a-head"><div class="a-num">1</div><h4>Crea tu proyecto</h4></div>
+              <div class="meta-row">INDIVIDUAL · 40 MIN</div>
+              <p>Scaffolding, three instalado, manifest.json. Checkpoint disponible si te quedas atrás.</p>
+            </div>
+            <div class="activity-card fragment">
+              <div class="a-head"><div class="a-num">2</div><h4>Primer commit + GitHub</h4></div>
+              <div class="meta-row">TAREA · FUERA DE CLASE</div>
+              <p>git init, primer commit, y tu propio repositorio remoto en GitHub.</p>
+            </div>
+          </div>
+        </section>
+
+        <section class="slide slide--divider" data-section="cierre" data-section-label="Cierre" data-slide-label="Cierre">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 05</div>
+            <h2>Cierre de la sesión</h2>
+            <p>Lo esencial de hoy, y hacia dónde vamos en la Sesión 28.</p>
+            <div class="tb-preview"><span>Resumen</span><span>Próxima sesión</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="120" y="50" width="160" height="220" rx="14" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <rect x="160" y="34" width="80" height="32" rx="8" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="3"/>
+              <circle cx="150" cy="112" r="10" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2"/>
+              <path d="M144 112 l4 5 l9 -10" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="172" y1="112" x2="250" y2="112" stroke="#373435" stroke-width="4"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Resumen de la lección</h2>
+          <hr class="rule">
+          <ul class="clean">
+            <li class="fragment">El proyecto se crea con <code>npm create vite@latest</code> — nunca clonado.</li>
+            <li class="fragment"><b>Arquitectura en capas</b> y <b>MVC</b> son el mapa de destino — se construyen a lo largo del Sub-bloque B, no hoy.</li>
+            <li class="fragment">El <code>manifest.json</code> aplica exactamente lo aprendido en la Sesión 16.</li>
+            <li class="fragment">Cierre: primer commit de Git y repositorio propio en GitHub.</li>
+          </ul>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Próxima sesión">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Próxima sesión</h2>
+          <hr class="rule">
+          <div class="callout" style="font-size:1.05em;"><b>Sesión 28: Service Worker del proyecto (1/2).</b> Espejo de la Sesión 17 — registro y ciclo de vida, aplicados al Atlas 3D. Con eso, el manifest de hoy cumple el último criterio de instalabilidad.</div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Referencias</h2>
+          <hr class="rule">
+          <div class="ref-list">
+            <div><b>[1]</b> Vite, "Getting Started," Vite Documentation, vite.dev.</div>
+            <div><b>[2]</b> Three.js, "Manual — Creating a scene," three.js docs, threejs.org.</div>
+            <div><b>[3]</b> M. Fowler, <i>Patterns of Enterprise Application Architecture</i>, Addison-Wesley, 2002.</div>
+            <div><b>[4]</b> E. Gamma, R. Helm, R. Johnson, J. Vlissides, <i>Design Patterns</i>, Addison-Wesley, 1994.</div>
+            <div><b>[5]</b> MDN Web Docs, "Web app manifests," MDN Web Docs.</div>
+            <div><b>[6]</b> S. Chacon, B. Straub, <i>Pro Git</i>, 2nd ed., Apress, 2014.</div>
+          </div>
+        </section>
+
+        <div class="fragment-hint" id="fragHint">
+          <svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+        </div>
+
+        <div class="floatnav">
+          <button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+          <span class="count" id="slideCount">01 / 22</span>
+          <button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+          <button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>
