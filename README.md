@@ -17,6 +17,8 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | Sesión | Tema | Sub-bloque |
 |---|---|---|
 | 15 | ¿Qué es una PWA? | A |
+| 16 | El Manifiesto de aplicación | A |
 
 ## Proyectos
 
+- `Proyectos/gestor-de-tareas/`: Gestor de Tareas (Sub-bloque A).
