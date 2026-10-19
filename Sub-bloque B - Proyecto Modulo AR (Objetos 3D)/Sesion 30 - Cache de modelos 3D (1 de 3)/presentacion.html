@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 30 · Caché de modelos 3D (1/3) · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .op-grid-mini{display:grid; grid-template-columns:repeat(2,1fr); gap:.7em; margin-top:.6em;}
+  .op-card-mini{border:1px solid var(--line); border-radius:10px; padding:.7em .85em;}
+  .op-card-mini .op-name{display:inline-block; font-size:.72em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .55em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.3em;}
+  .op-card-mini p{margin:0; font-size:.76em; color:#444; line-height:1.35;}
+  @media (max-width:900px){ .op-grid-mini{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 4 de 18</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+
+        <section class="slide slide--title active" data-section="portada" data-section-label="Portada">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR</div>
+          <h1>Caché de modelos 3D<br>(1/3)</h1>
+          <div class="lead">Sesión 4 de 18 — la interfaz Cache completa (put, open, keys, delete y versionado), aplicada por fin al Atlas 3D. Espejo de la Sesión 19.</div>
+          <div class="meta">
+            <div><span>Asignatura</span>Electiva - PWA</div>
+            <div><span>Sesión</span>04 de 18 · Proyecto Módulo AR</div>
+            <div><span>Institución</span>UPTC</div>
+          </div>
+          <div class="title-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+              <rect x="130" y="90" width="140" height="140" rx="14" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <path d="M200 108 v104 M148 134 l52 26 52 -26 M148 186 l52 26 52 -26 M148 134 v52 M252 134 v52" fill="none" stroke="#4fd1ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="200" cy="108" r="9" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2.5"/>
+              <circle cx="148" cy="134" r="9" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2.5"/>
+              <circle cx="252" cy="134" r="9" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2.5"/>
+              <circle cx="148" cy="186" r="9" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2.5"/>
+              <circle cx="252" cy="186" r="9" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2.5"/>
+              <circle cx="200" cy="212" r="9" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2.5"/>
+            </svg>
+          </div>
+          <div class="title-goldbar"></div>
+        </section>
+
+        <section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Recap y hoy">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SESIÓN 04</div>
+            <h2>De caches.match() a la interfaz completa</h2>
+            <p>La Sesión 29 dejó al Atlas 3D leyendo su caché. Hoy aprende a escribirlo a mano y a versionarlo.</p>
+            <div class="tb-preview"><span>Recap S29</span><span>Ya visto en S19</span><span>Sin modelos 3D todavía</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <line x1="40" y1="270" x2="360" y2="60" stroke="#373435" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+              <circle cx="40" cy="270" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="40" y="274" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S29</text>
+              <circle cx="200" cy="165" r="22" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="200" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A1A">S30</text>
+              <circle cx="360" cy="60" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+              <text x="360" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S31</text>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Recap S29 + ya visto en S19">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Lo que ya tenemos, y lo que ya viste</h2>
+          <hr class="rule">
+          <div class="grid-3">
+            <div class="mini-card fragment"><b>Sesión 29</b><span style="font-size:.78em;color:#555;">fetch usa caches.match() con respaldo a la red. install solo usa open() + addAll(). Sin put() manual, sin versionado.</span></div>
+            <div class="mini-card fragment"><b>Sesión 19 (fundamentación)</b><span style="font-size:.78em;color:#555;">Las 8 operaciones de la interfaz Cache, a fondo, sobre el Gestor de tareas. No se repite hoy — repásala si algo no suena.</span></div>
+            <div class="mini-card fragment"><b>Hoy</b><span style="font-size:.78em;color:#555;">Las 4 operaciones que faltaban — put(), keys(), delete() y versionado — aplicadas al sw.js real del Atlas 3D.</span></div>
+          </div>
+          <div class="callout fragment" style="margin-top:1.1em;"><b>Dato clave:</b> hoy no re-explicamos qué hace cada operación — eso está en la guía de la Sesión 19 (enlace directo desde la guía web de hoy). Vamos directo al código real.</div>
+        </section>
+
+        <section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Sin modelos 3D todavía">
+          <div class="kicker">Antes de empezar</div>
+          <h2 class="slide-title">Todavía no hay modelos 3D — y ese es el punto</h2>
+          <hr class="rule">
+          <div class="body-text"><p>El Atlas 3D, al cierre de la Sesión 29, no tiene ningún archivo <code>.glb</code> ni <code>.gltf</code>. <code>src/main.ts</code> sigue mostrando el mensaje de arranque; el Service Worker solo cachea el shell (<code>'/'</code>, <code>'/index.html'</code>, <code>'/manifest.json'</code>).</p></div>
+          <div class="callout" style="margin-top:1em;"><b>Por qué la sesión se llama así entonces:</b> cuando los modelos lleguen, más adelante en el Sub-bloque B, vas a necesitar exactamente esta misma interfaz — <code>put()</code> asset por asset, y versionado para no acumular basura. Hoy la practicamos sobre lo que sí existe: los íconos y el manifest.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="aplicando" data-section-label="Aplicando la interfaz Cache" data-slide-label="Introducción">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 01</div>
+            <h2>Aplicando la interfaz Cache</h2>
+            <p>put() para los íconos, keys()+delete() para versionar — sobre el sw.js real del Atlas 3D.</p>
+            <div class="tb-preview"><span>cache.put()</span><span>caches.keys()</span><span>caches.delete()</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="110" y="90" width="180" height="140" rx="12" fill="#FFF6DC" stroke="#EEB32D" stroke-width="3"/>
+              <rect x="140" y="115" width="45" height="45" rx="6" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2.5"/>
+              <rect x="195" y="115" width="45" height="45" rx="6" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2.5"/>
+              <rect x="140" y="170" width="45" height="45" rx="6" fill="#4fd1ff" stroke="#1A1A1A" stroke-width="2.5"/>
+              <rect x="195" y="170" width="45" height="45" rx="6" fill="#fff" stroke="#1A1A1A" stroke-width="2.5" stroke-dasharray="4 4"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="aplicando" data-section-label="Aplicando la interfaz Cache" data-slide-label="put() manual">
+          <div class="kicker">Aplicando la interfaz Cache · 1.1</div>
+          <h2 class="slide-title">put(): los íconos, uno por uno</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>sw.js (fragmento)</div>
+            <pre><code><span class="tok-kw">const</span> ICON_ASSETS <span class="tok-punct">=</span> [
+  <span class="tok-str">'/iconos/icon-192.png'</span>, <span class="tok-str">'/iconos/icon-512.png'</span>, <span class="tok-str">'/iconos/icon-512-maskable.png'</span>,
+];
+
+<span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">guardarIconos</span>(cache) {
+  <span class="tok-kw">for</span> (<span class="tok-kw">const</span> url <span class="tok-kw">of</span> ICON_ASSETS) {
+    <span class="tok-kw">const</span> respuesta <span class="tok-punct">=</span> <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(url);
+    <span class="tok-kw">await</span> cache.<span class="tok-fn">put</span>(url, respuesta);
+  }
+}</code></pre>
+          </div>
+          <div class="callout" style="margin-top:1em;">Es lo que <code>addAll()</code> hace por dentro, pero un asset a la vez — control total para cuando un modelo 3D falle su descarga.</div>
+        </section>
+
+        <section class="slide" data-section="aplicando" data-section-label="Aplicando la interfaz Cache" data-slide-label="Versionado">
+          <div class="kicker">Aplicando la interfaz Cache · 1.2</div>
+          <h2 class="slide-title">keys() + delete(): versionar el caché</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>sw.js (fragmento)</div>
+            <pre><code><span class="tok-kw">const</span> CACHE_NAME <span class="tok-punct">=</span> <span class="tok-str">'atlas3d-v2'</span>; <span class="tok-com">// antes: 'atlas3d-v1'</span>
+
+self.<span class="tok-fn">addEventListener</span>(<span class="tok-str">'activate'</span>, event <span class="tok-punct">=&gt;</span> {
+  event.<span class="tok-fn">waitUntil</span>(
+    caches.<span class="tok-fn">keys</span>().<span class="tok-fn">then</span>(nombres <span class="tok-punct">=&gt;</span>
+      <span class="tok-fn">Promise</span>.<span class="tok-fn">all</span>(nombres.<span class="tok-fn">filter</span>(n <span class="tok-punct">=&gt;</span> n <span class="tok-punct">!==</span> CACHE_NAME).<span class="tok-fn">map</span>(n <span class="tok-punct">=&gt;</span> caches.<span class="tok-fn">delete</span>(n)))
+    ).<span class="tok-fn">then</span>(() <span class="tok-punct">=&gt;</span> self.clients.<span class="tok-fn">claim</span>())
+  );
+});</code></pre>
+          </div>
+          <div class="callout" style="margin-top:1em;">Sube el nombre del caché y este bloque borra automáticamente cualquier versión que ya no coincida — sin esto, cada actualización futura acumula cachés huérfanos.</div>
+        </section>
+
+        <section class="slide" data-section="aplicando" data-section-label="Aplicando la interfaz Cache" data-slide-label="sw.js completo">
+          <div class="kicker">Aplicando la interfaz Cache · 1.3 — Caso real</div>
+          <h2 class="slide-title">El sw.js completo del Atlas 3D</h2>
+          <hr class="rule">
+          <div class="code-block compact">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>public/sw.js</div>
+            <pre><code><span class="tok-kw">const</span> CACHE_NAME <span class="tok-punct">=</span> <span class="tok-str">'atlas3d-v2'</span>;
+<span class="tok-kw">const</span> CORE_ASSETS <span class="tok-punct">=</span> [<span class="tok-str">'/'</span>, <span class="tok-str">'/index.html'</span>, <span class="tok-str">'/manifest.json'</span>];
+<span class="tok-kw">const</span> ICON_ASSETS <span class="tok-punct">=</span> [<span class="tok-str">'/iconos/icon-192.png'</span>, <span class="tok-str">'/iconos/icon-512.png'</span>, <span class="tok-str">'/iconos/icon-512-maskable.png'</span>];
+
+self.<span class="tok-fn">addEventListener</span>(<span class="tok-str">'install'</span>, event <span class="tok-punct">=&gt;</span> {
+  event.<span class="tok-fn">waitUntil</span>(caches.<span class="tok-fn">open</span>(CACHE_NAME).<span class="tok-fn">then</span>(<span class="tok-kw">async</span> cache <span class="tok-punct">=&gt;</span> {
+    <span class="tok-kw">await</span> cache.<span class="tok-fn">addAll</span>(CORE_ASSETS);
+    <span class="tok-kw">for</span> (<span class="tok-kw">const</span> url <span class="tok-kw">of</span> ICON_ASSETS) { <span class="tok-kw">await</span> cache.<span class="tok-fn">put</span>(url, <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(url)); }
+  }));
+});
+self.<span class="tok-fn">addEventListener</span>(<span class="tok-str">'activate'</span>, event <span class="tok-punct">=&gt;</span> {
+  event.<span class="tok-fn">waitUntil</span>(
+    caches.<span class="tok-fn">keys</span>().<span class="tok-fn">then</span>(n <span class="tok-punct">=&gt;</span> <span class="tok-fn">Promise</span>.<span class="tok-fn">all</span>(n.<span class="tok-fn">filter</span>(x <span class="tok-punct">=&gt;</span> x<span class="tok-punct">!==</span>CACHE_NAME).<span class="tok-fn">map</span>(x <span class="tok-punct">=&gt;</span> caches.<span class="tok-fn">delete</span>(x))))
+      .<span class="tok-fn">then</span>(() <span class="tok-punct">=&gt;</span> self.clients.<span class="tok-fn">claim</span>())
+  );
+});
+self.<span class="tok-fn">addEventListener</span>(<span class="tok-str">'fetch'</span>, event <span class="tok-punct">=&gt;</span> {
+  event.<span class="tok-fn">respondWith</span>(caches.<span class="tok-fn">match</span>(event.request).<span class="tok-fn">then</span>(r <span class="tok-punct">=&gt;</span> r <span class="tok-punct">||</span> <span class="tok-fn">fetch</span>(event.request)));
+});</code></pre>
+          </div>
+          <div class="callout" style="margin-top:.6em;">DevTools → Application → Cache Storage: un único caché, <code>atlas3d-v2</code>, con 6 entradas.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="actividad" data-section-label="Actividad" data-slide-label="Actividad">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 02</div>
+            <h2>Actividad para la clase</h2>
+            <p>Aplica put() y el versionado a tu propio sw.js, y verifícalo en DevTools.</p>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="200" cy="215" rx="130" ry="32" fill="#FFF6DC" stroke="#EEB32D" stroke-width="3"/>
+              <circle cx="200" cy="108" r="26" fill="#373435"/>
+              <rect x="168" y="132" width="64" height="58" rx="22" fill="#4fd1ff"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="actividad" data-section-label="Actividad" data-slide-label="La actividad">
+          <div class="kicker">Actividad</div>
+          <h2 class="slide-title">Aplica put() y el versionado a tu Atlas 3D</h2>
+          <hr class="rule">
+          <div class="activity-card">
+            <div class="a-head"><div class="a-num">1</div><h4>Sobre tu propio proyecto</h4></div>
+            <div class="meta-row">INDIVIDUAL</div>
+            <p>Agrega <code>ICON_ASSETS</code> + <code>put()</code> manual en <code>install</code>, sube <code>CACHE_NAME</code> a <code>'atlas3d-v2'</code>, y agrega <code>activate</code> con <code>caches.keys()</code> + <code>caches.delete()</code>.</p>
+          </div>
+          <div class="callout" style="margin-top:1em;"><b>Verifica:</b> Cache Storage debe mostrar solo <code>atlas3d-v2</code>, con 6 entradas, después de recargar varias veces. <b>Si te quedas atrás:</b> el checkpoint de la Sesión 29 es tu punto de partida — cotéjalo contra tu código.</div>
+        </section>
+
+        <section class="slide slide--divider" data-section="cierre" data-section-label="Cierre" data-slide-label="Cierre">
+          <div class="brand-wedge"><div class="gold-slab"></div></div>
+          <div class="divider-panel">
+            <div class="num">SECCIÓN 03</div>
+            <h2>Cierre de la sesión</h2>
+            <p>Tu commit de hoy, el resumen, y hacia dónde vamos en la Sesión 31.</p>
+            <div class="tb-preview"><span>Commit y push</span><span>Resumen</span><span>Próxima sesión</span></div>
+          </div>
+          <div class="divider-illustration">
+            <svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+              <rect x="120" y="50" width="160" height="220" rx="14" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+              <rect x="160" y="34" width="80" height="32" rx="8" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+              <circle cx="150" cy="112" r="10" fill="#FFCC29" stroke="#1A1A1A" stroke-width="2"/>
+              <path d="M144 112 l4 5 l9 -10" stroke="#1A1A1A" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+              <line x1="172" y1="112" x2="250" y2="112" stroke="#373435" stroke-width="4"/>
+              <circle cx="305" cy="90" r="0" fill="none"/>
+              <line x1="305" y1="90" x2="305" y2="250" stroke="#373435" stroke-width="5"/>
+              <path d="M305 90 L305 122 L347 105 Z" fill="#EEB32D" stroke="#1A1A1A" stroke-width="2"/>
+            </svg>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Actualiza tu repositorio">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Actualiza tu repositorio</h2>
+          <hr class="rule">
+          <div class="body-text"><p>Como en cada sesión del Sub-bloque B: sube el cambio de hoy a tu propio repositorio.</p></div>
+          <div class="code-block">
+            <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+            <pre><code>git add .
+git commit -m <span class="tok-str">"Cache Storage: put() manual para íconos + versionado atlas3d-v2"</span>
+git push</code></pre>
+          </div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen y próxima sesión">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Resumen y próxima sesión</h2>
+          <hr class="rule">
+          <ul class="clean">
+            <li class="fragment">La interfaz Cache completa se estudió a fondo en la Sesión 19 — hoy solo se aplica, sin repetir teoría.</li>
+            <li class="fragment"><code>cache.put()</code> guarda un asset a la vez, con control total — hoy, los tres íconos del manifest.</li>
+            <li class="fragment">Todavía no hay modelos 3D reales: hoy fue un ensayo directo de <code>put()</code> y versionado para cuando lleguen.</li>
+            <li class="fragment">Versionar <code>CACHE_NAME</code> y limpiar con <code>caches.keys()</code> + <code>caches.delete()</code> en <code>activate</code> evita cachés huérfanos.</li>
+          </ul>
+          <div class="callout fragment" style="margin-top:1.1em;font-size:1.05em;"><b>Sesión 31: Caché de modelos 3D (2/3).</b> Espejo de la Sesión 20 — las primeras 3 estrategias de caché (Cache Only, Network Only, Cache First) aplicadas a los modelos 3D del catálogo.</div>
+        </section>
+
+        <section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+          <div class="kicker">Cierre</div>
+          <h2 class="slide-title">Referencias</h2>
+          <hr class="rule">
+          <div class="ref-list">
+            <div><b>[1]</b> MDN web docs, "Cache," Progressive web apps, MDN Web Docs.</div>
+            <div><b>[2]</b> Google, "Cache," web.dev / MDN Web API Reference.</div>
+            <div><b>[3]</b> J. Wargo, <i>Learning Progressive Web Apps</i>, Addison-Wesley/Pearson Education, 2020.</div>
+            <div><b>[4]</b> S. Chacon, B. Straub, <i>Pro Git</i>, 2nd ed., Apress, 2014.</div>
+          </div>
+        </section>
+
+        <div class="fragment-hint" id="fragHint">
+          <svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+        </div>
+
+        <div class="floatnav">
+          <button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+          <span class="count" id="slideCount">01 / 22</span>
+          <button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+          <button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>

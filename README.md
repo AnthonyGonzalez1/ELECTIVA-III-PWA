@@ -30,6 +30,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 27 | Arranque del proyecto y su manifiesto | B |
 | 28 | Service Worker del proyecto (1/2) | B |
 | 29 | Service Worker del proyecto (2/2) | B |
+| 30 | Caché de modelos 3D (1/3) | B |
 
 ## Proyectos
 
