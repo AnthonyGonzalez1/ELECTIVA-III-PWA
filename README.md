@@ -7,8 +7,8 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 
 ## Estructura
 
-- `Sub-bloque A - Fundamentos PWA/`: sesiones 15 a 25.
-- `Sub-bloque B - Proyecto Modulo AR (Objetos 3D)/`: sesiones 27 a 36.
+- `Sub-bloque A - Fundamentos PWA/`: sesiones 15 a 26.
+- `Sub-bloque B - Proyecto Modulo AR (Objetos 3D)/`: sesiones 27 en adelante.
 - Cada sesión incluye `presentacion.html`, `guia.html`, la guía en Word y, si aplica, el guion de clase y la carpeta `recursos/` (zip original + contenido extraído).
 - `Proyectos/`: la versión más reciente de cada proyecto, actualizada sesión a sesión.
 
@@ -27,6 +27,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 23 | Workbox y auditoría | A |
 | 24 | APIs de dispositivo (1/2): cámara y ubicación | A |
 | 25 | APIs de dispositivo (2/2): sensores de movimiento | A |
+| 26 | Notificaciones push y sincronización en segundo plano | A |
 | 27 | Arranque del proyecto y su manifiesto | B |
 | 28 | Service Worker del proyecto (1/2) | B |
 | 29 | Service Worker del proyecto (2/2) | B |
