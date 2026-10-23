@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 37 · Avisos y descargas en segundo plano en el proyecto · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .callout.win{background:#f1f9f1; border-color:#2e7d32; border-left-color:#1b5e20;}
+  .callout.win b{color:#1b5e20;}
+  .term-emph{color:var(--gold); font-weight:700;}
+  .rev-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .rev-card{border-radius:10px; padding:.9em 1em; font-size:.84em; line-height:1.45;}
+  .rev-card.has{background:#fff; border:1px solid var(--line);}
+  .rev-card.null{background:#EAF2FD; border:1px solid #8FBBEE;}
+  .rev-card .tag{display:inline-block; font-size:.68em; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:.15em .55em; border-radius:20px; margin-bottom:.5em;}
+  .rev-card.has .tag{background:#F0F0F0; color:#555;}
+  .rev-card.null .tag{background:#E9F1FC; color:#1B5FAD; border:1px solid #8FBBEE;}
+  .rev-card code{font-size:.92em;}
+  .callout.warn{background:#fff8e1; border-color:#e0a800; border-left-color:#9a6b00;}
+  .callout.warn b{color:#9a6b00;}
+  .term-prompt{color:#6ad06a;}
+  .code-block.wrap code{white-space:pre-wrap; word-break:break-word;}
+  .code-block.tight pre{padding:.4em 1.1em; line-height:1.2;}
+  .code-block.tight code{font-size:.68em;}
+  .two-cards{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .two-cards .activity-card h4 code{font-size:.85em;}
+  .activity-card ol{margin:.5em 0 0; padding-left:1.3em; font-size:.82em; color:#3a3a3a; line-height:1.4;}
+  .activity-card ol li{margin-bottom:.3em;}
+  .activity-card a{color:var(--ink);}
+  .slide.dense{padding-top:1.1em;}
+  .slide.dense h2.slide-title{font-size:1.65em;}
+  .slide.dense .rule{margin:0 0 .45em;} .slide.dense .kicker{margin:0 0 .15em;}
+  .code-block.wrap code{white-space:pre-wrap; word-break:break-word;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 11 de 18</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+<section class="slide slide--title active" data-section="portada" data-section-label="Portada">
+<div class="brand-wedge"><div class="gold-slab"></div></div>
+<div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR · Sesión 11 de 18</div>
+<h1 style="font-size:3.1em; max-width:10.5em;">Avisos y descargas en segundo plano en el proyecto</h1>
+<div class="lead">El Atlas 3D aprende a avisar y a descargar en segundo plano: las fichas de los modelos se guardan para usarse sin conexión, con una barra de progreso y un aviso cuando terminan. Espejo de la Sesión 26 aplicado al proyecto — con una diferencia que importa: aquí el Service Worker pasa por Vite.</div>
+<div class="meta">
+<div><span>Asignatura</span>Electiva - PWA</div>
+<div><span>Sesión</span>11 de 18 · Proyecto Módulo AR</div>
+<div><span>Institución</span>UPTC</div>
+</div>
+<div class="title-illustration">
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+<rect x="135" y="40" width="130" height="240" rx="18" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+<rect x="150" y="62" width="100" height="170" rx="6" fill="#0b1220"/>
+<rect x="160" y="78" width="80" height="34" rx="6" fill="#FFF6DC" stroke="#FFCC29" stroke-width="2"/>
+<line x1="170" y1="90" x2="228" y2="90" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+<line x1="170" y1="100" x2="210" y2="100" stroke="#373435" stroke-width="3" stroke-linecap="round"/>
+<rect x="160" y="196" width="80" height="12" rx="6" fill="#2b2b2b"/>
+<rect x="160" y="196" width="54" height="12" rx="6" fill="#FFCC29"/>
+<path d="M200 128 l0 40 M200 168 l-12 -12 M200 168 l12 -12" fill="none" stroke="#4fd1ff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="200" cy="256" r="9" fill="none" stroke="#1A1A1A" stroke-width="3"/>
+</svg>
+</div>
+<div class="title-goldbar"></div>
+</section>
+
+<section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="El espejo de la Sesión 26">
+<div class="brand-wedge"><div class="gold-slab"></div></div>
+<div class="divider-panel">
+<div class="num">SESIÓN 11</div>
+<h2>Avisar y descargar, sin servidor</h2>
+<p>Es el espejo de la Sesión 26 — pero el Atlas no tiene servidor y su Service Worker pasa por Vite, y eso cambia qué se puede aplicar.</p>
+<div class="tb-preview"><span>Espejo de la S26</span><span>Sin servidor: sin push</span><span>injectManifest</span></div>
+</div>
+<div class="divider-illustration">
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<line x1="40" y1="270" x2="360" y2="60" stroke="#373435" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+<circle cx="40" cy="270" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<text x="40" y="274" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S36</text>
+<circle cx="200" cy="165" r="22" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+<text x="200" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A1A">S37</text>
+<circle cx="360" cy="60" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<text x="360" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S38</text>
+</svg>
+</div>
+</section>
+
+<section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Objetivos y recursos de la sesión">
+<div class="kicker">Antes de empezar</div>
+<h2 class="slide-title">Objetivos de aprendizaje</h2>
+<hr class="rule">
+<ul class="clean">
+<li><b>Reescribir</b> el Service Worker del Atlas con <code>strategies: "injectManifest"</code> en <code>vite-plugin-pwa</code>, sin perder el precaché.</li>
+<li><b>Compartir</b> una misma función de descarga entre el Service Worker y la página, aprovechando que Vite empaqueta ambos.</li>
+<li><b>Implementar</b> una cola de descargas con Background Sync, progreso visible y notificación solo cuando el usuario no está mirando.</li>
+<li><b>Decidir</b> con honestidad qué se puede aplicar de la Sesión 26 a un proyecto sin servidor, y qué no.</li>
+</ul>
+<div class="activity-card" style="margin-top:.9em;">
+<div class="a-head"><div class="a-num">.zip</div><h4>Recursos de la sesión: <a href="recursos/pwa-ar-objetos3d-sesion36.zip">pwa-ar-objetos3d-sesion36.zip</a></h4></div>
+<div class="meta-row">CHECKPOINT · CIERRE DE LA SESIÓN 36</div>
+<p>El Atlas 3D con visor de Three.js (cubo de prueba), sensores de orientación y cámara de fondo, con el Service Worker generado por <code>vite-plugin-pwa</code>. Hoy le agregamos <code>sw.ts</code>, <code>descargas.ts</code> y <code>avisos.ts</code>, y las fichas de <code>public/modelos/</code>.</p>
+</div>
+</section>
+
+<section class="slide" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Ya lo viste en la Sesión 26">
+<div class="kicker">Antes de empezar</div>
+<h2 class="slide-title">Esto ya lo viste a fondo en la Sesión 26</h2>
+<hr class="rule">
+<div class="body-text"><p>Las tres promesas de la Notification API, la Push API y Background Sync, el permiso pedido en contexto, el significado de <code>default/granted/denied</code>, VAPID y el flujo de un push, <code>InjectManifest</code> como idea, la bandeja de salida, el reintento por excepción, la idempotencia y el plan B para Safari y Firefox, se estudiaron a fondo en la <a href="../../Sub-bloque%20A%20-%20Fundamentos%20PWA/Sesion%2026%20-%20Notificaciones%20push%20y%20sincronizacion%20en%20segundo%20plano/guia.html">Sesión 26</a>, sobre el Gestor de Tareas. Aquí no se repiten.</p></div>
+<div class="callout" style="margin-top:1em;">Hoy importa lo que <b>cambia</b> al llevarlo al Atlas 3D. Dos diferencias de fondo: (1) <b>el Atlas no tiene servidor</b>, y (2) <b>el Atlas pasa por Vite</b>, así que su Service Worker se empaqueta como cualquier otro módulo.</div>
+</section>
+
+<section class="slide" data-section="aplica" data-section-label="Qué se aplica y qué no" data-slide-label="Sin servidor no hay push">
+<div class="kicker">Honestidad primero · 2.1</div>
+<h2 class="slide-title">Sin servidor no hay push</h2>
+<hr class="rule">
+<div class="body-text"><p>El título de la sesión dice «push», pero un push exige un servidor que envíe el mensaje, y el Atlas no tiene ninguno: todo su estado vive en el dispositivo.</p></div>
+<div class="dodont" style="margin-top:.8em;">
+<div class="box bad"><div class="lbl">No se hace</div>Fingirlo —por ejemplo, mostrando una notificación «push» que en realidad se dispara desde la propia página— sería engañar.</div>
+<div class="box ok"><div class="lbl">Sí se aplica</div>Lo otro de la Sesión 26: notificaciones <b>locales</b> y Background Sync.</div>
+</div>
+</section>
+
+<section class="slide" data-section="aplica" data-section-label="Qué se aplica y qué no" data-slide-label="Background Sync, al revés">
+<div class="kicker">Honestidad primero · 2.2</div>
+<h2 class="slide-title">Background Sync, con la dirección invertida</h2>
+<hr class="rule">
+<div class="body-text"><p>El Gestor usaba Background Sync para <i>enviar</i> tareas a un servidor, y el Atlas no tiene a dónde enviar. Su equivalente natural es el sentido contrario: <b>descargar</b>.</p></div>
+<table class="uptc" style="margin-top:.6em;">
+<tr><th>Pieza de la Sesión 26</th><th>En el Atlas 3D</th></tr>
+<tr><td>Push (un servidor envía el mensaje)</td><td><b>No se aplica:</b> no hay servidor.</td></tr>
+<tr><td>Notificaciones locales</td><td><b>Se aplican.</b></td></tr>
+<tr><td>Background Sync para <i>enviar</i> tareas</td><td><b>Se aplica, invertido:</b> «Descargar fichas para usar sin conexión».</td></tr>
+</table>
+<div class="callout" style="margin-top:.9em;">La descarga puede quedar pendiente si no hay red y terminarse más tarde. Es el mismo mecanismo (cola persistente + evento <code>sync</code>) con la dirección invertida.</div>
+</section>
+
+<section class="slide" data-section="aplica" data-section-label="Qué se aplica y qué no" data-slide-label="Fichas de texto, no modelos 3D">
+<div class="kicker">Honestidad primero · 2.3</div>
+<h2 class="slide-title">Qué se descarga de verdad</h2>
+<hr class="rule">
+<div class="callout warn"><b>Lo que se descarga son fichas de texto, no modelos 3D.</b> Los archivos de <code>public/modelos/*.json</code> son tres fichas breves (patrón MVC, arquitectura en capas, microservicios) con resumen, componentes, cuándo usarlas y su riesgo principal.</div>
+<div class="body-text" style="margin-top:1em;"><p>El catálogo real de modelos <code>.glb</code> todavía no existe; inventar archivos 3D falsos sería lo contrario de lo que enseñó la Sesión 33. Las fichas son contenido real de estudio, no relleno.</p></div>
+</section>
+
+<section class="slide dense" data-section="inject" data-section-label="De generateSW a injectManifest" data-slide-label="vite.config.ts">
+<div class="kicker">injectManifest · 3.1</div>
+<h2 class="slide-title">Cambiar la estrategia</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>vite.config.ts</div>
+<pre><code>    <span class="tok-fn">VitePWA</span>({
+      <span class="tok-com">// El manifest ya existe a mano desde la Sesión 27 (public/manifest.json,</span>
+      <span class="tok-com">// enlazado en index.html) — aquí solo se gestiona el Service Worker.</span>
+      manifest: <span class="tok-kw">false</span>,
+      registerType: <span class="tok-str">"autoUpdate"</span>,
+      injectRegister: <span class="tok-kw">false</span>, <span class="tok-com">// registramos nosotros mismos en main.ts, con virtual:pwa-register</span>
+
+      <span class="tok-com">// Sesión 37: de generateSW (Workbox escribe el SW) a injectManifest (TÚ</span>
+      <span class="tok-com">// escribes src/sw.ts y el plugin solo le inyecta la lista de precaché).</span>
+      strategies: <span class="tok-str">"injectManifest"</span>,
+      srcDir: <span class="tok-str">"src"</span>,
+      filename: <span class="tok-str">"sw.ts"</span>,
+      injectManifest: {
+        globPatterns: [<span class="tok-str">"**/*.{html,js,css,png,json}"</span>],
+        <span class="tok-com">// Las fichas de modelos NO se precachean: se descargan bajo demanda.</span>
+        <span class="tok-com">// Sin esta línea, el patrón **/*.json las metería en el precaché y</span>
+        <span class="tok-com">// la descarga «voluntaria» no tendría sentido.</span>
+        globIgnores: [<span class="tok-str">"modelos/**"</span>],
+      },
+    }),</code></pre>
+</div>
+
+</section>
+
+<section class="slide" data-section="inject" data-section-label="De generateSW a injectManifest" data-slide-label="Un error silencioso">
+<div class="kicker">injectManifest · 3.2</div>
+<h2 class="slide-title">Un error silencioso que globIgnores evita</h2>
+<hr class="rule">
+<div class="callout warn"><b>Un error silencioso que esta línea evita.</b> El patrón <code>**/*.{html,js,css,png,json}</code> incluye los <code>.json</code>. Sin <code>globIgnores: ["modelos/**"]</code>, las fichas entrarían en el <b>precaché</b>: se descargarían todas con la primera visita y el botón «Descargar» no tendría ningún sentido, porque todo ya estaría descargado. No habría ningún error: simplemente una función que no hace nada.</div>
+<div class="grid-2" style="margin-top:1em;">
+<div class="card"><h3>Con la exclusión</h3><p><b>8 entradas</b> en el precaché (513,93 KiB).</p></div>
+<div class="card"><h3>Sin ella</h3><p><b>11 entradas</b> (515,82 KiB), medido quitando la línea.</p></div>
+</div>
+<div class="body-text" style="margin-top:1em;"><p>Se detecta mirando el número de entradas del precaché al compilar. Y recuerda: el bloque <code>runtimeCaching</code> de <code>generateSW</code> ya no existe; con <code>injectManifest</code> las reglas las escribes tú en <code>sw.ts</code>.</p></div>
+</section>
+
+<section class="slide dense" data-section="inject" data-section-label="De generateSW a injectManifest" data-slide-label="sw.ts: imports y tipos">
+<div class="kicker">injectManifest · 3.3</div>
+<h2 class="slide-title">src/sw.ts: imports normales y tipos</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sw.ts (arranque, 1/2)</div>
+<pre><code><span class="tok-kw">import</span> { precacheAndRoute, cleanupOutdatedCaches } <span class="tok-kw">from</span> <span class="tok-str">"workbox-precaching"</span>;
+<span class="tok-kw">import</span> { registerRoute } <span class="tok-kw">from</span> <span class="tok-str">"workbox-routing"</span>;
+<span class="tok-kw">import</span> { CacheFirst, NetworkFirst } <span class="tok-kw">from</span> <span class="tok-str">"workbox-strategies"</span>;
+<span class="tok-kw">import</span> { ExpirationPlugin } <span class="tok-kw">from</span> <span class="tok-str">"workbox-expiration"</span>;
+<span class="tok-kw">import</span> { clientsClaim } <span class="tok-kw">from</span> <span class="tok-str">"workbox-core"</span>;
+<span class="tok-kw">import</span> { abrirBaseDeDatos } <span class="tok-kw">from</span> <span class="tok-str">"./db"</span>;
+<span class="tok-kw">import</span> { descargarPendientes, ETIQUETA_SYNC } <span class="tok-kw">from</span> <span class="tok-str">"./descargas"</span>;
+
+<span class="tok-kw">declare</span> <span class="tok-kw">const</span> self: ServiceWorkerGlobalScope;
+
+<span class="tok-com">// Background Sync no está en los tipos estándar de TypeScript: se declara lo mínimo que usamos.</span>
+<span class="tok-kw">interface</span> SyncEvent <span class="tok-kw">extends</span> ExtendableEvent {
+  <span class="tok-kw">readonly</span> tag: <span class="tok-kw">string</span>;
+  <span class="tok-kw">readonly</span> lastChance: <span class="tok-kw">boolean</span>;
+}</code></pre>
+</div><div class="small-note" style="margin-top:.6em;font-size:.85em;">Background Sync no está en los tipos estándar de TypeScript: se declara lo mínimo que usamos (<code>tag</code> y <code>lastChance</code>).</div>
+</section>
+
+<section class="slide dense" data-section="inject" data-section-label="De generateSW a injectManifest" data-slide-label="sw.ts: activar y enrutar">
+<div class="kicker">injectManifest · 3.4</div>
+<h2 class="slide-title">src/sw.ts: activar y enrutar</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sw.ts (arranque, 2/2)</div>
+<pre><code><span class="tok-com">// Con registerType:"autoUpdate" y un SW propio, activar la versión nueva</span>
+<span class="tok-com">// es TU trabajo (con generateSW lo hacía el plugin).</span>
+self.<span class="tok-fn">skipWaiting</span>();
+<span class="tok-fn">clientsClaim</span>();
+<span class="tok-fn">cleanupOutdatedCaches</span>();
+<span class="tok-fn">precacheAndRoute</span>(self.__WB_MANIFEST);
+
+<span class="tok-fn">registerRoute</span>(
+  ({ url }) =&gt; url.pathname.<span class="tok-fn">startsWith</span>(<span class="tok-str">"/iconos/"</span>),
+  <span class="tok-kw">new</span> <span class="tok-fn">CacheFirst</span>({
+    cacheName: <span class="tok-str">"imagenes"</span>,
+    plugins: [<span class="tok-kw">new</span> <span class="tok-fn">ExpirationPlugin</span>({ maxEntries: 60, maxAgeSeconds: 30 * 24 * 60 * 60 })],
+  })
+);
+<span class="tok-fn">registerRoute</span>(({ url }) =&gt; url.pathname.<span class="tok-fn">startsWith</span>(<span class="tok-str">"/api/"</span>), <span class="tok-kw">new</span> <span class="tok-fn">NetworkFirst</span>({ cacheName: <span class="tok-str">"api-atlas3d"</span> }));</code></pre>
+</div><div class="small-note" style="margin-top:.6em;font-size:.85em;">Con <code>registerType: "autoUpdate"</code> y un SW propio, activar la versión nueva es <b>tu</b> trabajo: con <code>generateSW</code> lo hacía el plugin.</div>
+</section>
+
+<section class="slide" data-section="inject" data-section-label="De generateSW a injectManifest" data-slide-label="Cuatro cosas que cambian">
+<div class="kicker">injectManifest · 3.5</div>
+<h2 class="slide-title">Cuatro cosas que cambian respecto al Gestor</h2>
+<hr class="rule">
+<div class="grid-2">
+<div class="activity-card"><h4>Imports normales</h4><p>Vite empaqueta <code>sw.ts</code>, así que <code>import { precacheAndRoute } from "workbox-precaching"</code> funciona. No hay <code>copyLibraries</code> ni <code>importScripts</code>. Hay que declarar esos paquetes como dependencias: <code>npm i -D workbox-core workbox-precaching workbox-routing workbox-strategies workbox-expiration</code>.</p></div>
+<div class="activity-card"><h4><code>skipWaiting()</code> y <code>clientsClaim()</code> son tuyos</h4><p>Con <code>registerType: "autoUpdate"</code> y un Service Worker propio, el plugin ya no los añade por ti.</p></div>
+<div class="activity-card"><h4>Tipos de TypeScript aparte</h4><p>El Service Worker usa la librería <code>WebWorker</code>, no <code>DOM</code>; mezclarlas en un mismo <code>tsconfig</code> hace chocar <code>self</code>. Por eso <code>tsconfig.json</code> excluye <code>src/sw.ts</code> y un <code>tsconfig.sw.json</code> lo revisa aparte; el script <code>build</code> pasó a ser <code>tsc &amp;&amp; tsc -p tsconfig.sw.json &amp;&amp; vite build</code>.</p></div>
+<div class="activity-card"><h4>El evento <code>sync</code> no está en los tipos</h4><p>Los tipos estándar de TypeScript no lo traen; se declara a mano la interfaz mínima (<code>tag</code> y <code>lastChance</code>).</p></div>
+</div>
+</section>
+
+<section class="slide" data-section="funcion" data-section-label="Una función, dos contextos" data-slide-label="Escribirla una sola vez">
+<div class="kicker">Una función · 4.1</div>
+<h2 class="slide-title">Una función, dos contextos</h2>
+<hr class="rule">
+<div class="body-text"><p>En el Gestor (Sesión 26) la lógica de envío existía <b>dos veces</b>: una en el SW y otra en la página para el plan B, porque un Service Worker clásico no puede importar módulos ES. En el Atlas, Vite empaqueta ambos, así que la función de descarga se escribe una vez y la importan los dos:</p></div>
+<div style="margin-top:.8em;"><div class="code-block compact">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/descargas.ts (constantes)</div>
+<pre><code><span class="tok-kw">export</span> <span class="tok-kw">const</span> ETIQUETA_SYNC = <span class="tok-str">"descargar-modelos"</span>;
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> CACHE_MODELOS = <span class="tok-str">"modelos-3d"</span>;
+<span class="tok-kw">export</span> <span class="tok-kw">const</span> urlDeModelo = (id: <span class="tok-kw">string</span>) =&gt; <span class="tok-str">`/modelos/${id}.json`</span>;</code></pre>
+</div></div>
+</section>
+
+<section class="slide dense" data-section="funcion" data-section-label="Una función, dos contextos" data-slide-label="descargarPendientes (1/2)">
+<div class="kicker">Una función · 4.2</div>
+<h2 class="slide-title">descargarPendientes: leer la cola</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/descargas.ts (la función compartida, 1/2)</div>
+<pre><code><span class="tok-kw">export</span> <span class="tok-kw">type</span> AlProgresar = (hechos: <span class="tok-kw">number</span>, total: <span class="tok-kw">number</span>) =&gt; <span class="tok-kw">void</span> | Promise&lt;<span class="tok-kw">void</span>&gt;;
+
+<span class="tok-com">/**
+ * Descarga, una por una, las fichas que están «pendiente». Si una falla LANZA:
+ * las anteriores ya quedaron marcadas como «listo» (no se vuelven a pedir) y
+ * el navegador reintentará solo las que faltan.
+ * Devuelve cuántas se descargaron en esta pasada.
+ */</span>
+<span class="tok-kw">export</span> <span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">descargarPendientes</span>(db: IDBDatabase, alProgresar: AlProgresar): Promise&lt;<span class="tok-kw">number</span>&gt; {
+  <span class="tok-kw">const</span> todas = <span class="tok-kw">await</span> <span class="tok-fn">obtenerDescargas</span>(db);
+  <span class="tok-kw">const</span> total = todas.length;
+  <span class="tok-kw">let</span> hechos = todas.<span class="tok-fn">filter</span>((d) =&gt; d.estado === <span class="tok-str">"listo"</span>).length;
+  <span class="tok-kw">const</span> cache = <span class="tok-kw">await</span> caches.<span class="tok-fn">open</span>(CACHE_MODELOS);
+  <span class="tok-kw">let</span> descargadas = 0;</code></pre>
+</div>
+</section>
+
+<section class="slide dense" data-section="funcion" data-section-label="Una función, dos contextos" data-slide-label="descargarPendientes (2/2)">
+<div class="kicker">Una función · 4.3</div>
+<h2 class="slide-title">descargarPendientes: descargar y marcar</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/descargas.ts (la función compartida, 2/2)</div>
+<pre><code>  <span class="tok-kw">for</span> (<span class="tok-kw">const</span> d <span class="tok-kw">of</span> todas.<span class="tok-fn">filter</span>((x) =&gt; x.estado === <span class="tok-str">"pendiente"</span>)) {
+    <span class="tok-com">// cache: "reload" evita que la caché HTTP del navegador responda por la red.</span>
+    <span class="tok-kw">const</span> resp = <span class="tok-kw">await</span> <span class="tok-fn">fetch</span>(<span class="tok-fn">urlDeModelo</span>(d.modeloId), { cache: <span class="tok-str">"reload"</span> });
+    <span class="tok-kw">if</span> (!resp.ok) <span class="tok-kw">throw</span> <span class="tok-kw">new</span> <span class="tok-fn">Error</span>(<span class="tok-str">`${d.modeloId}: el servidor respondió ${resp.status}`</span>);
+    <span class="tok-kw">await</span> cache.<span class="tok-fn">put</span>(<span class="tok-fn">urlDeModelo</span>(d.modeloId), resp);
+    <span class="tok-kw">await</span> <span class="tok-fn">marcarDescargaLista</span>(db, d.modeloId);
+    hechos++;
+    descargadas++;
+    <span class="tok-kw">await</span> <span class="tok-fn">alProgresar</span>(hechos, total);
+  }
+  <span class="tok-kw">return</span> descargadas;
+}</code></pre>
+</div><div class="callout" style="margin-top:.8em;">Puntos finos: si una ficha falla, la función <b>lanza</b>, pero las anteriores ya quedaron marcadas como «listo», así que el reintento solo pide las que faltan (escenario C de la verificación). Y <code>cache: "reload"</code> evita que la caché HTTP del navegador responda en lugar de la red, que daría la falsa impresión de «descargado» sin haber consultado al servidor.</div>
+</section>
+
+<section class="slide" data-section="cola" data-section-label="La cola (migración v2)" data-slide-label="Migración a la versión 2">
+<div class="kicker">La cola · 5.1</div>
+<h2 class="slide-title">La cola: una migración más</h2>
+<hr class="rule">
+<div class="body-text"><p>Igual que en el Gestor, el almacén nuevo (<code>descargas</code>) obliga a subir la versión de la base a 2 con migración por tramos; quien venía de la versión 1 conserva su progreso, sus favoritos y sus notas cifradas:</p></div>
+<div class="code-block compact">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/db.ts (migración)</div>
+<pre><code>    peticion.onupgradeneeded = (event) =&gt; {
+      <span class="tok-kw">const</span> db = (event.target <span class="tok-kw">as</span> IDBOpenDBRequest).result;
+      <span class="tok-com">// Migración por tramos (Sesión 22/26): quien viene de la v1 conserva su</span>
+      <span class="tok-com">// progreso y solo recibe lo nuevo.</span>
+      <span class="tok-kw">if</span> (event.oldVersion &lt; 1) {
+        <span class="tok-kw">const</span> store = db.<span class="tok-fn">createObjectStore</span>(<span class="tok-str">"progreso"</span>, { keyPath: <span class="tok-str">"modeloId"</span> });
+        store.<span class="tok-fn">createIndex</span>(<span class="tok-str">"porFavorito"</span>, <span class="tok-str">"favorito"</span>, { unique: <span class="tok-kw">false</span> });
+        store.<span class="tok-fn">createIndex</span>(<span class="tok-str">"porUltimaVisita"</span>, <span class="tok-str">"ultimaVisita"</span>, { unique: <span class="tok-kw">false</span> });
+      }
+      <span class="tok-kw">if</span> (event.oldVersion &lt; 2) {
+        db.<span class="tok-fn">createObjectStore</span>(<span class="tok-str">"descargas"</span>, { keyPath: <span class="tok-str">"modeloId"</span> });
+      }
+    };</code></pre>
+</div>
+</section>
+
+<section class="slide" data-section="cola" data-section-label="La cola (migración v2)" data-slide-label="Descarga y encolarDescargas">
+<div class="kicker">La cola · 5.2</div>
+<h2 class="slide-title">El registro de cada descarga y cómo se encola</h2>
+<hr class="rule">
+<div class="code-block compact">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/db.ts (cola)</div>
+<pre><code><span class="tok-kw">export</span> <span class="tok-kw">interface</span> Descarga {
+  modeloId: <span class="tok-kw">string</span>;
+  estado: <span class="tok-str">"pendiente"</span> | <span class="tok-str">"listo"</span>;
+}</code></pre>
+</div><div style="margin-top:.8em;"><div class="code-block compact">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/db.ts (cola)</div>
+<pre><code><span class="tok-com">/** Anota (o reinicia a «pendiente») la descarga de varios modelos. */</span>
+<span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">encolarDescargas</span>(db: IDBDatabase, ids: <span class="tok-kw">string</span>[]): Promise&lt;<span class="tok-kw">void</span>&gt; {
+  <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve, reject) =&gt; {
+    <span class="tok-kw">const</span> tx = db.<span class="tok-fn">transaction</span>(<span class="tok-str">"descargas"</span>, <span class="tok-str">"readwrite"</span>);
+    <span class="tok-kw">const</span> store = tx.<span class="tok-fn">objectStore</span>(<span class="tok-str">"descargas"</span>);
+    ids.<span class="tok-fn">forEach</span>((modeloId) =&gt; store.<span class="tok-fn">put</span>({ modeloId, estado: <span class="tok-str">"pendiente"</span> } <span class="tok-kw">satisfies</span> Descarga));
+    tx.oncomplete = () =&gt; <span class="tok-fn">resolve</span>();
+    tx.onerror = () =&gt; <span class="tok-fn">reject</span>(tx.error);
+  });
+}</code></pre>
+</div></div>
+</section>
+
+<section class="slide" data-section="cola" data-section-label="La cola (migración v2)" data-slide-label="Leer y marcar">
+<div class="kicker">La cola · 5.3</div>
+<h2 class="slide-title">Leer la cola y marcar una descarga como lista</h2>
+<hr class="rule">
+<div class="code-block compact">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/db.ts (cola)</div>
+<pre><code><span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">obtenerDescargas</span>(db: IDBDatabase): Promise&lt;Descarga[]&gt; {
+  <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve, reject) =&gt; {
+    <span class="tok-kw">const</span> peticion = db.<span class="tok-fn">transaction</span>(<span class="tok-str">"descargas"</span>, <span class="tok-str">"readonly"</span>).<span class="tok-fn">objectStore</span>(<span class="tok-str">"descargas"</span>).<span class="tok-fn">getAll</span>();
+    peticion.onsuccess = () =&gt; <span class="tok-fn">resolve</span>(peticion.result <span class="tok-kw">as</span> Descarga[]);
+    peticion.onerror = () =&gt; <span class="tok-fn">reject</span>(peticion.error);
+  });
+}</code></pre>
+</div><div style="margin-top:.8em;"><div class="code-block compact">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/db.ts (cola)</div>
+<pre><code><span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">marcarDescargaLista</span>(db: IDBDatabase, modeloId: <span class="tok-kw">string</span>): Promise&lt;<span class="tok-kw">void</span>&gt; {
+  <span class="tok-kw">return</span> <span class="tok-kw">new</span> <span class="tok-fn">Promise</span>((resolve, reject) =&gt; {
+    <span class="tok-kw">const</span> tx = db.<span class="tok-fn">transaction</span>(<span class="tok-str">"descargas"</span>, <span class="tok-str">"readwrite"</span>);
+    tx.<span class="tok-fn">objectStore</span>(<span class="tok-str">"descargas"</span>).<span class="tok-fn">put</span>({ modeloId, estado: <span class="tok-str">"listo"</span> } <span class="tok-kw">satisfies</span> Descarga);
+    tx.oncomplete = () =&gt; <span class="tok-fn">resolve</span>();
+    tx.onerror = () =&gt; <span class="tok-fn">reject</span>(tx.error);
+  });
+}</code></pre>
+</div></div>
+</section>
+
+<section class="slide dense" data-section="sync" data-section-label="El evento sync y lastChance" data-slide-label="Ruta de las fichas y aviso a ventanas">
+<div class="kicker">Evento sync · 6.1</div>
+<h2 class="slide-title">Servir fichas y avisar a las ventanas</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sw.ts (ruta de las fichas)</div>
+<pre><code><span class="tok-com">// Las fichas /modelos/*.json NO están en el precaché (se excluyeron en</span>
+<span class="tok-com">// vite.config.ts): solo entran a la caché «modelos-3d» cuando el usuario las</span>
+<span class="tok-com">// descarga. Mientras no estén ahí, esta ruta las pide a la red; si ya están,</span>
+<span class="tok-com">// responde desde la caché aunque no haya conexión.</span>
+<span class="tok-fn">registerRoute</span>(
+  ({ url }) =&gt; url.pathname.<span class="tok-fn">startsWith</span>(<span class="tok-str">"/modelos/"</span>),
+  <span class="tok-kw">async</span> ({ request }) =&gt; {
+    <span class="tok-kw">const</span> guardada = <span class="tok-kw">await</span> caches.<span class="tok-fn">match</span>(request, { cacheName: <span class="tok-str">"modelos-3d"</span> });
+    <span class="tok-kw">return</span> guardada ?? <span class="tok-fn">fetch</span>(request);
+  }
+);</code></pre>
+</div><div style="margin-top:.7em;"><div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sw.ts (aviso a las ventanas)</div>
+<pre><code><span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">avisarALasVentanas</span>(mensaje: <span class="tok-kw">unknown</span>): Promise&lt;<span class="tok-kw">readonly</span> WindowClient[]&gt; {
+  <span class="tok-kw">const</span> ventanas = <span class="tok-kw">await</span> self.clients.<span class="tok-fn">matchAll</span>({ <span class="tok-kw">type</span>: <span class="tok-str">"window"</span> });
+  ventanas.<span class="tok-fn">forEach</span>((v) =&gt; v.<span class="tok-fn">postMessage</span>(mensaje));
+  <span class="tok-kw">return</span> ventanas;
+}</code></pre>
+</div></div>
+</section>
+
+<section class="slide dense" data-section="sync" data-section-label="El evento sync y lastChance" data-slide-label="sync: la descarga">
+<div class="kicker">Evento sync · 6.2</div>
+<h2 class="slide-title">El manejador sync: descargar y avisar</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sw.ts (sync, 1/2)</div>
+<pre><code>self.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"sync"</span>, (event) =&gt; {
+  <span class="tok-kw">const</span> syncEvent = event <span class="tok-kw">as</span> SyncEvent;
+  <span class="tok-kw">if</span> (syncEvent.tag !== ETIQUETA_SYNC) <span class="tok-kw">return</span>;
+  syncEvent.<span class="tok-fn">waitUntil</span>(
+    (<span class="tok-kw">async</span> () =&gt; {
+      <span class="tok-kw">const</span> db = <span class="tok-kw">await</span> <span class="tok-fn">abrirBaseDeDatos</span>();
+      <span class="tok-kw">try</span> {
+        <span class="tok-kw">const</span> n = <span class="tok-kw">await</span> <span class="tok-fn">descargarPendientes</span>(db, <span class="tok-kw">async</span> (hechos, total) =&gt; {
+          <span class="tok-kw">await</span> <span class="tok-fn">avisarALasVentanas</span>({ tipo: <span class="tok-str">"progreso"</span>, hechos, total });
+        });
+        <span class="tok-kw">if</span> (n === 0) <span class="tok-kw">return</span>;
+        <span class="tok-kw">const</span> ventanas = <span class="tok-kw">await</span> <span class="tok-fn">avisarALasVentanas</span>({ tipo: <span class="tok-str">"descarga-completa"</span> });
+        <span class="tok-com">// Notificación solo si NO hay ninguna ventana visible.</span>
+        <span class="tok-kw">if</span> (!ventanas.<span class="tok-fn">some</span>((v) =&gt; v.visibilityState === <span class="tok-str">"visible"</span>)) {
+          <span class="tok-kw">await</span> self.registration.<span class="tok-fn">showNotification</span>(<span class="tok-str">"Modelos listos"</span>, {
+            body: <span class="tok-str">"Las fichas ya están en tu dispositivo: puedes consultarlas sin conexión."</span>,
+            icon: <span class="tok-str">"/iconos/icon-192.png"</span>,
+            tag: <span class="tok-str">"atlas-descarga"</span>,
+            data: { url: <span class="tok-str">"/"</span> },
+          });
+        }</code></pre>
+</div>
+</section>
+
+<section class="slide dense" data-section="sync" data-section-label="El evento sync y lastChance" data-slide-label="sync: el fallo">
+<div class="kicker">Evento sync · 6.3</div>
+<h2 class="slide-title">El manejador sync: el catch y lastChance</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sw.ts (sync, 2/2)</div>
+<pre><code>      } <span class="tok-kw">catch</span> (err) {
+        <span class="tok-com">// lastChance: el navegador ya no reintentará. Es el momento de decirle</span>
+        <span class="tok-com">// al usuario que NO pudo completarse (si no, el fallo sería silencioso).</span>
+        <span class="tok-kw">if</span> (syncEvent.lastChance) {
+          <span class="tok-kw">await</span> self.registration.<span class="tok-fn">showNotification</span>(<span class="tok-str">"No se pudo completar la descarga"</span>, {
+            body: <span class="tok-str">"Abre el Atlas con conexión y vuelve a pulsar «Descargar»."</span>,
+            icon: <span class="tok-str">"/iconos/icon-192.png"</span>,
+            tag: <span class="tok-str">"atlas-descarga"</span>,
+            data: { url: <span class="tok-str">"/"</span> },
+          });
+        }
+        <span class="tok-kw">throw</span> err; <span class="tok-com">// relanzar: así el navegador sabe que falló y reintenta</span>
+      } <span class="tok-kw">finally</span> {
+        db.<span class="tok-fn">close</span>();
+      }
+    })()
+  );
+});</code></pre>
+</div>
+</section>
+
+<section class="slide" data-section="sync" data-section-label="El evento sync y lastChance" data-slide-label="Un fallo silencioso y la regla">
+<div class="kicker">Evento sync · 6.4</div>
+<h2 class="slide-title">Avisos con criterio: lastChance y la regla</h2>
+<hr class="rule">
+<div class="body-text"><p>La mayor diferencia con el Gestor está en el <code>catch</code>. Un fallo de sincronización es <b>silencioso por defecto</b>: el navegador reintenta sin que nadie lo sepa, y si deja de reintentar, el usuario nunca se entera de que su descarga no terminó.</p></div>
+<div class="callout" style="margin-top:.7em;">El evento trae <code>lastChance</code>, que vale <code>true</code> en el último intento. Ahí —y solo ahí— se muestra «No se pudo completar la descarga». Antes de eso, notificar cada fallo sería ruido. Y se vuelve a lanzar el error, para que el navegador sepa que sí falló.</div>
+<div class="body-text" style="margin-top:.8em;"><p>El resto sigue la regla de la Sesión 26:</p></div>
+<ul class="clean">
+<li>Durante la descarga se mandan mensajes de <b>progreso</b> a las ventanas abiertas (la página pinta la barra).</li>
+<li>La notificación del sistema solo sale si <b>ninguna</b> ventana está visible.</li>
+<li>La ruta para <code>/modelos/</code> primero busca en la caché <code>modelos-3d</code> y, si no está, va a la red: una ficha descargada se sirve aunque no haya conexión, y una no descargada sigue funcionando en línea.</li>
+</ul>
+</section>
+
+<section class="slide" data-section="sync" data-section-label="El evento sync y lastChance" data-slide-label="notificationclick">
+<div class="kicker">Evento sync · 6.5</div>
+<h2 class="slide-title">El clic en la notificación</h2>
+<hr class="rule">
+<div class="body-text"><p>El clic en la notificación usa el mismo manejador de la Sesión 26:</p></div>
+<div class="code-block compact">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sw.ts (clic)</div>
+<pre><code><span class="tok-com">// ── Clic en una notificación: enfocar la app abierta o abrirla ─────────────</span>
+self.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"notificationclick"</span>, (event) =&gt; {
+  event.notification.<span class="tok-fn">close</span>();
+  <span class="tok-kw">const</span> destino = <span class="tok-kw">new</span> <span class="tok-fn">URL</span>(event.notification.data?.url ?? <span class="tok-str">"/"</span>, self.location.origin).href;
+  event.<span class="tok-fn">waitUntil</span>(
+    (<span class="tok-kw">async</span> () =&gt; {
+      <span class="tok-kw">const</span> ventanas = <span class="tok-kw">await</span> self.clients.<span class="tok-fn">matchAll</span>({ <span class="tok-kw">type</span>: <span class="tok-str">"window"</span>, includeUncontrolled: <span class="tok-kw">true</span> });
+      <span class="tok-kw">const</span> abierta = ventanas.<span class="tok-fn">find</span>((v) =&gt; <span class="tok-kw">new</span> <span class="tok-fn">URL</span>(v.url).origin === self.location.origin);
+      <span class="tok-kw">if</span> (abierta) <span class="tok-kw">return</span> abierta.<span class="tok-fn">focus</span>();
+      <span class="tok-kw">return</span> self.clients.<span class="tok-fn">openWindow</span>(destino);
+    })()
+  );
+});</code></pre>
+</div>
+</section>
+
+<section class="slide dense" data-section="pagina" data-section-label="La página" data-slide-label="El botón de descarga (1/2)">
+<div class="kicker">La página · 7.1</div>
+<h2 class="slide-title">main.ts: encolar y pedir el sync</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (descargar, 1/2)</div>
+<pre><code>btnDescargar.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, <span class="tok-kw">async</span> () =&gt; {
+  <span class="tok-kw">await</span> dbLista;
+  <span class="tok-kw">await</span> <span class="tok-fn">encolarDescargas</span>(db, MODELOS_IDS);
+  <span class="tok-fn">pintarProgreso</span>(0, MODELOS_IDS.length);
+  btnDescargar.disabled = <span class="tok-kw">true</span>;
+  <span class="tok-kw">try</span> {
+    <span class="tok-kw">let</span> enSegundoPlano = <span class="tok-kw">false</span>;
+    <span class="tok-kw">if</span> (<span class="tok-str">"serviceWorker"</span> in navigator &amp;&amp; <span class="tok-str">"SyncManager"</span> in window) {
+      <span class="tok-kw">try</span> {
+        <span class="tok-kw">const</span> reg = <span class="tok-kw">await</span> navigator.serviceWorker.ready;
+        <span class="tok-kw">await</span> (reg <span class="tok-kw">as</span> ServiceWorkerRegistration &amp; { sync: { <span class="tok-fn">register</span>(tag: <span class="tok-kw">string</span>): Promise&lt;<span class="tok-kw">void</span>&gt; } }).sync.<span class="tok-fn">register</span>(ETIQUETA_SYNC);
+        enSegundoPlano = <span class="tok-kw">true</span>;
+        estadoDescargaEl.textContent = <span class="tok-str">"Descarga solicitada: el navegador la completará en cuanto haya conexión."</span>;
+      } <span class="tok-kw">catch</span> {
+        <span class="tok-com">// Tener SyncManager no basta: register() falla (NotAllowedError) si el</span>
+        <span class="tok-com">// usuario bloqueó la sincronización en segundo plano para este sitio.</span>
+        enSegundoPlano = <span class="tok-kw">false</span>;
+      }
+    }</code></pre>
+</div>
+</section>
+
+<section class="slide dense" data-section="pagina" data-section-label="La página" data-slide-label="El botón de descarga (2/2)">
+<div class="kicker">La página · 7.2</div>
+<h2 class="slide-title">main.ts: el plan B</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (descargar, 2/2)</div>
+<pre><code>    <span class="tok-kw">if</span> (!enSegundoPlano) {
+      <span class="tok-com">// Plan B (Safari, Firefox, o permiso denegado): se descarga desde la página, con la pestaña abierta.</span>
+      <span class="tok-kw">await</span> <span class="tok-fn">descargarPendientes</span>(db, pintarProgreso);
+      <span class="tok-kw">await</span> <span class="tok-fn">refrescarDescargados</span>();
+      <span class="tok-fn">render</span>();
+    }
+  } <span class="tok-kw">catch</span> (err) {
+    estadoDescargaEl.textContent = <span class="tok-str">"No se pudo completar la descarga: "</span> + (err instanceof Error ? err.message : <span class="tok-fn">String</span>(err));
+  } <span class="tok-kw">finally</span> {
+    btnDescargar.disabled = <span class="tok-kw">false</span>;
+  }
+});</code></pre>
+</div><div class="callout" style="margin-top:.8em;">El botón repite la doble salida de la Sesión 26: si <code>register()</code> falla —por no existir <code>SyncManager</code>, o por un permiso bloqueado—, la descarga corre en la página.</div>
+</section>
+
+<section class="slide" data-section="pagina" data-section-label="La página" data-slide-label="avisos.ts">
+<div class="kicker">La página · 7.3</div>
+<h2 class="slide-title">Notificaciones locales: avisos.ts</h2>
+<hr class="rule">
+<div class="body-text"><p>Las notificaciones locales del Atlas pasan por un módulo pequeño, <code>avisos.ts</code>, que solo muestra algo si el permiso ya fue concedido:</p></div>
+<div class="code-block compact">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/avisos.ts</div>
+<pre><code><span class="tok-com">/** Muestra una notificación a través del Service Worker (funciona también en Android). */</span>
+<span class="tok-kw">export</span> <span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">mostrarAviso</span>(titulo: <span class="tok-kw">string</span>, cuerpo: <span class="tok-kw">string</span>, url = <span class="tok-str">"/"</span>, tag = <span class="tok-str">"atlas-aviso"</span>): Promise&lt;<span class="tok-kw">boolean</span>&gt; {
+  <span class="tok-kw">if</span> (<span class="tok-fn">estadoAvisos</span>() !== <span class="tok-str">"granted"</span>) <span class="tok-kw">return</span> <span class="tok-kw">false</span>;
+  <span class="tok-kw">const</span> reg = <span class="tok-kw">await</span> navigator.serviceWorker.ready;
+  <span class="tok-kw">await</span> reg.<span class="tok-fn">showNotification</span>(titulo, {
+    body: cuerpo,
+    icon: <span class="tok-str">"/iconos/icon-192.png"</span>,
+    tag,
+    data: { url },
+  });
+  <span class="tok-kw">return</span> <span class="tok-kw">true</span>;
+}</code></pre>
+</div>
+</section>
+
+<section class="slide" data-section="pagina" data-section-label="La página" data-slide-label="Tres avisos de ciclo de vida">
+<div class="kicker">La página · 7.4</div>
+<h2 class="slide-title">Avisos de ciclo de vida de la PWA</h2>
+<hr class="rule">
+<div class="body-text"><p>Además, tres avisos de ciclo de vida de la PWA:</p></div>
+<div class="grid-3" style="margin-top:.6em;">
+<div class="card"><h3>«La app ya funciona sin conexión»</h3><p><code>registerSW</code> ofrece el callback <code>onOfflineReady</code>, que se dispara cuando el precaché quedó completo por primera vez. Se muestra en pantalla; la notificación del sistema solo si la página no está visible.</p></div>
+<div class="card"><h3>«Atlas 3D instalado»</h3><p>El evento <code>appinstalled</code> de la ventana. Aquí sí tiene sentido una notificación: el usuario acaba de pasar a otra ventana.</p></div>
+<div class="card"><h3>Abrir una ficha desde la notificación</h3><p>El aviso lleva <code>data.url = "/?modelo=ID"</code>; al cargar, la página lee ese parámetro y resalta la tarjeta correspondiente.</p></div>
+</div>
+</section>
+
+<section class="slide slide--divider" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="Introducción">
+<div class="brand-wedge"><div class="gold-slab"></div></div>
+<div class="divider-panel">
+<div class="num">SECCIÓN 08</div>
+<h2>Verificado contra el build real</h2>
+<p>Todo se ejecutó contra npm run build servido por un servidor estático que registra las peticiones a /modelos/, en Chromium. Salida literal.</p>
+<div class="tb-preview"><span>npm run build</span><span>Servidor estático</span><span>Chromium</span></div>
+</div>
+<div class="divider-illustration">
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="80" y="60" width="240" height="200" rx="10" fill="#1c1c1e" stroke="#000" stroke-width="3"/>
+<rect x="80" y="60" width="240" height="30" rx="10" fill="#141416"/>
+<circle cx="100" cy="75" r="5" fill="#ff5f57"/><circle cx="118" cy="75" r="5" fill="#febc2e"/><circle cx="136" cy="75" r="5" fill="#28c840"/>
+<text x="100" y="120" font-family="Consolas,monospace" font-size="11" fill="#6ad06a">$ node test_s37.js</text>
+<text x="100" y="145" font-family="Consolas,monospace" font-size="10" fill="#cfcac0">B) ficha en precaché: false</text>
+<text x="100" y="167" font-family="Consolas,monospace" font-size="10" fill="#cfcac0">pageerrors: []</text>
+</svg>
+</div>
+</section>
+
+<section class="slide" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="El build">
+<div class="kicker">Verificación · 8.1</div>
+<h2 class="slide-title">Salida literal: el build</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre><code><span class="term-prompt">$</span> npm run build
+dist/assets/index-BaK-DlQW.js   505.10 kB │ gzip: 128.76 kB
+✓ built in 2.33s
+Building src/sw.ts service worker ("es" format)...
+dist/sw.mjs   27.25 kB │ gzip: 9.02 kB
+mode      injectManifest
+<span class="term-emph">precache 8 entries (513.93 KiB)</span></code></pre>
+</div>
+<div class="callout" style="margin-top:.8em;">El precaché pasó de 508,80 KiB (Sesión 36) a 513,93 KiB; el aumento corresponde al código nuevo de la página (el paquete principal creció de 501,10 a 505,10 kB), porque el Service Worker no se precachea a sí mismo. Las tres fichas no están en las 8 entradas, como se pretendía.</div>
+</section>
+
+<section class="slide" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="test_s37.js (A y B)">
+<div class="kicker">Verificación · 8.2</div>
+<h2 class="slide-title">Salida literal: escenarios A y B</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre><code><span class="term-prompt">$</span> node test_s37.js
+A) tras migrar la v1: {"version":2,"stores":["descargas","progreso"]} | favorito conservado: ★ Favorito
+B) ¿ficha en el precaché antes de descargar? <b>false</b>
+B) avisos antes: Avisos sin activar. → después: Avisos activos.
+B) mensajes del SW: [{"tipo":"progreso","hechos":1,"total":3},{"tipo":"progreso","hechos":2,"total":3},{"tipo":"progreso","hechos":3,"total":3},{"tipo":"descarga-completa"}]
+B) progreso: 3/3 | ✓ 3 de 3 fichas guardadas: ya puedes consultarlas sin conexión.
+B) caché modelos-3d: ["/modelos/modelo-demo-1.json","/modelos/modelo-demo-2.json","/modelos/modelo-demo-3.json"]
+B) IDB descargas: ["1:listo","2:listo","3:listo"] | tarjetas «disponible sin conexión»: 3</code></pre>
+</div>
+</section>
+
+<section class="slide" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="test_s37.js (B, C)">
+<div class="kicker">Verificación · 8.3</div>
+<h2 class="slide-title">Salida literal: escenarios B (cont.) y C</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre><code>B) notificaciones tras la descarga (ventana visible): solo «Avisos activados» (ninguna de descarga)
+B) <b>servidor APAGADO</b>, recarga → título: "Atlas 3D de Arquitectura de Software" | canvas: 1
+B) <b>servidor APAGADO</b>, ficha descargada: {"status":200,"nombre":"Arquitectura en capas"}
+B) ?modelo=modelo-demo-3 → tarjeta destacada: true
+B) appinstalled (evento sintético) → notificaciones: ["Avisos activados","Atlas 3D instalado"]
+C) con la ficha 3 ausente (404) → progreso: 2/3 | IDB: ["1:listo","2:listo","3:pendiente"]
+C) sync con lastChance=true y sigue el 404 → notificaciones: ["Avisos activados","No se pudo completar la descarga"]
+C) ficha restaurada + Sync → IDB: ["1:listo","2:listo","3:listo"] | peticiones en este reintento: ["/modelos/modelo-demo-3.json"]</code></pre>
+</div>
+</section>
+
+<section class="slide" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="test_s37.js (D, E, F y extras)">
+<div class="kicker">Verificación · 8.4</div>
+<h2 class="slide-title">Salida literal: escenarios D, E, F y pruebas extra</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre><code>D) SyncManager: false → descarga desde la página: ✓ 3 de 3 fichas guardadas…
+E) register() con background-sync denegado: NotAllowedError: Permission denied. → botón Descargar: ✓ 3 de 3 fichas guardadas…
+F) permiso por defecto: default | botón avisos habilitado: true
+pageerrors: []
+
+<span class="term-prompt">$</span> node test_s37_extra.js
+onOfflineReady → estado-descarga: "✓ La app ya funciona sin conexión." tras 500 ms
+
+<span class="term-prompt">$</span> node test_s37_extra2.js
+sin ventanas del Atlas → notificaciones: [… {"title":"Modelos listos","body":"Las fichas ya están en tu dispositivo: puedes consultarlas sin conexión."}]</code></pre>
+</div>
+</section>
+
+<section class="slide" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="Qué demuestra">
+<div class="kicker">Verificación · 8.5</div>
+<h2 class="slide-title">Qué demuestra</h2>
+<hr class="rule">
+<div class="callout win"><b>Qué demuestra:</b>
+<ul class="clean" style="margin-top:.5em;">
+<li>(1) la migración conserva el progreso previo;</li>
+<li>(2) las fichas <b>no</b> están en el precaché antes de descargar;</li>
+<li>(3) la descarga avanza 1→2→3 con mensajes de progreso y deja las tres en la caché y marcadas en IndexedDB;</li>
+<li>(4) <b>con el servidor apagado</b> la app recarga y la ficha descargada se sirve;</li>
+<li>(5) si una ficha falla, las demás quedan guardadas y el reintento pide <b>solo la que faltaba</b> (una sola petición);</li>
+<li>(6) en el último intento se avisa del fallo;</li>
+<li>(7) los dos planes B funcionan (sin <code>SyncManager</code> y con el permiso bloqueado);</li>
+<li>(8) cuando no queda ninguna ventana del Atlas abierta, la notificación «Modelos listos» sí aparece.</li>
+</ul></div>
+</section>
+
+<section class="slide" data-section="verificacion" data-section-label="Verificado contra el build" data-slide-label="Límites honestos">
+<div class="kicker">Verificación · 8.6</div>
+<h2 class="slide-title">Límites honestos de esta prueba</h2>
+<hr class="rule">
+<div class="callout warn"><b>Límites honestos de esta prueba:</b>
+<ul class="clean" style="margin-top:.5em;font-size:.88em;line-height:1.4;">
+<li>(1) El evento <code>sync</code> se disparó a mano con <code>ServiceWorker.dispatchSyncEvent</code> en los escenarios de fallo; en el escenario normal Chromium lo disparó solo al registrar, porque había red.</li>
+<li>(2) El 404 se provocó renombrando una ficha dentro de <code>dist/</code>; no se cortó la red de un dispositivo.</li>
+<li>(3) El clic en la notificación se simuló despachando un <code>NotificationEvent</code> dentro del SW.</li>
+<li>(4) <code>appinstalled</code> se disparó como evento sintético: <b>no se instaló la app de verdad</b>.</li>
+<li>(5) No hay push porque no hay servidor, y no se probó en teléfono real ni en iOS.</li>
+<li>(6) Chromium sin pantalla siempre ve la página «visible»; la rama «hay ventana visible» se comprobó con la página abierta, y la rama «no hay ventana» cerrando la página y despachando el evento desde otra pestaña.</li>
+</ul></div>
+</section>
+
+<section class="slide" data-section="pruebalo" data-section-label="Pruébalo tú" data-slide-label="Pruébalo tú">
+<div class="kicker">Pruébalo tú · 9</div>
+<h2 class="slide-title">Pruébalo tú</h2>
+<hr class="rule">
+<div class="code-block compact">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre><code>npm install
+npm run build
+npm run preview        # http:<span class="tok-com">//localhost:4173</span></code></pre>
+</div><ul class="clean" style="margin-top:.8em;font-size:.9em;line-height:1.4;">
+<li>Abre <code>localhost:4173</code> en Chrome o Edge (no incógnito) y pulsa «Activar avisos» y luego «Descargar fichas…». Mira la barra y las tarjetas.</li>
+<li>DevTools → Application → Cache Storage: deben existir <code>modelos-3d</code> (3 entradas) y el precaché de Workbox (8).</li>
+<li>Detén <code>npm run preview</code> con Ctrl+C y recarga: la app y las fichas siguen ahí. Con la descarga hecha, prueba también sin red en Network → <i>Offline</i>.</li>
+<li>Para forzar el evento: Application → Background Sync → <code>descargar-modelos</code> → <i>Sync</i>.</li>
+<li>Para instalar de verdad (y ver «Atlas 3D instalado»): el icono de instalar en la barra de direcciones.</li>
+</ul>
+</section>
+
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 1: injectManifest">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 1: cambiar a injectManifest</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">1</div><h4>Cambiar a injectManifest</h4></div>
+<div class="meta-row">INDIVIDUAL · 40 MIN</div>
+<p>Parte del checkpoint de la Sesión 36. Crea <code>src/sw.ts</code> con el precaché y las dos rutas, ajusta <code>vite.config.ts</code> y <code>tsconfig</code> y comprueba que <code>npm run build</code> termina sin errores y que el precaché tiene las <b>mismas 8 entradas</b> que antes.</p>
+<p style="margin-top:.7em;"><b>Para pensar:</b> quita a propósito <code>globIgnores</code> con las fichas ya creadas en <code>public/modelos/</code>. ¿Cuántas entradas tiene ahora el precaché? ¿Qué pasa al pulsar «Descargar»?</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> salida del build en ambos casos y una frase explicando por qué el segundo caso «funciona» pero no sirve.</p>
+</div>
+</section>
+
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 2: la cola completa">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 2: la cola de descargas completa</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">2</div><h4>La cola de descargas completa</h4></div>
+<div class="meta-row">INDIVIDUAL · 60 MIN</div>
+<p>Sube la base a la versión 2, escribe <code>descargas.ts</code>, el manejador <code>sync</code> y los botones. Verifica:</p>
+<ol>
+<li>progreso 1→2→3;</li>
+<li>con el servidor apagado, las fichas descargadas se abren;</li>
+<li>renombra una ficha en <code>dist/modelos/</code> y comprueba que solo la ausente queda «pendiente» y que, al restaurarla y pulsar <i>Sync</i>, se pide una sola vez.</li>
+</ol>
+<p style="margin-top:.7em;"><b>Entregable:</b> capturas de las tres comprobaciones.</p>
+</div>
+</section>
+
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 3: ¿cuándo NO notificar?">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 3: ¿cuándo NO notificar?</h2>
+<hr class="rule">
+<div class="body-text"><p>El Atlas notifica en <b>cinco</b> situaciones:</p></div>
+<div class="grid-5" style="margin-top:.4em;">
+<div class="mini-card"><b>1 · Avisos activados</b><span style="font-size:.78em;">La confirmación de «Avisos activados».</span></div>
+<div class="mini-card"><b>2 · Descarga completa</b><span style="font-size:.78em;">Solo con la app oculta.</span></div>
+<div class="mini-card"><b>3 · Fallo definitivo</b><span style="font-size:.78em;">Fallo definitivo de descarga.</span></div>
+<div class="mini-card"><b>4 · Instalación</b><span style="font-size:.78em;">La instalación de la app.</span></div>
+<div class="mini-card"><b>5 · Lista sin conexión</b><span style="font-size:.78em;">Solo si la página no está visible.</span></div>
+</div>
+<div class="activity-card" style="margin-top:1em;">
+<div class="a-head"><div class="a-num">3</div><h4>¿Cuándo NO notificar?</h4></div>
+<div class="meta-row">EN PAREJAS · 20 MIN</div>
+<p>Propongan un aviso adicional que <i>sí</i> aportaría valor y otro que sería ruido, y justifiquen ambos con la regla «una notificación se justifica cuando el usuario no está mirando y necesita enterarse».</p>
+<p style="margin-top:.6em;"><b>Entregable:</b> los dos avisos y su justificación, en cinco líneas.</p>
+</div>
+</section>
+
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Actualiza tu repositorio">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Actualiza tu repositorio</h2>
+<hr class="rule">
+<div class="body-text"><p>Como en cada sesión del Sub-bloque B: sube el cambio de hoy a tu propio repositorio.</p></div>
+<div class="code-block ">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre><code>git add .
+git commit -m <span class="tok-str">"Service Worker propio, avisos y descarga de fichas con Background Sync"</span>
+git push</code></pre>
+</div>
+</section>
+
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen y próxima sesión">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Resumen y próxima sesión</h2>
+<hr class="rule">
+<ul class="clean">
+<li class="fragment">Lo conceptual de avisos, push y Background Sync se estudió en la Sesión 26; hoy se aplica a un proyecto <b>sin servidor</b> y empaquetado por Vite.</li>
+<li class="fragment">Sin servidor no hay push: se aplican notificaciones locales y Background Sync, este último invertido (descargar en vez de enviar).</li>
+<li class="fragment"><code>strategies: "injectManifest"</code> deja el SW en <code>src/sw.ts</code>; <code>globIgnores: ["modelos/**"]</code> evita que las fichas entren al precaché; <code>skipWaiting()</code> y <code>clientsClaim()</code> pasan a ser responsabilidad propia.</li>
+<li class="fragment">Como Vite empaqueta el SW, la función de descarga se escribe una sola vez y la comparten el SW y la página.</li>
+<li class="fragment">El fallo de un sync es silencioso: <code>lastChance</code> es el momento de avisar; la notificación del sistema se reserva para cuando no hay ventana visible.</li>
+<li class="fragment">Verificado en Chromium: cola, progreso, reintento parcial, uso con el servidor apagado, planes B. <b>No verificado:</b> push real (no existe en el Atlas), instalación real, teléfono, iOS.</li>
+</ul>
+<div class="callout fragment" style="margin-top:1em;font-size:1em;"><b>Próxima sesión — Sesión 38: Realidad aumentada con WebXR (1/2).</b> Detección de soporte y arranque de una sesión <code>immersive-ar</code>.</div>
+</section>
+
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Referencias</h2>
+<hr class="rule">
+<div class="ref-list">
+<div><b>[1]</b> vite-plugin-pwa, "Service Worker Strategies and Behaviors" (injectManifest), vite-pwa-org.netlify.app.</div>
+<div><b>[2]</b> MDN Web Docs, "SyncEvent: lastChance" y "Background Synchronization API," developer.mozilla.org.</div>
+<div><b>[3]</b> MDN Web Docs, "Notifications API" y "Window: appinstalled event," developer.mozilla.org.</div>
+<div><b>[4]</b> Google Chrome for Developers, "Workbox: precaching y routing," developer.chrome.com/docs/workbox.</div>
+</div>
+</section>
+
+<div class="fragment-hint" id="fragHint">
+<svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+</div>
+
+<div class="floatnav">
+<button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+<span class="count" id="slideCount">01 / 41</span>
+<button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+<button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>
