@@ -1,38 +1,50 @@
-Atlas 3D de Arquitectura de Software — checkpoint al cierre de la Sesión 36
+Atlas 3D de Arquitectura de Software — checkpoint al cierre de la Sesión 38
 Electiva - PWA · UPTC (Sub-bloque B)
 
 Qué es esto
 -----------
-El Atlas 3D al terminar la Sesión 36. Es el PUNTO DE PARTIDA de la Sesión 37
-(avisos, notificaciones y descargas en segundo plano).
+El Atlas 3D con una primera SESIÓN DE REALIDAD AUMENTADA (WebXR immersive-ar).
+Es el PUNTO DE PARTIDA de la Sesión 39 (hit-test: apoyar el objeto en una
+superficie real y anclarlo).
 
-Lo que ya tiene el visor
--------------------------
-  - Un cubo de PRUEBA en Three.js (no hay catálogo real de modelos todavía)
-  - Control con ratón o dedo (OrbitControls) y, si hay sensores, con la
-    orientación del teléfono (Sesión 35)
-  - Cámara del dispositivo como fondo vivo detrás del cubo (Sesión 36).
-    OJO: esto NO es realidad aumentada: el cubo no está anclado a nada del
-    mundo, solo se dibuja encima del video.
+Novedades de la Sesión 38
+--------------------------
+  src/xr.ts        diagnosticarAR()/detectarSoporteAR(), pedirSesionAR(), mensajes de error
+  src/visor.ts     entrarEnAR(): render con setAnimationLoop, espacio "local",
+                   fondo transparente, cubo a ~40 cm y 1,5 m delante
+  src/main.ts      botón «Ver en AR»: apaga cámara y sensores, pide la sesión
+                   dentro del clic, y restaura el visor al terminar
+  index.html       botón, línea de estado, diagnóstico («Comprobar de nuevo») y overlay DOM con «Salir de AR»
+  src/style.css    reglas del overlay (.xr-overlay, :xr-overlay)
 
 Cómo probarlo
 --------------
   npm install
-  npm run dev        (para programar)
-  npm run build      (compila TypeScript y genera dist/ con el Service Worker)
-  npm run preview    (sirve dist/ en localhost; la app ya funciona sin conexión)
+  npm run build        (compila src/sw.ts y la app)
+  npm run preview      → http://localhost:4173
 
-  La cámara y los sensores exigen HTTPS o localhost. En un teléfono real,
-  ver la guía de la Sesión 35 (sección "Probar en un teléfono real").
+  En un escritorio el botón queda deshabilitado con el motivo (es lo correcto).
+  Abre «Diagnóstico de realidad aumentada» bajo el visor para ver qué comprobación
+  falló. Con el emulador (extensión Immersive Web Emulator): actívalo con su icono
+  en esta pestaña, elige Meta Quest 3 en DevTools → WebXR y pulsa «Comprobar de nuevo».
+  Para ver AR de verdad hace falta un teléfono Android con ARCore y Chrome,
+  sirviendo la app por HTTPS (la guía explica cómo) o con depuración USB.
 
-Estructura
-----------
-  src/visor.ts      escena Three.js (cubo, luces, OrbitControls, fondo transparente)
-  src/sensores.ts   orientación del dispositivo (Sesión 35)
-  src/camara.ts     cámara de fondo y mensajes de error (Sesión 36)
-  src/db.ts         progreso en IndexedDB (Sesión 33)
-  src/crypto.ts     cifrado de la nota de estudio (Sesión 33)
-  src/main.ts       conecta todo
-  vite.config.ts    vite-plugin-pwa con generateSW (Workbox genera el SW)
+Verlo en un teléfono (GitHub Pages)
+------------------------------------
+  El proyecto ya es compatible con subrutas (usuario.github.io/nombre-repo/):
+  nada usa rutas absolutas; todo cuelga de import.meta.env.BASE_URL.
+  1. Crea un repositorio público y sube el proyecto (con .github/workflows).
+  2. Settings → Pages → Source: GitHub Actions.
+  3. Haz push a main: el flujo .github/workflows/pages.yml compila con
+     `npm run build -- --base=/nombre-del-repo/` y publica dist.
+  4. Abre https://usuario.github.io/nombre-del-repo/ en Chrome del teléfono.
+
+Limitaciones
+------------
+  - El cubo se coloca en una posición FIJA respecto a donde empezó la sesión;
+    NO se apoya en el piso ni en una mesa (eso es la Sesión 39).
+  - No funciona en iPhone: Safari no ofrece WebXR immersive-ar.
+  - Un emulador comprueba el código, no sustituye a un teléfono con ARCore.
 
 UPTC · Facultad de Ingeniería · Electiva - PWA

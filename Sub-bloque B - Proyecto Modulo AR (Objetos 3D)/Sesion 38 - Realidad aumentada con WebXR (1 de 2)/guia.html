@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 38 · Realidad aumentada con WebXR (1/2) · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .compare-wrap{overflow-x:auto;}
+  .warn-box{border:1px solid #e0a800; background:#fff8e1; border-radius:10px; padding:1em 1.2em; margin:1em 0; font-size:.92em;}
+  .warn-box b{color:#9a6b00;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  .term-box{background:#1c1c1e; color:#cfcac0; border-radius:10px; padding:.9em 1.1em; font-size:.82em; font-family:"Cascadia Code",Consolas,monospace; line-height:1.55; margin:1em 0; overflow-x:auto;}
+  .term-box .prompt{color:#6ad06a;}
+  .win-box{border:2px solid #2e7d32; background:#f1f9f1; border-radius:10px; padding:1em 1.2em; margin:1.2em 0; font-size:.92em;}
+  .win-box b{color:#1b5e20;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 12 de 18</div>
+    <h1>Realidad aumentada con WebXR (1/2)</h1>
+    <div class="lead">Hasta ahora el cubo del Atlas solo se dibujaba encima del video de la cámara. Hoy el Atlas abre una sesión de realidad aumentada de verdad con WebXR: el sistema muestra la cámara y sigue el movimiento del teléfono, y nuestra página dibuja el cubo en ese espacio. Aprendemos a preguntar si se puede, a pedir la sesión sin invadir, a entrar y salir sin dejar la app rota — y a ser honestos con lo que todavía no es: el cubo flota, no se apoya en nada.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Distinguir</b> una cámara de fondo (Sesión 36) de una sesión WebXR <code>immersive-ar</code>: quién dibuja la cámara, quién calcula el movimiento y qué recibe la página.</span></li>
+      <li><span class="chk">✓</span><span><b>Detectar</b> con honestidad si un dispositivo puede abrir realidad aumentada, separando cuatro situaciones distintas (sin HTTPS, sin WebXR, sin AR, disponible).</span></li>
+      <li><span class="chk">✓</span><span><b>Pedir</b> la sesión dentro de un clic, con <code>requiredFeatures</code>, <code>optionalFeatures</code> y un <i>DOM overlay</i>, y <b>cerrarla</b> devolviendo el visor al estado anterior.</span></li>
+      <li><span class="chk">✓</span><span><b>Conectar</b> Three.js al bucle de la sesión XR y razonar en metros: tamaño y posición del objeto en el espacio <code>local</code>.</span></li>
+      <li><span class="chk">✓</span><span><b>Publicar</b> el Atlas en una subruta de GitHub Pages sin romper rutas (<code>BASE_URL</code>) y <b>verlo</b> en un teléfono con ARCore.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion37.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 37.</b> El Atlas 3D con visor de Three.js (cubo de prueba), sensores de orientación, cámara de fondo, Service Worker propio (<code>injectManifest</code>), avisos y descarga de fichas. Hoy le agregamos <code>xr.ts</code> y el botón «Ver en AR». <b>Es el punto de partida: este .zip NO tiene el botón «Ver en AR».</b></span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-sesion38.zip">Descargar .zip</a><span class="rb-desc"><b>Versión terminada de esta sesión.</b> El Atlas 3D con <code>xr.ts</code>, <code>entrarEnAR</code> y el botón «Ver en AR». Úsalo para ejecutar el resultado y comparar con tu propio trabajo; intenta construirlo tú primero a partir del checkpoint de la Sesión 37.</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Lo que hicimos en la Sesión 36 no era realidad aumentada</h2>
+    <div class="body-text"><p>En la <a href="../../Sub-bloque%20B%20-%20Proyecto%20Modulo%20AR%20(Objetos%203D)/Sesion%2036%20-%20APIs%20de%20dispositivo%20en%20el%20proyecto%20(2%20de%202)/guia.html">Sesión 36</a> pusimos el video de la cámara detrás del canvas de Three.js. Se ve parecido a la realidad aumentada, pero el cubo solo está <b>dibujado encima de una imagen</b>: si mueves el teléfono, el cubo se queda pegado a la pantalla mientras el mundo se mueve por detrás. Para que el objeto parezca estar <i>en</i> el cuarto, alguien tiene que calcular, en cada fotograma, dónde está el teléfono en el espacio y mover la cámara virtual en consecuencia. Eso es lo que hace <b>WebXR</b>.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>WebXR Device API es el estándar del navegador para realidad virtual y aumentada. Hoy usamos solo uno de sus modos, <code>immersive-ar</code>: la sesión ocupa toda la pantalla, el navegador (con ayuda del sistema, que en Android es ARCore) muestra la cámara real y sigue la posición del teléfono, y la página dibuja gráficos 3D sobre esa imagen. La diferencia práctica con la Sesión 36 es de quién hace qué:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th></th><th>Cámara de fondo (Sesión 36)</th><th>Sesión <code>immersive-ar</code> (hoy)</th></tr>
+      <tr><td><b>¿Quién muestra la cámara?</b></td><td>La página, con un <code>&lt;video&gt;</code> y <code>getUserMedia</code></td><td>El navegador y el sistema; la página <b>no recibe los píxeles</b> de la cámara</td></tr>
+      <tr><td><b>¿Quién sigue el movimiento?</b></td><td>Nadie (en la 35 se usó la orientación, sin posición)</td><td>El sistema: posición y orientación del teléfono en cada fotograma</td></tr>
+      <tr><td><b>¿Dónde queda el cubo?</b></td><td>Pegado a la pantalla</td><td>En un punto del espacio (aunque todavía no sobre una superficie real)</td></tr>
+      <tr><td><b>¿Qué ve el usuario?</b></td><td>Un elemento más de la página</td><td>Una experiencia de pantalla completa que el usuario inicia y puede cerrar</td></tr>
+      <tr><td><b>¿Dónde funciona?</b></td><td>Casi cualquier navegador con cámara</td><td>Pocos: hoy, esencialmente Chrome y navegadores basados en Chromium en Android con ARCore</td></tr>
+    </table>
+    </div>
+    <div class="fig-caption">La última fila resume la tabla de compatibilidad de caniuse.com consultada para esta sesión (Chrome en Android y Edge de escritorio: soporte parcial; Safari en iOS: sin soporte; Firefox: desactivado por defecto). El soporte cambia con las versiones: revisa la tabla vigente antes de prometerle AR a nadie.</div>
+    <div class="warn-box"><b>Dos consecuencias que condicionan el diseño.</b> (1) Como el navegador toma la cámara para la sesión AR, la cámara de fondo de la Sesión 36 y la sesión AR <b>no pueden convivir</b>: hoy apagamos una antes de abrir la otra. (2) Como en iPhone no hay AR por WebXR, el visor 3D con sensores y cámara de fondo sigue siendo la experiencia «principal» para esos usuarios; la AR es una mejora que se ofrece donde existe. Esta es la misma lógica de mejora progresiva de todo el curso.</div>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Antes de ofrecer el botón: ¿se puede?</h2>
+    <div class="body-text"><p>La pregunta «¿tiene este navegador <code>navigator.xr</code>?» no alcanza. Hay <b>cuatro</b> respuestas distintas y cada una merece un mensaje distinto, porque le dicen al usuario qué hacer (o que no puede hacer nada). <code>isSessionSupported("immersive-ar")</code> consulta si el <i>dispositivo</i> puede abrir ese modo; no pide permiso ni abre nada, así que se puede llamar al cargar la página.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/xr.ts (detección)</div>
+      <pre><code>/** Resultado de preguntar «¿puedo usar AR aquí?». */
+export type SoporteAR = "disponible" | "contexto-inseguro" | "sin-webxr" | "sin-ar";
+
+/** Estado de soporte y, además, las comprobaciones una por una (para mostrarlas en pantalla). */
+export async function diagnosticarAR(): Promise&lt;{ estado: SoporteAR; lineas: string[] }&gt; {
+  const lineas: string[] = [];
+  const seguro = window.isSecureContext;
+  lineas.push(`Contexto seguro (HTTPS o localhost): ${seguro ? "sí" : "NO"}`);
+  if (!seguro) return { estado: "contexto-inseguro", lineas };
+
+  lineas.push(`navigator.xr: ${navigator.xr ? "presente" : "AUSENTE"}`);
+  if (!navigator.xr) return { estado: "sin-webxr", lineas };
+
+  try {
+    // Responde si el DISPOSITIVO puede abrir ese modo; no pide permiso ni abre nada.
+    const ok = await navigator.xr.isSessionSupported("immersive-ar");
+    lineas.push(`isSessionSupported("immersive-ar"): ${ok}`);
+    return { estado: ok ? "disponible" : "sin-ar", lineas };
+  } catch (err) {
+    lineas.push(`isSessionSupported("immersive-ar") lanzó: ${err instanceof Error ? err.name : String(err)}`);
+    return { estado: "sin-ar", lineas };
+  }
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>El orden de las comprobaciones importa: primero el contexto seguro (WebXR solo existe en HTTPS o <code>localhost</code>), luego la existencia de <code>navigator.xr</code>, y al final la pregunta por el modo. La función no devuelve solo el veredicto: guarda en <code>lineas</code> el resultado de <b>cada</b> comprobación, para poder mostrárselo a quien no logre activar el botón (lo verás en la sección 6). El <code>try/catch</code> existe porque <code>isSessionSupported</code> puede rechazar su promesa; si eso ocurre, lo tratamos como «sin AR» en vez de romper la página. Los mensajes viven en una función aparte, con un <code>switch</code> que cubre los cuatro casos:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/xr.ts (mensajes)</div>
+      <pre><code>export function mensajeSoporteAR(estado: SoporteAR): string {
+  switch (estado) {
+    case "disponible":
+      return "Este dispositivo puede abrir una sesión de realidad aumentada.";
+    case "contexto-inseguro":
+      return "La realidad aumentada exige HTTPS o localhost.";
+    case "sin-webxr":
+      return "Este navegador no ofrece WebXR (por ejemplo, Safari en iPhone o Firefox). El visor 3D sigue funcionando.";
+    case "sin-ar":
+      return "Este dispositivo no admite realidad aumentada en el navegador (por ejemplo, un computador de escritorio sin el emulador activado).";
+  }
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>En la página, el botón nace deshabilitado y solo se habilita si la respuesta es «disponible». Sea cual sea el resultado, la línea de estado le dice al usuario <i>por qué</i>, y un pequeño diagnóstico muestra las tres comprobaciones. La pregunta se repite al pulsar «Comprobar de nuevo» y cuando el navegador dispara <code>devicechange</code> (cambió el dispositivo XR), porque el soporte puede aparecer <i>después</i> de cargar la página, por ejemplo al activar un emulador:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (soporte al cargar)</div>
+      <pre><code>const diagAR = document.querySelector&lt;HTMLElement&gt;("#diag-ar")!;
+const detallesAR = document.querySelector&lt;HTMLDetailsElement&gt;(".diag-ar")!;
+const btnRecomprobar = document.querySelector&lt;HTMLButtonElement&gt;("#btn-recomprobar")!;
+
+// ¿Se puede? El botón solo se habilita si la respuesta es «sí». Se pregunta al
+// cargar, al pulsar «Comprobar de nuevo» y cuando el navegador avisa de que
+// cambió el dispositivo XR (así funciona también si activas el emulador después).
+async function comprobarAR(): Promise&lt;void&gt; {
+  const { estado, lineas } = await diagnosticarAR();
+  estadoAR.textContent = mensajeSoporteAR(estado);
+  diagAR.textContent = lineas.join("\n");
+  if (!sesionAR) btnAR.disabled = estado !== "disponible";
+  // Si no se puede, el diagnóstico se muestra abierto para ver qué comprobación falló.
+  detallesAR.open = estado !== "disponible";
+}
+void comprobarAR();
+btnRecomprobar.addEventListener("click", () =&gt; void comprobarAR());
+navigator.xr?.addEventListener("devicechange", () =&gt; void comprobarAR());</code></pre>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>Pedir la sesión: gesto del usuario, funciones requeridas y opcionales</h2>
+    <div class="body-text"><p><code>navigator.xr.requestSession(modo, opciones)</code> devuelve una promesa con un objeto <code>XRSession</code>. Tres reglas que conviene saber antes de leer el código:</p></div>
+    <ul class="clean">
+      <li><b>Se pide dentro de un clic.</b> Entrar a una experiencia inmersiva es una acción que el usuario debe iniciar: según la especificación de WebXR, sin una activación reciente del usuario (un toque o un clic) la petición se rechaza con <code>SecurityError</code>. Por eso el código no abre la sesión al cargar la página: lo hace el manejador del botón.</li>
+      <li><b><code>requiredFeatures</code> hace fallar; <code>optionalFeatures</code> no.</b> Si falta alguna función requerida, la promesa se rechaza con <code>NotSupportedError</code>. Las opcionales se conceden si se puede y se ignoran si no, y la página debe seguir funcionando en ambos casos.</li>
+      <li><b>Los errores son parte del diseño.</b> <code>NotSupportedError</code> y <code>SecurityError</code> son los dos que vale la pena explicar al usuario; cualquier otro se resume en un mensaje genérico.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/xr.ts (pedir la sesión)</div>
+      <pre><code>/**
+ * Pide la sesión AR. DEBE llamarse desde el manejador de un clic: sin gesto del
+ * usuario, el navegador la rechaza con SecurityError.
+ */
+export function pedirSesionAR(overlay: HTMLElement | null): Promise&lt;XRSession&gt; {
+  const opciones: XRSessionInit &amp; { domOverlay?: { root: Element } } = {
+    requiredFeatures: ["local"], // el origen (0,0,0) es donde está el usuario al empezar
+    optionalFeatures: ["dom-overlay"], // si existe, el botón «Salir» se dibuja sobre la cámara
+  };
+  if (overlay) opciones.domOverlay = { root: overlay };
+  return navigator.xr!.requestSession("immersive-ar", opciones);
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Las dos funciones elegidas, y qué significan:</p></div>
+    <ul class="clean">
+      <li><b><code>"local"</code> (requerida).</b> Define el <i>espacio de referencia</i>: un sistema de coordenadas cuyo origen queda cerca de donde está el teléfono al empezar la sesión. Las unidades son <b>metros</b>, y el sentido «hacia adelante» es el eje <b>−Z</b>. Un objeto en <code>(0, 0, −1.5)</code> aparece a metro y medio frente a ti. Es el espacio más simple; la Sesión 39 agregará <code>hit-test</code> para ubicar superficies reales.</li>
+      <li><b><code>"dom-overlay"</code> (opcional).</b> En AR de teléfono la pantalla completa es la cámara, así que <b>un botón normal de tu página no se vería</b>. Esta función le permite al navegador dibujar un elemento HTML tuyo (<code>domOverlay.root</code>) encima de la cámara. Lo usamos para el botón «Salir de AR». Es opcional porque la AR debe poder abrirse aunque el navegador no la ofrezca.</li>
+    </ul>
+    <div class="body-text" style="margin-top:1em;"><p>El elemento overlay vive en el HTML, oculto por defecto, y el CSS lo muestra solo mientras dura la sesión, con la pseudoclase <code>:xr-overlay</code>. Según la especificación de DOM Overlays, el navegador estira ese elemento por toda la pantalla con fondo transparente, así que el CSS solo decide cómo acomodar lo de adentro:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>index.html y style.css (overlay)</div>
+      <pre><code>    &lt;div id="xr-overlay" class="xr-overlay"&gt;
+      &lt;p id="xr-estado"&gt;Sesión de realidad aumentada activa&lt;/p&gt;
+      &lt;button type="button" id="btn-salir-ar"&gt;Salir de AR&lt;/button&gt;
+    &lt;/div&gt;</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/style.css (overlay)</div>
+      <pre><code>.xr-overlay { display: none; }
+/* Mientras dura la sesión, el navegador estira este elemento sobre toda la pantalla
+   (fondo transparente). Solo hay que decir cómo acomodar lo de adentro. */
+.xr-overlay:xr-overlay { display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: .6em; padding-bottom: 1.2em; box-sizing: border-box; }
+.xr-overlay p { margin: 0; background: rgba(11, 18, 32, .75); color: #e8e2cf; padding: .4em .8em; border-radius: 8px; font-size: .9em; }
+.xr-overlay button { background: #ffcc29; color: #0b1220; border: 0; border-radius: 8px; padding: .7em 1.2em; font-weight: 700; cursor: pointer; }</code></pre>
+    </div>
+    <div class="warn-box"><b>No des por hecho que el botón aparecerá.</b> Como <code>dom-overlay</code> es opcional, el navegador puede no concederlo. La sesión expone <code>domOverlayState</code> (con un campo <code>type</code>) solo si lo concedió; el código lo comprueba y, si falta, le avisa al usuario que debe salir con el mecanismo de salida del sistema. Un emulador sin DOM Overlay ejercita la rama «no concedido»; la rama «concedido» se simula en la prueba. En Chrome para Android, con ARCore, el navegador <b>sí lo concede</b>: la figura de la sección 9 muestra el botón «Salir de AR» dibujado sobre la cámara.</div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>Three.js dentro de la sesión: el bucle, la escala y el origen</h2>
+    <div class="body-text"><p>Three.js trae soporte WebXR en <code>renderer.xr</code>. Conectar el visor a la sesión exige cuatro decisiones, todas visibles en el código:</p></div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>El reloj cambia.</b> Con <code>requestAnimationFrame</code> el navegador llama a tu función al ritmo de la pantalla; en una sesión XR el ritmo y las poses los marca <i>la sesión</i>. Three.js lo resuelve con <code>renderer.setAnimationLoop(función)</code>. Por eso, al entrar a AR se cancela el <code>requestAnimationFrame</code> del visor normal, y al salir se vuelve a arrancar.</li>
+      <li><b>El fondo desaparece.</b> <code>escena.background = null</code>: la imagen de la cámara la pone el navegador <i>detrás</i> de tu canvas, así que no hay que pintar nada. El renderer ya se creó con <code>alpha: true</code> en la Sesión 36, que es lo que permite esa transparencia.</li>
+      <li><b>Los números son metros.</b> El cubo de prueba mide 1,6 unidades. En pantalla normal eso es solo «un cubo grande»; en AR sería un cubo de <b>1,6 metros</b> (más alto que un niño) a la altura de tu cara. Se escala a 0,25 (unos 40 cm) y se aleja 1,5 m.</li>
+      <li><b>Hay que dejar todo como estaba.</b> El visor guarda posición, escala y fondo antes de entrar, y los restaura cuando la sesión termina, sea por el botón «Salir», por el sistema o por un error.</li>
+    </ol>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (entrarEnAR)</div>
+      <pre><code>  async function entrarEnAR(sesion: XRSession, alTerminar: () =&gt; void) {
+    cancelAnimationFrame(animacion); // en AR NO manda requestAnimationFrame: manda el reloj del visor XR
+    renderer.xr.enabled = true;
+    renderer.xr.setReferenceSpaceType("local");
+    await renderer.xr.setSession(sesion);
+    sesionAR = sesion;
+
+    const fondoPrevio = escena.background;
+    escena.background = null; // la cámara real es el fondo: no se pinta nada detrás
+    controles.enabled = false;
+    // Un cubo de 1,6 m sería gigante: se reduce a ~40 cm y se pone 1,5 m delante,
+    // un poco por debajo de la vista. En el espacio «local» el origen es el usuario.
+    const posicionPrevia = grupo.position.clone();
+    const escalaPrevia = grupo.scale.clone();
+    grupo.position.set(0, -0.2, -1.5);
+    grupo.scale.setScalar(0.25);
+
+    renderer.setAnimationLoop(() =&gt; {
+      grupo.rotation.y += 0.01; // prueba de vida: el cubo gira solo
+      renderer.render(escena, camara);
+    });
+
+    sesion.addEventListener(
+      "end",
+      () =&gt; {
+        renderer.setAnimationLoop(null);
+        renderer.xr.enabled = false;
+        sesionAR = null;
+        escena.background = fondoPrevio;
+        controles.enabled = !porSensores;
+        grupo.position.copy(posicionPrevia);
+        grupo.scale.copy(escalaPrevia);
+        grupo.rotation.set(0, 0, 0);
+        ajustarTamano(); // el visor XR cambió el tamaño del canvas
+        bucle(); // vuelve el requestAnimationFrame normal
+        alTerminar();
+      },
+      { once: true }
+    );
+  }</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Detalles finos: <code>renderer.xr.setSession(sesion)</code> es asíncrona (devuelve una promesa), por eso se espera con <code>await</code> antes de tocar la escena. El cubo gira solo (<code>rotation.y += 0.01</code>) porque, sin superficie real todavía, es la forma más rápida de saber que el bucle XR está vivo. Y el listener de <code>end</code> se registra con <code>{ once: true }</code>: la sesión termina una sola vez, y así el listener no se acumula si el usuario abre y cierra AR varias veces.</p></div>
+    <div class="warn-box"><b>Ojo con el origen «local».</b> El cubo queda en una posición fija respecto a donde estaba el teléfono <i>al empezar la sesión</i>. Si caminas hacia él, te acercas; si miras a otro lado, sale del encuadre. Pero <b>no está apoyado en el piso ni en una mesa</b>: el sistema aún no le dijo a la página dónde hay superficies. Eso es hit-test, y es el tema de la Sesión 39. Hoy es «un cubo flotando a metro y medio», no «un cubo sobre tu escritorio».</div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>El botón «Ver en AR»: ordenar lo que hay antes de entrar</h2>
+    <div class="body-text"><p>El visor ya tiene tres formas de «mover» el cubo (ratón o dedo, sensores, cámara de fondo). Al abrir la sesión AR hay que decidir qué pasa con cada una, y la respuesta es: se apagan las que compiten. La cámara de fondo, porque la AR necesita la cámara; los sensores, porque la sesión XR ya entrega la orientación real del teléfono, y dos fuentes moviendo la misma cámara se estorban. El orden dentro del manejador es parte de la lógica:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (el botón)</div>
+      <pre><code>btnAR.addEventListener("click", async () =&gt; {
+  avisarVisor("");
+  // La cámara del navegador y la sesión AR no pueden usarse a la vez: la AR
+  // abre la cámara por su cuenta. Se apagan también los sensores de la Sesión 35.
+  apagarCamara();
+  apagarSensores();
+  try {
+    // La petición ocurre DENTRO del clic: es el «gesto del usuario» que exige WebXR.
+    const sesion = await pedirSesionAR(overlayAR);
+    sesionAR = sesion;
+    btnAR.disabled = true;
+    await visor.entrarEnAR(sesion, () =&gt; {
+      sesionAR = null;
+      btnAR.disabled = false;
+      estadoAR.textContent = "La sesión de realidad aumentada terminó.";
+    });
+    // domOverlayState existe solo si el navegador concedió la función «dom-overlay».
+    estadoAR.textContent = sesion.domOverlayState
+      ? "Sesión de realidad aumentada activa. Usa «Salir de AR» sobre la cámara."
+      : "Sesión de realidad aumentada activa. Este navegador no mostró el botón sobre la cámara: sal con el gesto de salida del sistema.";
+  } catch (err) {
+    sesionAR?.end().catch(() =&gt; {});
+    sesionAR = null;
+    btnAR.disabled = false;
+    avisarVisor(describirErrorAR(err));
+  }
+});</code></pre>
+    </div>
+    <ul class="clean">
+      <li><b>La petición ocurre en el clic.</b> Antes de ella solo hay llamadas síncronas (<code>apagarCamara</code>, <code>apagarSensores</code>), que no consumen el «gesto» del usuario.</li>
+      <li><b>El <code>catch</code> limpia todo.</b> Si <code>pedirSesionAR</code> o <code>entrarEnAR</code> fallan, se cierra la sesión si quedó abierta, se rehabilita el botón y se explica el motivo con <code>describirErrorAR</code>. El visor 3D sigue disponible.</li>
+      <li><b>El callback de fin</b> (segundo argumento de <code>entrarEnAR</code>) devuelve la página a su estado normal sin importar <i>quién</i> cerró la sesión.</li>
+      <li><b>«Salir de AR»</b> solo llama a <code>sesion.end()</code>; la restauración la hace el mismo listener de <code>end</code> de siempre. Un único camino de salida es más fácil de razonar que tres.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (salir)</div>
+      <pre><code>btnSalirAR.addEventListener("click", () =&gt; {
+  void sesionAR?.end();
+});</code></pre>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">6</span>Cómo probar WebXR sin un teléfono: un emulador</h2>
+    <div class="body-text"><p>Un computador de escritorio no tiene sesiones AR. Para comprobar el <i>código</i> (no la experiencia) puedes usar un emulador de WebXR. Hay dos caminos y comparten tecnología: la extensión de Chrome <b>Immersive Web Emulator</b>, de Meta, para usarla a mano mientras desarrollas; y la librería <b>IWER</b> (<i>Immersive Web Emulation Runtime</i>), en la que se apoya la extensión, para escribir pruebas automáticas. Ambas reemplazan <code>navigator.xr</code> por una implementación simulada de un casco Meta Quest que acepta sesiones <code>immersive-ar</code> y entrega fotogramas.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Los pasos con la extensión (los nombres exactos de los controles cambian entre versiones, pero la lógica es siempre esta):</p></div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li>Instálala desde la Chrome Web Store (busca «Immersive Web Emulator», de Meta) y fíjala en la barra de herramientas. No aparece en <code>chrome://extensions</code> hasta que la instales.</li>
+      <li>Abre el Atlas en <code>localhost:4173</code> y <b>pulsa el icono de la extensión para activar la emulación en ese sitio</b>: la extensión solo actúa en las páginas donde la activas, y recarga la página al hacerlo. Si no ves cambios, recarga.</li>
+      <li>Abre las DevTools (F12) y busca la pestaña <b>WebXR</b>. Elige un dispositivo con realidad aumentada, como el <b>Meta Quest 3</b>; un casco que solo hace realidad virtual responde «no» a <code>immersive-ar</code>.</li>
+      <li>Despliega «Diagnóstico de realidad aumentada» bajo el visor. Las tres líneas deben decir <b>sí / presente / true</b>. Si cambiaste algo después de cargar, pulsa «Comprobar de nuevo».</li>
+    </ol>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/emulador-ar.png" alt="Sesión AR emulada en localhost:4173: el cubo del Atlas en el centro, la rejilla del entorno del emulador y los paneles de los controles izquierdo y derecho" style="max-width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Con la extensión activa en <code>localhost:4173</code> y la sesión AR abierta: el cubo del Atlas (centro) flota a metro y medio. La rejilla es el entorno sintético del emulador; la barra superior y los paneles «Controller [L]» y «Controller [R]» son sus controles.</div></figure>
+    <div class="body-text" style="margin-top:1em;"><p>El diagnóstico te dice qué falló, línea por línea:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Línea del diagnóstico</th><th>Qué significa</th><th>Qué hacer</th></tr>
+      <tr><td><code>Contexto seguro: NO</code></td><td>La página no se sirve por HTTPS ni desde <code>localhost</code>.</td><td>Abre <code>http://localhost:4173</code>, no una dirección IP ni un nombre de equipo.</td></tr>
+      <tr><td><code>navigator.xr: AUSENTE</code></td><td>El navegador no ofrece WebXR en absoluto (Firefox, Safari).</td><td>Usa Chrome o Edge de escritorio con la extensión.</td></tr>
+      <tr><td><code>isSessionSupported(…): false</code></td><td>Es el caso más común en un computador. Chrome de escritorio sí tiene <code>navigator.xr</code>, pero responde «no» a la AR: el emulador no está activo en esta pestaña, o el dispositivo emulado no admite AR (o la extensión es anterior a la 1.1).</td><td>Activa la extensión con su icono y recarga; en DevTools → WebXR elige Meta Quest 3; actualiza la extensión; pulsa «Comprobar de nuevo».</td></tr>
+      <tr><td>No aparece el diagnóstico ni el botón «Ver en AR»</td><td>Estás ejecutando una versión anterior de la app.</td><td>Usa el .zip «Versión terminada de esta sesión» y limpia los datos del sitio (sección 8).</td></tr>
+    </table>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>La extensión no implementa DOM Overlay, así que con ella el botón «Salir de AR» no se dibuja sobre la cámara y la app muestra el mensaje «sal con el gesto de salida del sistema»: en el emulador, termina la sesión con sus propios controles. Es justo la rama que la sección 3 pedía no dar por hecha. Según las notas de las versiones de la extensión, <code>hit-test</code> y los anclajes (<i>anchors</i>) están soportados desde la 1.2, lo que será útil en la próxima sesión.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Un detalle que importa si usas IWER como librería: Chromium de escritorio ya define un <code>navigator.xr</code> propio (que responde «no» a todo), y IWER, por defecto, <b>no lo reemplaza</b>. Se instala con <code>installRuntime({ forceInstall: true })</code>; sin esa opción, el emulador parece no hacer nada y la página dice que no hay AR.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">7</span>Comprobación automática contra el build real</h2>
+    <div class="body-text"><p>La prueba automática (<code>test_s38.js</code>) abre el resultado de <code>npm run build</code>, servido por un servidor estático, en Chromium controlado con Playwright, e instala IWER antes de que cargue la página. Cada escenario aísla una situación distinta de la sección 2 o de la 5. Salida literal del build:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build<br>
+dist/assets/index-DcY0lyhb.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;508.47 kB │ gzip: 129.84 kB<br>
+✓ built in 2.30s<br>
+dist/sw.mjs&nbsp;&nbsp;27.27 kB │ gzip: 9.03 kB<br>
+✓ built in 395ms<br>
+mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;injectManifest<br>
+<b>precache&nbsp;&nbsp;8 entries (518.70 KiB)</b></div>
+    <div class="fig-caption">El precaché pasó de 513,93 KiB (Sesión 37) a 518,70 KiB y sigue en 8 entradas: el aumento es el código nuevo de la página (<code>xr.ts</code>, el botón y el diagnóstico); el paquete principal pasó de 505,10 a 508,47 kB. El Service Worker casi no cambió: <code>sw.mjs</code> pasó de 27,25 a 27,27 kB por la ruta base que se añadió en la sección 9.</div>
+    <div class="body-text" style="margin-top:1em;"><p>Y la prueba, con sus siete escenarios (A: sin <code>navigator.xr</code>; B: contexto inseguro simulado; C: WebXR sin <code>immersive-ar</code>; D: sesión completa con el emulador; E: tres errores de <code>requestSession</code>; F: <code>dom-overlay</code> concedido, simulado; G: el emulador se activa <i>después</i> de cargar y «Comprobar de nuevo» habilita el botón). Los números de fotogramas cambian en cada ejecución; lo que importa es que crezcan:</p></div>
+    <div class="term-box"><span class="prompt">$</span> node test_s38.js<br>
+A) navigator.xr: undefined | estado: Este navegador no ofrece WebXR (por ejemplo, Safari en iPhone o Firefox). El visor 3D sigue funcionando. | botón deshabilitado: true<br>
+A) diagnóstico → Contexto seguro (HTTPS o localhost): sí ¦ navigator.xr: AUSENTE<br>
+B) contexto inseguro → estado: La realidad aumentada exige HTTPS o localhost. | deshabilitado: true<br>
+C) sin immersive-ar → estado: Este dispositivo no admite realidad aumentada en el navegador (por ejemplo, un computador de escritorio sin el emulador activado). | deshabilitado: true<br>
+C) diagnóstico → Contexto seguro (HTTPS o localhost): sí ¦ navigator.xr: presente ¦ isSessionSupported("immersive-ar"): false<br>
+D) soporte → estado: Este dispositivo puede abrir una sesión de realidad aumentada. | botón habilitado: true<br>
+D) diagnóstico → Contexto seguro (HTTPS o localhost): sí ¦ navigator.xr: presente ¦ isSessionSupported("immersive-ar"): true<br>
+D) cámara de fondo antes de AR → video visible: true<br>
+D) en AR → {"peticion":{"modo":"immersive-ar","op":"{\"requiredFeatures\":[\"local\"],\"optionalFeatures\":[\"dom-overlay\"],\"domOverlay\":{\"root\":{}}}"},"sesiones":1,"fotogramas":77,"estado":"Sesión de realidad aumentada activa. Este navegador no mostró el botón sobre la cámara: sal con el gesto de salida del sistema.","domOverlayState":"undefined","btnAR":true,"video":false,"srcVideo":false}<br>
+D) el bucle XR avanza: fotogramas 77 → 108 true<br>
+D) tras salir → {"fin":1,"estado":"La sesión de realidad aumentada terminó.","btnAR":true,"canvases":1}<br>
+D) tras salir no corren más fotogramas XR: true<br>
+D) tras salir vuelve el requestAnimationFrame normal: 409 → 440 true<br>
+D) vuelve a pedirse otra sesión:<br>
+&nbsp;&nbsp; sesiones abiertas en total: 2 | activa: visible<br>
+E) NotSupportedError → aviso: Este dispositivo no puede abrir realidad aumentada con las funciones que pide la app. | botón habilitado: true | canvas: 1<br>
+E) SecurityError → aviso: El navegador rechazó la sesión de realidad aumentada: se denegó el permiso o la petición no vino de un toque del usuario. | botón habilitado: true | canvas: 1<br>
+E) AbortError → aviso: No se pudo iniciar la realidad aumentada. Inténtalo de nuevo. | botón habilitado: true | canvas: 1<br>
+F) con dom-overlay concedido (simulado) → Sesión de realidad aumentada activa. Usa «Salir de AR» sobre la cámara.<br>
+G) sin emulador → botón habilitado: false | diagnóstico: Contexto seguro (HTTPS o localhost): sí ¦ navigator.xr: presente ¦ isSessionSupported("immersive-ar"): false<br>
+G) emulador instalado + «Comprobar de nuevo» → botón habilitado: true | diagnóstico: Contexto seguro (HTTPS o localhost): sí ¦ navigator.xr: presente ¦ isSessionSupported("immersive-ar"): true<br>
+pageerrors: []</div>
+    <div class="win-box"><b>Qué demuestra:</b> (1) los cuatro mensajes de soporte aparecen donde corresponden, el diagnóstico muestra qué comprobación falló y el botón queda deshabilitado en los tres casos negativos; (2) con el emulador el botón se habilita y la petición sale como <code>immersive-ar</code> con <code>local</code> requerida y <code>dom-overlay</code> opcional; (3) <b>la cámara de fondo se apaga</b> al entrar; (4) el bucle XR avanza (77 → 108 fotogramas en medio segundo); (5) al salir se detienen los fotogramas XR, el <code>requestAnimationFrame</code> normal vuelve (409 → 440), el botón se rehabilita y el canvas sigue en su sitio; (6) se puede abrir una segunda sesión sin recargar; (7) los errores de la petición se explican y el visor sigue siendo usable; (8) la rama con y sin <code>domOverlayState</code> da mensajes distintos; (9) si el soporte aparece después de cargar, «Comprobar de nuevo» lo detecta; (10) cero <code>pageerror</code>.</div>
+    <div class="warn-box"><b>Qué no puede comprobar un emulador (y cómo comprobarlo tú).</b> (1) IWER comprueba que el código usa bien la API, no que funcione en un teléfono con ARCore: para eso, la prueba en un teléfono Android (sección 9). (2) La prueba verifica los números que dicta la API (cubo de 40 cm de lado a 1,5 m, un poco por debajo de la vista; metros, −Z hacia adelante), no cómo se ve: mira el cubo en el emulador o en el teléfono y compáralo con esos números. (3) El clic real sobre «Salir de AR» dentro del overlay no se puede emular aquí: la prueba llama al manejador del botón; en un teléfono, tócalo. (4) IWER no implementa DOM Overlay, así que <code>domOverlayState</code> vino vacío en el escenario D y se simuló en el F. (5) El requisito de gesto del usuario viene de la especificación; el emulador no lo exige. (6) El contexto «inseguro» se simula redefiniendo <code>window.isSecureContext</code>; para verlo de verdad, sirve la app con <code>npm run preview -- --host</code> y ábrela por la dirección IP del computador desde otro equipo. (7) iOS no tiene WebXR en Safari: compruébalo en un iPhone.</div>
+
+    <h2 class="section-title"><span class="num-badge">8</span>Pruébalo tú</h2>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>npm install
+npm run build
+npm run preview        # http://localhost:4173</code></pre>
+    </div>
+    <div class="warn-box"><b>¿No ves el botón «Ver en AR»? Casi seguro estás ejecutando otra versión.</b> El primer .zip de Recursos es el punto de partida (cierre de la Sesión 37): <b>no incluye el botón</b>, y su pantalla dice «NO es realidad aumentada todavía». Para ver el resultado de hoy usa el segundo .zip, «Versión terminada de esta sesión», o completa el código tú mismo. Si ya habías abierto otra versión en el mismo puerto (<code>localhost:4173</code>), el Service Worker puede seguir sirviendo la anterior: recarga dos veces, o en DevTools → Application → Storage pulsa «Clear site data» y recarga. Tras la actualización, la pantalla debe mostrar el botón «Ver en AR» y su línea de estado.</div>
+    <ul class="clean">
+      <li><b>En el computador:</b> abre <code>localhost:4173</code>. El botón «Ver en AR» aparece <i>deshabilitado</i> (gris) y la línea de estado, bajo el visor, explica que el dispositivo no admite AR. Eso es lo correcto en un computador sin emulador: el botón existe, pero no se puede usar.</li>
+      <li><b>Con el emulador:</b> sigue los cuatro pasos de la sección 6 (icono de la extensión → recargar → pestaña WebXR de DevTools → «Diagnóstico de realidad aumentada»). Con un dispositivo AR elegido, las tres líneas dicen sí / presente / true, el botón «Ver en AR» se habilita, y al pulsarlo el emulador entra en la sesión AR y el cubo debería aparecer girando delante de ti (los controles del emulador te permiten mover el dispositivo virtual para mirarlo desde otro lado). Si el botón sigue gris, lee en el diagnóstico qué línea falló y aplica la tabla de la sección 6.</li>
+      <li><b>En un teléfono Android con Chrome y ARCore:</b> publica el Atlas en GitHub Pages (sección 9). Como alternativa sin publicar, conecta el teléfono por USB con la depuración USB activada, abre <code>chrome://inspect/#devices</code> en el computador, añade en «Port forwarding» el puerto 4173 con destino <code>localhost:4173</code> y abre <code>http://localhost:4173</code> en el Chrome del teléfono (<code>localhost</code> cuenta como contexto seguro). El teléfono necesita «Google Play Services for AR». Al pulsar «Ver en AR» el navegador pide permiso de cámara; el cubo debe aparecer delante de ti, a metro y medio.</li>
+      <li><b>En un iPhone:</b> el botón debe quedar deshabilitado con el mensaje de «sin WebXR». Eso <i>es</i> el resultado correcto.</li>
+    </ul>
+
+    <h2 class="section-title"><span class="num-badge">9</span>Verlo en tu teléfono: publicar en GitHub Pages</h2>
+    <div class="body-text"><p>WebXR exige HTTPS, y el emulador no muestra la cámara real ni el seguimiento de movimiento. Para ver el cubo en tu teléfono (Android, con Chrome y ARCore) hay que <b>publicar</b> el Atlas en una dirección HTTPS. GitHub Pages lo hace gratis, directamente desde un repositorio.</p></div>
+    <h3 class="sub-title">La trampa de la subruta</h3>
+    <div class="body-text"><p>Un repositorio llamado <code>atlas-3d</code> no se publica en <code>usuario.github.io</code>, sino en <code>usuario.github.io/<b>atlas-3d</b>/</code>: una <i>subruta</i>. En local, el Atlas vivía en la raíz, y varias rutas estaban escritas como <code>"/iconos/icon-192.png"</code>. En GitHub Pages esa ruta apuntaría a <code>usuario.github.io/iconos/…</code>, que no existe: iconos rotos, un manifest que no se instala, un Service Worker que no intercepta lo que debe. La solución tiene tres piezas:</p></div>
+    <ul class="clean">
+      <li><b>Vite conoce la ruta base.</b> Se le pasa al compilar: <code>npm run build -- --base=/atlas-3d/</code>. Con eso reescribe las rutas del <code>index.html</code> y de los archivos generados. Sin <code>--base</code>, la base es <code>/</code> y todo sigue como antes.</li>
+      <li><b>El código no escribe rutas absolutas a mano.</b> En su lugar usa <code>import.meta.env.BASE_URL</code>, que vale <code>/</code> en local y <code>/atlas-3d/</code> publicado.</li>
+      <li><b>El manifest usa rutas relativas</b> (<code>"start_url": "./"</code>, <code>"scope": "./"</code>, iconos como <code>"iconos/icon-192.png"</code>), que se resuelven respecto al propio manifest.</li>
+    </ul>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/descargas.ts (ruta de una ficha)</div>
+      <pre><code>// BASE_URL vale «/» en local y «/nombre-del-repo/» en GitHub Pages: nunca escribas rutas absolutas a mano.
+export const urlDeModelo = (id: string) =&gt; `${import.meta.env.BASE_URL}modelos/${id}.json`;</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/sw.ts (ruta base en el Service Worker)</div>
+      <pre><code>// Ruta base de la app: «/» en local, «/nombre-del-repo/» en GitHub Pages.
+const BASE = import.meta.env.BASE_URL;
+
+registerRoute(
+  ({ url }) =&gt; url.pathname.startsWith(BASE + "iconos/"),</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>La misma regla vale para el Service Worker, las notificaciones (icono y destino al tocarlas) y las fichas de modelos: todo cuelga de <code>BASE</code>.</p></div>
+
+    <h3 class="sub-title">Comprobación en subruta</h3>
+    <div class="body-text"><p>Antes de publicar, se compiló con <code>--base=/atlas-3d/</code> y se sirvió el resultado <i>solo</i> bajo <code>/atlas-3d/</code>, como lo haría GitHub Pages (cualquier petición fuera de esa ruta cuenta como error). La prueba (<code>test_subruta.js</code>) comprueba el alcance del Service Worker, el manifest, un icono, la recarga sin conexión y la descarga de fichas desde el botón:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build -- --base=/atlas-3d/ --outDir /tmp/dist-sub<br>
+<span class="prompt">$</span> node test_subruta.js<br>
+subruta → {"scope":"http://localhost:4195/atlas-3d/","activo":true,"manifest":{"start":"./","scope":"./"},"iconoStatus":200,"caches":["workbox-precache-v2-http://localhost:4195/atlas-3d/"]}<br>
+recarga sin conexión: canvas montado = 1<br>
+ficha → ["http://localhost:4195/atlas-3d/modelos/modelo-demo-1.json",200]<br>
+descarga desde el botón → caché modelos-3d: ["http://localhost:4195/atlas-3d/modelos/modelo-demo-1.json","http://localhost:4195/atlas-3d/modelos/modelo-demo-2.json","http://localhost:4195/atlas-3d/modelos/modelo-demo-3.json"]<br>
+peticiones fuera de la subruta o 404: [] | pageerrors: []</div>
+    <div class="win-box"><b>Qué demuestra:</b> el Service Worker queda con alcance <code>/atlas-3d/</code> y activo; el manifest y el icono responden 200; el catálogo sigue funcionando sin conexión; las fichas se piden y se guardan bajo <code>/atlas-3d/modelos/</code>; y no hay ni una petición fuera de la subruta ni un 404.</div>
+
+    <h3 class="sub-title">Publicar, paso a paso</h3>
+    <div class="body-text"><p>Necesitas una cuenta de GitHub. El orden importa: primero se activa Pages con la fuente «GitHub Actions» y después se sube el proyecto.</p></div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Crea el repositorio.</b> En github.com pulsa <b>New</b> (o «Create a new repository»). Ponle un nombre sin espacios, por ejemplo <code>atlas-3d</code> (será la subruta), márcalo <b>Public</b> y créalo. No hace falta añadir README ni <code>.gitignore</code>.</li>
+      <li><b>Activa Pages con la fuente «GitHub Actions».</b> Dentro del repositorio: <b>Settings → Pages → Build and deployment → Source</b>, y elige <b>GitHub Actions</b> en la lista.</li>
+      <li><b>No pulses «Configure».</b> Al elegir esa fuente, GitHub te sugiere dos flujos, «GitHub Pages Jekyll» y «Static HTML», cada uno con un botón <b>Configure</b>. No uses ninguno: «Static HTML» publica los archivos del repositorio <i>tal cual, sin compilar</i>, y el Atlas necesita compilarse (TypeScript y Vite). El flujo que sí sirve, <code>pages.yml</code>, ya viene dentro del proyecto. En esta pantalla no hay nada más que configurar.</li>
+    </ol>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/github-pages-fuente.png" alt="Pantalla Settings, Pages de GitHub con Source en GitHub Actions y los dos botones Configure marcados para no pulsarlos" style="max-width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Settings → Pages. (1) La fuente ya es «GitHub Actions». (2) Los botones «Configure» de los flujos sugeridos no se usan.</div></figure>
+    <ol start="4" style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Sube el proyecto.</b> Descomprime <code>pwa-ar-objetos3d-sesion38.zip</code> en tu equipo. En la pestaña <b>Code</b> del repositorio vacío pulsa <b>uploading an existing file</b> (o <b>Add file → Upload files</b>), arrastra <i>el contenido</i> de la carpeta (<code>src</code>, <code>public</code>, <code>.github</code>, <code>index.html</code>, <code>package.json</code>…, no la carpeta que los contiene) y pulsa <b>Commit changes</b>. Si arrastras una carpeta de más (como <code>node_modules</code> o <code>dist</code>), no la subas: no deben estar en el repositorio.</li>
+      <li><b>Comprueba que el flujo llegó.</b> En la pestaña Code debe verse la carpeta <code>.github</code>, y dentro <code>workflows/pages.yml</code>. Si no aparece (algunos exploradores no arrastran carpetas ocultas): <b>Add file → Create new file</b>, escribe como nombre <code>.github/workflows/pages.yml</code> (cada «/» crea una carpeta), pega el contenido del archivo que aparece más abajo y pulsa <b>Commit changes</b>.</li>
+      <li><b>Mira la compilación.</b> Abre la pestaña <b>Actions</b>. Verás una ejecución llamada «Publicar en GitHub Pages»: punto amarillo, en curso; ✓ verde, terminada (suele tardar uno o dos minutos). Si la subida terminó antes de activar Pages, o no aparece ninguna ejecución, entra en «Publicar en GitHub Pages» en la columna izquierda, pulsa <b>Run workflow</b> y confirma con la rama <code>main</code>. Si la ejecución sale con ✗ roja, ábrela y lee el paso que falló.</li>
+    </ol>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/actions-verde.png" alt="Pestaña Actions con la ejecución «Publicar en GitHub Pages» terminada con la marca verde, en la rama main, en 57 segundos" style="max-width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Pestaña Actions: la ejecución de «Publicar en GitHub Pages» terminó con la marca verde (en este caso, 57 segundos).</div></figure>
+    <ol start="7" style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Abre tu página.</b> Con la ejecución en verde, la dirección está en <b>Settings → Pages</b> («Your site is live at…») y tiene la forma <code>https://tu-usuario.github.io/atlas-3d/</code>.</li>
+      <li><b>Pruébala en el teléfono.</b> Ábrela en <b>Chrome del teléfono</b>. Despliega el «Diagnóstico de realidad aumentada»: debe decir <b>sí / presente / true</b>. Toca «Ver en AR», acepta el permiso de la cámara y apunta el teléfono a tu alrededor: el cubo debe estar a metro y medio, girando. Camina hacia él y rodéalo: es la diferencia con la cámara de fondo de la Sesión 36.</li>
+    </ol>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/telefono-resultado.png" alt="Atlas 3D en Chrome de un teléfono Android: diagnóstico con contexto seguro sí, navigator.xr presente e isSessionSupported true, y la línea de estado La sesión de realidad aumentada terminó" style="max-width:min(100%,22em);border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Resultado en un teléfono Android con Chrome: el diagnóstico responde «sí / presente / true» y, tras tocar «Ver en AR» y salir, la línea de estado dice «La sesión de realidad aumentada terminó».</div></figure>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/ar-en-telefono.png" alt="Captura dentro de la sesión de realidad aumentada en un teléfono Android: el cubo dorado sobre la imagen de la cámara, el mensaje Sesión de realidad aumentada activa y el botón Salir de AR" style="max-width:min(100%,22em);border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Dentro de la sesión AR en un teléfono Android: la cámara real al fondo, el cubo a metro y medio y, dibujados por el navegador gracias a <code>dom-overlay</code>, el mensaje de estado y el botón «Salir de AR».</div></figure>
+
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>.github/workflows/pages.yml</div>
+      <pre><code>name: Publicar en GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm install
+      # --base le dice a Vite en qué subruta vivirá la app: /nombre-del-repo/
+      - run: npm run build -- --base=/${{ github.event.repository.name }}/
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Este es el flujo <code>pages.yml</code> que viene dentro del proyecto. Se ejecuta con cada subida a la rama <code>main</code>, o a mano con «Run workflow». Tiene dos trabajos: <code>build</code> instala dependencias, compila con <code>--base=/${{ github.event.repository.name }}/</code> (el nombre del repositorio se toma solo) y sube la carpeta <code>dist</code>; <code>deploy</code> la publica en Pages. Si un día cambias el nombre del repositorio, no hay que tocar nada.</p></div>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Síntoma</th><th>Causa probable</th><th>Qué hacer</th></tr>
+      <tr><td>La pestaña Actions falla en «build»</td><td>Error de TypeScript o dependencia.</td><td>Ejecuta <code>npm run build</code> en tu equipo: el error es el mismo.</td></tr>
+      <tr><td>La página abre en blanco o sin estilos</td><td>Se compiló sin <code>--base</code> (rutas absolutas).</td><td>Comprueba que el paso de compilación incluye <code>--base</code>.</td></tr>
+      <tr><td>Error 404 al abrir la dirección</td><td>Pages no está activado con «GitHub Actions», o el repositorio es privado.</td><td>Revisa Settings → Pages; usa un repositorio público.</td></tr>
+      <tr><td>Sigue la versión anterior tras un cambio</td><td>El Service Worker sirve la caché.</td><td>Recarga dos veces, o «Clear site data» en DevTools (con el teléfono conectado: <code>chrome://inspect</code>).</td></tr>
+      <tr><td>El botón «Ver en AR» está gris en el teléfono</td><td>Falta ARCore («Google Play Services for AR») o el navegador no es Chrome.</td><td>Mira el diagnóstico: la línea que falla dice por qué.</td></tr>
+    </table>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">10</span>Actividades</h2>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>El mapa de soporte</h4></div>
+      <div class="meta-row">EN PAREJAS · 30 MIN</div>
+      <p>Abran el Atlas compilado (<code>npm run preview</code>) en <b>todos los dispositivos y navegadores que consigan</b> (computadores con Chrome, Edge y Firefox; teléfonos Android e iPhone si los hay; el emulador de Chrome). Para cada uno anoten qué mensaje salió en la línea de estado y si el botón se habilitó.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> ¿hay algún dispositivo donde <code>navigator.xr</code> existe pero <code>isSessionSupported</code> responde «no»? ¿Qué cambiaría en el código si ese caso no se distinguiera del de «sin WebXR»?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> una tabla dispositivo / navegador / mensaje / ¿botón habilitado?</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">2</div><h4>Entrar y salir de AR sin dejar rastro</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>Parte del checkpoint de la Sesión 37. Escribe <code>xr.ts</code>, agrega <code>entrarEnAR</code> al visor y el botón con su overlay. Con el emulador (o un teléfono) verifica: (1) la cámara de fondo se apaga al entrar; (2) tras salir, el visor responde otra vez al ratón y el cubo está en su sitio y a su tamaño original; (3) puedes entrar y salir tres veces seguidas; (4) simulando un <code>SecurityError</code> el botón vuelve a quedar habilitado.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> capturas de las cuatro comprobaciones y la salida de <code>npm run build</code>.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">3</div><h4>Razonar en metros</h4></div>
+      <div class="meta-row">INDIVIDUAL · 25 MIN</div>
+      <p>Sin cambiar nada más, modifica la posición del cubo en AR a <code>(0.5, 0, −1)</code> y la escala a <code>0.1</code>. Antes de ejecutar, predice con un dibujo desde arriba dónde quedaría el cubo respecto a ti (el eje −Z va hacia adelante) y cuántos centímetros mide. Luego, cambia <code>setReferenceSpaceType("local")</code> por <code>"local-floor"</code> y <b>lee la documentación</b> de MDN: ¿qué cambia en el origen? ¿Qué exigiría eso en <code>requiredFeatures</code> y por qué podría fallar en más dispositivos?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el dibujo, tu predicción y cinco líneas sobre <code>local</code> frente a <code>local-floor</code>.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>git add .
+git commit -m "Primera sesión de realidad aumentada con WebXR: soporte, arranque y salida"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>WebXR <code>immersive-ar</code> no es «cámara de fondo + 3D»: el sistema muestra la cámara y sigue el movimiento, y la página dibuja sobre esa imagen sin recibir los píxeles.</li>
+      <li>Se detecta con cuatro respuestas distintas (sin HTTPS, sin WebXR, sin AR, disponible) y un mensaje para cada una; el botón solo se habilita si la respuesta es «disponible».</li>
+      <li>La sesión se pide dentro de un clic, con <code>local</code> requerida y <code>dom-overlay</code> opcional; los errores se explican y el visor sigue funcionando.</li>
+      <li>En AR el bucle lo marca la sesión (<code>setAnimationLoop</code>), las unidades son metros y el eje −Z va hacia adelante; todo lo que se cambia al entrar se restaura al salir.</li>
+      <li>Un emulador comprueba el código (detección, petición, bucle, salida, reentrada y errores); la experiencia real (la cámara, la posición visual del cubo, el botón sobre la cámara, el gesto de usuario) solo se comprueba en un teléfono con ARCore.</li>
+      <li>Para ver AR de verdad hay que publicar con HTTPS: en GitHub Pages la app vive en una subruta, así que ninguna ruta se escribe a mano: se usa <code>import.meta.env.BASE_URL</code>, un manifest con rutas relativas y <code>--base</code> al compilar.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 39: Realidad aumentada con WebXR (2/2).</b> Integrar el modo AR con el visor 3D: colocar y anclar el objeto sobre la cámara.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> MDN Web Docs, "WebXR Device API" y "XRSystem: requestSession() method," developer.mozilla.org.</div>
+      <div><b>[2]</b> W3C Immersive Web Working Group, "WebXR Device API" y "WebXR DOM Overlays Module," immersive-web.github.io.</div>
+      <div><b>[3]</b> Can I use, "WebXR Device API" (tabla de compatibilidad), caniuse.com/webxr.</div>
+      <div><b>[4]</b> three.js, código fuente de <code>WebXRManager</code> (r169), github.com/mrdoob/three.js.</div>
+      <div><b>[5]</b> Meta, "Immersive Web Emulation Runtime (IWER)," github.com/meta-quest/immersive-web-emulation-runtime.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 12 de 18</span>
+  </div>
+</div>
+</body>
+</html>

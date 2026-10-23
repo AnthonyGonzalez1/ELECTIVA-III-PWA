@@ -39,6 +39,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 35 | APIs de dispositivo en el proyecto (1/2) | B |
 | 36 | APIs de dispositivo en el proyecto (2/2) | B |
 | 37 | Avisos y descargas en segundo plano en el proyecto | B |
+| 38 | Realidad aumentada con WebXR (1/2) | B |
 
 ## Proyectos
 
