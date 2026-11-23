@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 42 · Lighthouse y cierre del proyecto · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .callout.win{background:#f1f9f1; border-color:#2e7d32; border-left-color:#1b5e20;}
+  .callout.win b{color:#1b5e20;}
+  .term-emph{color:var(--gold); font-weight:700;}
+  .rev-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .rev-card{border-radius:10px; padding:.9em 1em; font-size:.84em; line-height:1.45;}
+  .rev-card.has{background:#fff; border:1px solid var(--line);}
+  .rev-card.null{background:#EAF2FD; border:1px solid #8FBBEE;}
+  .rev-card .tag{display:inline-block; font-size:.68em; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:.15em .55em; border-radius:20px; margin-bottom:.5em;}
+  .rev-card.has .tag{background:#F0F0F0; color:#555;}
+  .rev-card.null .tag{background:#E9F1FC; color:#1B5FAD; border:1px solid #8FBBEE;}
+  .rev-card code{font-size:.92em;}
+  .callout.warn{background:#fff8e1; border-color:#e0a800; border-left-color:#9a6b00;}
+  .callout.warn b{color:#9a6b00;}
+  .term-prompt{color:#6ad06a;}
+  .code-block.wrap code{white-space:pre-wrap; word-break:break-word;}
+  .code-block.tight pre{padding:.4em 1.1em; line-height:1.2;}
+  .code-block.tight code{font-size:.68em;}
+  .two-cards{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .two-cards .activity-card h4 code{font-size:.85em;}
+  .activity-card ol{margin:.5em 0 0; padding-left:1.3em; font-size:.82em; color:#3a3a3a; line-height:1.4;}
+  .activity-card ol li{margin-bottom:.3em;}
+  .activity-card a{color:var(--ink);}
+  .slide.dense{padding-top:1.1em;}
+  .slide.dense h2.slide-title{font-size:1.65em;}
+  .slide.dense .rule{margin:0 0 .45em;} .slide.dense .kicker{margin:0 0 .15em;}
+  .code-block.wrap code{white-space:pre-wrap; word-break:break-word;}
+  .grid-4 .card h3 code{font-size:.78em;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 16 de 19</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+<section class="slide slide--title active" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Portada">
+<div class="brand-wedge"><div class="gold-slab"></div></div>
+<div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR · Sesión 16 de 19</div>
+<h1 style="font-size:3.1em; max-width:10.5em;">Lighthouse y cierre del proyecto</h1>
+<div class="lead">Medimos el Atlas 3D con Lighthouse, arreglamos lo que el informe señala, volvemos a medir con las cifras a la vista y cerramos el Módulo AR con una lista de verificación que se ejecuta sola.</div>
+<div class="meta">
+<div><span>Asignatura</span>Electiva - PWA</div>
+<div><span>Sesión</span>16 de 19 · Proyecto Módulo AR</div>
+<div><span>Institución</span>UPTC</div>
+</div>
+<div class="title-illustration">
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+<circle cx="200" cy="160" r="78" fill="#fff" stroke="#1A1A1A" stroke-width="4"/>
+<path d="M200 160 L200 90 A70 70 0 1 1 138 196 Z" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+<text x="200" y="172" text-anchor="middle" font-size="38" font-weight="800" fill="#1A1A1A">82</text>
+<text x="200" y="262" text-anchor="middle" font-size="13" font-weight="700" fill="#373435">antes 51 · después 82</text>
+</svg>
+</div>
+<div class="title-goldbar"></div>
+</section>
+<section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Medir antes de arreglar">
+<div class="brand-wedge"><div class="gold-slab"></div></div>
+<div class="divider-panel">
+<div class="num">SESIÓN 16</div>
+<h2>Medir antes de arreglar</h2>
+<p>Un informe de Lighthouse no es un examen: es una lista de preguntas con cifras. Hoy se mide con método, se cambia una cosa por hallazgo y se vuelve a medir.</p>
+<div class="tb-preview"><span>Línea base</span><span>Cuatro hallazgos</span><span>Lista de cierre</span></div>
+</div>
+<div class="divider-illustration">
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<line x1="40" y1="270" x2="360" y2="60" stroke="#373435" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+<circle cx="40" cy="270" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<text x="40" y="274" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S41</text>
+<circle cx="200" cy="165" r="22" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+<text x="200" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A1A">S42</text>
+<circle cx="360" cy="60" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<text x="360" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S43</text>
+</svg>
+</div>
+</section>
+<section class="slide dense" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Objetivos y recursos de la sesión">
+<div class="kicker">Antes de empezar</div>
+<h2 class="slide-title">Objetivos de aprendizaje</h2>
+<hr class="rule">
+<ul class="clean" style="font-size:.8em;line-height:1.35;">
+<li><b>Explicar</b> qué mide Lighthouse y qué no (la instalabilidad ya no es una categoría).</li>
+<li><b>Medir</b> con método: varias corridas, la mediana y una línea base.</li>
+<li><b>Convertir</b> cada hallazgo en un cambio y comprobar con una segunda medición si ayudó.</li>
+<li><b>Reservar espacio</b> para lo que JavaScript dibuja tarde y <b>dibujar bajo demanda</b>.</li>
+<li><b>Reconocer</b> que arreglar una métrica puede empeorar otra.</li>
+<li><b>Cerrar</b> el Módulo AR con una lista de verificación que se ejecuta sola.</li>
+</ul>
+<div class="two-cards" style="margin:.7em 0 0;">
+<div class="activity-card"><div class="a-head"><div class="a-num">.zip</div><h4>Recursos: <a href="recursos/pwa-ar-objetos3d-sesion41.zip">pwa-ar-objetos3d-sesion41.zip</a></h4></div>
+<div class="meta-row">CHECKPOINT · CIERRE DE LA SESIÓN 41 · PUNTO DE PARTIDA</div>
+<p style="font-size:.85em;">El Atlas con instalación guiada y estado de conexión. Es lo que Lighthouse audita primero.</p></div>
+<div class="activity-card"><div class="a-head"><div class="a-num">.zip</div><h4>Recursos: <a href="recursos/pwa-ar-objetos3d-sesion42.zip">pwa-ar-objetos3d-sesion42.zip</a></h4></div>
+<div class="meta-row">VERSIÓN TERMINADA · + INFORMES HTML «ANTES» Y «DESPUÉS»</div>
+<p style="font-size:.85em;">Informes: <a href="recursos/lighthouse-antes.html">antes</a> · <a href="recursos/lighthouse-despues.html">después</a>.</p></div>
+</div>
+</section>
+<section class="slide dense" data-section="lighthouse" data-section-label="Qué es Lighthouse" data-slide-label="Qué mide">
+<div class="kicker">Lighthouse · 1.1</div>
+<h2 class="slide-title">Un termómetro de la carga, no una prueba de la app</h2>
+<hr class="rule">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.9em;margin-top:.8em;"><div class="activity-card"><div class="a-head"><div class="a-num">1</div><h4>Rendimiento</h4></div><p style="font-size:.85em;">Qué tan rápido aparece y se vuelve usable: FCP, LCP, TBT, CLS y Speed Index.</p></div><div class="activity-card"><div class="a-head"><div class="a-num">2</div><h4>Accesibilidad · SEO · Buenas prácticas</h4></div><p style="font-size:.85em;">Etiquetas, contraste, idioma, HTTPS, descripción de la página.</p></div><div class="activity-card"><div class="a-head"><div class="a-num">3</div><h4>Navegación con agentes</h4></div><p style="font-size:.85em;">Novedad de la v13: revisa, entre otras cosas, que la página no cambie de lugar mientras alguien interactúa.</p></div></div><div class="callout warn" style="margin-top:.7em;font-size:.8em;line-height:1.4;">Ya <b>no existe</b> la categoría «PWA» (desde la v12). La instalabilidad se le pregunta a Chrome. Lighthouse tampoco prueba la AR ni cómo se siente girar el modelo.</div>
+</section>
+<section class="slide dense" data-section="lighthouse" data-section-label="Qué es Lighthouse" data-slide-label="Instalabilidad">
+<div class="kicker">Lighthouse · 1.2</div>
+<h2 class="slide-title">La instalabilidad, según el propio Chrome</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.88em;line-height:1.28;"><code>$ node test_s42.js   (líneas 2 y 3)
+2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]
+3) Chrome dice: errores de instalabilidad → []</code></pre>
+</div>
+</section>
+<section class="slide dense" data-section="lighthouse" data-section-label="Qué es Lighthouse" data-slide-label="Método">
+<div class="kicker">Lighthouse · 1.3</div>
+<h2 class="slide-title">Medir con método</h2>
+<hr class="rule">
+<ol style="margin:.2em 0 0 1.3em;line-height:1.5;font-size:.88em;">
+<li><b>Servir la compilación</b> tal cual (la de la Sesión 41, sin tocar nada).</li>
+<li><b>Correr Lighthouse tres veces</b> (móvil, valores por defecto) y quedarse con la <b>mediana</b>.</li>
+<li><b>Un cambio por hallazgo</b> y tres corridas más después de cada uno.</li>
+</ol>
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.74em;line-height:1.3;"><code>npm run build
+npx serve dist -l 4310
+npx lighthouse http://localhost:4310/ \
+  --chrome-flags=<span class="tok-str">"--headless=<span class="tok-kw">new</span>"</span> \
+  --output=html --output=json --output-path=./informe</code></pre>
+</div>
+<div class="callout warn" style="margin-top:.5em;font-size:.76em;line-height:1.35;"><b>No son las cifras de tu teléfono:</b> las corridas de hoy se hicieron en un Chromium sin tarjeta gráfica y con lentitud simulada. Sirven para comparar antes y después en las mismas condiciones.</div>
+</section>
+<section class="slide dense" data-section="lighthouse" data-section-label="Qué es Lighthouse" data-slide-label="Línea base">
+<div class="kicker">Lighthouse · 1.4</div>
+<h2 class="slide-title">La línea base: la versión de la Sesión 41</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.72em;line-height:1.28;"><code>$ python3 resumen.py base-3.report.json
+Lighthouse 13.6.0 | mobile | throttling simulate
+  performance 51
+  accessibility 98
+  best-practices 100
+  seo 90
+  agentic-browsing 57
+   first-contentful-paint 1.7 s 0.93
+   largest-contentful-paint 1.7 s 0.99
+   total-blocking-time 1,790 ms 0.1
+   cumulative-layout-shift 0.523 0.15
+   speed-index 1.7 s 1
+   interactive 7.8 s 0.44
+--- no aprobadas (score&lt;1) ---
+[performance] first-contentful-paint: 0.93 — First Contentful Paint | 1.7 s
+[performance] largest-contentful-paint: 0.99 — Largest Contentful Paint | 1.7 s
+[performance] total-blocking-time: 0.1 — Total Blocking Time | 1,790 ms
+[performance] cumulative-layout-shift: 0.15 — Cumulative Layout Shift | 0.523
+[performance] bf-cache: 0 — Page prevented back/forward cache restoration | 1 failure reason
+[accessibility] landmark-one-main: 0 — Document does not have a main landmark. | 
+[best-practices] valid-source-maps: 0 — Missing source maps for large first-party JavaScript | 
+[seo] meta-description: 0 — Document does not have a meta description | 
+[agentic-browsing] cumulative-layout-shift: 0.15 — Cumulative Layout Shift | 0.523</code></pre>
+</div>
+</section>
+<section class="slide dense" data-section="lighthouse" data-section-label="Qué es Lighthouse" data-slide-label="El informe «antes»">
+<div class="kicker">Lighthouse · 1.5</div>
+<h2 class="slide-title">El informe «antes»</h2>
+<hr class="rule">
+<div style="text-align:center;"><img src="img/lighthouse-antes.png" alt="Informe de Lighthouse antes: rendimiento 51" style="max-width:100%;max-height:58vh;object-fit:contain;border:1px solid #ddd;border-radius:8px;"></div><div class="callout" style="margin-top:.4em;font-size:.74em;">Los colores lo dicen: TBT 1790 ms y CLS 0,523 en rojo. FCP y LCP, en verde. El texto del informe viene en inglés.</div>
+</section>
+<section class="slide" data-section="lighthouse" data-section-label="Qué es Lighthouse" data-slide-label="Cuatro hallazgos">
+<div class="kicker">Lighthouse · 1.6</div>
+<h2 class="slide-title">Cuatro hallazgos, un cambio para cada uno</h2>
+<hr class="rule">
+<div class="grid-2" style="margin-top:.8em;"><div class="activity-card"><div class="a-head"><div class="a-num">1</div><h4>Faltan etiquetas</h4></div><p>Sin <code>main</code> (accesibilidad) ni <code>meta description</code> (SEO).</p></div><div class="activity-card"><div class="a-head"><div class="a-num">2</div><h4>La página salta</h4></div><p>CLS 0,523: lo que JavaScript dibuja tarde empuja todo lo demás.</p></div><div class="activity-card"><div class="a-head"><div class="a-num">3</div><h4>Se dibuja sin parar</h4></div><p>Una escena quieta se redibuja 60 veces por segundo.</p></div><div class="activity-card"><div class="a-head"><div class="a-num">4</div><h4>Un solo archivo</h4></div><p>Más de 500 kB juntos: una tarea larga que bloquea el hilo.</p></div></div>
+</section>
+<section class="slide" data-section="hallazgo1" data-section-label="Hallazgo 1" data-slide-label="Etiquetas">
+<div class="kicker">Hallazgo 1 · 2.1</div>
+<h2 class="slide-title">Dos etiquetas que faltaban</h2>
+<hr class="rule">
+<div class="body-text" style="font-size:.92em;"><p style="margin-bottom:.35em;"><code>&lt;main&gt;</code> envuelve las zonas de la página; como el <code>body</code> ya centraba, el <code>main</code> repite esa columna:</p></div>
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>index.html (la descripción)</div>
+<pre style="font-size:.86em;line-height:1.3;"><code>&lt;meta name=<span class="tok-str">"description"</span> content=<span class="tok-str">"Catálogo interactivo en 3D de patrones de arquitectura de software (MVC, capas y microservicios), con realidad aumentada y uso sin conexión."</span> /&gt;</code></pre>
+</div>
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/style.css (el main)</div>
+<pre style="font-size:.8em;line-height:1.3;"><code>.contenido { width: 100%; display: flex; flex-direction: column; align-items: center; }</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Accesibilidad <b>98 → 100</b> y SEO <b>90 → 100</b>. El rendimiento casi no se mueve: eran etiquetas, no velocidad.</div>
+</section>
+<section class="slide" data-section="hallazgo2" data-section-label="Hallazgo 2" data-slide-label="Qué es el CLS">
+<div class="kicker">Hallazgo 2 · 3.1</div>
+<h2 class="slide-title">Lo que JavaScript dibuja tarde empuja todo</h2>
+<hr class="rule">
+<div class="grid-2" style="margin-top:.4em;">
+<div class="activity-card"><div class="a-head"><div class="a-num">1</div><h4>Qué es un desplazamiento</h4></div><p style="font-size:.84em;">Algo que ya se veía <b>cambia de lugar</b> porque aparece contenido nuevo encima. Lo bueno es CLS &lt; 0,1; el Atlas tenía <b>0,523</b>.</p></div>
+<div class="activity-card"><div class="a-head"><div class="a-num">2</div><h4>Dos zonas culpables</h4></div><p style="font-size:.84em;">El <b>visor</b> (el <code>canvas</code> llega al ejecutarse el código) y el <b>panel del modelo</b> (pestañas, leyenda, chips, ficha). Vacíos ocupan nada; llenos, empujan.</p></div>
+</div>
+<div class="callout" style="margin-top:.7em;font-size:.82em;line-height:1.4;">La solución no es que aparezcan antes: es <b>reservarles su sitio desde el principio</b>.</div>
+</section>
+<section class="slide" data-section="hallazgo2" data-section-label="Hallazgo 2" data-slide-label="Reservar el espacio">
+<div class="kicker">Hallazgo 2 · 3.2</div>
+<h2 class="slide-title">Reservar el espacio con CSS</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/style.css (reservar el espacio)</div>
+<pre style="font-size:.86em;line-height:1.3;"><code>.modelo-panel { min-height: 25em; }
+/* El visor también se llena con JavaScript (el canvas llega tarde): su alto se reserva con la misma
+   proporción que usa visor.ts (alto = 0,75 × ancho, máximo 560 px). Sin esto, todo lo de abajo saltaba. */
+.visor { aspect-ratio: 4 / 3; max-height: 560px; }</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">El alto del visor es siempre 0,75 × su ancho (máx. 560 px), igual que en <code>visor.ts</code>: se le dice a CSS lo mismo.</div>
+</section>
+<section class="slide" data-section="hallazgo2" data-section-label="Hallazgo 2" data-slide-label="Cuánto aporta cada reserva">
+<div class="kicker">Hallazgo 2 · 3.3</div>
+<h2 class="slide-title">Cuánto aporta cada reserva</h2>
+<hr class="rule">
+<table class="uptc" style="font-size:.86em;">
+<tr><th>Variante (código final, quitando reservas)</th><th>CLS · mediana de 3</th></tr>
+<tr><td>Sin reservar nada</td><td>0,523</td></tr>
+<tr><td>Solo el alto del panel (<code>min-height</code>)</td><td>0,447</td></tr>
+<tr><td>Panel y visor (<code>min-height</code> + <code>aspect-ratio</code>)</td><td><b>0,050</b></td></tr>
+</table>
+<div class="callout" style="margin-top:.7em;font-size:.82em;line-height:1.4;">El panel solo no bastaba: el visor, que también llega tarde, seguía empujando. En la medición por pasos el TBT <b>subió</b> de 1850 a 2203 ms: ese costo lo atienden los hallazgos 3 y 4.</div>
+</section>
+<section class="slide" data-section="hallazgo3" data-section-label="Hallazgo 3" data-slide-label="Dibujo bajo demanda">
+<div class="kicker">Hallazgo 3 · 4.1</div>
+<h2 class="slide-title">Dibujar solo cuando algo cambió</h2>
+<hr class="rule">
+<div class="body-text" style="font-size:.92em;"><p style="margin-bottom:.35em;">Quien cambia algo (pieza, modelo, tamaño, AR) levanta <code>sucio</code>; el bucle dibuja si está levantada o si los controles mueven la cámara.</p></div>
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (el bucle)</div>
+<pre style="font-size:.8em;line-height:1.3;"><code><span class="tok-kw">function</span> <span class="tok-fn">bucle</span>() {
+  animacion = <span class="tok-fn">requestAnimationFrame</span>(bucle);
+  <span class="tok-kw">if</span> (porSensores) {
+    <span class="tok-com">// Interpolación: alcanza el objetivo poco a poco (filtra el temblor del sensor).</span>
+    grupo.rotation.x += (objetivoX - grupo.rotation.x) * 0.15;
+    grupo.rotation.y += (objetivoY - grupo.rotation.y) * 0.15;
+    sucio = true;<span class="tok-com"> // con sensores la escena se mueve sola</span>
+  }
+  <span class="tok-kw">const</span> camaraSeMovio = controles.<span class="tok-fn">update</span>();<span class="tok-com"> // true mientras el usuario (o la inercia) mueve la cámara</span>
+  <span class="tok-kw">if</span> (sucio || camaraSeMovio) {
+    sucio = false;
+    renderer.<span class="tok-fn">render</span>(escena, camara);
+  }
+}
+<span class="tok-fn">bucle</span>();</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Delicado: si se olvida levantar la bandera, esa acción no se ve. Por eso la prueba cuenta <b>llamadas reales de WebGL</b>. Paso: rendimiento 69 → 75, TBT 2203 → 1081 ms.</div>
+</section>
+<section class="slide dense" data-section="hallazgo4" data-section-label="Hallazgo 4" data-slide-label="Three.js aparte">
+<div class="kicker">Hallazgo 4 · 5.1</div>
+<h2 class="slide-title">Three.js en su propio archivo</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>vite.config.ts (separar Three.js)</div>
+<pre style="font-size:1.02em;line-height:1.3;"><code>  build: {
+    rollupOptions: {
+      output: {
+        <span class="tok-com">// Sesión 42: Three.js (la mayor parte del peso) va en su propio archivo: el código de la app</span>
+        <span class="tok-com">// cambia cada sesión, Three.js casi nunca, y así son dos descargas que se pueden cachear por separado.</span>
+        manualChunks: { three: [<span class="tok-str">"three"</span>] },
+      },
+    },
+  },</code></pre>
+</div>
+<div class="body-text" style="font-size:.86em;margin-top:.5em;"><p>Three.js casi no cambia; el código de la app cambia cada sesión. Dos archivos se cachean por separado y el trabajo se reparte en tareas más cortas.</p></div>
+</section>
+<section class="slide dense" data-section="hallazgo4" data-section-label="Hallazgo 4" data-slide-label="La compilación">
+<div class="kicker">Hallazgo 4 · 5.2</div>
+<h2 class="slide-title">La compilación, tal cual</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.8em;line-height:1.3;"><code><span class="term-prompt">$</span> npm run build
+✓ 27 modules transformed.
+dist/index.html                                    4.29 kB │ gzip:   1.52 kB
+dist/assets/index-CYynvKCQ.css                     6.44 kB │ gzip:   1.82 kB
+dist/assets/workbox-window.prod.es5-BqEJf4Xk.js    5.71 kB │ gzip:   2.34 kB
+dist/assets/index-Z10u6Kuz.js                     62.57 kB │ gzip:  20.50 kB
+dist/assets/three-DFUxCYKs.js                    482.73 kB │ gzip: 122.01 kB
+✓ built in 1.80s
+PWA v1.3.0
+✓ 89 modules transformed.
+dist/sw.mjs  27.66 kB │ gzip: 9.16 kB
+✓ built in 439ms
+PWA v1.3.0
+mode      injectManifest
+format:   es
+<span class="term-emph">precache  9 entries (558.82 KiB)</span></code></pre>
+</div>
+<div class="callout" style="margin-top:.5em;font-size:.76em;">Archivo principal: 544,86 → 62,57 kB. Three.js: 482,73 kB aparte. Precaché: 9 entradas (558,82 KiB), generado solo. Paso: rendimiento 75 → 84, TBT 1081 → 517 ms.</div>
+</section>
+<section class="slide dense" data-section="resultado" data-section-label="El resultado" data-slide-label="Gráfico">
+<div class="kicker">Resultado · 6.1</div>
+<h2 class="slide-title">El resultado, paso a paso</h2>
+<hr class="rule">
+<div style="text-align:center;"><img src="img/mejora-por-pasos.png" alt="Tres gráficos de barras: rendimiento, CLS y TBT por pasos" style="max-width:100%;max-height:50vh;object-fit:contain;border:1px solid #ddd;border-radius:8px;"></div><div class="callout" style="margin-top:.4em;font-size:.72em;">Mediana de 3 corridas por etapa, acumulando cambios. Medición final de la versión terminada: 82, 84 y 81 → mediana 82; el Paso 4 (84) es la misma versión: dos puntos de ruido solo por repetir.</div>
+</section>
+<section class="slide dense" data-section="resultado" data-section-label="El resultado" data-slide-label="Tabla">
+<div class="kicker">Resultado · 6.2</div>
+<h2 class="slide-title">Antes y después (mediana de 3)</h2>
+<hr class="rule">
+<table class="uptc" style="font-size:.78em;">
+<tr><th>Métrica</th><th>Antes (S41)</th><th>Después (S42)</th></tr>
+<tr><td>Rendimiento</td><td>51</td><td><b>82</b></td></tr>
+<tr><td>Accesibilidad</td><td>98</td><td><b>100</b></td></tr>
+<tr><td>Buenas prácticas</td><td>100</td><td>100</td></tr>
+<tr><td>SEO</td><td>90</td><td><b>100</b></td></tr>
+<tr><td>CLS</td><td>0,523</td><td><b>0,05</b></td></tr>
+<tr><td>TBT</td><td>1786 ms</td><td><b>608 ms</b></td></tr>
+<tr><td>Interactiva en</td><td>7,8 s</td><td><b>2,5 s</b></td></tr>
+<tr><td>FCP</td><td>1696 ms</td><td>1740 ms</td></tr>
+<tr><td>LCP</td><td>1696 ms</td><td><b>2329 ms</b> (peor)</td></tr>
+</table>
+</section>
+<section class="slide dense" data-section="resultado" data-section-label="El resultado" data-slide-label="Informe después">
+<div class="kicker">Resultado · 6.3</div>
+<h2 class="slide-title">El informe «después»</h2>
+<hr class="rule">
+<div style="text-align:center;"><img src="img/lighthouse-despues.png" alt="Informe de Lighthouse después: rendimiento 82" style="max-width:100%;max-height:58vh;object-fit:contain;border:1px solid #ddd;border-radius:8px;"></div><div class="callout" style="margin-top:.4em;font-size:.74em;">La corrida cuyo resultado coincide con la mediana. Cuatro categorías en 100 o casi.</div>
+</section>
+<section class="slide" data-section="resultado" data-section-label="El resultado" data-slide-label="El LCP empeoró">
+<div class="kicker">Resultado · 6.4</div>
+<h2 class="slide-title">El LCP empeoró, y es una lección</h2>
+<hr class="rule">
+<div class="callout warn" style="font-size:.84em;line-height:1.45;">De 1,7 a 2,3 s. No es que la página sea más lenta: al reservar espacio cambió <b>qué elemento</b> considera Lighthouse «el más grande». Antes era un párrafo estático (<code>p.aviso-demo</code>) que el desplazamiento empujaba fuera de la pantalla; ahora es el texto de la ficha de la pieza, que JavaScript rellena un poco después.</div>
+<div class="callout" style="margin-top:.6em;font-size:.84em;line-height:1.45;">Se arregló un defecto real (CLS) y la métrica vecina empezó a medir otra cosa. Ambos valores están en verde: se decidió <b>no</b> tocar el diseño para engañar a una métrica.</div>
+</section>
+<section class="slide dense" data-section="resultado" data-section-label="El resultado" data-slide-label="Sin arreglar">
+<div class="kicker">Resultado · 6.5</div>
+<h2 class="slide-title">Lo que quedó sin arreglar, a propósito</h2>
+<hr class="rule">
+<ul class="clean" style="font-size:.8em;line-height:1.4;">
+<li><b>bf-cache:</b> una página que puede abrir WebXR no es elegible; es inherente a la app.</li>
+<li><b>JavaScript sin usar (≈ 44 KiB):</b> partes de Three.js; quitarlas exige importar clase por clase; el costo supera la ganancia hoy.</li>
+<li><b>CSS que bloquea el primer dibujo (≈ 90–150 ms):</b> son 6 kB; incrustarlo complica la compilación por unos milisegundos.</li>
+<li><b>TBT de 608 ms:</b> es sobre todo Three.js inicializándose; mejorar de verdad pediría cargar el visor más tarde.</li>
+</ul>
+</section>
+<section class="slide dense" data-section="cierre-modulo" data-section-label="Cierre del módulo" data-slide-label="test_s42.js">
+<div class="kicker">Cierre del módulo · 7.1</div>
+<h2 class="slide-title">La lista de verificación del Módulo AR</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.76em;line-height:1.28;"><code>$ node test_s42.js
+1) documento → {"lang":"es","viewport":"width=device-width, initial-scale=1.0","descr":140,"tema":"#0b1220","main":1,"h1":1,"contextoSeguro":true,"titulo":"Atlas 3D de Arquitectura de Software"}
+2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]
+3) Chrome dice: errores de instalabilidad → []
+4) service worker → {"activo":true,"controla":true,"precache":9}
+5) servidor caído y recarga → {"canvas":1,"pestanas":3}
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.050
+7) escena quieta durante 1,5 s → llamadas de dibujo: 0
+8) arrastrar para girar → llamadas de dibujo nuevas: sí (744)
+9) tras soltar y pasar la inercia → vuelve a quedarse quieta: sí
+10) elegir una pieza → llamadas de dibujo nuevas: sí
+11) cambiar de modelo → llamadas de dibujo nuevas: sí
+12) cambiar el tamaño de la ventana → llamadas de dibujo nuevas: sí
+pageerrors: []
+RESULTADO: todo en orden</code></pre>
+</div>
+</section>
+<section class="slide dense" data-section="cierre-modulo" data-section-label="Cierre del módulo" data-slide-label="Qué demuestra">
+<div class="kicker">Cierre del módulo · 7.2</div>
+<h2 class="slide-title">Qué demuestra cada línea</h2>
+<hr class="rule">
+<div class="callout win"><ul class="clean" style="margin:0;font-size:.72em;line-height:1.33;">
+<li>(1) idioma, viewport, descripción de 140 caracteres, un <code>main</code>, un <code>h1</code>, contexto seguro.</li>
+<li>(2-3) manifest e instalabilidad según el propio Chrome: sin errores.</li>
+<li>(4) Service Worker activo y controlando, 9 entradas de precaché.</li>
+<li>(5) con el servidor caído, el visor se monta y hay 3 pestañas.</li>
+<li>(6) CLS 0,050.</li>
+<li>(7) <b>una escena quieta no hace ni una llamada de dibujo.</b></li>
+<li>(8-12) cada acción sí provoca dibujo; tras la inercia el visor vuelve a quedarse quieto.</li>
+</ul></div>
+</section>
+<section class="slide dense" data-section="cierre-modulo" data-section-label="Cierre del módulo" data-slide-label="Prueba que falla">
+<div class="kicker">Cierre del módulo · 7.3</div>
+<h2 class="slide-title">¿Y si la lista diera siempre verde?</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.7em;line-height:1.28;"><code>$ S42DIR=s41 node test_s42.js
+1) documento → {"lang":"es","viewport":"width=device-width, initial-scale=1.0","descr":0,"tema":"#0b1220","main":0,"h1":1,"contextoSeguro":true,"titulo":"Atlas 3D de Arquitectura de Software"}
+   ✗ FALLÓ: meta description
+   ✗ FALLÓ: un &lt;main&gt;
+2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]
+3) Chrome dice: errores de instalabilidad → []
+4) service worker → {"activo":true,"controla":true,"precache":8}
+5) servidor caído y recarga → {"canvas":1,"pestanas":3}
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.498
+   ✗ FALLÓ: CLS debe ser menor que 0,1
+7) escena quieta durante 1,5 s → llamadas de dibujo: 2160
+   ✗ FALLÓ: una escena quieta no debe dibujar
+8) arrastrar para girar → llamadas de dibujo nuevas: sí (768)
+9) tras soltar y pasar la inercia → vuelve a quedarse quieta: no
+   ✗ FALLÓ: tras la inercia debe volver a no dibujar
+10) elegir una pieza → llamadas de dibujo nuevas: sí
+11) cambiar de modelo → llamadas de dibujo nuevas: sí
+12) cambiar el tamaño de la ventana → llamadas de dibujo nuevas: sí
+pageerrors: []
+RESULTADO: hay 5 fallos</code></pre>
+</div>
+<div class="callout warn" style="margin-top:.5em;font-size:.76em;">Cinco fallos, los cinco esperables: sin meta ni main, CLS 0,498, 2160 dibujos con la escena quieta y que no se aquieta tras la inercia. Lo demás pasa en ambas: es lo que no se tocó.</div>
+</section>
+<section class="slide dense" data-section="cierre-modulo" data-section-label="Cierre del módulo" data-slide-label="Regresión">
+<div class="kicker">Cierre del módulo · 7.4</div>
+<h2 class="slide-title">Regresión: pruebas de las sesiones 40 y 41 sobre el código de hoy</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.68em;line-height:1.28;"><code>$ S40DIR=s42 node test_s40.js | tail -8
+I1) base v2 preparada con identificadores de la demo
+I2) tras abrir la app → {"version":3,"progreso":[["microservicios",false,333],["mvc",true,111]],"descargas":[["capas","pendiente"],["mvc","pendiente"]]}
+J1) antes de usar AR → rastro: null
+J2) dentro de AR → rastro: activa | diagnóstico: Última sesión de AR: sin registro.
+J3) tras salir → rastro: fin-ok
+J4) diagnóstico → Última sesión de AR: terminó completa (hace 1 s).
+J5) rastro interrumpido simulado, tras recargar → Última sesión de AR: se interrumpió en el paso «fin-3-ancla» (hace 4 s). | panel abierto: true
+pageerrors: []
+
+$ S41DIR=s42 node test_s41.js | tail -6
+G2) se corta la red → banda: Sin conexión: los modelos y las fichas descargadas siguen disponibles.
+G3) sin red se cambia de modelo → «Niveles apilados: cada capa solo habla con la inme…»
+G4) vuelve la red → banda: Volvió la conexión.
+G5) 3,3 s después → banda: null
+pageerrors: []
+RESULTADO: todo en orden
+
+$ node test_subruta.js
+subruta → {"scope":"http://localhost:4195/atlas-3d/","activo":true,"manifest":{"start":"./","scope":"./"},"iconoStatus":200,"caches":["modelos-3d","workbox-precache-v2-http://localhost:4195/atlas-3d/"]}
+recarga sin conexión: canvas montado = 1
+ficha → ["http://localhost:4195/atlas-3d/modelos/mvc.json",200]
+descarga desde el botón → caché modelos-3d: ["http://localhost:4195/atlas-3d/modelos/capas.json","http://localhost:4195/atlas-3d/modelos/microservicios.json","http://localhost:4195/atlas-3d/modelos/mvc.json"]
+peticiones fuera de la subruta o 404: [] | pageerrors: []</code></pre>
+</div>
+</section>
+<section class="slide dense" data-section="cierre-modulo" data-section-label="Cierre del módulo" data-slide-label="La lista final">
+<div class="kicker">Cierre del módulo · 7.5</div>
+<h2 class="slide-title">La lista final del Módulo AR</h2>
+<hr class="rule">
+<table class="uptc" style="font-size:.78em;">
+<tr><th>Qué se verifica</th><th>Cómo</th><th>Estado</th></tr>
+<tr><td>Idioma, <code>main</code>, <code>h1</code>, descripción, viewport</td><td>Lighthouse y <code>test_s42.js</code></td><td>Verificado</td></tr>
+<tr><td>Manifest, iconos, <code>standalone</code>; sin obstáculos de instalabilidad</td><td>Chrome (CDP)</td><td>Verificado</td></tr>
+<tr><td>Service Worker activo; precaché de 9</td><td><code>test_s42.js</code></td><td>Verificado</td></tr>
+<tr><td>Funciona sin servidor</td><td>Servidor caído</td><td>Verificado</td></tr>
+<tr><td>CLS bajo; escena quieta sin dibujar</td><td>Lighthouse y WebGL</td><td>Verificado</td></tr>
+<tr><td>Sin fugas de GPU; subruta sin rutas absolutas</td><td>Conteo y <code>test_subruta.js</code></td><td>Verificado</td></tr>
+<tr><td>Botón «Instalar» y diálogo del sistema</td><td>Solo un teléfono</td><td>En tu teléfono</td></tr>
+<tr><td>AR en el dispositivo; entrar y salir sin romper</td><td>Teléfono con ARCore</td><td>En tu teléfono</td></tr>
+<tr><td>Girar con el dedo o los sensores, fluido</td><td>Solo un teléfono</td><td>En tu teléfono</td></tr>
+</table>
+</section>
+<section class="slide dense" data-section="telefono" data-section-label="Teléfono" data-slide-label="Publicar y medir">
+<div class="kicker">Teléfono · 8.1</div>
+<h2 class="slide-title">Publica la versión y mídela tú</h2>
+<hr class="rule">
+<ol style="margin:.2em 0 0 1.3em;line-height:1.45;font-size:.84em;">
+<li><b>Copia</b> <code>pwa-ar-objetos3d-sesion42.zip</code> sobre tu carpeta del proyecto (conserva <code>.github/workflows/pages.yml</code>).</li>
+<li><code>git add .</code>, <code>git commit</code>, <code>git push</code> (si lo rechaza: <code>git pull --no-rebase -X ours --no-edit</code>). Espera la marca verde en Actions.</li>
+<li><b>Mide en Chrome del escritorio:</b> ventana de incógnito, F12 → Lighthouse → «Móvil» → Analizar. <b>Tres veces</b>, y anota la mediana.</li>
+<li><b>En tu teléfono:</b> el modelo gira y se queda quieto al soltar; elegir pieza y cambiar de modelo se ve al instante; «Ver en AR» entra y sale; la rotación por sensores sigue fluida.</li>
+</ol>
+<div class="callout" style="margin-top:.5em;font-size:.76em;">Lo más útil: tus tres números de rendimiento y tu CLS, y si algo dejó de verse o moverse con el dibujo bajo demanda.</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 1">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 1: Mide tu propia página, con método</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">1</div><h4>Mide tu propia página, con método</h4></div>
+<div class="meta-row">INDIVIDUAL · 60 MIN</div>
+<p>Elige un proyecto tuyo publicado. Corre Lighthouse tres veces y anota la mediana de cada categoría y de FCP, LCP, TBT y CLS. Identifica los <b>dos hallazgos</b> de más impacto y explica qué los causa.</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> la tabla de las tres corridas con su mediana y el diagnóstico.</p>
+</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 2">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 2: Un cambio, una medición</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">2</div><h4>Un cambio, una medición</h4></div>
+<div class="meta-row">INDIVIDUAL · 60 MIN</div>
+<p>Aplica <b>uno solo</b> de los arreglos (p. ej., <code>aspect-ratio</code> en un contenedor que JavaScript llena), mide tres veces y compara con la línea base. Si otra métrica empeora, explica por qué.</p>
+<p style="margin-top:.7em;"><b>Para pensar:</b> ¿por qué es un error cambiar tres cosas y medir una vez?</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> el cambio, la tabla antes/después y la explicación.</p>
+</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 3">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 3: Rompe el dibujo bajo demanda</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">3</div><h4>Rompe el dibujo bajo demanda</h4></div>
+<div class="meta-row">EN PAREJAS · 45 MIN</div>
+<p>Quiten <code>sucio = true;</code> de la rama de «elegir una pieza» en <code>visor.ts</code>, recompilen y ejecuten <code>test_s42.js</code>. ¿Qué línea falla? Si ninguna, escriban el caso que falta; luego restauren la línea.</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> la salida con la línea quitada, el caso nuevo si hizo falta y la salida restaurada.</p>
+</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 4">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 4: El LCP: ¿cuál es «el elemento más grande»?</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">4</div><h4>El LCP: ¿cuál es «el elemento más grande»?</h4></div>
+<div class="meta-row">INDIVIDUAL · 60 MIN</div>
+<p>En los informes de los recursos, expande «Largest Contentful Paint element» en el «antes» y en el «después». Anota <b>qué elemento</b> es en cada uno y propón un cambio que acerque el LCP al valor anterior <b>sin</b> volver a mover la página.</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> los dos elementos, la propuesta y su costo.</p>
+</div>
+</section>
+<section class="slide dense" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Resumen de la sesión</h2>
+<hr class="rule">
+<ul class="clean" style="font-size:.8em;line-height:1.36;">
+<li>La <b>instalabilidad</b> ya no es categoría de Lighthouse: se le pregunta a Chrome.</li>
+<li>Se mide con método: <b>varias corridas, la mediana</b>, línea base. Se comparan cambios en las mismas condiciones.</li>
+<li>Lo que se dibuja tarde <b>empuja el diseño</b>: se <b>reserva su espacio</b>. CLS 0,523 → 0,05.</li>
+<li>Una escena quieta no se dibuja: <b>dibujo bajo demanda</b>, comprobado con llamadas reales de WebGL.</li>
+<li>Three.js en su propio archivo: TBT 1786 → 608 ms y caché por separado.</li>
+<li>Arreglar una métrica puede <b>mover</b> otra (LCP 1,7 → 2,3 s); se decide con los datos a la vista.</li>
+<li>La lista de cierre se ejecuta sola y se probó que <b>falla</b> sobre la versión vieja.</li>
+</ul>
+</section>
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Próxima sesión">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Próxima sesión</h2>
+<hr class="rule">
+<div class="callout"><b>Sesión 43: el Atlas 3D en React.</b> El mismo Atlas reconstruido con React, para ver qué cambia y qué se mantiene (visor, Service Worker, modelos como datos), con las mediciones de hoy como punto de comparación.</div>
+</section>
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Referencias</h2>
+<hr class="rule">
+<div class="ref-list">
+<div><b>[1]</b> Chrome for Developers, "Lighthouse," developer.chrome.com/docs/lighthouse.</div>
+<div><b>[2]</b> web.dev, "Cumulative Layout Shift" y "Optimize Cumulative Layout Shift," web.dev/articles/cls.</div>
+<div><b>[3]</b> web.dev, "Total Blocking Time" y "Largest Contentful Paint," web.dev/articles.</div>
+<div><b>[4]</b> Chrome DevTools Protocol, dominio "Page" (<code>getAppManifest</code>, <code>getInstallabilityErrors</code>).</div>
+<div><b>[5]</b> Rollup <code>output.manualChunks</code>; Vite, "Building for Production," vite.dev/guide/build.</div>
+<div><b>[6]</b> MDN Web Docs, <code>aspect-ratio</code> y <code>&lt;main&gt;</code>, developer.mozilla.org.</div>
+</div>
+</section>
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Actualiza tu repositorio">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Actualiza tu repositorio</h2>
+<hr class="rule">
+<div class="body-text"><p>Como en cada sesión del Sub-bloque B: sube el cambio de hoy a tu propio repositorio.</p></div>
+<div class="code-block ">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre><code>git add .
+git commit -m "Lighthouse: espacio reservado, dibujo bajo demanda y Three.js aparte"
+git push</code></pre>
+</div>
+</section>
+
+<div class="fragment-hint" id="fragHint">
+<svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+</div>
+
+<div class="floatnav">
+<button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+<span class="count" id="slideCount">01 / 35</span>
+<button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+<button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>

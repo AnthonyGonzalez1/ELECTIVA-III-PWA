@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 42 · Lighthouse y cierre del proyecto · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .compare-wrap{overflow-x:auto;}
+  .warn-box{border:1px solid #e0a800; background:#fff8e1; border-radius:10px; padding:1em 1.2em; margin:1em 0; font-size:.92em;}
+  .warn-box b{color:#9a6b00;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  .term-box{background:#1c1c1e; color:#cfcac0; border-radius:10px; padding:.9em 1.1em; font-size:.82em; font-family:"Cascadia Code",Consolas,monospace; line-height:1.55; margin:1em 0; overflow-x:auto;}
+  .term-box .prompt{color:#6ad06a;}
+  .win-box{border:2px solid #2e7d32; background:#f1f9f1; border-radius:10px; padding:1em 1.2em; margin:1.2em 0; font-size:.92em;}
+  .win-box b{color:#1b5e20;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 16 de 19</div>
+    <h1>Lighthouse y cierre del proyecto</h1>
+    <div class="lead">Llegó la hora de medir en serio. Lighthouse audita el Atlas 3D y el informe dice dónde duele: la página salta mientras carga, dibuja 60 veces por segundo un modelo que está quieto y descarga todo en un solo archivo. Hoy se mide con método, se arregla cada hallazgo, se vuelve a medir con las cifras reales a la vista y se cierra el Módulo AR con una lista de verificación que se ejecuta sola.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Explicar</b> qué mide Lighthouse, qué no mide (la instalabilidad ya no es una categoría) y por qué sus números cambian de una corrida a otra.</span></li>
+      <li><span class="chk">✓</span><span><b>Medir</b> con método: varias corridas, la mediana y una línea base antes de tocar nada.</span></li>
+      <li><span class="chk">✓</span><span><b>Convertir</b> cada hallazgo del informe en un cambio concreto y comprobar con una segunda medición si ayudó.</span></li>
+      <li><span class="chk">✓</span><span><b>Reservar espacio</b> para lo que JavaScript dibuja tarde, y <b>dibujar bajo demanda</b> en lugar de 60 veces por segundo.</span></li>
+      <li><span class="chk">✓</span><span><b>Reconocer</b> que arreglar una métrica puede empeorar otra, y decidir con los datos a la vista.</span></li>
+      <li><span class="chk">✓</span><span><b>Cerrar</b> el Módulo AR con una lista de verificación que se ejecuta sola y que se probó que falla cuando algo está mal.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion41.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 41.</b> El Atlas 3D con instalación guiada y estado de conexión. Es el punto de partida de hoy (lo que Lighthouse audita primero).</span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-sesion42.zip">Descargar .zip</a><span class="rb-desc"><b>Versión terminada de esta sesión.</b> Con <code>meta description</code>, <code>&lt;main&gt;</code>, espacio reservado, dibujo bajo demanda y Three.js en su propio paquete.</span></li>
+        <li><a href="recursos/lighthouse-antes.html">Informe «antes»</a><span class="rb-desc">El informe completo de Lighthouse (HTML) de la versión de la Sesión 41. Ábrelo en el navegador: se puede expandir cada auditoría.</span></li>
+        <li><a href="recursos/lighthouse-despues.html">Informe «después»</a><span class="rb-desc">El informe completo de la versión de hoy.</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Qué mide Lighthouse, y qué ya no mide</h2>
+    <div class="body-text"><p>Lighthouse abre tu página en un Chrome controlado, la carga como lo haría un teléfono de gama media con conexión móvil lenta, y puntúa cuatro categorías de 0 a 100: <b>rendimiento</b> (qué tan rápido aparece y se vuelve usable), <b>accesibilidad</b>, <b>buenas prácticas</b> y <b>SEO</b>. La versión 13, la que se usó hoy, añade una quinta de <b>navegación con agentes</b> que revisa que la página no cambie de lugar mientras alguien (o algo) interactúa con ella.</p></div>
+    <div class="body-text"><p>Lo que ya <b>no</b> existe es la categoría «PWA»: desde la versión 12, Lighthouse dejó de puntuar la instalabilidad. Si quieres saber si Chrome considera instalable tu app, hay que preguntárselo a Chrome. Eso se hace con el protocolo de depuración (el mismo que usan las herramientas de desarrollo): <code>Page.getAppManifest</code> devuelve los errores del manifest y <code>Page.getInstallabilityErrors</code> devuelve por qué la app <i>no</i> sería instalable. Esta es la respuesta real de Chrome para el Atlas 3D de hoy (líneas 2 y 3 de la prueba de cierre que verás en la sección 6):</p></div>
+    <div class="term-box">2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]<br>
+3) Chrome dice: errores de instalabilidad → []</div>
+    <div class="callout"><b>Lo que Lighthouse no puede decir también cuenta.</b> No prueba que el botón «Instalar» aparezca (depende de que Chrome dispare el evento en <i>tu</i> teléfono), ni la realidad aumentada, ni cómo se siente girar un modelo con el dedo. Lighthouse es un termómetro de la carga de la página, no una prueba de la app.</div>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Medir bien antes de tocar nada</h2>
+    <div class="body-text"><p>Las mediciones de rendimiento <b>varían</b>: dos corridas seguidas de la misma página no dan lo mismo. Por eso se hizo así: servir la compilación de la Sesión 41 tal cual, correr Lighthouse <b>tres veces</b> con la configuración por defecto (móvil, con la lentitud simulada) y quedarse con la <b>mediana</b>.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>npm run build
+npx serve dist -l 4310          # o cualquier servidor estático
+npx lighthouse http://localhost:4310/ \
+  --chrome-flags="--headless=new" \
+  --output=html --output=json --output-path=./informe</code></pre>
+    </div>
+    <div class="body-text"><p>Esta es la línea base: el resumen de una de las corridas, escrito por un script que lee el JSON del informe.</p></div>
+    <div class="term-box"><span class="prompt">$</span> python3 resumen.py base-3.report.json<br>
+Lighthouse 13.6.0 | mobile | throttling simulate<br>
+&nbsp;&nbsp;performance 51<br>
+&nbsp;&nbsp;accessibility 98<br>
+&nbsp;&nbsp;best-practices 100<br>
+&nbsp;&nbsp;seo 90<br>
+&nbsp;&nbsp;agentic-browsing 57<br>
+&nbsp;&nbsp; first-contentful-paint 1.7 s 0.93<br>
+&nbsp;&nbsp; largest-contentful-paint 1.7 s 0.99<br>
+&nbsp;&nbsp; total-blocking-time 1,790 ms 0.1<br>
+&nbsp;&nbsp; cumulative-layout-shift 0.523 0.15<br>
+&nbsp;&nbsp; speed-index 1.7 s 1<br>
+&nbsp;&nbsp; interactive 7.8 s 0.44<br>
+--- no aprobadas (score&lt;1) ---<br>
+[performance] first-contentful-paint: 0.93 — First Contentful Paint | 1.7 s<br>
+[performance] largest-contentful-paint: 0.99 — Largest Contentful Paint | 1.7 s<br>
+[performance] total-blocking-time: 0.1 — Total Blocking Time | 1,790 ms<br>
+[performance] cumulative-layout-shift: 0.15 — Cumulative Layout Shift | 0.523<br>
+[performance] bf-cache: 0 — Page prevented back/forward cache restoration | 1 failure reason<br>
+[accessibility] landmark-one-main: 0 — Document does not have a main landmark. | <br>
+[best-practices] valid-source-maps: 0 — Missing source maps for large first-party JavaScript | <br>
+[seo] meta-description: 0 — Document does not have a meta description | <br>
+[agentic-browsing] cumulative-layout-shift: 0.15 — Cumulative Layout Shift | 0.523</div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/lighthouse-antes.png" alt="Informe de Lighthouse de la versión de la Sesión 41: rendimiento 51, accesibilidad 98, buenas prácticas 100, SEO 90" style="max-width:100%;max-width:42em;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">El informe «antes» (corrida de la Sesión 41). El texto del informe está en inglés porque así lo entrega Lighthouse.</div></figure>
+    <div class="warn-box"><b>Estas cifras no son las de tu teléfono.</b> Las corridas de esta sesión se hicieron en un Chromium sin tarjeta gráfica (WebGL dibuja por software) y con la lentitud <i>simulada</i> por Lighthouse. Sirven para <b>comparar antes y después en las mismas condiciones</b>, no para decir «en mi teléfono carga en 1,7 s». Si lo corres tú en Chrome (sección 7), tus números serán otros, y está bien: lo que debe repetirse es la <i>dirección</i> de los cambios.</div>
+    <div class="body-text"><p>Lectura de la línea base. El rendimiento está en <b>51</b>, y no por lo que pesa la página ni por lo que tarda en aparecer (FCP y LCP son 1,7 s, en verde), sino por dos cosas: el <b>tiempo de bloqueo</b> (TBT 1790 ms: el hilo principal está ocupado y no atiende al usuario) y el <b>desplazamiento de diseño</b> (CLS 0,523, cuando lo bueno es menor que 0,1). Además, accesibilidad pide un <code>&lt;main&gt;</code> y SEO una <code>meta description</code>. Con eso el plan es claro: <b>cuatro hallazgos, un cambio para cada uno, y medir otra vez después de cada uno</b>.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>Hallazgo 1: dos etiquetas que faltaban</h2>
+    <div class="body-text"><p>Los dos hallazgos más baratos. «El documento no tiene un punto de referencia <code>main</code>» (accesibilidad): quien navega con lector de pantalla salta directo al contenido principal, si la página lo declara. Y «el documento no tiene meta description» (SEO): es el texto que un buscador muestra bajo el título.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>index.html (la descripción)</div>
+      <pre><code>    &lt;meta name="description" content="Catálogo interactivo en 3D de patrones de arquitectura de software (MVC, capas y microservicios), con realidad aumentada y uso sin conexión." /&gt;</code></pre>
+    </div>
+    <div class="body-text"><p>El <code>&lt;main&gt;</code> envuelve las zonas de la página (visor, instalación, descargas) y se cierra justo antes de la superposición de AR. Como el <code>body</code> ya centraba su contenido en una columna, el <code>main</code> necesita repetir esa columna o la página se deforma:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/style.css (el main)</div>
+      <pre><code>.contenido { width: 100%; display: flex; flex-direction: column; align-items: center; }</code></pre>
+    </div>
+    <div class="body-text"><p>Resultado de estas etiquetas: accesibilidad <b>98 → 100</b> y SEO <b>90 → 100</b>. El rendimiento casi no se mueve (51 → 52 en la medición por pasos, que ya incluía el alto del panel). Esperable: eran etiquetas, no velocidad.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>Hallazgo 2: lo que JavaScript dibuja tarde empuja todo lo demás</h2>
+    <div class="body-text"><p>El CLS de 0,523 era el problema más grande. Un «desplazamiento de diseño» ocurre cuando algo que ya se veía <b>cambia de lugar</b> porque aparece contenido nuevo encima. En el Atlas pasa con dos zonas que se rellenan con JavaScript: el <b>visor</b> (el <code>canvas</code> de Three.js llega después de que se ejecuta el código) y el <b>panel del modelo</b> (pestañas, resumen, leyenda, chips y la ficha de la pieza). Mientras están vacíos ocupan casi nada; cuando se llenan, empujan hacia abajo todo el contenido de la página.</p></div>
+    <div class="body-text"><p>La solución no es hacer que aparezcan antes, sino <b>reservarles su sitio desde el principio</b>. Para el visor, cuyo alto es siempre tres cuartos de su ancho (con tope de 560 px, como calcula <code>visor.ts</code>), basta con decírselo a CSS:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/style.css (reservar el espacio)</div>
+      <pre><code>.modelo-panel { min-height: 25em; }
+/* El visor también se llena con JavaScript (el canvas llega tarde): su alto se reserva con la misma
+   proporción que usa visor.ts (alto = 0,75 × ancho, máximo 560 px). Sin esto, todo lo de abajo saltaba. */
+.visor { aspect-ratio: 4 / 3; max-height: 560px; }</code></pre>
+    </div>
+    <div class="body-text"><p>Reservar solo uno de los dos huecos no bastaba. Para saber cuánto aporta cada reserva se midió el código final <b>quitándoselas</b> (tres corridas por variante, mediana de CLS):</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Variante</th><th>CLS (mediana de 3)</th></tr>
+      <tr><td>Sin reservar nada</td><td>0,523</td></tr>
+      <tr><td>Solo el alto del panel (<code>min-height</code>)</td><td>0,447</td></tr>
+      <tr><td>Panel y visor (<code>min-height</code> y <code>aspect-ratio</code>)</td><td><b>0,050</b></td></tr>
+    </table>
+    </div>
+    <div class="body-text"><p>Sin las dos, el CLS es el de la línea base: las etiquetas <code>meta</code> y <code>main</code> no lo tocan. El panel solo no basta porque el visor, que también llega tarde, seguía empujando; hizo falta <b>reservar los dos</b>.</p></div>
+    <div class="callout"><b>Un CLS bueno es un CLS bajo (&lt; 0,1).</b> Pasó de 0,523 a 0,05, y de ahí vino la mayor parte del salto de rendimiento de 52 a 69 en la medición por pasos. Fíjate también en el TBT: <b>subió</b> de 1850 a 2203 ms. Ese costo se atiende en los dos hallazgos siguientes.</div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>Hallazgo 3: dibujar solo cuando algo cambió</h2>
+    <div class="body-text"><p>El TBT mide cuánto tiempo el hilo principal está ocupado sin dejar pasar al usuario. El visor tenía un bucle que llamaba a <code>renderer.render()</code> en <b>cada fotograma</b>, aunque la escena estuviera quieta. Es lo que hacen muchos ejemplos de Three.js, y es un gasto real: un modelo parado se redibujaba 60 veces por segundo, gastando batería y ocupando el hilo.</p></div>
+    <div class="body-text"><p>La solución es una bandera, «sucio», que dice «hay algo nuevo que dibujar». Quien cambia algo (elegir una pieza, cambiar de modelo, redimensionar, entrar o salir de AR) la levanta; el bucle dibuja solo si está levantada o si los controles dicen que la cámara se está moviendo (arrastre o inercia):</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (dibujo bajo demanda)</div>
+      <pre><code>  let sucio = true;
+
+  function ajustarTamano() {
+    const ancho = contenedor.clientWidth || 320;
+    const alto = Math.min(Math.round(ancho * 0.75), 560);
+    renderer.setSize(ancho, alto);
+    camara.aspect = ancho / alto;
+    camara.updateProjectionMatrix();
+    sucio = true;
+  }
+  ajustarTamano();
+  window.addEventListener("resize", ajustarTamano);
+
+  let animacion = 0;
+  function bucle() {
+    animacion = requestAnimationFrame(bucle);
+    if (porSensores) {
+      // Interpolación: alcanza el objetivo poco a poco (filtra el temblor del sensor).
+      grupo.rotation.x += (objetivoX - grupo.rotation.x) * 0.15;
+      grupo.rotation.y += (objetivoY - grupo.rotation.y) * 0.15;
+      sucio = true; // con sensores la escena se mueve sola
+    }
+    const camaraSeMovio = controles.update(); // true mientras el usuario (o la inercia) mueve la cámara
+    if (sucio || camaraSeMovio) {
+      sucio = false;
+      renderer.render(escena, camara);
+    }
+  }
+  bucle();</code></pre>
+    </div>
+    <div class="body-text"><p>Es un cambio pequeño pero delicado: si se olvida levantar la bandera en un lugar, esa acción deja de verse hasta el siguiente movimiento. Por eso la prueba de cierre mide <b>cuántas veces se dibuja</b> contando las llamadas reales de WebGL, y comprueba cada acción por separado (elegir pieza, cambiar de modelo, redimensionar, arrastrar). Sección 6.</p></div>
+    <div class="body-text"><p>Medición de este paso: rendimiento 69 → <b>75</b> y TBT 2203 → <b>1081 ms</b>.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">6</span>Hallazgo 4: Three.js en su propio archivo</h2>
+    <div class="body-text"><p>Quedaba el aviso que Vite imprime desde hace sesiones: un solo archivo de más de 500 kB. Casi todo ese peso es Three.js, que no cambia, mientras que el código de la app cambia cada sesión. Un archivo único tiene dos problemas: se descarga y analiza entero, en un solo bloque de trabajo (un «tarea larga» que bloquea el hilo), y cualquier cambio mínimo en la app obliga a descargar de nuevo la biblioteca. Vite permite separarlos:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>vite.config.ts (separar Three.js)</div>
+      <pre><code>  build: {
+    rollupOptions: {
+      output: {
+        // Sesión 42: Three.js (la mayor parte del peso) va en su propio archivo: el código de la app
+        // cambia cada sesión, Three.js casi nunca, y así son dos descargas que se pueden cachear por separado.
+        manualChunks: { three: ["three"] },
+      },
+    },
+  },</code></pre>
+    </div>
+    <div class="body-text"><p>La compilación, tal cual la imprimió <code>npm run build</code>:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build<br>
+&gt; pwa-ar-objetos3d@0.0.0 build<br>
+&gt; tsc &amp;&amp; tsc -p tsconfig.sw.json &amp;&amp; vite build<br>
+<br>
+vite v5.4.21 building for production...<br>
+transforming...<br>
+✓ 27 modules transformed.<br>
+rendering chunks...<br>
+computing gzip size...<br>
+dist/index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4.29 kB │ gzip:&nbsp;&nbsp; 1.52 kB<br>
+dist/assets/index-CYynvKCQ.css&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.44 kB │ gzip:&nbsp;&nbsp; 1.82 kB<br>
+dist/assets/workbox-window.prod.es5-BqEJf4Xk.js&nbsp;&nbsp;&nbsp;&nbsp;5.71 kB │ gzip:&nbsp;&nbsp; 2.34 kB<br>
+dist/assets/index-Z10u6Kuz.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 62.57 kB │ gzip:&nbsp;&nbsp;20.50 kB<br>
+dist/assets/three-DFUxCYKs.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;482.73 kB │ gzip: 122.01 kB<br>
+✓ built in 1.80s<br>
+<br>
+PWA v1.3.0<br>
+Building src/sw.ts service worker ("es" format)...<br>
+vite v5.4.21 building for production...<br>
+transforming...<br>
+✓ 89 modules transformed.<br>
+rendering chunks...<br>
+computing gzip size...<br>
+dist/sw.mjs&nbsp;&nbsp;27.66 kB │ gzip: 9.16 kB<br>
+✓ built in 439ms<br>
+<br>
+PWA v1.3.0<br>
+mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;injectManifest<br>
+format:&nbsp;&nbsp; es<br>
+<b>precache&nbsp;&nbsp;9 entries (558.82 KiB)</b><br>
+files generated<br>
+&nbsp;&nbsp;dist/sw.js</div>
+    <div class="fig-caption">El archivo principal pasó de 544,86 kB (Sesión 41) a 62,57 kB, y Three.js (482,73 kB) quedó aparte. El precaché del Service Worker lo incluyó solo (9 entradas, 558,82 KiB: antes 8 entradas y 557,95 KiB), porque la lista se genera al compilar. El aviso de «más de 500 kB» desapareció.</div>
+    <div class="body-text" style="margin-top:1em;"><p>Medición de este paso: rendimiento 75 → <b>84</b> y TBT 1081 → <b>517 ms</b> (el trabajo se reparte en tareas más cortas).</p></div>
+
+    <h2 class="section-title"><span class="num-badge">7</span>El resultado, con las cifras a la vista</h2>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/mejora-por-pasos.png" alt="Tres gráficos de barras: puntaje de rendimiento sube de 51 a 84, CLS baja de 0,523 a 0,05, TBT baja de 1786 a 517 ms, en cinco etapas" style="max-width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Mediana de tres corridas en cada etapa, acumulando los cambios: Paso 1 = <code>meta</code>, <code>main</code> y alto mínimo del panel; Paso 2 = además el espacio del visor; Paso 3 = dibujo bajo demanda; Paso 4 = Three.js en su propio paquete.</div></figure>
+    <div class="body-text"><p>La medición final de la versión terminada (otra tanda de tres corridas) dio 82, 84 y 81, mediana <b>82</b>. El Paso 4 de arriba (84) y esta tanda son la misma versión: <b>dos puntos de diferencia solo por repetir la medición</b>. Esa es la variación que hay que tener presente al leer cualquier cifra suelta.</p></div>
+    <div class="term-box"><span class="prompt">$</span> python3 resumen.py desp-1.report.json<br>
+Lighthouse 13.6.0 | mobile | throttling simulate<br>
+&nbsp;&nbsp;performance 82<br>
+&nbsp;&nbsp;accessibility 100<br>
+&nbsp;&nbsp;best-practices 100<br>
+&nbsp;&nbsp;seo 100<br>
+&nbsp;&nbsp;agentic-browsing 100<br>
+&nbsp;&nbsp; first-contentful-paint 1.7 s 0.91<br>
+&nbsp;&nbsp; largest-contentful-paint 2.3 s 0.93<br>
+&nbsp;&nbsp; total-blocking-time 610 ms 0.49<br>
+&nbsp;&nbsp; cumulative-layout-shift 0.05 0.99<br>
+&nbsp;&nbsp; speed-index 1.7 s 1<br>
+&nbsp;&nbsp; interactive 2.5 s 0.98<br>
+--- no aprobadas (score&lt;1) ---<br>
+[performance] first-contentful-paint: 0.91 — First Contentful Paint | 1.7 s<br>
+[performance] largest-contentful-paint: 0.93 — Largest Contentful Paint | 2.3 s<br>
+[performance] total-blocking-time: 0.49 — Total Blocking Time | 610 ms<br>
+[performance] cumulative-layout-shift: 0.99 — Cumulative Layout Shift | 0.05<br>
+[performance] bf-cache: 0 — Page prevented back/forward cache restoration | 1 failure reason<br>
+[agentic-browsing] cumulative-layout-shift: 0.99 — Cumulative Layout Shift | 0.05</div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/lighthouse-despues.png" alt="Informe de Lighthouse de la versión de la Sesión 42: rendimiento 82, accesibilidad 100, buenas prácticas 100, SEO 100" style="max-width:100%;max-width:42em;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">El informe «después» (la corrida cuyo resultado coincide con la mediana).</div></figure>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Métrica (mediana de 3)</th><th>Antes (S41)</th><th>Después (S42)</th></tr>
+      <tr><td>Rendimiento</td><td>51</td><td><b>82</b></td></tr>
+      <tr><td>Accesibilidad</td><td>98</td><td><b>100</b></td></tr>
+      <tr><td>Buenas prácticas</td><td>100</td><td>100</td></tr>
+      <tr><td>SEO</td><td>90</td><td><b>100</b></td></tr>
+      <tr><td>CLS (desplazamiento de diseño)</td><td>0,523</td><td><b>0,05</b></td></tr>
+      <tr><td>TBT (tiempo de bloqueo)</td><td>1786 ms</td><td><b>608 ms</b></td></tr>
+      <tr><td>Tiempo hasta ser interactiva</td><td>7,8 s</td><td><b>2,5 s</b></td></tr>
+      <tr><td>FCP (primer contenido)</td><td>1696 ms</td><td>1740 ms</td></tr>
+      <tr><td>LCP (contenido más grande)</td><td>1696 ms</td><td><b>2329 ms</b> (peor)</td></tr>
+    </table>
+    </div>
+
+    <h3 class="sub-title">El LCP empeoró, y es una lección</h3>
+    <div class="warn-box"><b>No todo mejoró.</b> El LCP pasó de 1,7 a 2,3 s. No es que la página se haya vuelto más lenta: al reservar espacio, lo que Lighthouse considera «el elemento más grande que apareció» <b>cambió</b>. Antes era un párrafo estático (<code>p.aviso-demo</code>) que el desplazamiento de diseño empujaba fuera de la pantalla; ahora, con todo en su sitio, el elemento más grande es el texto de la ficha de la pieza, que JavaScript rellena un poco después. Se arregló un defecto real (el CLS) y la métrica de al lado cambió porque <b>empezó a medir otra cosa</b>. Ambos valores están en verde, y se decidió no «arreglar» el LCP: habría sido tocar el diseño para engañar a una métrica.</div>
+
+    <h3 class="sub-title">Lo que quedó sin arreglar, a propósito</h3>
+    <ul class="clean">
+      <li><b>La página impide el «bf-cache»</b> (la restauración instantánea al volver atrás). Lo causa WebXR: una página que puede abrir una sesión de AR no es elegible. Es inherente a la app, no un descuido.</li>
+      <li><b>JavaScript sin usar (≈ 44 KiB)</b>: son partes de Three.js que la app no llama. Quitarlas exigiría importar por piezas cada clase de Three.js y revisar todo el código; el costo supera la ganancia hoy.</li>
+      <li><b>CSS que bloquea el primer dibujo (≈ 90–150 ms)</b>: son 6 kB; incrustarlo en el HTML ahorraría unos milisegundos a cambio de complicar la compilación.</li>
+      <li><b>TBT de 608 ms</b> (puntaje 0,49): el trabajo que queda es en gran parte Three.js inicializándose. Mejora real pediría cargar el visor más tarde.</li>
+    </ul>
+
+    <h2 class="section-title"><span class="num-badge">8</span>La lista de verificación del Módulo AR</h2>
+    <div class="body-text"><p>Para cerrar el proyecto, las comprobaciones que antes se hacían a mano se convierten en <b>un programa</b>, <code>test_s42.js</code>, que abre la compilación en un Chromium real y revisa lo que se puede revisar sin un teléfono. Dos reglas: lo que Chrome sabe decir se le pregunta a Chrome (nada simulado), y la prueba debe poder <b>fallar</b>.</p></div>
+    <div class="term-box"><span class="prompt">$</span> node test_s42.js<br>
+1) documento → {"lang":"es","viewport":"width=device-width, initial-scale=1.0","descr":140,"tema":"#0b1220","main":1,"h1":1,"contextoSeguro":true,"titulo":"Atlas 3D de Arquitectura de Software"}<br>
+2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]<br>
+3) Chrome dice: errores de instalabilidad → []<br>
+4) service worker → {"activo":true,"controla":true,"precache":9}<br>
+5) servidor caído y recarga → {"canvas":1,"pestanas":3}<br>
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.050<br>
+7) escena quieta durante 1,5 s → llamadas de dibujo: 0<br>
+8) arrastrar para girar → llamadas de dibujo nuevas: sí (744)<br>
+9) tras soltar y pasar la inercia → vuelve a quedarse quieta: sí<br>
+10) elegir una pieza → llamadas de dibujo nuevas: sí<br>
+11) cambiar de modelo → llamadas de dibujo nuevas: sí<br>
+12) cambiar el tamaño de la ventana → llamadas de dibujo nuevas: sí<br>
+pageerrors: []<br>
+RESULTADO: todo en orden</div>
+    <div class="win-box"><b>Qué demuestra cada línea:</b> (1) idioma, viewport, descripción de 140 caracteres, un <code>main</code>, un <code>h1</code>, contexto seguro; (2-3) el manifest y la instalabilidad según el propio Chrome, sin errores; (4) el Service Worker activo, controlando la página, con 9 entradas de precaché; (5) con el servidor caído, al recargar el visor se monta y hay 3 pestañas de modelo; (6) CLS 0,050; (7) <b>una escena quieta no hace ni una llamada de dibujo</b>; (8-12) cada acción del usuario sí provoca dibujo, y tras la inercia el visor vuelve a quedarse quieto.</div>
+    <div class="body-text" style="margin-top:1em;"><p><b>¿Y si la lista diera siempre verde?</b> Como en la Sesión 41, se probó contra la versión <i>anterior</i>: la misma lista ejecutada sobre la compilación de la Sesión 41 tiene que fallar, y por las razones correctas.</p></div>
+    <div class="term-box"><span class="prompt">$</span> S42DIR=s41 node test_s42.js<br>
+1) documento → {"lang":"es","viewport":"width=device-width, initial-scale=1.0","descr":0,"tema":"#0b1220","main":0,"h1":1,"contextoSeguro":true,"titulo":"Atlas 3D de Arquitectura de Software"}<br>
+&nbsp;&nbsp; ✗ FALLÓ: meta description<br>
+&nbsp;&nbsp; ✗ FALLÓ: un &lt;main&gt;<br>
+2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]<br>
+3) Chrome dice: errores de instalabilidad → []<br>
+4) service worker → {"activo":true,"controla":true,"precache":8}<br>
+5) servidor caído y recarga → {"canvas":1,"pestanas":3}<br>
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.498<br>
+&nbsp;&nbsp; ✗ FALLÓ: CLS debe ser menor que 0,1<br>
+7) escena quieta durante 1,5 s → llamadas de dibujo: 2160<br>
+&nbsp;&nbsp; ✗ FALLÓ: una escena quieta no debe dibujar<br>
+8) arrastrar para girar → llamadas de dibujo nuevas: sí (768)<br>
+9) tras soltar y pasar la inercia → vuelve a quedarse quieta: no<br>
+&nbsp;&nbsp; ✗ FALLÓ: tras la inercia debe volver a no dibujar<br>
+10) elegir una pieza → llamadas de dibujo nuevas: sí<br>
+11) cambiar de modelo → llamadas de dibujo nuevas: sí<br>
+12) cambiar el tamaño de la ventana → llamadas de dibujo nuevas: sí<br>
+pageerrors: []<br>
+RESULTADO: hay 5 fallos</div>
+    <div class="warn-box"><b>Cinco fallos, los cinco esperables.</b> Sin <code>meta description</code> ni <code>main</code> (hallazgo 1); CLS de 0,498 (hallazgo 2); <b>2160 llamadas de dibujo</b> con la escena quieta (hallazgo 3) y que la escena no se aquieta tras la inercia (consecuencia de lo mismo). Todo lo demás pasa en las dos versiones: es la parte que no se tocó. Una lista que sobre la versión vieja diera verde no estaría midiendo nada.</div>
+    <div class="body-text" style="margin-top:1em;"><p>Y como se tocó el visor, se repitieron las pruebas de las sesiones anteriores sobre el código de hoy: sin errores de página, y con el mismo resultado.</p></div>
+    <div class="term-box"><span class="prompt">$</span> S39DIR=s42 node test_s39.js<br>
+A1) petición → {"requiredFeatures":["local","hit-test"],"optionalFeatures":["dom-overlay","anchors"],"domOverlay":{"root":{}}}<br>
+A1) estado general → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.<br>
+A2) mirando al suelo → Toca la pantalla para colocar el modelo. | {hitTest:sí,anclas:sí,anclado:no,fase:listo,escala:0.25,giro:0,pos:—}<br>
+A3) tras tocar → Modelo colocado. Toca otro punto para recolocarlo. | {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas creadas/borradas: {"crearAncla":1,"borrarAncla":0}<br>
+A4) el usuario camina 1 m a la derecha → pos del cubo: [0,-1.4,-2.34] (sigue en su sitio: true )<br>
+B1) movimiento de 4 px (menor que el umbral) → pos igual: true<br>
+B2) arrastrar 200 px a la derecha → pos: [0,-1.4,-2.34] → [0.63,-1.4,-2.34] | x aumentó: true | y igual: true<br>
+B3) «select» justo después de un arrastre → NO recoloca: anclas {"crearAncla":1,"borrarAncla":0} → {"crearAncla":1,"borrarAncla":0} | pos: [0.63,-1.4,-2.34]<br>
+B4) separar los dos dedos (200 → 400 px) → escala: 0.25 → 0.5<br>
+B5) separarlos mucho más → escala limitada a 1<br>
+B6) juntarlos casi del todo → escala limitada a 0.1<br>
+B7) girar los dos dedos → giro: 0° → 90°<br>
+B8) tras dos dedos, ¿hubo «gesto»? el siguiente «select» tampoco recoloca: {"crearAncla":1,"borrarAncla":0} → {"crearAncla":1,"borrarAncla":0}<br>
+C1) recolocar mirando más abajo → pos: [0.63,-0.8,-2.34] → [0,-0.8,-1.27] | anclas creadas/borradas: {"crearAncla":2,"borrarAncla":1} | anclado: sí | escala conservada: 1<br>
+D1) mirando al techo → Modelo colocado. Toca otro punto para recolocarlo. | fase: colocado | tocar: anclas {"crearAncla":2,"borrarAncla":1} → {"crearAncla":2,"borrarAncla":1} | el cubo no se movió: true<br>
+D2) vuelve a mirar al suelo → colocado<br>
+E1) tras salir → La sesión de realidad aumentada terminó. | anclas borradas en total: {"crearAncla":2,"borrarAncla":2} | canvas: 1 | botón AR: true<br>
+F1) arranca mirando al techo → Mueve el teléfono despacio hasta ver el anillo verde sobre una superficie. | {hitTest:sí,anclas:sí,anclado:no,fase:buscando,escala:0.25,giro:0,pos:—}<br>
+F2) tocar sin superficie → fase: buscando | anclas: {"crearAncla":0,"borrarAncla":0}<br>
+F3) 6 s sin superficie → No encuentro superficies. Prueba con una zona con textura y buena luz, o toca la pantalla para colocar el modelo delante de ti. | {hitTest:sí,anclas:sí,anclado:no,fase:buscando,escala:0.25,giro:0,pos:—}<br>
+F4) tocar tras el plazo → coloca delante de la mirada: {hitTest:sí,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-0.31,-1.49]} | anclas: {"crearAncla":0,"borrarAncla":0}<br>
+G1) sin hit-test → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, hit-test.<br>
+G1)&nbsp;&nbsp;Este dispositivo no ofrece hit-test: el modelo está a 1,5 m delante. Toca para traerlo delante de ti. | {hitTest:no,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-0.3,-1.5]}<br>
+G2) tras tocar (de pie en x=1, mirando al frente) →&nbsp;&nbsp;{hitTest:no,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[1,-0.3,-1.48]}<br>
+G3) los gestos también funcionan sin hit-test → escala: 0.5<br>
+H1) sin «anchors» → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, anchors.<br>
+H2) tocar →&nbsp;&nbsp;{hitTest:sí,anclas:no,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas creadas: {"crearAncla":0,"borrarAncla":0}<br>
+I1) createAnchor rechazado →&nbsp;&nbsp;{hitTest:sí,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+J1) intentos de petición → ["[\"local\",\"hit-test\"]","[\"local\"]"] | estado: Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.<br>
+J2) tocar tras el reintento → {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+pageerrors: []</div>
+    <div class="term-box"><span class="prompt">$</span> S40DIR=s42 node test_s40.js | tail -8<br>
+I1) base v2 preparada con identificadores de la demo<br>
+I2) tras abrir la app → {"version":3,"progreso":[["microservicios",false,333],["mvc",true,111]],"descargas":[["capas","pendiente"],["mvc","pendiente"]]}<br>
+J1) antes de usar AR → rastro: null<br>
+J2) dentro de AR → rastro: activa | diagnóstico: Última sesión de AR: sin registro.<br>
+J3) tras salir → rastro: fin-ok<br>
+J4) diagnóstico → Última sesión de AR: terminó completa (hace 1 s).<br>
+J5) rastro interrumpido simulado, tras recargar → Última sesión de AR: se interrumpió en el paso «fin-3-ancla» (hace 4 s). | panel abierto: true<br>
+pageerrors: []</div>
+    <div class="term-box"><span class="prompt">$</span> S41DIR=s42 node test_s41.js | tail -14<br>
+A1) sin evento → botón visible: false | texto: Este navegador no ofrece instalar desde la página. Si ya la instalaste, ábrela desde su icono; si no, usa el menú del navegador → «Instalar app».<br>
+B1) llega beforeinstallprompt → defaultPrevented: true | botón visible: true | texto: Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.<br>
+C1) clic en «Instalar» → prompt() llamado 1 vez | botón visible: false<br>
+C2) llega appinstalled → texto: ✓ Instalada. Ábrela desde su icono en la pantalla de inicio.<br>
+D1) usuario cancela → botón visible: false | texto: Cancelaste la instalación. Chrome decide cuándo volver a ofrecerla; mientras tanto, usa el menú ⋮ → «Instalar app».<br>
+D2) Chrome vuelve a ofrecer la instalación → botón visible: true<br>
+E1) modo standalone → botón visible: false | texto: ✓ Estás usando Atlas 3D como app instalada.<br>
+F1) iPhone → botón visible: false | texto: En iPhone y iPad no hay botón: en Safari toca Compartir y luego «Añadir a pantalla de inicio».<br>
+G1) en línea → banda: null<br>
+G2) se corta la red → banda: Sin conexión: los modelos y las fichas descargadas siguen disponibles.<br>
+G3) sin red se cambia de modelo → «Niveles apilados: cada capa solo habla con la inme…»<br>
+G4) vuelve la red → banda: Volvió la conexión.<br>
+G5) 3,3 s después → banda: null<br>
+pageerrors: []<br>
+RESULTADO: todo en orden</div>
+    <div class="body-text" style="margin-top:1em;"><p>Las ocho vueltas seguidas entre modelos no dejan recursos de GPU sin liberar (los números vuelven a los mismos valores cada tres modelos), y la publicación en subruta sigue sin rutas absolutas:</p></div>
+    <div class="term-box">inicio {"Texture":16,"Framebuffer":3,"Buffer":57,"Program":5,"Shader":0,"VertexArray":17}<br>
+ciclo 0 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 1 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+ciclo 2 microservicios {"Texture":19,"Framebuffer":3,"Buffer":121,"Program":6,"Shader":0,"VertexArray":35}<br>
+ciclo 3 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 4 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+ciclo 5 microservicios {"Texture":19,"Framebuffer":3,"Buffer":121,"Program":6,"Shader":0,"VertexArray":35}<br>
+ciclo 6 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 7 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+errores []</div>
+    <div class="term-box"><span class="prompt">$</span> npm run build -- --base=/atlas-3d/ --outDir /tmp/dist-sub<br>
+<span class="prompt">$</span> node test_subruta.js<br>
+subruta → {"scope":"http://localhost:4195/atlas-3d/","activo":true,"manifest":{"start":"./","scope":"./"},"iconoStatus":200,"caches":["modelos-3d","workbox-precache-v2-http://localhost:4195/atlas-3d/"]}<br>
+recarga sin conexión: canvas montado = 1<br>
+ficha → ["http://localhost:4195/atlas-3d/modelos/mvc.json",200]<br>
+descarga desde el botón → caché modelos-3d: ["http://localhost:4195/atlas-3d/modelos/capas.json","http://localhost:4195/atlas-3d/modelos/microservicios.json","http://localhost:4195/atlas-3d/modelos/mvc.json"]<br>
+peticiones fuera de la subruta o 404: [] | pageerrors: []</div>
+    <div class="body-text" style="margin-top:1em;"><p><b>La lista final del Módulo AR</b>, con quién comprueba cada cosa:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Qué se verifica</th><th>Cómo</th><th>Estado</th></tr>
+      <tr><td>HTML válido para accesibilidad y SEO: idioma, <code>main</code>, <code>h1</code>, descripción, viewport</td><td>Lighthouse y <code>test_s42.js</code></td><td>Verificado (100 / 100)</td></tr>
+      <tr><td>Manifest completo, iconos 192 y 512 (+ maskable), <code>standalone</code></td><td>Chrome (<code>getAppManifest</code>)</td><td>Verificado</td></tr>
+      <tr><td>Chrome no reporta obstáculos de instalabilidad</td><td>Chrome (<code>getInstallabilityErrors</code>)</td><td>Verificado: sin errores</td></tr>
+      <tr><td>Service Worker activo y controlando; precaché de 9 archivos</td><td><code>test_s42.js</code></td><td>Verificado</td></tr>
+      <tr><td>Funciona sin servidor (visor y pestañas)</td><td><code>test_s42.js</code> con el servidor caído</td><td>Verificado</td></tr>
+      <tr><td>Sin desplazamiento de diseño al cargar</td><td>Lighthouse y <code>test_s42.js</code></td><td>Verificado (0,05)</td></tr>
+      <tr><td>Escena quieta sin dibujar; cada acción sí dibuja</td><td><code>test_s42.js</code> (llamadas de WebGL)</td><td>Verificado</td></tr>
+      <tr><td>Sin fugas de recursos al cambiar de modelo</td><td>Conteo de recursos de GPU</td><td>Verificado</td></tr>
+      <tr><td>Publicación en subruta, sin rutas absolutas</td><td><code>test_subruta.js</code></td><td>Verificado</td></tr>
+      <tr><td>El botón «Instalar» aparece y el diálogo del sistema funciona</td><td>Solo un teléfono</td><td>En tu teléfono</td></tr>
+      <tr><td>La AR funciona en el dispositivo; entrar y salir sin romper la app</td><td>Solo un teléfono con ARCore</td><td>En tu teléfono</td></tr>
+      <tr><td>Girar con el dedo o con los sensores sigue fluido y se ve bien</td><td>Solo un teléfono</td><td>En tu teléfono</td></tr>
+    </table>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">9</span>Pruébalo tú: Lighthouse en tu navegador y en tu teléfono</h2>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Actualiza el repositorio.</b> Descomprime <code>pwa-ar-objetos3d-sesion42.zip</code> y copia su contenido sobre tu carpeta del proyecto, reemplazando archivos. Conserva <code>.github/workflows/pages.yml</code>.</li>
+      <li><b>Súbelo:</b> <code>git add .</code>, <code>git commit</code> y <code>git push</code>. Si el push se rechaza, <code>git pull --no-rebase -X ours --no-edit</code> y vuelve a empujar. Espera la marca verde en <b>Actions</b>.</li>
+      <li><b>Mide en Chrome del escritorio:</b> abre la app publicada, en una <b>ventana de incógnito</b> (sin extensiones que distorsionen), abre las herramientas de desarrollo (F12), pestaña <b>Lighthouse</b>, dispositivo «Móvil», y pulsa «Analizar la carga de la página». Repite <b>tres veces</b> y anota la mediana.</li>
+      <li><b>Compara con la versión anterior</b> si la tienes publicada aparte (la del <code>.zip</code> de la Sesión 41): mismas condiciones, mismas tres corridas.</li>
+      <li><b>En tu teléfono:</b> recarga dos veces la app, y mira que (a) el modelo se ve, gira con el dedo, y se queda quieto al soltar; (b) elegir una pieza y cambiar de modelo se ve al instante; (c) «Ver en AR» entra y sale sin problema; (d) la rotación con el teléfono sigue fluida.</li>
+    </ol>
+    <div class="body-text"><p>Lo más útil que puedes aportar: <b>tus tres números de rendimiento y tu CLS</b>, y si algo se dejó de ver o de moverse con el dibujo bajo demanda (es el cambio más delicado de la sesión).</p></div>
+
+    <h2 class="section-title"><span class="num-badge">10</span>Actividades</h2>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>Mide tu propia página, con método</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>Elige un proyecto tuyo publicado (puede ser el Gestor de Tareas). Corre Lighthouse tres veces y anota la mediana de cada categoría y de FCP, LCP, TBT y CLS. Identifica los <b>dos hallazgos</b> con más impacto y explica, con tus palabras, qué los causa.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> la tabla de las tres corridas con su mediana y el diagnóstico de los dos hallazgos.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">2</div><h4>Un cambio, una medición</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>Aplica <b>uno solo</b> de los dos arreglos (por ejemplo, <code>aspect-ratio</code> en un contenedor que se llena con JavaScript), vuelve a medir tres veces y compara contra la línea base. Si el número empeora en otra métrica, escribe por qué ocurre.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> ¿por qué es un error cambiar tres cosas y medir una sola vez?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el cambio, la tabla antes/después y la explicación.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">3</div><h4>Rompe el dibujo bajo demanda</h4></div>
+      <div class="meta-row">EN PAREJAS · 45 MIN</div>
+      <p>Quiten <code>sucio = true;</code> de la rama de «elegir una pieza» en <code>visor.ts</code>, recompilen y ejecuten <code>test_s42.js</code>. ¿Qué línea falla? Si no falla ninguna, escriban el caso que falta para que <b>sí</b> falle, y restauren la línea.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> la salida con la línea quitada, el caso nuevo si hizo falta, y la salida final restaurada.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">4</div><h4>El LCP: ¿cuál es «el elemento más grande»?</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>En el informe de Lighthouse expande la auditoría «Largest Contentful Paint element» de la versión de hoy y de la de la Sesión 41 (están en los recursos). Anota <b>qué elemento</b> es en cada una y propón un cambio que acerque el LCP al valor anterior <b>sin</b> volver a mover la página.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> los dos elementos, la propuesta, y qué costo tendría.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>git add .
+git commit -m "Lighthouse: espacio reservado, dibujo bajo demanda y Three.js aparte"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>Lighthouse puntúa carga, accesibilidad, buenas prácticas y SEO; la <b>instalabilidad</b> ya no es una categoría y se le pregunta a Chrome directamente.</li>
+      <li>Se mide con método: <b>varias corridas, la mediana</b>, y una línea base antes de cambiar nada. Las cifras absolutas dependen de dónde se corra; lo que se compara son los cambios en las mismas condiciones.</li>
+      <li>Lo que se dibuja tarde con JavaScript <b>empuja el diseño</b>: se arregla <b>reservando su espacio</b> (<code>aspect-ratio</code>, <code>min-height</code>). CLS de 0,523 a 0,05.</li>
+      <li>Una escena quieta no debe dibujarse: <b>dibujo bajo demanda</b> con una bandera «sucio», comprobado contando llamadas reales de WebGL.</li>
+      <li>Separar una biblioteca grande en su propio archivo reparte el trabajo en tareas más cortas (TBT de 1786 a 608 ms) y permite cachearla aparte.</li>
+      <li>Arreglar una métrica puede <b>mover</b> otra (el LCP pasó de 1,7 a 2,3 s porque cambió el elemento medido); se decide con los datos a la vista, sin «arreglar» una métrica solo por la métrica.</li>
+      <li>La lista de cierre se ejecuta sola, y se probó contra la versión vieja para ver que <b>sí falla</b> (cinco fallos esperados).</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 43: el Atlas 3D en React.</b> El mismo Atlas, reconstruido con React, para ver qué cambia en el código y qué se mantiene (el visor, el Service Worker y los modelos como datos). Con las mediciones de hoy como punto de comparación.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> Chrome for Developers, "Lighthouse" (documentación de categorías, puntuación y ejecución), developer.chrome.com/docs/lighthouse.</div>
+      <div><b>[2]</b> web.dev, "Cumulative Layout Shift (CLS)" y "Optimize Cumulative Layout Shift", web.dev/articles/cls y web.dev/articles/optimize-cls.</div>
+      <div><b>[3]</b> web.dev, "Total Blocking Time (TBT)" y "Largest Contentful Paint (LCP)", web.dev/articles/tbt y web.dev/articles/lcp.</div>
+      <div><b>[4]</b> Chrome DevTools Protocol, dominio "Page": <code>getAppManifest</code> y <code>getInstallabilityErrors</code>, chromedevtools.github.io/devtools-protocol.</div>
+      <div><b>[5]</b> Rollup, opción <code>output.manualChunks</code>; Vite, "Building for Production", vite.dev/guide/build.</div>
+      <div><b>[6]</b> MDN Web Docs, <code>aspect-ratio</code> y el elemento <code>&lt;main&gt;</code>, developer.mozilla.org.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 16 de 19</span>
+  </div>
+</div>
+</body>
+</html>
