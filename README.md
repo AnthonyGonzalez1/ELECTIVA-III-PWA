@@ -10,6 +10,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 - `Sub-bloque A - Fundamentos PWA/`: sesiones 15 a 26.
 - `Sub-bloque B - Proyecto Modulo AR (Objetos 3D)/`: sesiones 27 en adelante.
 - Cada sesión incluye `presentacion.html`, `guia.html`, la guía en Word y, si aplica, el guion de clase y la carpeta `recursos/` (zip original + contenido extraído).
+- Sesiones 39 a 45: la carpeta `entregables/` tiene las actividades resueltas (`ENTREGABLES.md`), el código de cada una (`codigo/*.diff`), las salidas de las pruebas y las capturas.
 - `Proyectos/`: la versión más reciente de cada proyecto, actualizada sesión a sesión.
 
 ## Sesiones
@@ -53,3 +54,4 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 - `Proyectos/gestor-de-tareas/`: Gestor de Tareas (Sub-bloque A).
 - `Proyectos/pwa-ar-objetos3d/`: Atlas 3D / Módulo AR (Sub-bloque B). Desde la Sesión 44 es la versión en Angular; las versiones sin framework (S42) y React (S43) están en los zips de `recursos/` de sus sesiones.
 - `Proyectos/checklist-atlas/`: lista de verificación final (Playwright) de la Sesión 45.
+- `Proyectos/pruebas-actividades/`: pruebas y mediciones con las que se hicieron las actividades de las sesiones 39 a 45.

@@ -1,0 +1,131 @@
+diff --git a/index.html b/index.html
+index a1b7c78..530caae 100644
+--- a/index.html
++++ b/index.html
+@@ -42,7 +42,10 @@
+     <div id="xr-overlay" class="xr-overlay">
+       <p id="xr-estado">Sesión de realidad aumentada activa</p>
+       <p id="xr-datos" class="xr-datos"></p>
+-      <button type="button" id="btn-salir-ar">Salir de AR</button>
++      <div class="xr-botones">
++        <button type="button" id="btn-quitar-cubo" hidden>Quitar cubo</button>
++        <button type="button" id="btn-salir-ar">Salir de AR</button>
++      </div>
+     </div>
+     <div id="app"></div>
+     <script type="module" src="/src/main.ts"></script>
+diff --git a/src/main.ts b/src/main.ts
+index 0851641..1408377 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -340,6 +340,7 @@ const btnAR = document.querySelector<HTMLButtonElement>("#btn-ar")!;
+ const estadoAR = document.querySelector<HTMLElement>("#estado-ar")!;
+ const overlayAR = document.querySelector<HTMLElement>("#xr-overlay")!;
+ const btnSalirAR = document.querySelector<HTMLButtonElement>("#btn-salir-ar")!;
++const btnQuitarCubo = document.querySelector<HTMLButtonElement>("#btn-quitar-cubo")!;
+ const xrEstado = document.querySelector<HTMLElement>("#xr-estado")!;
+ const xrDatos = document.querySelector<HTMLElement>("#xr-datos")!;
+ let sesionAR: XRSession | null = null;
+@@ -365,7 +366,10 @@ navigator.xr?.addEventListener("devicechange", () => void comprobarAR());
+ 
+ // Texto de ayuda sobre la cámara según en qué punto va la colocación.
+ function ayudaAR(e: EstadoAR): string {
+-  if (!e.hitTest) return "Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti.";
++  if (!e.hitTest)
++    return e.fase === "colocado"
++      ? "Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti."
++      : "Este dispositivo no ofrece hit-test: toca la pantalla para colocar el cubo delante de ti.";
+   switch (e.fase) {
+     case "buscando":
+       if (e.superficie === "inclinada") return "Esa superficie no es horizontal (anillo naranja): apunta al suelo o a una mesa para colocar el cubo.";
+@@ -399,6 +403,7 @@ function pintarEstadoAR(e: EstadoAR): void {
+     `fase: ${e.fase} · escala: ${e.escala.toFixed(2)} · giro: ${e.giroGrados}° · pos: ${pos} · ` +
+     `consultas: ${e.consultas} · resultados: ${e.resultados} · poses: ${e.impactos} · superficie: ${e.superficie}`;
+   if (xrEstado.textContent !== ayuda) xrEstado.textContent = ayuda;
++  btnQuitarCubo.hidden = e.fase !== "colocado"; // actividad 39.3: solo tiene sentido con un cubo colocado
+   if (xrDatos.textContent !== datos) xrDatos.textContent = datos;
+ }
+ 
+@@ -455,6 +460,11 @@ btnAR.addEventListener("click", async () => {
+ // el navegador avisa con `beforexrselect` y basta cancelarlo.
+ btnSalirAR.addEventListener("beforexrselect", (e) => e.preventDefault());
+ 
++// Actividad 39.3: «Quitar cubo». Sin este beforexrselect, el mismo toque llegaría también como «select»
++// a la sesión y volvería a colocar el cubo justo donde se acaba de quitar.
++btnQuitarCubo.addEventListener("beforexrselect", (e) => e.preventDefault());
++btnQuitarCubo.addEventListener("click", () => visor.quitarObjeto());
++
+ btnSalirAR.addEventListener("click", () => {
+   void sesionAR?.end();
+ });
+diff --git a/src/style.css b/src/style.css
+index ea53b1e..8ff95e1 100644
+--- a/src/style.css
++++ b/src/style.css
+@@ -170,3 +170,6 @@ body {
+ 
+ /* Una sola columna centrada: visor, avisos/descargas y lista de modelos con el mismo ancho */
+ .visor-zona, .descargas-zona, .atlas-demo { width: 100%; max-width: 44em; margin-left: auto; margin-right: auto; padding-left: 1em; padding-right: 1em; box-sizing: border-box; }
++/* Actividad 39.3: los dos botones del overlay, uno al lado del otro */
++.xr-overlay .xr-botones { display: flex; gap: .6em; }
++.xr-overlay #btn-quitar-cubo { background: #e8e2cf; }
+diff --git a/src/visor.ts b/src/visor.ts
+index 6156c6a..e1aa51e 100644
+--- a/src/visor.ts
++++ b/src/visor.ts
+@@ -25,6 +25,8 @@ export interface Visor {
+   entrarEnAR(sesion: XRSession, opciones: OpcionesAR): Promise<EstadoAR>;
+   /** true mientras hay una sesión AR abierta. */
+   enAR(): boolean;
++  /** Actividad 39.3: quita el objeto colocado (borra el ancla) y vuelve a buscar superficie. */
++  quitarObjeto(): void;
+   destruir(): void;
+ }
+ 
+@@ -133,6 +135,7 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+ 
+   // ── Sesiones 38-39: modo AR ─────────────────────────────────────────────
+   let sesionAR: XRSession | null = null;
++  let quitarAR: (() => void) | null = null; // actividad 39.3: la pone entrarEnAR, la borra el fin de sesión
+ 
+   async function entrarEnAR(sesion: XRSession, opciones: OpcionesAR): Promise<EstadoAR> {
+     cancelAnimationFrame(animacion); // en AR NO manda requestAnimationFrame: manda el reloj del visor XR
+@@ -263,6 +266,20 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+       }
+     }
+ 
++    // ── Actividad 39.3: quitar el objeto ──
++    quitarAR = () => {
++      if (fase !== "colocado") return;
++      turno++; // una creación de ancla todavía pendiente llegará con un turno viejo y se borrará sola
++      ancla?.delete();
++      ancla = null;
++      raiz.visible = false;
++      grupo.position.set(0, MITAD * escala, 0);
++      // Con hit-test: vuelve a buscar (o queda lista si la retícula ya está sobre una superficie horizontal).
++      // Sin hit-test: queda «lista»; el próximo toque la coloca delante de la mirada (plan B).
++      fase = !fuente ? "listo" : reticula.visible && superficie === "horizontal" ? "listo" : "buscando";
++      avisar();
++    };
++
+     // ── Gestos: mover (un dedo), girar y escalar (dos dedos) ──
+     const rayo = new THREE.Raycaster();
+     const plano = new THREE.Plane();
+@@ -368,6 +385,7 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+         renderer.setAnimationLoop(null);
+         renderer.xr.enabled = false;
+         sesionAR = null;
++        quitarAR = null;
+         gestos.destruir();
+         fuente?.cancel();
+         ancla?.delete();
+@@ -414,6 +432,9 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+     enAR() {
+       return sesionAR !== null;
+     },
++    quitarObjeto() {
++      quitarAR?.();
++    },
+     destruir() {
+       cancelAnimationFrame(animacion);
+       void sesionAR?.end();

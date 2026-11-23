@@ -1,0 +1,18 @@
+K1) mirando 34° hacia abajo: el rayo choca primero con la pared
+    Toca la pantalla para colocar el cubo.
+    hit-test: sí · anclas: sí · anclado: no · fase: listo · escala: 0.25 · giro: 0° · pos: — · consultas: 1 · resultados: 1 · poses: 1
+   ✗ FALLÓ: la superficie bajo la retícula es «inclinada»
+    tras tocar: hit-test: sí · anclas: sí · anclado: sí · fase: colocado · escala: 0.25 · giro: 0° · pos: (0.00, -1.03, -1.30) m · consultas: 30 · resultados: 30 · poses: 30
+   ✗ FALLÓ: tocar sobre la pared NO coloca el cubo
+   ✗ FALLÓ: no se crea ningún ancla en la pared
+K2) mirando 57° hacia abajo: el rayo llega al suelo antes que a la pared
+    Cubo colocado. Toca otro punto para recolocarlo.
+    hit-test: sí · anclas: sí · anclado: sí · fase: colocado · escala: 0.25 · giro: 0° · pos: (0.00, -1.03, -1.30) m · consultas: 60 · resultados: 60 · poses: 60
+   ✗ FALLÓ: el suelo es «horizontal» y la fase pasa a «listo»
+    tras tocar: hit-test: sí · anclas: sí · anclado: sí · fase: colocado · escala: 0.25 · giro: 0° · pos: (0.00, -1.40, -1.03) m · consultas: 65 · resultados: 65 · poses: 65
+   ✓ tocar sobre el suelo coloca y ancla el cubo
+   ✓ el centro del cubo queda a 20 cm del suelo (y = -1.4, suelo en -1,6 respecto a la cabeza)
+K3) volver a apuntar a la pared con el cubo ya colocado
+   ✗ FALLÓ: un toque con la retícula naranja no recoloca el cubo (pos: (0.00, -1.40, -1.03))
+   ✓ sin errores en la página 
+RESULTADO: hay 5 fallos

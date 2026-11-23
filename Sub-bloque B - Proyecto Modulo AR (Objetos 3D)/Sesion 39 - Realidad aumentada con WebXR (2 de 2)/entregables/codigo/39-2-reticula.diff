@@ -1,0 +1,107 @@
+diff --git a/src/main.ts b/src/main.ts
+index 040167b..0851641 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -368,6 +368,7 @@ function ayudaAR(e: EstadoAR): string {
+   if (!e.hitTest) return "Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti.";
+   switch (e.fase) {
+     case "buscando":
++      if (e.superficie === "inclinada") return "Esa superficie no es horizontal (anillo naranja): apunta al suelo o a una mesa para colocar el cubo.";
+       return e.sinSuperficie
+         ? "No encuentro superficies. Prueba con una zona con textura y buena luz, o toca la pantalla para colocar el cubo delante de ti."
+         : "Mueve el teléfono despacio hasta ver el anillo verde sobre una superficie.";
+@@ -396,7 +397,7 @@ function pintarEstadoAR(e: EstadoAR): void {
+   const datos =
+     `hit-test: ${si(e.hitTest)} · anclas: ${si(e.anclas)} · anclado: ${si(e.anclado)} · ` +
+     `fase: ${e.fase} · escala: ${e.escala.toFixed(2)} · giro: ${e.giroGrados}° · pos: ${pos} · ` +
+-    `consultas: ${e.consultas} · resultados: ${e.resultados} · poses: ${e.impactos}`;
++    `consultas: ${e.consultas} · resultados: ${e.resultados} · poses: ${e.impactos} · superficie: ${e.superficie}`;
+   if (xrEstado.textContent !== ayuda) xrEstado.textContent = ayuda;
+   if (xrDatos.textContent !== datos) xrDatos.textContent = datos;
+ }
+diff --git a/src/visor.ts b/src/visor.ts
+index 13a5a9c..6156c6a 100644
+--- a/src/visor.ts
++++ b/src/visor.ts
+@@ -45,6 +45,8 @@ export interface EstadoAR extends CapacidadesAR {
+   impactos: number; // consultas con una pose utilizable
+   /** true si pasaron varios segundos sin superficie: el toque ya coloca delante de la mirada. */
+   sinSuperficie: boolean;
++  /** Actividad 39.2: la superficie bajo la retícula, según su normal (eje Y de la pose). */
++  superficie: "ninguna" | "horizontal" | "inclinada";
+ }
+ 
+ export interface OpcionesAR {
+@@ -60,6 +62,10 @@ const CADA_CUANTOS_FOTOGRAMAS = 2; // el hit-test se consulta un fotograma de ca
+ const MS_HASTA_PLAN_B = 6000; // sin superficie tanto tiempo: se avisa y el toque coloca delante de la mirada
+ const CONSULTAS_SIN_IMPACTO = 8; // consultas seguidas sin superficie antes de ocultar la retícula (evita parpadeos)
+ const MITAD = 0.8; // medio cubo: para que apoye la base (y no el centro) en la superficie
++// Actividad 39.2: una superficie es «horizontal» si su normal es casi vertical (|y| > 0,8, unos 37° como máximo).
++const UMBRAL_HORIZONTAL = 0.8;
++const COLOR_HORIZONTAL = 0x4ade80; // verde: se puede colocar
++const COLOR_INCLINADA = 0xfb923c; // naranja: pared o rampa, no se coloca
+ 
+ export function crearVisor(contenedor: HTMLElement): Visor {
+   const escena = new THREE.Scene();
+@@ -150,6 +156,7 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+     let sinSuperficie = false;
+     let ultimaPose = performance.now(); // cuándo fue la última vez que el hit-test encontró algo
+     let ultimoImpacto: XRRigidTransform | null = null; // pose de la superficie bajo el centro de la pantalla
++    let superficie: EstadoAR["superficie"] = "ninguna"; // actividad 39.2
+ 
+     const estado = (): EstadoAR => {
+       raiz.updateMatrixWorld(true);
+@@ -165,6 +172,7 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+         resultados,
+         impactos: impactosVistos,
+         sinSuperficie,
++        superficie,
+       };
+     };
+     const avisar = () => opciones.alCambiar(estado());
+@@ -178,8 +186,9 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+     // Retícula: un anillo verde que se pega a la superficie que el hit-test encuentra.
+     const reticula = new THREE.Mesh(
+       new THREE.RingGeometry(0.1, 0.13, 40).rotateX(-Math.PI / 2), // acostado: su cara mira hacia arriba
+-      new THREE.MeshBasicMaterial({ color: 0x4ade80 })
++      new THREE.MeshBasicMaterial({ color: COLOR_HORIZONTAL })
+     );
++    const materialReticula = reticula.material as THREE.MeshBasicMaterial; // se le cambia el color, no se crea otro
+     reticula.matrixAutoUpdate = false; // su matriz viene entera del hit-test
+     reticula.visible = false;
+     escena.add(reticula);
+@@ -222,6 +231,7 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+       const mio = ++turno;
+       let impacto: XRRigidTransform | null = null;
+       const hayImpacto = fuente !== null && reticula.visible && ultimoImpacto !== null;
++      if (hayImpacto && superficie !== "horizontal") return; // actividad 39.2: en una pared o una rampa no se coloca
+       if (fuente && !hayImpacto && !sinSuperficie) return; // no hay superficie: no se coloca en el aire (todavía)
+       if (hayImpacto) {
+         impacto = ultimoImpacto;
+@@ -315,14 +325,24 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+             reticula.visible = true;
+             reticula.matrix.fromArray(pose.transform.matrix);
+             ultimoImpacto = pose.transform;
+-            if (fase === "buscando") {
+-              fase = "listo";
++            // Actividad 39.2: los elementos 4, 5 y 6 de la matriz son el eje Y de la pose, es decir, la normal
++            // de la superficie. Su componente vertical es el elemento 5.
++            const nueva = Math.abs(pose.transform.matrix[5]) > UMBRAL_HORIZONTAL ? "horizontal" : "inclinada";
++            if (nueva !== superficie) {
++              superficie = nueva;
++              materialReticula.color.setHex(nueva === "horizontal" ? COLOR_HORIZONTAL : COLOR_INCLINADA);
++              avisar();
++            }
++            const faseNueva = fase === "colocado" ? fase : nueva === "horizontal" ? "listo" : "buscando";
++            if (faseNueva !== fase) {
++              fase = faseNueva;
+               avisar();
+             }
+           } else if (++sinImpacto >= CONSULTAS_SIN_IMPACTO) {
+             // Una superficie que aparece y desaparece cada fotograma haría parpadear el texto del overlay.
+             reticula.visible = false;
+             ultimoImpacto = null;
++            superficie = "ninguna";
+             if (fase === "listo") {
+               fase = "buscando";
+               avisar();

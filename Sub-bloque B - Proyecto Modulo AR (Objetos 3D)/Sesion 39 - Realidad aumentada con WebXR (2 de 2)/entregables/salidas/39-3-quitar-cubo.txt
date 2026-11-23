@@ -1,0 +1,39 @@
+Q1) colocar y quitar el cubo (con beforexrselect)
+   ✓ antes de colocar, «Quitar cubo» está oculto
+    colocado: hit-test: sí · anclas: sí · anclado: sí · fase: colocado · escala: 0.25 · giro: 0° · pos: (0.00, -1.40, -1.03) m · consultas: 60 · resultados: 59 · poses: 59 · superficie: horizontal
+   ✓ colocado, anclado y con el botón visible
+    tras «Quitar cubo»: Toca la pantalla para colocar el cubo.
+    hit-test: sí · anclas: sí · anclado: no · fase: listo · escala: 0.25 · giro: 0° · pos: — · consultas: 90 · resultados: 89 · poses: 89 · superficie: horizontal
+    anclas creadas/borradas: 1/1
+   ✓ beforexrselect fue cancelado por la app
+   ✓ el cubo desaparece, sin ancla, y la fase vuelve a «listo» (la retícula ya está sobre el suelo)
+   ✓ se borró el ancla que se había creado (1/1)
+   ✓ el botón vuelve a ocultarse
+   ✓ un toque nuevo lo vuelve a colocar
+   ✓ si la retícula no ve superficie, la fase es «buscando»
+   ✓ sin errores en la página
+Q2a) SIN beforexrselect; orden: click del botón y luego select
+    tras «Quitar cubo»: hit-test: sí · anclas: sí · anclado: sí · fase: colocado · escala: 0.25 · giro: 0° · pos: (0.00, -1.40, -1.03) m · consultas: 65 · resultados: 64 · poses: 64 · superficie: horizontal
+    anclas creadas/borradas: 2/1
+   ✓ nadie canceló beforexrselect
+    observado: fase colocado, posición pos: (0.00, -1.40, -1.03) (antes pos: (0.00, -1.40, -1.03))
+   ✓ el cubo se quita y el select lo vuelve a colocar con un ancla nueva: el botón «no hace nada»
+Q2b) SIN beforexrselect; orden: select y luego click del botón
+    tras «Quitar cubo»: hit-test: sí · anclas: sí · anclado: no · fase: listo · escala: 0.25 · giro: 0° · pos: — · consultas: 90 · resultados: 89 · poses: 89 · superficie: horizontal
+    anclas creadas/borradas: 2/2
+   ✓ nadie canceló beforexrselect
+    observado: fase listo, posición ninguna (antes pos: (0.00, -1.40, -1.03))
+   ✓ el select recoloca (ancla nueva) y el click lo quita: funciona, pero se crea y se borra un ancla de más
+Q3) carrera: «Quitar cubo» mientras la creación del ancla está pendiente (createAnchor tarda 600 ms)
+    hit-test: sí · anclas: sí · anclado: no · fase: listo · escala: 0.25 · giro: 0° · pos: — · consultas: 60 · resultados: 59 · poses: 59 · superficie: horizontal
+    anclas creadas/borradas: 1/1
+   ✓ el ancla tardía no «resucita» el cubo
+   ✓ el ancla que llegó tarde se borró (creadas = borradas)
+Q4) sin hit-test: quitar y volver a colocar con el plan B
+   ✓ sin hit-test el cubo empieza colocado a 1,5 m y el botón está visible
+    Este dispositivo no ofrece hit-test: toca la pantalla para colocar el cubo delante de ti.
+    hit-test: no · anclas: sí · anclado: no · fase: listo · escala: 0.25 · giro: 0° · pos: — · consultas: 0 · resultados: 0 · poses: 0 · superficie: ninguna
+   ✓ quitado: fase «listo», sin cubo
+   ✓ un toque lo coloca delante de la mirada
+   ✓ sin errores en la página
+RESULTADO: todo en orden

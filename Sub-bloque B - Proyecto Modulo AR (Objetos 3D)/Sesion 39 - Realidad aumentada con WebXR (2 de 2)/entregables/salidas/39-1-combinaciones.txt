@@ -1,0 +1,39 @@
+
+=== con todo (se quitan: nada)
+peticiones   : [{"pedidas":{"requiredFeatures":["local","hit-test"],"optionalFeatures":["dom-overlay","anchors"]},"resultado":"ok","concedidas":["local","hit-test","anchors","viewer"]}]
+estado       : Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.
+ayuda antes  : Toca la pantalla para colocar el cubo.
+ayuda después: Cubo colocado. Toca otro punto para recolocarlo.
+datos        : hit-test: sí · anclas: sí · anclado: sí · fase: colocado · escala: 0.25 · giro: 0° · pos: (0.00, -1.40, -2.34) m · consultas: 60 · resultados: 59 · poses: 59
+anclas creadas/borradas: 1/0
+
+=== sin anchors (se quitan: anchors)
+peticiones   : [{"pedidas":{"requiredFeatures":["local","hit-test"],"optionalFeatures":["dom-overlay","anchors"]},"resultado":"ok","concedidas":["local","hit-test","viewer"]}]
+estado       : Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, anchors.
+ayuda antes  : Toca la pantalla para colocar el cubo.
+ayuda después: Cubo colocado. Toca otro punto para recolocarlo.
+datos        : hit-test: sí · anclas: no · anclado: no · fase: colocado · escala: 0.25 · giro: 0° · pos: (0.00, -1.40, -2.34) m · consultas: 60 · resultados: 59 · poses: 59
+anclas creadas/borradas: 0/0
+
+=== sin hit-test (se quitan: hit-test)
+peticiones   : [{"pedidas":{"requiredFeatures":["local","hit-test"],"optionalFeatures":["dom-overlay","anchors"]},"resultado":"NotSupportedError"},{"pedidas":{"requiredFeatures":["local"],"optionalFeatures":["dom-overlay","hit-test","anchors"]},"resultado":"ok","concedidas":["local","anchors","viewer"]}]
+estado       : Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, hit-test.
+ayuda antes  : Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti.
+ayuda después: Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti.
+datos        : hit-test: no · anclas: sí · anclado: no · fase: colocado · escala: 0.25 · giro: 0° · pos: (0.00, -0.26, -1.45) m · consultas: 0 · resultados: 0 · poses: 0
+anclas creadas/borradas: 0/0
+
+=== sin hit-test ni anchors (se quitan: hit-test, anchors)
+peticiones   : [{"pedidas":{"requiredFeatures":["local","hit-test"],"optionalFeatures":["dom-overlay","anchors"]},"resultado":"NotSupportedError"},{"pedidas":{"requiredFeatures":["local"],"optionalFeatures":["dom-overlay","hit-test","anchors"]},"resultado":"ok","concedidas":["local","viewer"]}]
+estado       : Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, hit-test, anchors.
+ayuda antes  : Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti.
+ayuda después: Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti.
+datos        : hit-test: no · anclas: no · anclado: no · fase: colocado · escala: 0.25 · giro: 0° · pos: (0.00, -0.26, -1.45) m · consultas: 0 · resultados: 0 · poses: 0
+anclas creadas/borradas: 0/0
+
+| Combinación | Mensaje tras tocar | ¿Anclado? | Posición |
+|---|---|---|---|
+| con todo | Cubo colocado. Toca otro punto para recolocarlo. | sí | (0.00, -1.40, -2.34) m |
+| sin anchors | Cubo colocado. Toca otro punto para recolocarlo. | no | (0.00, -1.40, -2.34) m |
+| sin hit-test | Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti. | no | (0.00, -0.26, -1.45) m |
+| sin hit-test ni anchors | Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti. | no | (0.00, -0.26, -1.45) m |

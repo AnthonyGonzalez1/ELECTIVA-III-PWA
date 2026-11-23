@@ -1,0 +1,13 @@
+{
+  "name": "pruebas-actividades",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Pruebas y mediciones de las actividades de las Sesiones 39 a 45 (Atlas 3D)",
+  "dependencies": {
+    "@iwer/sem": "^2.8.0",
+    "chrome-launcher": "^1.2.0",
+    "iwer": "^2.8.0",
+    "lighthouse": "^13.6.0",
+    "playwright": "^1.65.1"
+  }
+}
