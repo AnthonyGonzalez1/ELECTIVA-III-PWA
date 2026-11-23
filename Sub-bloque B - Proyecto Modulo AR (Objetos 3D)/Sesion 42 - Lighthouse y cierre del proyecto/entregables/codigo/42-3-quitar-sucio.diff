@@ -1,0 +1,13 @@
+diff --git a/src/visor.ts b/src/visor.ts
+index b960357..9d98a38 100644
+--- a/src/visor.ts
++++ b/src/visor.ts
+@@ -433,7 +433,7 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+   function seleccionar(id: string | null) {
+     piezaElegida = id;
+     modelo?.resaltar(id);
+-    sucio = true;
++    // sucio = true;  ← QUITADA A PROPÓSITO (actividad 42.3)
+   }
+ 
+   function mostrarModelo(def: DefinicionModelo) {

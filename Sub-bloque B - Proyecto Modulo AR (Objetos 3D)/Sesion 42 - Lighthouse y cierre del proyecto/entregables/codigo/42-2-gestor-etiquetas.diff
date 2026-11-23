@@ -1,0 +1,43 @@
+diff --git a/css/estilos.css b/css/estilos.css
+index c5a201e..1036b38 100644
+--- a/css/estilos.css
++++ b/css/estilos.css
+@@ -140,3 +140,6 @@ h1 { font-size: 1.6em; margin: 0 0 .1em; }
+ .estado-avisos { font-size: .75em; color: #555; }
+ .estado-sync { font-size: .78em; color: #555; margin: 0 0 .8em; }
+ .estado-sync.pendiente { color: var(--gold-deep); font-weight: 600; }
++
++/* Actividad 42.2: visible para lectores de pantalla, invisible en pantalla (no cambia el diseño) */
++.solo-lectores { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
+diff --git a/index.html b/index.html
+index fdd0f72..a5c6174 100644
+--- a/index.html
++++ b/index.html
+@@ -20,12 +20,15 @@
+       </p>
+ 
+       <form id="form-tarea" class="form-tarea">
++        <!-- Actividad 42.2: cada control del formulario tiene un nombre que un lector de pantalla puede leer. -->
++        <label for="input-titulo" class="solo-lectores">Título de la tarea</label>
+         <input
+           type="text"
+           id="input-titulo"
+           placeholder="Nueva tarea..."
+           required
+         />
++        <label for="input-prioridad" class="solo-lectores">Prioridad</label>
+         <select id="input-prioridad">
+           <option value="baja">Baja</option>
+           <option value="media" selected>Media</option>
+diff --git a/tareas.js b/tareas.js
+index 90c9281..a6f9cd6 100644
+--- a/tareas.js
++++ b/tareas.js
+@@ -43,6 +43,7 @@ export const renderizarTarea = (tarea, contenedor, { onToggle, onEliminar, onGua
+   const check = document.createElement("input");
+   check.type = "checkbox";
+   check.checked = tarea.completada;
++  check.setAttribute("aria-label", `Completada: ${tarea.titulo}`); // actividad 42.2: la casilla dice de qué tarea es
+   check.addEventListener("change", () => onToggle(tarea.id));
+ 
+   const texto = document.createElement("span");
