@@ -1,0 +1,15 @@
+1) documento → {"lang":"es","viewport":"width=device-width, initial-scale=1.0","descr":140,"tema":"#0b1220","main":1,"h1":1,"contextoSeguro":true,"titulo":"Atlas 3D de Arquitectura de Software"}
+2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]
+3) Chrome dice: errores de instalabilidad → []
+4) service worker → {"activo":true,"controla":true,"precache":9}
+5) servidor caído y recarga → {"canvas":1,"pestanas":3}
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.008
+7) escena quieta durante 1,5 s → llamadas de dibujo: 0
+8) arrastrar para girar → llamadas de dibujo nuevas: sí (720)
+9) tras soltar y pasar la inercia → vuelve a quedarse quieta: sí
+10) elegir una pieza → llamadas de dibujo nuevas: sí
+11) cambiar de modelo → llamadas de dibujo nuevas: sí
+12) cambiar el tamaño de la ventana → llamadas de dibujo nuevas: sí
+13) escribir una nota y marcar favorito en otra tarjeta → nota conservada: "repasar el controlador"
+pageerrors: []
+RESULTADO: todo en orden

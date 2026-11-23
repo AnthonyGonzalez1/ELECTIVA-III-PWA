@@ -1,0 +1,13 @@
+diff --git a/public/manifest.json b/public/manifest.json
+index a8cb90e..80cb869 100644
+--- a/public/manifest.json
++++ b/public/manifest.json
+@@ -2,7 +2,7 @@
+   "name": "Atlas 3D de Arquitectura de Software",
+   "short_name": "Atlas 3D",
+   "description": "Catálogo interactivo en 3D de patrones y arquitecturas de software, con soporte de realidad aumentada.",
+-  "start_url": "./",
++  "start_url": "https://otro-sitio.example/",
+   "scope": "./",
+   "display": "standalone",
+   "background_color": "#0b1220",
