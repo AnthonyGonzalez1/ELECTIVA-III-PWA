@@ -1,0 +1,21 @@
+diff --git a/src/app/servicios/visor.service.ts b/src/app/servicios/visor.service.ts
+index e93df89..5458033 100644
+--- a/src/app/servicios/visor.service.ts
++++ b/src/app/servicios/visor.service.ts
+@@ -2,7 +2,7 @@
+ // Este servicio solo lo crea cuando el contenedor ya existe en la página, lo guarda en una señal y lo
+ // destruye cuando Angular destruye la aplicación. Es la frontera entre Angular y Three.js.
+ import { DestroyRef, Injectable, inject, signal } from "@angular/core";
+-import type { Visor } from "../../visor";
++import { crearVisor, type Visor } from "../../visor"; // actividad 44.4: import ESTÁTICO (antes, import() dinámico)
+ 
+ @Injectable({ providedIn: "root" })
+ export class VisorService {
+@@ -23,7 +23,6 @@ export class VisorService {
+   async montar(contenedor: HTMLElement): Promise<void> {
+     // import() dinámico: el compilador de Angular saca visor.ts y Three.js del archivo principal y los deja
+     // en un archivo aparte que se descarga DESPUÉS de dibujar la página (Sesión 42: el mismo remedio, otra técnica).
+-    const { crearVisor } = await import("../../visor");
+     if (this.destruido) return; // la aplicación se destruyó mientras se descargaba el archivo
+     this.visor.set(crearVisor(contenedor));
+   }

@@ -1,0 +1,2 @@
+ng serve SIN this.visor()?.destruir() → llamadas: 43 | lienzos que quedan: 0
+ng serve CON this.visor()?.destruir() (restaurada) → llamadas: 1 | lienzos que quedan: 0

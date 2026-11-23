@@ -1,0 +1,8 @@
+V1) al abrir → {"mvc":"Visitado 0 veces","capas":"Visitado 0 veces","microservicios":"Visitado 0 veces"}
+   ✓ todas empiezan en 0
+V2) 3 clics en MVC y 1 en Capas → {"mvc":"Visitado 3 veces","capas":"Visitado 1 vez","microservicios":"Visitado 0 veces"}
+   ✓ cuenta por tarjeta (y «1 vez» en singular)
+V3) tras recargar → {"mvc":"Visitado 3 veces","capas":"Visitado 1 vez","microservicios":"Visitado 0 veces"}
+   ✓ el contador sobrevive a la recarga (vive en IndexedDB)
+   ✓ sin errores en la página []
+RESULTADO: todo en orden

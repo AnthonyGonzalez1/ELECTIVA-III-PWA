@@ -1,0 +1,13 @@
+diff --git a/src/app/servicios/visor.service.ts b/src/app/servicios/visor.service.ts
+index e93df89..b1a241a 100644
+--- a/src/app/servicios/visor.service.ts
++++ b/src/app/servicios/visor.service.ts
+@@ -16,7 +16,7 @@ export class VisorService {
+     // La limpieza: sin ella, el canvas, los oyentes y los recursos de la GPU quedarían vivos.
+     inject(DestroyRef).onDestroy(() => {
+       this.destruido = true;
+-      this.visor()?.destruir();
++      // this.visor()?.destruir();  ← COMENTADA A PROPÓSITO (actividad 44.2)
+     });
+   }
+ 

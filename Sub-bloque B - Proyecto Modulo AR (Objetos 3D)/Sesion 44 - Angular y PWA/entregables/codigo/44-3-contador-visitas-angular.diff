@@ -1,0 +1,48 @@
+diff --git a/src/app/componentes/catalogo.ts b/src/app/componentes/catalogo.ts
+index 2c0e442..f55e201 100644
+--- a/src/app/componentes/catalogo.ts
++++ b/src/app/componentes/catalogo.ts
+@@ -31,6 +31,8 @@ export class Tarjeta {
+   protected readonly nota = signal("");
+   protected readonly progreso = computed(() => this.progresoSvc.progreso().get(this.modelo().id));
+   protected readonly descargado = computed(() => this.progresoSvc.descargados().has(this.modelo().id));
++  // Actividad 44.3: el contador no es una señal propia de la tarjeta: sale del progreso guardado (ProgresoService → db.ts).
++  protected readonly visitas = computed(() => this.progreso()?.visitas ?? 0);
+   protected readonly ultimaVisita = computed(() => {
+     const v = this.progreso()?.ultimaVisita;
+     return v ? new Date(v).toLocaleString() : "nunca";
+diff --git a/src/app/componentes/tarjeta.html b/src/app/componentes/tarjeta.html
+index b9e1daa..21ae952 100644
+--- a/src/app/componentes/tarjeta.html
++++ b/src/app/componentes/tarjeta.html
+@@ -1,7 +1,7 @@
+ <h2>{{ modelo().nombre }}</h2>
+ <p class="resumen-card">{{ modelo().resumen }}</p>
+ <p class="meta">
+-  Última visita: {{ ultimaVisita() }}
++  Última visita: {{ ultimaVisita() }} · <span class="visitas">Visitado {{ visitas() }} {{ visitas() === 1 ? "vez" : "veces" }}</span>
+   @if (descargado()) { · <span class="disponible">✓ disponible sin conexión</span> }
+ </p>
+ <div class="acciones">
+diff --git a/src/db.ts b/src/db.ts
+index bec048a..1cab57f 100644
+--- a/src/db.ts
++++ b/src/db.ts
+@@ -22,6 +22,9 @@ export interface ProgresoModelo {
+   ultimaVisita: number | null;
+   notaCifrada: ArrayBuffer | null;
+   notaIv: Uint8Array | null;
++  /** Actividad 43.3: cuántas veces se pulsó «Marcar como visto». Opcional: los registros viejos no lo tienen
++   *  y valen 0. IndexedDB guarda el objeto entero, así que no hace falta subir la versión de la base. */
++  visitas?: number;
+ }
+ 
+ /** Reescribe los registros con identificador viejo. En «descargas» vuelven a «pendiente»: la caché de modelos aún no tiene los archivos nuevos. */
+@@ -83,6 +86,7 @@ export function marcarModeloVisto(db: IDBDatabase, modeloId: string): Promise<Pr
+       const registro: ProgresoModelo =
+         peticion.result || { modeloId, favorito: false, ultimaVisita: null, notaCifrada: null, notaIv: null };
+       registro.ultimaVisita = Date.now();
++      registro.visitas = (registro.visitas ?? 0) + 1; // actividad 43.3
+       const escritura = store.put(registro);
+       escritura.onsuccess = () => resolve(registro);
+       escritura.onerror = () => reject(escritura.error);
