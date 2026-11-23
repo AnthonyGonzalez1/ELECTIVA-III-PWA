@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 43 · React y PWA · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .compare-wrap{overflow-x:auto;}
+  .warn-box{border:1px solid #e0a800; background:#fff8e1; border-radius:10px; padding:1em 1.2em; margin:1em 0; font-size:.92em;}
+  .warn-box b{color:#9a6b00;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  .term-box{background:#1c1c1e; color:#cfcac0; border-radius:10px; padding:.9em 1.1em; font-size:.82em; font-family:"Cascadia Code",Consolas,monospace; line-height:1.55; margin:1em 0; overflow-x:auto;}
+  .term-box .prompt{color:#6ad06a;}
+  .win-box{border:2px solid #2e7d32; background:#f1f9f1; border-radius:10px; padding:1em 1.2em; margin:1.2em 0; font-size:.92em;}
+  .win-box b{color:#1b5e20;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 17 de 19</div>
+    <h1>React y PWA</h1>
+    <div class="lead">Hoy el Atlas 3D se reconstruye con React. El visor de Three.js, la AR y el Service Worker no cambian: lo que cambia es cómo se dibuja la pantalla y se guarda su estado. Hoy se migra por componentes y hooks, se cuida la frontera con el código imperativo, se pasan las pruebas de siempre sobre el código nuevo y se compara con la versión anterior con cifras reales, sin esconder lo que empeora.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Reconocer</b> qué problema resuelve React (mantener la pantalla sincronizada con los datos) y qué trabajo <b>no</b> le corresponde (dibujar con Three.js, WebXR, el Service Worker).</span></li>
+      <li><span class="chk">✓</span><span><b>Preparar</b> un proyecto Vite con React y TypeScript, y repartir una aplicación en <b>componentes</b> y <b>hooks</b>.</span></li>
+      <li><span class="chk">✓</span><span><b>Cuidar la frontera</b> entre React y código imperativo: <code>useEffect</code> con limpieza, <code>useRef</code> y <code>useSyncExternalStore</code>.</span></li>
+      <li><span class="chk">✓</span><span><b>Registrar</b> el Service Worker con el hook de <code>vite-plugin-pwa</code> y comprobar que el manifest y el precaché siguen igual.</span></li>
+      <li><span class="chk">✓</span><span><b>Reutilizar</b> las pruebas de las sesiones anteriores como red de seguridad de una migración, y escribir las que React hace necesarias.</span></li>
+      <li><span class="chk">✓</span><span><b>Comparar</b> la versión con y sin React con cifras reales (Lighthouse, peso y líneas de código) y leerlas con honestidad.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion42.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 42.</b> El Atlas 3D sin React, con Lighthouse resuelto. Es el punto de partida de hoy y la línea base de la comparación.</span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-sesion43.zip">Descargar .zip</a><span class="rb-desc"><b>Versión terminada de esta sesión.</b> El mismo Atlas en React: <code>App.tsx</code>, siete hooks y seis componentes. Incluye el LEEME con las instrucciones.</span></li>
+        <li><a href="recursos/lighthouse-s42.html">Informe de Lighthouse (S42)</a><span class="rb-desc">Una de las cinco corridas de la versión sin React (la que coincide con la mediana de rendimiento).</span></li>
+        <li><a href="recursos/lighthouse-s43.html">Informe de Lighthouse (S43)</a><span class="rb-desc">Una de las cinco corridas de la versión con React (la que coincide con la mediana de rendimiento).</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Qué hace React y qué no le toca hacer</h2>
+    <div class="body-text"><p>Hasta la Sesión 42 el Atlas era un solo archivo, <code>main.ts</code>, de 649 líneas. Para dibujar el catálogo, la función <code>render()</code> escribía todo el HTML como texto, y después buscaba cada botón con <code>querySelectorAll</code> para engancharle un oyente. Cada vez que algo cambiaba (marcar un favorito, guardar una nota) volvía a llamar a <code>render()</code> y empezaba otra vez desde cero. Funciona, pero tiene una consecuencia concreta que veremos en la sección 6.</p></div>
+    <div class="body-text"><p>React cambia la pregunta. En vez de «cuando pase X, modifica este elemento», se escribe «dado este estado, la pantalla se ve así», y React se encarga de calcular qué elementos hay que tocar. Eso es muy cómodo para listas, pestañas, textos que cambian y formularios. No lo es para un <code>canvas</code> de Three.js que se dibuja 60 veces por segundo, ni para una sesión de WebXR, ni para un Service Worker: ahí no hay «pantalla que describir», hay un objeto que se maneja con órdenes.</p></div>
+    <div class="callout"><b>La regla de la sesión:</b> lo que es <i>pantalla</i> pasa a React; lo que es <i>motor</i> se queda como estaba. Por eso <code>visor.ts</code>, <code>xr.ts</code>, <code>sw.ts</code>, <code>db.ts</code> y los modelos como datos no cambiaron ni una línea. React los usa, no los reemplaza.</div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/arbol-componentes.png" alt="Árbol de componentes: App contiene ZonaVisor (con PanelModelo), ZonaInstalar, ZonaDescargas, OverlayAR y Catalogo (con tres Tarjetas); debajo, siete hooks y una nota que dice que visor, xr, sw y db no cambian" style="max-width:100%;max-width:46em;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">La estructura del Atlas en React. Los componentes (arriba) dibujan; los hooks (abajo) guardan la lógica; lo que está fuera de React (en rojo) es lo mismo de la Sesión 42.</div></figure>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Preparar Vite para React</h2>
+    <div class="body-text"><p>Son cuatro cambios de configuración. Se instalan <code>react</code> y <code>react-dom</code> (la versión 19), los tipos <code>@types/react</code> y <code>@types/react-dom</code>, y el plugin <code>@vitejs/plugin-react</code>. En <code>tsconfig.json</code> se activa <code>"jsx": "react-jsx"</code>, que permite escribir etiquetas dentro del código TypeScript (archivos <code>.tsx</code>). <code>index.html</code> queda casi vacío: solo un <code>&lt;div id="root"&gt;</code> y el script de entrada.</p></div>
+    <div class="body-text"><p>El punto de entrada, <code>main.tsx</code>, pasó de 649 líneas a 12. Solo le dice a React dónde dibujar:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.tsx (el punto de entrada)</div>
+      <pre><code>createRoot(document.getElementById("root")!).render(
+  &lt;StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/StrictMode&gt;
+);</code></pre>
+    </div>
+    <div class="body-text"><p>Y <code>vite.config.ts</code> gana dos cosas: el plugin de React y un <b>segundo paquete aparte</b>. La Sesión 42 separó Three.js porque casi no cambia; React tiene la misma razón (y es el tercero del trío: tu código, Three.js y React). La opción <code>manualChunks</code> ahora es una función porque la lista simple dejaba a <code>react-dom</code> dentro del archivo de la app:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>vite.config.ts (React en su propio paquete)</div>
+      <pre><code>        // Sesión 42: Three.js (la mayor parte del peso) va en su propio archivo: el código de la app
+        // cambia cada sesión, Three.js casi nunca, y así son dos descargas que se pueden cachear por separado.
+        // Sesión 43: React va en otro paquete aparte, por la misma razón.
+        manualChunks(id) {
+          if (id.includes("node_modules/three/build/")) return "three";
+          if (/node_modules\/(react|react-dom|scheduler)\//.test(id)) return "react";
+        },</code></pre>
+    </div>
+    <div class="body-text"><p>Un detalle fino: la regla de Three.js apunta a <code>node_modules/three/build/</code> y no a toda la carpeta <code>three</code>. La primera versión usaba la carpeta entera y arrastró también los controles de órbita al paquete grande (501 kB, y el aviso de «más de 500 kB» volvió). Cuando una configuración mueve archivos, se mira el resultado de la compilación:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build<br>
+&gt; pwa-ar-objetos3d@0.0.0 build<br>
+&gt; tsc &amp;&amp; tsc -p tsconfig.sw.json &amp;&amp; vite build<br>
+<br>
+vite v5.4.21 building for production...<br>
+transforming...<br>
+✓ 70 modules transformed.<br>
+rendering chunks...<br>
+computing gzip size...<br>
+dist/index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.93 kB │ gzip:&nbsp;&nbsp; 0.49 kB<br>
+dist/assets/index-C_Z4QQ-j.css&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 6.51 kB │ gzip:&nbsp;&nbsp; 1.83 kB<br>
+dist/assets/workbox-window.prod.es5-BqEJf4Xk.js&nbsp;&nbsp;&nbsp;&nbsp;5.71 kB │ gzip:&nbsp;&nbsp; 2.34 kB<br>
+dist/assets/index-C65LVCWn.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 68.76 kB │ gzip:&nbsp;&nbsp;22.38 kB<br>
+<b>dist/assets/react-LTC9Rffj.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;221.71 kB │ gzip:&nbsp;&nbsp;68.70 kB</b><br>
+dist/assets/three-DPr8S-9-.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;482.73 kB │ gzip: 122.01 kB<br>
+✓ built in 2.22s<br>
+<br>
+PWA v1.3.0<br>
+Building src/sw.ts service worker ("es" format)...<br>
+vite v5.4.21 building for production...<br>
+transforming...<br>
+✓ 89 modules transformed.<br>
+rendering chunks...<br>
+computing gzip size...<br>
+dist/sw.mjs&nbsp;&nbsp;27.66 kB │ gzip: 9.16 kB<br>
+✓ built in 276ms<br>
+<br>
+PWA v1.3.0<br>
+mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;injectManifest<br>
+format:&nbsp;&nbsp; es<br>
+<b>precache&nbsp;&nbsp;10 entries (778.17 KiB)</b><br>
+files generated<br>
+&nbsp;&nbsp;dist/sw.js</div>
+    <div class="fig-caption">Tres archivos de código: el de la app (68,76 kB), React (221,71 kB) y Three.js (482,73 kB). El precaché del Service Worker los registró solo: <b>10 entradas, 778,17 KiB</b> (la Sesión 42 tenía 9 entradas y 558,82 KiB).</div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>De una función gigante a componentes y hooks</h2>
+    <div class="body-text"><p>Un <b>componente</b> es una función que recibe datos (las <i>props</i>) y devuelve lo que se debe ver. Un <b>hook</b> es una función cuyo nombre empieza por <code>use</code> y que le da memoria o efectos a un componente. El reparto del Atlas fue este:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Pieza</th><th>Qué guarda o dibuja</th><th>Dónde estaba en la S42</th></tr>
+      <tr><td><code>usePanel</code></td><td>Qué modelo y qué pieza están elegidos; la ficha ampliada</td><td>Tres variables sueltas y seis funciones que reescribían HTML</td></tr>
+      <tr><td><code>useProgreso</code></td><td>Visitas, favoritos y notas (IndexedDB)</td><td><code>progresoPorId</code> y los oyentes de <code>render()</code></td></tr>
+      <tr><td><code>useAR</code>, <code>useSensores</code>, <code>useCamara</code></td><td>Entrar y salir de AR; sensores; cámara de fondo</td><td>Funciones sueltas y variables globales</td></tr>
+      <tr><td><code>useConexion</code>, <code>useInstalacion</code></td><td>Banda de «sin conexión»; botón y texto de instalación</td><td>Dos bloques de <code>addEventListener</code></td></tr>
+      <tr><td><code>ZonaVisor</code>, <code>PanelModelo</code></td><td>El visor, sus botones y el panel con pestañas, piezas y detalle</td><td>Parte de <code>index.html</code> más <code>innerHTML</code></td></tr>
+      <tr><td><code>Catalogo</code> (<code>Tarjeta</code>)</td><td>Las tarjetas de modelos con favorito y nota</td><td>La función <code>render()</code></td></tr>
+      <tr><td><code>ZonaInstalar</code>, <code>ZonaDescargas</code>, <code>OverlayAR</code></td><td>Instalar; descargar para usar sin conexión; la capa de AR</td><td><code>index.html</code> más oyentes</td></tr>
+    </table>
+    </div>
+    <div class="body-text"><p><code>App.tsx</code> es el director: crea el visor, llama a los hooks y reparte lo que cada componente necesita. Mira cómo <code>usePanel</code> junta dos mundos: un <b>manejador de eventos</b> habla con el visor (imperativo: «muestra este modelo») y, en la misma función, actualiza el estado (declarativo: «el modelo elegido es este»).</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/hooks/usePanel.ts (imperativo y declarativo juntos)</div>
+      <pre><code>  const elegirModelo = useCallback(
+    (id: string) =&gt; {
+      const def = modeloPorId(id);
+      if (!def || !visor) return;
+      visor.mostrarModelo(def);
+      setModeloId(id);
+      setPiezaId(null);
+    },
+    [visor]
+  );</code></pre>
+    </div>
+    <div class="callout"><b>Por qué se pasó a hooks y no solo a componentes.</b> La lógica (qué pieza está elegida, cómo se recorre con ◀ ▶) no es pantalla. Un hook la deja en un lugar con nombre y se puede reutilizar: <code>ZonaVisor</code> y <code>OverlayAR</code> comparten <code>recorrerPiezas</code> sin duplicar nada.</div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>La frontera con Three.js: crear, y saber deshacer</h2>
+    <div class="body-text"><p>El visor se crea una vez, cuando el <code>div</code> que lo contiene ya existe en la página. En React eso es un <b>efecto</b>. Pero hay una regla que en la Sesión 42 no existía: <b>todo efecto que empieza algo tiene que saber deshacerlo</b>. React, en desarrollo, usa <code>StrictMode</code>: monta cada componente, lo desmonta y lo vuelve a montar, a propósito, para que un efecto sin limpieza se note.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/App.tsx (el visor dentro de un efecto)</div>
+      <pre><code>  const [visor, setVisor] = useState&lt;Visor | null&gt;(null);
+  const [aviso, setAviso] = useState("");
+
+  useEffect(() =&gt; {
+    const nuevo = crearVisor(contenedor.current!);
+    setVisor(nuevo);
+    return () =&gt; {
+      nuevo.destruir(); // la limpieza: sin ella, StrictMode dejaría dos lienzos
+      setVisor(null);
+    };
+  }, []);</code></pre>
+    </div>
+    <div class="body-text"><p>La línea importante es <code>nuevo.destruir()</code>. ¿Y si se olvida? No basta con creerlo: se probó. <code>test_s43.js</code> abre el proyecto en <b>modo desarrollo</b> (con StrictMode activo) y cuenta los <code>canvas</code> dentro del visor.</p></div>
+    <div class="term-box"><span class="prompt">$</span> node test_s43.js<br>
+A1) desarrollo con StrictMode → lienzos en el visor: 1<br>
+A2) cambiar de modelo en desarrollo → piezas: 5 | errores de página: []<br>
+B1) escribir una nota y marcar favorito otra tarjeta → nota conservada: "repasar el controlador" | botón: ★ Favorito<br>
+RESULTADO: todo en orden</div>
+    <div class="body-text" style="margin-top:1em;"><p>Y la prueba de la prueba, la misma idea de las sesiones 41 y 42: <b>quitar la limpieza y ver que falla</b>.</p></div>
+    <div class="term-box">$ sed -i 's|^&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;nuevo.destruir();|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// nuevo.destruir();|' src/App.tsx&nbsp;&nbsp; (se comenta la limpieza del visor)<br>
+$ node test_s43.js<br>
+A1) desarrollo con StrictMode → lienzos en el visor: 2<br>
+&nbsp;&nbsp; ✗ FALLÓ: debe haber un solo lienzo (el efecto del visor debe limpiar lo que creó)<br>
+A2) cambiar de modelo en desarrollo → piezas: 5 | errores de página: []<br>
+B1) escribir una nota y marcar favorito otra tarjeta → nota conservada: "repasar el controlador" | botón: ★ Favorito<br>
+RESULTADO: hay 1 fallos</div>
+    <div class="win-box"><b>Dos lienzos, uno sobre el otro.</b> Sin <code>destruir()</code>, el primer montaje de StrictMode dejó su <code>canvas</code> vivo y el segundo creó otro. En producción StrictMode no actúa y el defecto no se vería; sale en desarrollo, que es justo donde conviene que salga. La línea se restauró y la prueba volvió a pasar.</div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>Estado que vive fuera de React: la instalación y el Service Worker</h2>
+    <div class="body-text"><p>El evento <code>beforeinstallprompt</code> de la Sesión 41 se guarda en una variable de <code>instalar.ts</code>, que no es de React. Para que un componente se redibuje cuando esa variable cambia, React ofrece <code>useSyncExternalStore</code>: se le da una función para <b>suscribirse</b> a los cambios y otra que devuelve una <b>foto</b> del valor actual.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/hooks/useInstalacion.ts (leer un valor externo)</div>
+      <pre><code>// Declaradas fuera del hook para que su identidad no cambie entre dibujos.
+const suscribir = (avisar: () =&gt; void) =&gt; iniciarInstalacion(avisar);
+const foto = () =&gt; `${estadoInstalacion()}|${instalacionRechazada()}`;
+
+export function useInstalacion() {
+  const [estado, rechazada] = useSyncExternalStore(suscribir, foto).split("|");
+  const texto =
+    estado === "instalada" ? TEXTO_INSTALACION.instalada
+    : estado === "recien-instalada" ? TEXTO_INSTALACION.recienInstalada
+    : estado === "instalable" ? TEXTO_INSTALACION.instalable
+    : estado === "ios" ? TEXTO_INSTALACION.ios
+    : rechazada === "true" ? TEXTO_INSTALACION.rechazada
+    : TEXTO_INSTALACION.noDisponible;
+  return { instalable: estado === "instalable", texto, pedir: pedirInstalacion };
+}</code></pre>
+    </div>
+    <div class="body-text"><p>Dos detalles. Las funciones <code>suscribir</code> y <code>foto</code> se declaran <b>fuera</b> del hook: si se crearan dentro, tendrían identidad nueva en cada dibujo y React se resuscribiría sin parar. Y la foto es un texto (<code>"estado|rechazada"</code>), no un objeto: React compara fotos con <code>Object.is</code>, y dos objetos iguales no son «el mismo».</p></div>
+    <div class="body-text"><p>La suscripción exigió un pequeño cambio en <code>instalar.ts</code>, el único archivo «de motor» que se tocó: <code>iniciarInstalacion</code> ahora <b>devuelve cómo dejar de escuchar</b>. Antes los oyentes se registraban una vez para toda la vida de la página; con StrictMode pueden registrarse dos veces.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/instalar.ts (la limpieza)</div>
+      <pre><code>  // Sesión 43: en React todo efecto que empieza algo debe saber deshacerlo.
+  return () =&gt; {
+    window.removeEventListener("beforeinstallprompt", alOfrecer);
+    window.removeEventListener("appinstalled", alInstalar);
+    modo.removeEventListener("change", alCambiarModo);
+    avisar = () =&gt; {};
+  };</code></pre>
+    </div>
+    <div class="body-text"><p>El Service Worker también cambió de quien lo registra, no de lo que hace. <code>vite-plugin-pwa</code> trae un hook, <code>useRegisterSW</code>, que lo registra y entrega como estado si la app ya está lista para usarse sin conexión. El archivo <code>sw.ts</code> (el que se escribió en la Sesión 37) es el mismo:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/App.tsx (registrar el Service Worker)</div>
+      <pre><code>  const { offlineReady } = useRegisterSW({
+    immediate: true,
+    onOfflineReady() {
+      // El usuario está mirando la pantalla: la notificación solo si NO la está mirando.
+      if (document.visibilityState !== "visible") {
+        void mostrarAviso("Atlas 3D listo", "Ya funciona sin conexión.", import.meta.env.BASE_URL, "atlas-offline");
+      }
+    },
+    onRegisterError(error) {
+      console.error("Error al registrar el SW de Workbox:", error);
+    },
+  });</code></pre>
+    </div>
+    <div class="warn-box"><b>Una advertencia que React nos regala.</b> El oyente de <code>beforeinstallprompt</code> se registra en un efecto, es decir, <i>después</i> del primer dibujo. Si Chrome disparara el evento antes, la app no lo vería. En la práctica el evento llega después de que la página cargó, y por eso las pruebas pasan; pero es una carrera que en la Sesión 41 no existía, porque el oyente estaba en el cuerpo del script. Es un buen candidato para la actividad 4.</div>
+
+    <h2 class="section-title"><span class="num-badge">6</span>Dos casos de frontera: lo que React no conoce y lo que React arregla</h2>
+    <h3 class="sub-title">La capa de AR: un elemento que no se puede reemplazar</h3>
+    <div class="body-text"><p>WebXR pide <b>un</b> elemento HTML como «dom-overlay» (lo que se ve encima de la cámara). Debe existir antes de pedir la sesión y no cambiarse mientras dure. Con React eso se resuelve montando <code>OverlayAR</code> una vez, con una <code>ref</code>, y cambiando solo su texto. Además, el botón «Salir» y las flechas no deben contar como «tocar para colocar el modelo»: el navegador avisa con el evento <code>beforexrselect</code> y basta cancelarlo. React no tiene una propiedad para ese evento, así que se enlaza a mano:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/componentes/OverlayAR.tsx (un evento que React no conoce)</div>
+      <pre><code>  // Un toque sobre un botón del overlay NO debe contar como «tocar para colocar»: el navegador avisa
+  // con `beforexrselect` y basta cancelarlo. React no conoce ese evento, así que se enlaza a mano.
+  useEffect(() =&gt; {
+    const botones = [salir.current, ant.current, sig.current].filter((b): b is HTMLButtonElement =&gt; b !== null);
+    const cancelar = (e: Event) =&gt; e.preventDefault();
+    botones.forEach((b) =&gt; b.addEventListener("beforexrselect", cancelar));
+    return () =&gt; botones.forEach((b) =&gt; b.removeEventListener("beforexrselect", cancelar));
+  }, []);</code></pre>
+    </div>
+    <h3 class="sub-title">Las notas: un defecto de la Sesión 42 que React elimina</h3>
+    <div class="body-text"><p>Esta es la ganancia más concreta de la migración, y apareció al escribir las pruebas. En la Sesión 42, <code>render()</code> reescribía <b>todo el catálogo</b> cada vez que algo cambiaba. Si escribías una nota en una tarjeta y, antes de guardarla, marcabas favorito en otra, el HTML se rehacía y <b>tu nota desaparecía</b>.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts de la Sesión 42 (el favorito rehace todo)</div>
+      <pre><code>  appEl.querySelectorAll&lt;HTMLButtonElement&gt;(".btn-favorito").forEach((btn) =&gt;
+    btn.addEventListener("click", async () =&gt; {
+      const id = btn.dataset.id!;
+      await alternarFavorito(db, id);
+      const todo = await obtenerTodoElProgreso(db);
+      progresoPorId = new Map(todo.map((p) =&gt; [p.modeloId, p]));
+      render();
+    })
+  );</code></pre>
+    </div>
+    <div class="body-text"><p>En React el campo es <b>controlado</b>: su contenido es un estado (<code>value={nota}</code>) y cada tarjeta guarda el suyo. Cuando cambia el favorito, React solo actualiza la estrella; el campo ni se toca.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/componentes/Catalogo.tsx (un campo controlado)</div>
+      <pre><code>        &lt;input type="text" className="nota-input" placeholder="Nota de estudio..." value={nota} onChange={(e) =&gt; setNota(e.target.value)} /&gt;</code></pre>
+    </div>
+    <div class="body-text"><p>La prueba (<code>B1</code> de <code>test_s43.js</code>) escribe una nota en una tarjeta, marca favorito en otra y mira si la nota sigue ahí. Se ejecutó también contra la compilación de la Sesión 42, para comprobar que <b>sí detecta el defecto</b>:</p></div>
+    <div class="term-box"><span class="prompt">$</span> SOLO_B=1 DIR=s42 node test_s43.js<br>
+B1) escribir una nota y marcar favorito otra tarjeta → nota conservada: "" | botón: ★ Favorito<br>
+&nbsp;&nbsp; ✗ FALLÓ: la nota escrita no debe borrarse<br>
+RESULTADO: hay 1 fallos</div>
+
+    <h2 class="section-title"><span class="num-badge">7</span>Las pruebas de siempre, sin tocar</h2>
+    <div class="body-text"><p>Aquí se ve el valor de haber escrito pruebas en las sesiones anteriores. Todas se ejecutaron contra la compilación nueva, <b>sin cambiar una sola línea de su lógica</b>, porque el HTML conserva los mismos <code>id</code> y las mismas clases. Si la migración hubiera roto algo, una de ellas lo habría dicho.</p></div>
+    <div class="term-box"><span class="prompt">$</span> S42DIR=s43 node test_s42.js<br>
+1) documento → {"lang":"es","viewport":"width=device-width, initial-scale=1.0","descr":140,"tema":"#0b1220","main":1,"h1":1,"contextoSeguro":true,"titulo":"Atlas 3D de Arquitectura de Software"}<br>
+2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]<br>
+3) Chrome dice: errores de instalabilidad → []<br>
+4) service worker → {"activo":true,"controla":true,"precache":10}<br>
+5) servidor caído y recarga → {"canvas":1,"pestanas":3}<br>
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.008<br>
+7) escena quieta durante 1,5 s → llamadas de dibujo: 0<br>
+8) arrastrar para girar → llamadas de dibujo nuevas: sí (720)<br>
+9) tras soltar y pasar la inercia → vuelve a quedarse quieta: sí<br>
+10) elegir una pieza → llamadas de dibujo nuevas: sí<br>
+11) cambiar de modelo → llamadas de dibujo nuevas: sí<br>
+12) cambiar el tamaño de la ventana → llamadas de dibujo nuevas: sí<br>
+pageerrors: []<br>
+RESULTADO: todo en orden</div>
+    <div class="win-box"><b>Lo que esto confirma:</b> el manifest y la instalabilidad según Chrome siguen sin errores (2 y 3); el Service Worker controla la página con 10 entradas de precaché (4); sin servidor, el visor se monta con una sola capa de dibujo y 3 pestañas (5); el CLS medido por la prueba es 0,008 (6); y el dibujo bajo demanda de la Sesión 42 se conserva: una escena quieta no dibuja (7) y cada acción sí (8 a 12).</div>
+    <div class="term-box"><span class="prompt">$</span> S41DIR=s43 node test_s41.js | tail -14<br>
+B1) llega beforeinstallprompt → defaultPrevented: true | botón visible: true | texto: Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.<br>
+C1) clic en «Instalar» → prompt() llamado 1 vez | botón visible: false<br>
+C2) llega appinstalled → texto: ✓ Instalada. Ábrela desde su icono en la pantalla de inicio.<br>
+D1) usuario cancela → botón visible: false | texto: Cancelaste la instalación. Chrome decide cuándo volver a ofrecerla; mientras tanto, usa el menú ⋮ → «Instalar app».<br>
+D2) Chrome vuelve a ofrecer la instalación → botón visible: true<br>
+E1) modo standalone → botón visible: false | texto: ✓ Estás usando Atlas 3D como app instalada.<br>
+F1) iPhone → botón visible: false | texto: En iPhone y iPad no hay botón: en Safari toca Compartir y luego «Añadir a pantalla de inicio».<br>
+G1) en línea → banda: null<br>
+G2) se corta la red → banda: Sin conexión: los modelos y las fichas descargadas siguen disponibles.<br>
+G3) sin red se cambia de modelo → «Niveles apilados: cada capa solo habla con la inme…»<br>
+G4) vuelve la red → banda: Volvió la conexión.<br>
+G5) 3,3 s después → banda: null<br>
+pageerrors: []<br>
+RESULTADO: todo en orden</div>
+    <div class="term-box"><span class="prompt">$</span> S40DIR=s43 node test_s40.js | tail -8<br>
+I1) base v2 preparada con identificadores de la demo<br>
+I2) tras abrir la app → {"version":3,"progreso":[["microservicios",false,333],["mvc",true,111]],"descargas":[["capas","pendiente"],["mvc","pendiente"]]}<br>
+J1) antes de usar AR → rastro: null<br>
+J2) dentro de AR → rastro: activa | diagnóstico: Última sesión de AR: sin registro.<br>
+J3) tras salir → rastro: fin-ok<br>
+J4) diagnóstico → Última sesión de AR: terminó completa (hace 1 s).<br>
+J5) rastro interrumpido simulado, tras recargar → Última sesión de AR: se interrumpió en el paso «fin-3-ancla» (hace 4 s). | panel abierto: true<br>
+pageerrors: []</div>
+    <div class="term-box"><span class="prompt">$</span> S39DIR=s43 node test_s39.js | tail -8<br>
+G2) tras tocar (de pie en x=1, mirando al frente) →&nbsp;&nbsp;{hitTest:no,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[1,-0.3,-1.48]}<br>
+G3) los gestos también funcionan sin hit-test → escala: 0.5<br>
+H1) sin «anchors» → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, anchors.<br>
+H2) tocar →&nbsp;&nbsp;{hitTest:sí,anclas:no,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas creadas: {"crearAncla":0,"borrarAncla":0}<br>
+I1) createAnchor rechazado →&nbsp;&nbsp;{hitTest:sí,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+J1) intentos de petición → ["[\"local\",\"hit-test\"]","[\"local\"]"] | estado: Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.<br>
+J2) tocar tras el reintento → {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+pageerrors: []</div>
+    <div class="body-text" style="margin-top:1em;"><p>Y los recursos de la GPU al dar ocho vueltas entre modelos (los números vuelven a los mismos valores cada tres modelos, es decir, el visor se limpia bien), y la publicación en una subruta, como en GitHub Pages:</p></div>
+    <div class="term-box">inicio {"Texture":16,"Framebuffer":3,"Buffer":57,"Program":5,"Shader":0,"VertexArray":17}<br>
+ciclo 0 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 1 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+ciclo 2 microservicios {"Texture":19,"Framebuffer":3,"Buffer":121,"Program":6,"Shader":0,"VertexArray":35}<br>
+ciclo 3 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 4 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+ciclo 5 microservicios {"Texture":19,"Framebuffer":3,"Buffer":121,"Program":6,"Shader":0,"VertexArray":35}<br>
+ciclo 6 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 7 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+errores []</div>
+    <div class="term-box"><span class="prompt">$</span> npm run build -- --base=/atlas-3d/ --outDir /tmp/dist-sub<br>
+<span class="prompt">$</span> node test_subruta.js<br>
+subruta → {"scope":"http://localhost:4195/atlas-3d/","activo":true,"manifest":{"start":"./","scope":"./"},"iconoStatus":200,"caches":["modelos-3d","workbox-precache-v2-http://localhost:4195/atlas-3d/"]}<br>
+recarga sin conexión: canvas montado = 1<br>
+ficha → ["http://localhost:4195/atlas-3d/modelos/mvc.json",200]<br>
+descarga desde el botón → caché modelos-3d: ["http://localhost:4195/atlas-3d/modelos/capas.json","http://localhost:4195/atlas-3d/modelos/microservicios.json","http://localhost:4195/atlas-3d/modelos/mvc.json"]<br>
+peticiones fuera de la subruta o 404: [] | pageerrors: []</div>
+    <div class="callout"><b>Una lección sobre las propias pruebas.</b> Al ejecutar las pruebas de AR (las que simulan un teléfono con el emulador IWER), fallaron con <code>Converting circular structure to JSON</code>. No era la app: React guarda dentro de cada elemento que dibuja unas propiedades internas (<code>__reactFiber$…</code>) que apuntan a su árbol, y el <i>envoltorio</i> de la prueba intentaba convertir a texto el elemento del overlay. Se corrigió en la prueba (un reemplazo que escribe <code>&lt;xr-overlay&gt;</code> en lugar del elemento), no en la app. Moraleja: cuando una migración rompe una prueba, hay que preguntarse primero <i>qué</i> está fallando, la app o el instrumento.</div>
+
+    <h2 class="section-title"><span class="num-badge">8</span>La comparación, con las cifras a la vista</h2>
+    <div class="body-text"><p>Para comparar dos versiones hay que medirlas igual. Se usó el método de la Sesión 42: Lighthouse 13.6.0, móvil, lentitud simulada, <b>cinco corridas por versión</b> y la mediana. Esta vez son cinco corridas y no tres (como en la Sesión 42) porque la versión con React mostró <b>mucha dispersión</b>: sus cinco corridas dieron rendimiento 78, 91, 92, 94 y 91, mientras las de la versión sin React dieron 85, 83, 81, 88 y 83.</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Medida (mediana de 5)</th><th>Sin React (S42)</th><th>Con React (S43)</th></tr>
+      <tr><td>Rendimiento</td><td>83</td><td><b>91</b></td></tr>
+      <tr><td>Accesibilidad / buenas prácticas / SEO</td><td>100 / 100 / 100</td><td>100 / 100 / 100</td></tr>
+      <tr><td>FCP (primer contenido)</td><td><b>1708 ms</b></td><td>2248 ms</td></tr>
+      <tr><td>LCP (contenido más grande)</td><td>2290 ms</td><td>2393 ms</td></tr>
+      <tr><td>TBT (tiempo de bloqueo)</td><td>554 ms</td><td><b>253 ms</b></td></tr>
+      <tr><td>CLS (desplazamiento de diseño)</td><td>0,05</td><td><b>0</b></td></tr>
+      <tr><td>Precaché del Service Worker</td><td><b>9 archivos · 558,82 KiB</b></td><td>10 archivos · 778,17 KiB</td></tr>
+      <tr><td>JavaScript de la app + React (sin comprimir)</td><td><b>62,57 kB</b></td><td>68,76 + 221,71 kB</td></tr>
+      <tr><td>Líneas de código de la interfaz</td><td><b>722</b> (<code>main.ts</code> 649 + <code>index.html</code> 73)</td><td>978 (17 archivos)</td></tr>
+      <tr><td>Pruebas anteriores que pasan sin cambios</td><td>—</td><td>S39 a S42 (con un arreglo en el instrumento)</td></tr>
+      <tr><td>Defecto «nota borrada al cambiar un favorito»</td><td>Presente</td><td><b>Resuelto</b></td></tr>
+    </table>
+    </div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/lighthouse-s42-s43.png" alt="Gráficos de barras comparando S42 y S43: rendimiento, FCP, TBT, CLS y peso" style="max-width:100%;max-width:46em;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Las cinco corridas de cada versión. La dispersión de React es visible: una corrida (78) queda lejos de las otras cuatro.</div></figure>
+    <h3 class="sub-title">Cómo leer estas cifras</h3>
+    <ul class="clean">
+      <li><b>El puntaje subió, y el primer contenido bajó.</b> Con React el HTML llega casi vacío (un solo <code>div</code>) y no hay nada que ver hasta que se descarga y ejecuta el JavaScript. Por eso el FCP pasó de 1,7 a 2,25 s: es el costo de dibujar <i>en el navegador</i> en lugar de entregar el HTML ya escrito. La alternativa (generar el HTML antes, en la compilación o en un servidor) existe y no se aplicó hoy.</li>
+      <li><b>El TBT bajó, pero no se puede atribuir solo a React.</b> Lighthouse cuenta el bloqueo entre el primer contenido y el momento en que la página es interactiva; si el primer contenido llega más tarde, parte del trabajo del hilo principal puede quedar fuera de esa ventana. Es una explicación plausible, no probada: no se aisló.</li>
+      <li><b>El CLS pasó de 0,05 a 0.</b> El panel y el visor ahora nacen dentro del árbol de React con su espacio reservado.</li>
+      <li><b>El JavaScript propio más React pesa más de cuatro veces lo de antes</b> (62,57 kB frente a 290,47 kB sin comprimir, sin contar Three.js; React solo son 68,70 kB comprimido) y el precaché total crece un 39 %. Para este Atlas no hay beneficio de tamaño: el beneficio está en cómo queda el código.</li>
+      <li><b>Más líneas no es peor ni mejor.</b> 978 líneas en 17 archivos pequeños, con lógica que se puede probar y reutilizar, frente a 722 en un archivo grande. Parte del aumento es que el HTML que antes eran textos largos ahora es JSX con sus <code>import</code>.</li>
+      <li><b>La variación existe.</b> Cinco corridas de la misma versión de React van de 78 a 94. Una sola medición de Lighthouse no decide nada.</li>
+    </ul>
+    <div class="warn-box"><b>Estas cifras no son las de tu teléfono.</b> Las corridas se hicieron en un Chromium sin tarjeta gráfica y con lentitud simulada. Sirven para comparar las dos versiones <i>en las mismas condiciones</i>. En la sección siguiente las repites tú, en tu equipo.</div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/comparacion-s42-s43.png" alt="Dos capturas del Atlas 3D en ancho de teléfono, una de la Sesión 42 y otra de la Sesión 43, casi idénticas" style="max-width:100%;max-width:34em;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">La misma pantalla, a 412 px de ancho: izquierda, Sesión 42; derecha, Sesión 43. Migrar no debe cambiar lo que ve el usuario, y aquí no cambió.</div></figure>
+    <div class="body-text"><p><b>¿Entonces conviene React para esta app?</b> Es una decisión que depende de qué se valore. Para un visor que apenas tiene pantalla, el costo en peso y primer contenido es real. Para una interfaz que va a crecer (más fichas, más estados, más formularios), el orden y las pruebas que dan los componentes pesan más. La Sesión 45 retoma esta pregunta con las tres versiones del Atlas puestas lado a lado.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">9</span>Pruébalo tú</h2>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Actualiza el repositorio.</b> Descomprime <code>pwa-ar-objetos3d-sesion43.zip</code> y copia su contenido sobre tu carpeta del proyecto, reemplazando archivos (ahora hay <code>src/App.tsx</code> y las carpetas <code>hooks</code> y <code>componentes</code>; <code>src/main.ts</code> ya no existe y debes borrarlo). Conserva <code>.github/workflows/pages.yml</code>. Ejecuta <code>npm install</code>, porque hay dependencias nuevas.</li>
+      <li><b>Pruébalo en tu computador:</b> <code>npm run dev</code> abre el modo desarrollo (con StrictMode); <code>npm run build</code> y <code>npm run preview</code> abren la versión de producción. Cambia entre modelos y mira que sigue habiendo un solo visor.</li>
+      <li><b>Súbelo:</b> <code>git add .</code>, <code>git commit</code> y <code>git push</code>. Si el push se rechaza, <code>git pull --no-rebase -X ours --no-edit</code> y vuelve a empujar. Espera la marca verde en <b>Actions</b>.</li>
+      <li><b>En tu teléfono</b>, recarga dos veces la app y comprueba que sigue todo: (a) el modelo gira con el dedo y se queda quieto al soltar; (b) elegir pieza y cambiar de modelo funciona; (c) «Ver en AR» entra y sale; (d) la rotación con el teléfono; (e) el botón «Instalar» y el texto de estado; (f) con el modo avión, la app abre y muestra el visor.</li>
+      <li><b>Mide tú</b>, con Lighthouse en una ventana de incógnito (F12 → Lighthouse → «Móvil»): <b>tres corridas</b> de la versión de la Sesión 42 y tres de la de hoy, y anota la mediana de rendimiento, FCP, TBT y CLS. Tus números serán otros; lo que importa es si la <i>dirección</i> coincide.</li>
+    </ol>
+    <div class="body-text"><p>Lo más útil que puedes aportar: <b>tus tres medianas por versión</b>, y si algo cambió de aspecto o de comportamiento en el teléfono.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">10</span>Actividades</h2>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>Mide las dos versiones en tu equipo</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>Publica o sirve localmente la versión de la Sesión 42 y la de hoy. Corre Lighthouse tres veces en cada una (incógnito, móvil) y arma la tabla de medianas: rendimiento, FCP, LCP, TBT y CLS. Compara con la tabla de la sección 8.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> tus dos tablas y un párrafo que diga qué coincide con lo medido en la guía y qué no.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">2</div><h4>Rompe la limpieza del visor</h4></div>
+      <div class="meta-row">EN PAREJAS · 45 MIN</div>
+      <p>Comenten la línea <code>nuevo.destruir();</code> de <code>App.tsx</code>, ejecuten <code>npm run dev</code> y abran la página. Cuenten los <code>canvas</code> en el elemento <code>#visor</code> desde las herramientas de desarrollo (pestaña Elementos). Restauren la línea y repitan.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> ¿por qué el defecto aparece en desarrollo y no en la versión compilada?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el número de lienzos con y sin la línea, y la respuesta a la pregunta.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">3</div><h4>Un componente nuevo: el contador de visitas</h4></div>
+      <div class="meta-row">INDIVIDUAL · 90 MIN</div>
+      <p>Añade a cada <code>Tarjeta</code> un texto «Visitado N veces» que cuente cuántas veces se pulsó «Marcar como visto». Piensa antes: ¿el contador es estado del componente o ya existe en <code>useProgreso</code>? Implementa lo que te parezca más simple y explica por qué.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el código cambiado y una frase que justifique dónde vive el dato.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">4</div><h4>La carrera del evento de instalación</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>Mueve el <code>addEventListener("beforeinstallprompt")</code> de <code>instalar.ts</code> para que se ejecute <b>al cargar el módulo</b> (antes de que React dibuje) y guarde el evento en la variable. ¿Qué parte de <code>useInstalacion</code> debe cambiar para que el botón aparezca aunque el evento haya llegado antes? ¿Qué prueba de la sesión 41 te avisaría si te equivocas?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el cambio, y la salida de <code>test_s41.js</code> antes y después.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>npm install
+git add .
+git commit -m "Atlas 3D en React: componentes, hooks y useRegisterSW"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>React mantiene la <b>pantalla sincronizada con el estado</b>: se describe cómo se ve, no cómo se modifica. Es ideal para catálogos, pestañas y formularios.</li>
+      <li>Lo que es un <b>motor</b> (Three.js, WebXR, Service Worker, IndexedDB) se queda fuera de React: <code>visor.ts</code>, <code>xr.ts</code>, <code>sw.ts</code> y <code>db.ts</code> no cambiaron.</li>
+      <li>En la frontera, <b>todo efecto que empieza algo debe saber deshacerlo</b> (<code>nuevo.destruir()</code>). StrictMode lo comprueba en desarrollo, y la prueba falla sin la limpieza.</li>
+      <li><code>useRef</code> para llegar a un elemento, <code>useSyncExternalStore</code> para leer un valor externo y <code>useRegisterSW</code> para registrar el Service Worker.</li>
+      <li>Los <b>campos controlados</b> acabaron con un defecto real de la Sesión 42: la nota que se borraba al cambiar otra tarjeta.</li>
+      <li>Las pruebas de las sesiones 39 a 42 pasaron sin cambiar su lógica: son la red de seguridad de una migración.</li>
+      <li>Medido: rendimiento 83 → 91 y CLS 0, pero con <b>peor primer contenido</b> (1,7 → 2,25 s), JavaScript propio más de cuatro veces mayor y 256 líneas más. Ninguna versión «gana» en todo.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 44: el Atlas 3D en Angular.</b> El mismo proyecto con otro framework, para ver qué cambia en la forma de pensar (plantillas, servicios, inyección de dependencias) y qué se mantiene.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> React, "Learn React" y "You Might Not Need an Effect", react.dev/learn.</div>
+      <div><b>[2]</b> React, "useSyncExternalStore" y "StrictMode", react.dev/reference/react.</div>
+      <div><b>[3]</b> Vite, "Plugin React" (<code>@vitejs/plugin-react</code>) y "Building for Production", vite.dev.</div>
+      <div><b>[4]</b> vite-plugin-pwa, "Frameworks → React" (<code>useRegisterSW</code>), vite-pwa-org.netlify.app/frameworks/react.</div>
+      <div><b>[5]</b> web.dev, "First Contentful Paint (FCP)", "Total Blocking Time (TBT)" y "Rendering on the Web", web.dev/articles.</div>
+      <div><b>[6]</b> W3C, "WebXR DOM Overlays Module" (el evento <code>beforexrselect</code>), w3.org/TR/webxr-dom-overlays-1.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 17 de 19</span>
+  </div>
+</div>
+</body>
+</html>

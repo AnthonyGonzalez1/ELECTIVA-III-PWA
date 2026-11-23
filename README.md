@@ -44,6 +44,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 40 | Modelos de arquitectura en 3D | B |
 | 41 | UX/UI de instalación | B |
 | 42 | Lighthouse y cierre del proyecto | B |
+| 43 | React y PWA | B |
 
 ## Proyectos
 

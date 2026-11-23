@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 43 · React y PWA · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .callout.win{background:#f1f9f1; border-color:#2e7d32; border-left-color:#1b5e20;}
+  .callout.win b{color:#1b5e20;}
+  .term-emph{color:var(--gold); font-weight:700;}
+  .rev-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .rev-card{border-radius:10px; padding:.9em 1em; font-size:.84em; line-height:1.45;}
+  .rev-card.has{background:#fff; border:1px solid var(--line);}
+  .rev-card.null{background:#EAF2FD; border:1px solid #8FBBEE;}
+  .rev-card .tag{display:inline-block; font-size:.68em; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:.15em .55em; border-radius:20px; margin-bottom:.5em;}
+  .rev-card.has .tag{background:#F0F0F0; color:#555;}
+  .rev-card.null .tag{background:#E9F1FC; color:#1B5FAD; border:1px solid #8FBBEE;}
+  .rev-card code{font-size:.92em;}
+  .callout.warn{background:#fff8e1; border-color:#e0a800; border-left-color:#9a6b00;}
+  .callout.warn b{color:#9a6b00;}
+  .term-prompt{color:#6ad06a;}
+  .code-block.wrap code{white-space:pre-wrap; word-break:break-word;}
+  .code-block.tight pre{padding:.4em 1.1em; line-height:1.2;}
+  .code-block.tight code{font-size:.68em;}
+  .two-cards{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .two-cards .activity-card h4 code{font-size:.85em;}
+  .activity-card ol{margin:.5em 0 0; padding-left:1.3em; font-size:.82em; color:#3a3a3a; line-height:1.4;}
+  .activity-card ol li{margin-bottom:.3em;}
+  .activity-card a{color:var(--ink);}
+  .slide.dense{padding-top:1.1em;}
+  .slide.dense h2.slide-title{font-size:1.65em;}
+  .slide.dense .rule{margin:0 0 .45em;} .slide.dense .kicker{margin:0 0 .15em;}
+  .code-block.wrap code{white-space:pre-wrap; word-break:break-word;}
+  .grid-4 .card h3 code{font-size:.78em;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 17 de 19</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+<section class="slide slide--title active" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Portada">
+<div class="brand-wedge"><div class="gold-slab"></div></div>
+<div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR · Sesión 17 de 19</div>
+<h1 style="font-size:3.1em; max-width:10.5em;">React y PWA</h1>
+<div class="lead">El mismo Atlas 3D, reconstruido con React: qué cambia en el código, qué no se toca (visor, AR, Service Worker) y qué dicen las cifras, con lo que mejora y con lo que empeora.</div>
+<div class="meta">
+<div><span>Asignatura</span>Electiva - PWA</div>
+<div><span>Sesión</span>17 de 19 · Proyecto Módulo AR</div>
+<div><span>Institución</span>UPTC</div>
+</div>
+<div class="title-illustration">
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+<rect x="150" y="60" width="100" height="44" rx="8" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+<text x="200" y="89" text-anchor="middle" font-size="18" font-weight="800" fill="#1A1A1A">App</text>
+<line x1="200" y1="104" x2="110" y2="150" stroke="#373435" stroke-width="3"/>
+<line x1="200" y1="104" x2="200" y2="150" stroke="#373435" stroke-width="3"/>
+<line x1="200" y1="104" x2="290" y2="150" stroke="#373435" stroke-width="3"/>
+<rect x="60" y="150" width="100" height="40" rx="8" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<rect x="150" y="150" width="100" height="40" rx="8" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<rect x="240" y="150" width="100" height="40" rx="8" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<text x="110" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1A1A">ZonaVisor</text>
+<text x="200" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1A1A">OverlayAR</text>
+<text x="290" y="175" text-anchor="middle" font-size="12" font-weight="700" fill="#1A1A1A">Catalogo</text>
+<text x="200" y="250" text-anchor="middle" font-size="13" font-weight="700" fill="#373435">rendimiento 83 → 91 · FCP 1,7 → 2,25 s</text>
+</svg>
+</div>
+<div class="title-goldbar"></div>
+</section>
+<section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Otro motor de pantalla">
+<div class="brand-wedge"><div class="gold-slab"></div></div>
+<div class="divider-panel">
+<div class="num">SESIÓN 17</div>
+<h2>Cambiar la pantalla, no el motor</h2>
+<p>React reparte la interfaz en piezas y la mantiene sincronizada con el estado. Three.js, WebXR y el Service Worker siguen siendo lo que eran.</p>
+<div class="tb-preview"><span>Componentes y hooks</span><span>La frontera</span><span>La comparación</span></div>
+</div>
+<div class="divider-illustration">
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<rect x="40" y="60" width="150" height="200" rx="12" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<text x="115" y="95" text-anchor="middle" font-size="14" font-weight="800" fill="#1A1A1A">React</text>
+<text x="115" y="125" text-anchor="middle" font-size="11" fill="#373435">pantalla · estado</text>
+<rect x="210" y="60" width="150" height="200" rx="12" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+<text x="285" y="95" text-anchor="middle" font-size="14" font-weight="800" fill="#1A1A1A">Fuera de React</text>
+<text x="285" y="125" text-anchor="middle" font-size="11" fill="#1A1A1A">visor · xr · sw · db</text>
+<path d="M190 160 L210 160" stroke="#1A1A1A" stroke-width="4"/>
+</svg>
+</div>
+</section>
+<section class="slide dense" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Objetivos y recursos de la sesión">
+<div class="kicker">Antes de empezar</div>
+<h2 class="slide-title">Objetivos de aprendizaje</h2>
+<hr class="rule">
+<ul class="clean" style="font-size:.86em;line-height:1.33;">
+<li><b>Reconocer</b> qué resuelve React y qué trabajo <b>no</b> le toca (Three.js, WebXR, Service Worker).</li>
+<li><b>Preparar</b> Vite con React y repartir una app en <b>componentes</b> y <b>hooks</b>.</li>
+<li><b>Cuidar la frontera</b> con el código imperativo: <code>useEffect</code> con limpieza, <code>useRef</code>, <code>useSyncExternalStore</code>.</li>
+<li><b>Registrar</b> el Service Worker con <code>useRegisterSW</code> y comprobar que manifest y precaché siguen igual.</li>
+<li><b>Reutilizar</b> las pruebas anteriores como red de seguridad de una migración.</li>
+<li><b>Comparar</b> con cifras reales y leerlas con honestidad.</li>
+</ul>
+<div class="two-cards" style="margin:.7em 0 0;">
+<div class="activity-card"><div class="a-head"><div class="a-num">.zip</div><h4>Recursos: <a href="recursos/pwa-ar-objetos3d-sesion42.zip">pwa-ar-objetos3d-sesion42.zip</a></h4></div>
+<div class="meta-row">CHECKPOINT · CIERRE DE LA SESIÓN 42 · PUNTO DE PARTIDA</div>
+<p style="font-size:.85em;">El Atlas sin React. Es la línea base de la comparación.</p></div>
+<div class="activity-card"><div class="a-head"><div class="a-num">.zip</div><h4>Recursos: <a href="recursos/pwa-ar-objetos3d-sesion43.zip">pwa-ar-objetos3d-sesion43.zip</a></h4></div>
+<div class="meta-row">VERSIÓN TERMINADA · + INFORMES HTML S42 Y S43</div>
+<p style="font-size:.85em;">Informes: <a href="recursos/lighthouse-s42.html">S42</a> · <a href="recursos/lighthouse-s43.html">S43</a>.</p></div>
+</div>
+</section>
+<section class="slide dense" data-section="react" data-section-label="React" data-slide-label="Pantalla y motor">
+<div class="kicker">React · 1.1</div>
+<h2 class="slide-title">Lo que es pantalla pasa a React; lo que es motor se queda</h2>
+<hr class="rule">
+<div style="display:grid;grid-template-columns:repeat(3,1fr);gap:.9em;margin-top:.8em;"><div class="activity-card"><div class="a-head"><div class="a-num">1</div><h4>Antes: render() y oyentes</h4></div><p style="font-size:.85em;">Un <code>main.ts</code> de 649 líneas: escribía el HTML como texto, buscaba botones con <code>querySelectorAll</code> y rehacía todo en cada cambio.</p></div><div class="activity-card"><div class="a-head"><div class="a-num">2</div><h4>Con React</h4></div><p style="font-size:.85em;">Se describe <b>cómo se ve</b> dado el estado y React calcula qué tocar. Ideal para listas, pestañas, textos y formularios.</p></div><div class="activity-card"><div class="a-head"><div class="a-num">3</div><h4>Lo que no cambia</h4></div><p style="font-size:.85em;"><code>visor.ts</code>, <code>xr.ts</code>, <code>sw.ts</code>, <code>db.ts</code> y los modelos como datos: son <b>motores</b>, no pantalla.</p></div></div>
+</section>
+<section class="slide dense" data-section="react" data-section-label="React" data-slide-label="Árbol de componentes">
+<div class="kicker">React · 1.2</div>
+<h2 class="slide-title">La estructura del Atlas en React</h2>
+<hr class="rule">
+<div style="text-align:center;"><img src="img/arbol-componentes.png" alt="Árbol de componentes y hooks del Atlas" style="max-width:100%;max-height:58vh;object-fit:contain;border:1px solid #ddd;border-radius:8px;"></div><div class="callout" style="margin-top:.4em;font-size:.74em;">Componentes arriba (dibujan); hooks abajo (guardan la lógica); en rojo, lo que está fuera de React.</div>
+</section>
+<section class="slide dense" data-section="react" data-section-label="React" data-slide-label="El reparto">
+<div class="kicker">React · 1.3</div>
+<h2 class="slide-title">Quién guarda qué</h2>
+<hr class="rule">
+<table class="uptc" style="font-size:.86em;">
+<tr><th>Pieza</th><th>Qué guarda o dibuja</th><th>Dónde estaba en la S42</th></tr>
+<tr><td><code>usePanel</code></td><td>Modelo y pieza elegidos; ficha</td><td>3 variables y 6 funciones que reescribían HTML</td></tr>
+<tr><td><code>useProgreso</code></td><td>Visitas, favoritos y notas</td><td><code>progresoPorId</code> y oyentes de <code>render()</code></td></tr>
+<tr><td><code>useAR</code> · <code>useSensores</code> · <code>useCamara</code></td><td>AR, sensores, cámara de fondo</td><td>Funciones sueltas y globales</td></tr>
+<tr><td><code>useConexion</code> · <code>useInstalacion</code></td><td>Banda sin conexión; instalación</td><td>Bloques de <code>addEventListener</code></td></tr>
+<tr><td><code>ZonaVisor</code> · <code>PanelModelo</code></td><td>El visor y el panel</td><td><code>index.html</code> + <code>innerHTML</code></td></tr>
+<tr><td><code>Catalogo</code> (<code>Tarjeta</code>)</td><td>Tarjetas con favorito y nota</td><td>La función <code>render()</code></td></tr>
+<tr><td><code>ZonaInstalar</code> · <code>ZonaDescargas</code> · <code>OverlayAR</code></td><td>Instalar, descargar, capa de AR</td><td><code>index.html</code> + oyentes</td></tr>
+</table>
+</section>
+<section class="slide" data-section="proyecto" data-section-label="El proyecto" data-slide-label="main.tsx">
+<div class="kicker">Proyecto · 2.1</div>
+<h2 class="slide-title">El punto de entrada: de 649 líneas a 12</h2>
+<hr class="rule">
+<div class="body-text" style="font-size:.92em;"><p style="margin-bottom:.35em;"><code>index.html</code> queda con un solo <code>&lt;div id="root"&gt;</code>. Además: <code>react</code>, <code>react-dom</code>, <code>@vitejs/plugin-react</code>, tipos y <code>"jsx": "react-jsx"</code>.</p></div>
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.tsx</div>
+<pre style="font-size:1.3em;line-height:1.3;"><code><span class="tok-fn">createRoot</span>(document.<span class="tok-fn">getElementById</span>(<span class="tok-str">"root"</span>)!).<span class="tok-fn">render</span>(
+  &lt;StrictMode&gt;
+    &lt;App /&gt;
+  &lt;/StrictMode&gt;
+);</code></pre>
+</div>
+</section>
+<section class="slide" data-section="proyecto" data-section-label="El proyecto" data-slide-label="manualChunks">
+<div class="kicker">Proyecto · 2.2</div>
+<h2 class="slide-title">React en su propio paquete</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>vite.config.ts</div>
+<pre style="font-size:1.05em;line-height:1.3;"><code><span class="tok-com">// Sesión 42: Three.js (la mayor parte del peso) va en su propio archivo: el código de la app</span>
+<span class="tok-com">// cambia cada sesión, Three.js casi nunca, y así son dos descargas que se pueden cachear por separado.</span>
+<span class="tok-com">// Sesión 43: React va en otro paquete aparte, por la misma razón.</span>
+<span class="tok-fn">manualChunks</span>(id) {
+  <span class="tok-kw">if</span> (id.<span class="tok-fn">includes</span>(<span class="tok-str">"node_modules/three/build/"</span>)) <span class="tok-kw">return</span> <span class="tok-str">"three"</span>;
+  <span class="tok-kw">if</span> (/node_modules\/(react|react-dom|scheduler)\//.<span class="tok-fn">test</span>(id)) <span class="tok-kw">return</span> <span class="tok-str">"react"</span>;
+},</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">La regla de Three.js apunta a <code>three/build/</code>: con la carpeta entera arrastraba los controles y volvía el aviso de 500 kB.</div>
+</section>
+<section class="slide dense" data-section="proyecto" data-section-label="El proyecto" data-slide-label="La compilación">
+<div class="kicker">Proyecto · 2.3</div>
+<h2 class="slide-title">La compilación, tal cual</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.78em;line-height:1.3;"><code><span class="term-prompt">$</span> npm run build
+✓ 70 modules transformed.
+dist/index.html                                    0.93 kB │ gzip:   0.49 kB
+dist/assets/index-C_Z4QQ-j.css                     6.51 kB │ gzip:   1.83 kB
+dist/assets/workbox-window.prod.es5-BqEJf4Xk.js    5.71 kB │ gzip:   2.34 kB
+dist/assets/index-C65LVCWn.js                     68.76 kB │ gzip:  22.38 kB
+dist/assets/react-LTC9Rffj.js                    221.71 kB │ gzip:  68.70 kB
+dist/assets/three-DPr8S-9-.js                    482.73 kB │ gzip: 122.01 kB
+✓ built in 2.22s
+PWA v1.3.0
+✓ 89 modules transformed.
+✓ built in 276ms
+PWA v1.3.0
+mode      injectManifest
+format:   es
+<span class="term-emph">precache  10 entries (778.17 KiB)</span></code></pre>
+</div>
+<div class="callout" style="margin-top:.5em;font-size:.76em;">Tres archivos de código: app (68,76 kB), React (221,71 kB) y Three.js (482,73 kB). Precaché: <b>10 entradas, 778,17 KiB</b> (S42: 9 entradas, 558,82 KiB).</div>
+</section>
+<section class="slide" data-section="frontera" data-section-label="La frontera" data-slide-label="usePanel">
+<div class="kicker">Frontera · 3.1</div>
+<h2 class="slide-title">Un manejador habla con el visor y con el estado</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/hooks/usePanel.ts</div>
+<pre style="font-size:1.1em;line-height:1.3;"><code><span class="tok-kw">const</span> elegirModelo = <span class="tok-fn">useCallback</span>(
+  (id: string) =&gt; {
+    <span class="tok-kw">const</span> def = <span class="tok-fn">modeloPorId</span>(id);
+    <span class="tok-kw">if</span> (!def || !visor) <span class="tok-kw">return</span>;
+    visor.<span class="tok-fn">mostrarModelo</span>(def);
+    <span class="tok-fn">setModeloId</span>(id);
+    <span class="tok-fn">setPiezaId</span>(null);
+  },
+  [visor]
+);</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Imperativo («muestra este modelo») y declarativo («el modelo elegido es este») en la misma función.</div>
+</section>
+<section class="slide" data-section="frontera" data-section-label="La frontera" data-slide-label="El visor en un efecto">
+<div class="kicker">Frontera · 3.2</div>
+<h2 class="slide-title">Todo efecto que empieza algo debe saber deshacerlo</h2>
+<hr class="rule">
+<div class="body-text" style="font-size:.92em;"><p style="margin-bottom:.35em;">En desarrollo, <code>StrictMode</code> monta, desmonta y vuelve a montar a propósito.</p></div>
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/App.tsx</div>
+<pre style="font-size:1.15em;line-height:1.3;"><code><span class="tok-kw">const</span> [visor, setVisor] = useState&lt;Visor | null&gt;(null);
+<span class="tok-kw">const</span> [aviso, setAviso] = <span class="tok-fn">useState</span>(<span class="tok-str">""</span>);
+
+<span class="tok-fn">useEffect</span>(() =&gt; {
+  <span class="tok-kw">const</span> nuevo = <span class="tok-fn">crearVisor</span>(contenedor.current!);
+  <span class="tok-fn">setVisor</span>(nuevo);
+  <span class="tok-kw">return</span> () =&gt; {
+    nuevo.<span class="tok-fn">destruir</span>();<span class="tok-com"> // la limpieza: sin ella, StrictMode dejaría dos lienzos</span>
+    <span class="tok-fn">setVisor</span>(null);
+  };
+}, []);</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">La línea clave: <code>nuevo.destruir()</code>. Sin ella quedan dos lienzos.</div>
+</section>
+<section class="slide dense" data-section="frontera" data-section-label="La frontera" data-slide-label="StrictMode">
+<div class="kicker">Frontera · 3.3</div>
+<h2 class="slide-title">La prueba, y la prueba de la prueba</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.84em;line-height:1.28;"><code>$ node test_s43.js
+A1) desarrollo con StrictMode → lienzos en el visor: 1
+A2) cambiar de modelo en desarrollo → piezas: 5 | errores de página: []
+B1) escribir una nota y marcar favorito otra tarjeta → nota conservada: "repasar el controlador" | botón: ★ Favorito
+RESULTADO: todo en orden
+
+$ sed -i 's|^      nuevo.destruir();|      // nuevo.destruir();|' src/App.tsx   (se comenta la limpieza del visor)
+$ node test_s43.js
+A1) desarrollo con StrictMode → lienzos en el visor: 2
+   ✗ FALLÓ: debe haber un solo lienzo (el efecto del visor debe limpiar lo que creó)
+A2) cambiar de modelo en desarrollo → piezas: 5 | errores de página: []
+B1) escribir una nota y marcar favorito otra tarjeta → nota conservada: "repasar el controlador" | botón: ★ Favorito
+RESULTADO: hay 1 fallos</code></pre>
+</div>
+<div class="callout warn" style="margin-top:.5em;font-size:.76em;">Sin <code>destruir()</code>: <b>2 lienzos</b>. En producción StrictMode no actúa; el defecto sale en desarrollo, donde conviene. La línea se restauró y la prueba volvió a pasar.</div>
+</section>
+<section class="slide dense" data-section="externo" data-section-label="Estado externo" data-slide-label="useSyncExternalStore">
+<div class="kicker">Estado externo · 4.1</div>
+<h2 class="slide-title">Leer un valor que vive fuera de React</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/hooks/useInstalacion.ts</div>
+<pre style="font-size:.82em;line-height:1.3;"><code><span class="tok-com">// Declaradas fuera del hook para que su identidad no cambie entre dibujos.</span>
+<span class="tok-kw">const</span> suscribir = (avisar: () =&gt; <span class="tok-kw">void</span>) =&gt; <span class="tok-fn">iniciarInstalacion</span>(avisar);
+<span class="tok-kw">const</span> foto = () =&gt; <span class="tok-str">`${<span class="tok-fn">estadoInstalacion</span>()}|${<span class="tok-fn">instalacionRechazada</span>()}`</span>;
+
+<span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">useInstalacion</span>() {
+  <span class="tok-kw">const</span> [estado, rechazada] = <span class="tok-fn">useSyncExternalStore</span>(suscribir, foto).<span class="tok-fn">split</span>(<span class="tok-str">"|"</span>);
+  <span class="tok-kw">const</span> texto =
+    estado === <span class="tok-str">"instalada"</span> ? TEXTO_INSTALACION.instalada
+    : estado === <span class="tok-str">"recien-instalada"</span> ? TEXTO_INSTALACION.recienInstalada
+    : estado === <span class="tok-str">"instalable"</span> ? TEXTO_INSTALACION.instalable
+    : estado === <span class="tok-str">"ios"</span> ? TEXTO_INSTALACION.ios
+    : rechazada === <span class="tok-str">"true"</span> ? TEXTO_INSTALACION.rechazada
+    : TEXTO_INSTALACION.noDisponible;
+  <span class="tok-kw">return</span> { instalable: estado === <span class="tok-str">"instalable"</span>, texto, pedir: pedirInstalacion };
+}</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;"><code>suscribir</code> y <code>foto</code> van <b>fuera</b> del hook (identidad estable). La foto es un texto: React compara con <code>Object.is</code>.</div>
+</section>
+<section class="slide" data-section="externo" data-section-label="Estado externo" data-slide-label="La limpieza">
+<div class="kicker">Estado externo · 4.2</div>
+<h2 class="slide-title"><code>instalar.ts</code> devuelve cómo dejar de escuchar</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/instalar.ts</div>
+<pre style="font-size:1.25em;line-height:1.3;"><code><span class="tok-com">// Sesión 43: en React todo efecto que empieza algo debe saber deshacerlo.</span>
+<span class="tok-kw">return</span> () =&gt; {
+  window.<span class="tok-fn">removeEventListener</span>(<span class="tok-str">"beforeinstallprompt"</span>, alOfrecer);
+  window.<span class="tok-fn">removeEventListener</span>(<span class="tok-str">"appinstalled"</span>, alInstalar);
+  modo.<span class="tok-fn">removeEventListener</span>(<span class="tok-str">"change"</span>, alCambiarModo);
+  avisar = () =&gt; {};
+};</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Único archivo «de motor» que se tocó: antes los oyentes vivían toda la página; con StrictMode se registrarían dos veces.</div>
+</section>
+<section class="slide" data-section="externo" data-section-label="Estado externo" data-slide-label="useRegisterSW">
+<div class="kicker">Estado externo · 4.3</div>
+<h2 class="slide-title">El Service Worker: otro que lo registra, el mismo <code>sw.ts</code></h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/App.tsx</div>
+<pre style="font-size:.95em;line-height:1.3;"><code><span class="tok-kw">const</span> { offlineReady } = <span class="tok-fn">useRegisterSW</span>({
+  immediate: true,
+  <span class="tok-fn">onOfflineReady</span>() {
+    <span class="tok-com">// El usuario está mirando la pantalla: la notificación solo si NO la está mirando.</span>
+    <span class="tok-kw">if</span> (document.visibilityState !== <span class="tok-str">"visible"</span>) {
+      <span class="tok-kw">void</span> <span class="tok-fn">mostrarAviso</span>(<span class="tok-str">"Atlas 3D listo"</span>, <span class="tok-str">"Ya funciona sin conexión."</span>, <span class="tok-kw">import</span>.meta.env.BASE_URL, <span class="tok-str">"atlas-offline"</span>);
+    }
+  },
+  <span class="tok-fn">onRegisterError</span>(error) {
+    console.<span class="tok-fn">error</span>(<span class="tok-str">"Error al registrar el SW de Workbox:"</span>, error);
+  },
+});</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Carrera nueva: el oyente de <code>beforeinstallprompt</code> se registra <i>después</i> del primer dibujo. En la práctica el evento llega más tarde, pero en la S41 esa carrera no existía (actividad 4).</div>
+</section>
+<section class="slide" data-section="casos" data-section-label="Dos casos" data-slide-label="beforexrselect">
+<div class="kicker">Dos casos · 5.1</div>
+<h2 class="slide-title">Un evento que React no conoce</h2>
+<hr class="rule">
+<div class="body-text" style="font-size:.92em;"><p style="margin-bottom:.35em;">WebXR pide <b>un</b> elemento como dom-overlay: se monta una vez (con <code>ref</code>) y solo cambia su texto. Los botones cancelan <code>beforexrselect</code> para no «colocar» el modelo.</p></div>
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/componentes/OverlayAR.tsx</div>
+<pre style="font-size:1.05em;line-height:1.3;"><code><span class="tok-com">// Un toque sobre un botón del overlay NO debe contar como «tocar para colocar»: el navegador avisa</span>
+<span class="tok-com">// con `beforexrselect` y basta cancelarlo. React no conoce ese evento, así que se enlaza a mano.</span>
+<span class="tok-fn">useEffect</span>(() =&gt; {
+  <span class="tok-kw">const</span> botones = [salir.current, ant.current, sig.current].<span class="tok-fn">filter</span>((b): b is HTMLButtonElement =&gt; b !== null);
+  <span class="tok-kw">const</span> cancelar = (e: Event) =&gt; e.<span class="tok-fn">preventDefault</span>();
+  botones.<span class="tok-fn">forEach</span>((b) =&gt; b.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"beforexrselect"</span>, cancelar));
+  <span class="tok-kw">return</span> () =&gt; botones.<span class="tok-fn">forEach</span>((b) =&gt; b.<span class="tok-fn">removeEventListener</span>(<span class="tok-str">"beforexrselect"</span>, cancelar));
+}, []);</code></pre>
+</div>
+</section>
+<section class="slide" data-section="casos" data-section-label="Dos casos" data-slide-label="El defecto de la S42">
+<div class="kicker">Dos casos · 5.2</div>
+<h2 class="slide-title">Sesión 42: marcar favorito rehace todo</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts de la Sesión 42</div>
+<pre style="font-size:1.15em;line-height:1.3;"><code>appEl.querySelectorAll&lt;HTMLButtonElement&gt;(<span class="tok-str">".btn-favorito"</span>).<span class="tok-fn">forEach</span>((btn) =&gt;
+  btn.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, <span class="tok-kw">async</span> () =&gt; {
+    <span class="tok-kw">const</span> id = btn.dataset.id!;
+    <span class="tok-kw">await</span> <span class="tok-fn">alternarFavorito</span>(db, id);
+    <span class="tok-kw">const</span> todo = <span class="tok-kw">await</span> <span class="tok-fn">obtenerTodoElProgreso</span>(db);
+    progresoPorId = <span class="tok-kw">new</span> <span class="tok-fn">Map</span>(todo.<span class="tok-fn">map</span>((p) =&gt; [p.modeloId, p]));
+    <span class="tok-fn">render</span>();
+  })
+);</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;"><code>render()</code> reescribe todo el catálogo: la nota escrita en otra tarjeta, <b>desaparece</b>.</div>
+</section>
+<section class="slide dense" data-section="casos" data-section-label="Dos casos" data-slide-label="Campo controlado">
+<div class="kicker">Dos casos · 5.3</div>
+<h2 class="slide-title">Campo controlado: React solo toca la estrella</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/componentes/Catalogo.tsx (formateado)</div>
+<pre style="font-size:.85em;line-height:1.3;"><code>&lt;input
+  <span class="tok-kw">type</span>=<span class="tok-str">"text"</span> className=<span class="tok-str">"nota-input"</span>
+  placeholder=<span class="tok-str">"Nota de estudio..."</span>
+  value={nota}
+  onChange={(e) =&gt; <span class="tok-fn">setNota</span>(e.target.value)}
+/&gt;</code></pre>
+</div><div style="height:.6em"></div><div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.8em;line-height:1.3;"><code>$ SOLO_B=1 DIR=s42 node test_s43.js
+B1) escribir una nota y marcar favorito otra tarjeta → nota conservada: "" | botón: ★ Favorito
+   ✗ FALLÓ: la nota escrita no debe borrarse
+RESULTADO: hay 1 fallos</code></pre>
+</div><div class="callout warn" style="margin-top:.5em;font-size:.76em;">Contra la S42, la prueba <b>detecta</b> el defecto (nota: <code>""</code>); contra la S43 la nota se conserva.</div>
+</section>
+<section class="slide dense" data-section="pruebas" data-section-label="Las pruebas de siempre" data-slide-label="test_s42 sobre S43">
+<div class="kicker">Pruebas · 6.1</div>
+<h2 class="slide-title">La lista de la S42, sobre el código de React</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.86em;line-height:1.28;"><code>$ S42DIR=s43 node test_s42.js
+1) documento → {"lang":"es","viewport":"width=device-width, initial-scale=1.0","descr":140,"tema":"#0b1220","main":1,"h1":1,"contextoSeguro":true,"titulo":"Atlas 3D de Arquitectura de Software"}
+2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]
+3) Chrome dice: errores de instalabilidad → []
+4) service worker → {"activo":true,"controla":true,"precache":10}
+5) servidor caído y recarga → {"canvas":1,"pestanas":3}
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.008
+7) escena quieta durante 1,5 s → llamadas de dibujo: 0
+8) arrastrar para girar → llamadas de dibujo nuevas: sí (720)
+9) tras soltar y pasar la inercia → vuelve a quedarse quieta: sí
+10) elegir una pieza → llamadas de dibujo nuevas: sí
+11) cambiar de modelo → llamadas de dibujo nuevas: sí
+12) cambiar el tamaño de la ventana → llamadas de dibujo nuevas: sí
+pageerrors: []
+RESULTADO: todo en orden</code></pre>
+</div>
+</section>
+<section class="slide dense" data-section="pruebas" data-section-label="Las pruebas de siempre" data-slide-label="Regresión">
+<div class="kicker">Pruebas · 6.2</div>
+<h2 class="slide-title">Regresión: S41, S40 y subruta</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.72em;line-height:1.28;"><code>$ S41DIR=s43 node test_s41.js | tail -6
+G2) se corta la red → banda: Sin conexión: los modelos y las fichas descargadas siguen disponibles.
+G3) sin red se cambia de modelo → «Niveles apilados: cada capa solo habla con la inme…»
+G4) vuelve la red → banda: Volvió la conexión.
+G5) 3,3 s después → banda: null
+pageerrors: []
+RESULTADO: todo en orden
+
+$ S40DIR=s43 node test_s40.js | tail -5
+J2) dentro de AR → rastro: activa | diagnóstico: Última sesión de AR: sin registro.
+J3) tras salir → rastro: fin-ok
+J4) diagnóstico → Última sesión de AR: terminó completa (hace 1 s).
+J5) rastro interrumpido simulado, tras recargar → Última sesión de AR: se interrumpió en el paso «fin-3-ancla» (hace 4 s). | panel abierto: true
+pageerrors: []
+
+$ node test_subruta.js
+ficha → ["http://localhost:4195/atlas-3d/modelos/mvc.json",200]
+descarga desde el botón → caché modelos-3d: ["http://localhost:4195/atlas-3d/modelos/capas.json","http://localhost:4195/atlas-3d/modelos/microservicios.json","http://localhost:4195/atlas-3d/modelos/mvc.json"]
+peticiones fuera de la subruta o 404: [] | pageerrors: []</code></pre>
+</div>
+</section>
+<section class="slide" data-section="pruebas" data-section-label="Las pruebas de siempre" data-slide-label="Una lección">
+<div class="kicker">Pruebas · 6.3</div>
+<h2 class="slide-title">Una lección sobre las propias pruebas</h2>
+<hr class="rule">
+<div class="callout warn" style="font-size:.84em;line-height:1.45;">Las pruebas de AR (IWER) fallaron con <code>Converting circular structure to JSON</code>. No era la app: React guarda en cada elemento propiedades internas (<code>__reactFiber$…</code>) y el <b>envoltorio</b> de la prueba intentaba convertir a texto el elemento del overlay.</div>
+<div class="callout" style="margin-top:.6em;font-size:.84em;line-height:1.45;">Se corrigió en la prueba (un reemplazo que escribe <code>&lt;xr-overlay&gt;</code>), no en la app. Moraleja: cuando una migración rompe una prueba, pregunta primero <b>qué</b> falla: la app o el instrumento. Las pruebas de la S39 a la S42 pasaron sin cambiar su lógica.</div>
+</section>
+<section class="slide dense" data-section="comparacion" data-section-label="La comparación" data-slide-label="Tabla">
+<div class="kicker">Comparación · 7.1</div>
+<h2 class="slide-title">Sin React y con React (mediana de 5)</h2>
+<hr class="rule">
+<table class="uptc" style="font-size:.84em;">
+<tr><th>Medida</th><th>Sin React (S42)</th><th>Con React (S43)</th></tr>
+<tr><td>Rendimiento</td><td>83</td><td><b>91</b></td></tr>
+<tr><td>Accesibilidad · buenas prácticas · SEO</td><td>100 · 100 · 100</td><td>100 · 100 · 100</td></tr>
+<tr><td>FCP</td><td><b>1708 ms</b></td><td>2248 ms</td></tr>
+<tr><td>LCP</td><td>2290 ms</td><td>2393 ms</td></tr>
+<tr><td>TBT</td><td>554 ms</td><td><b>253 ms</b></td></tr>
+<tr><td>CLS</td><td>0,05</td><td><b>0</b></td></tr>
+<tr><td>Precaché</td><td><b>9 · 558,82 KiB</b></td><td>10 · 778,17 KiB</td></tr>
+<tr><td>JS app + React (sin comprimir)</td><td><b>62,57 kB</b></td><td>68,76 + 221,71 kB</td></tr>
+<tr><td>Líneas de la interfaz</td><td><b>722</b></td><td>978 (17 archivos)</td></tr>
+<tr><td>Nota borrada al cambiar un favorito</td><td>Presente</td><td><b>Resuelto</b></td></tr>
+</table>
+</section>
+<section class="slide dense" data-section="comparacion" data-section-label="La comparación" data-slide-label="Gráfico">
+<div class="kicker">Comparación · 7.2</div>
+<h2 class="slide-title">Las cinco corridas de cada versión</h2>
+<hr class="rule">
+<div style="text-align:center;"><img src="img/lighthouse-s42-s43.png" alt="Barras con las cinco corridas de S42 y S43" style="max-width:100%;max-height:52vh;object-fit:contain;border:1px solid #ddd;border-radius:8px;"></div><div class="callout" style="margin-top:.4em;font-size:.72em;">Rendimiento de React: 78, 91, 92, 94, 91. Sin React: 85, 83, 81, 88, 83. Una sola medición no decide nada.</div>
+</section>
+<section class="slide dense" data-section="comparacion" data-section-label="La comparación" data-slide-label="Cómo leerlas">
+<div class="kicker">Comparación · 7.3</div>
+<h2 class="slide-title">Cómo leer estas cifras</h2>
+<hr class="rule">
+<ul class="clean" style="font-size:.98em;line-height:1.4;">
+<li><b>Puntaje arriba, primer contenido abajo:</b> el HTML llega casi vacío y no hay nada que ver hasta que corre el JavaScript. FCP 1,7 → 2,25 s. El remedio (generar el HTML antes) no se aplicó hoy.</li>
+<li><b>El TBT bajó, pero no solo por React:</b> con un FCP más tardío, parte del trabajo del hilo puede quedar fuera de la ventana que mide Lighthouse. Explicación plausible, <b>no aislada</b>.</li>
+<li><b>CLS 0:</b> panel y visor nacen en el árbol con su espacio reservado.</li>
+<li><b>Peso:</b> JS propio + React, más de cuatro veces; precaché +39 %. El beneficio no está en el tamaño sino en el código.</li>
+<li><b>Más líneas ≠ peor:</b> 978 en 17 archivos pequeños y probables, frente a 722 en uno grande.</li>
+</ul>
+</section>
+<section class="slide dense" data-section="comparacion" data-section-label="La comparación" data-slide-label="Capturas">
+<div class="kicker">Comparación · 7.4</div>
+<h2 class="slide-title">La misma pantalla: S42 a la izquierda, S43 a la derecha</h2>
+<hr class="rule">
+<div style="text-align:center;"><img src="img/comparacion-s42-s43.png" alt="Dos capturas del Atlas casi idénticas" style="max-width:100%;max-height:60vh;object-fit:contain;border:1px solid #ddd;border-radius:8px;"></div><div class="callout" style="margin-top:.4em;font-size:.74em;">Migrar no debe cambiar lo que ve el usuario, y aquí no cambió. <b>No son las cifras de tu teléfono</b>: Chromium sin GPU y lentitud simulada.</div>
+</section>
+<section class="slide" data-section="comparacion" data-section-label="La comparación" data-slide-label="¿Conviene?">
+<div class="kicker">Comparación · 7.5</div>
+<h2 class="slide-title">¿Conviene React para esta app?</h2>
+<hr class="rule">
+<div class="callout" style="font-size:.86em;line-height:1.45;">Depende de qué se valore. Para un visor con poca pantalla, el costo en peso y en primer contenido es real. Para una interfaz que va a crecer (más fichas, más estados, más formularios), el orden y la capacidad de probar de los componentes pesan más.</div>
+<div class="callout win" style="margin-top:.6em;font-size:.86em;line-height:1.45;">La Sesión 45 retoma la pregunta con las versiones del Atlas puestas lado a lado.</div>
+</section>
+<section class="slide dense" data-section="telefono" data-section-label="Teléfono" data-slide-label="Publicar y probar">
+<div class="kicker">Teléfono · 8.1</div>
+<h2 class="slide-title">Publica la versión y pruébala tú</h2>
+<hr class="rule">
+<ol style="margin:.2em 0 0 1.3em;line-height:1.45;font-size:1em;">
+<li><b>Copia</b> <code>pwa-ar-objetos3d-sesion43.zip</code> sobre tu carpeta del proyecto (conserva <code>.github/workflows/pages.yml</code>), <b>borra <code>src/main.ts</code></b> y ejecuta <code>npm install</code>.</li>
+<li><code>npm run dev</code> (con StrictMode) y <code>npm run build</code> + <code>npm run preview</code>: cambia entre modelos y mira que haya un solo visor.</li>
+<li><code>git add .</code>, <code>git commit</code>, <code>git push</code>. Espera la marca verde en Actions.</li>
+<li><b>En tu teléfono</b>, recarga dos veces: el modelo gira y se queda quieto; elegir pieza y cambiar de modelo; «Ver en AR» entra y sale; sensores; botón «Instalar»; con modo avión, la app abre.</li>
+<li><b>Mide</b> con Lighthouse (incógnito, «Móvil»): tres corridas de la S42 y tres de hoy; anota la mediana.</li>
+</ol>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 1">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 1: Mide las dos versiones en tu equipo</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">1</div><h4>Mide las dos versiones en tu equipo</h4></div>
+<div class="meta-row">INDIVIDUAL · 60 MIN</div>
+<p>Sirve la versión de la Sesión 42 y la de hoy. Corre Lighthouse tres veces en cada una (incógnito, móvil) y arma la tabla de medianas: rendimiento, FCP, LCP, TBT y CLS. Compara con la tabla de la guía.</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> tus dos tablas y un párrafo con lo que coincide y lo que no.</p>
+</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 2">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 2: Rompe la limpieza del visor</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">2</div><h4>Rompe la limpieza del visor</h4></div>
+<div class="meta-row">EN PAREJAS · 45 MIN</div>
+<p>Comenten <code>nuevo.destruir();</code> en <code>App.tsx</code>, ejecuten <code>npm run dev</code> y cuenten los <code>canvas</code> dentro de <code>#visor</code> con las herramientas de desarrollo. Restauren y repitan.</p>
+<p style="margin-top:.7em;"><b>Para pensar:</b> ¿por qué el defecto aparece en desarrollo y no en la versión compilada?</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> el número de lienzos con y sin la línea, y la respuesta.</p>
+</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 3">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 3: Un componente nuevo: el contador de visitas</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">3</div><h4>Un componente nuevo: el contador de visitas</h4></div>
+<div class="meta-row">INDIVIDUAL · 90 MIN</div>
+<p>Añade a cada <code>Tarjeta</code> «Visitado N veces» con las pulsaciones de «Marcar como visto». Antes decide: ¿el contador es estado del componente o ya existe en <code>useProgreso</code>? Implementa lo más simple.</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> el código y una frase que justifique dónde vive el dato.</p>
+</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 4">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 4: La carrera del evento de instalación</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">4</div><h4>La carrera del evento de instalación</h4></div>
+<div class="meta-row">INDIVIDUAL · 60 MIN</div>
+<p>Mueve el <code>addEventListener("beforeinstallprompt")</code> de <code>instalar.ts</code> al <b>cargar el módulo</b>, guardando el evento en la variable. ¿Qué parte de <code>useInstalacion</code> debe cambiar para que el botón aparezca aunque el evento llegue antes? ¿Qué prueba de la S41 avisa si te equivocas?</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> el cambio y la salida de <code>test_s41.js</code> antes y después.</p>
+</div>
+</section>
+<section class="slide dense" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Resumen de la sesión</h2>
+<hr class="rule">
+<ul class="clean" style="font-size:.95em;line-height:1.38;">
+<li>React mantiene la <b>pantalla sincronizada con el estado</b>; lo que es <b>motor</b> (Three.js, WebXR, SW, IndexedDB) se queda fuera.</li>
+<li>En la frontera, <b>todo efecto que empieza algo sabe deshacerlo</b>; StrictMode lo comprueba y la prueba falla sin la limpieza.</li>
+<li><code>useRef</code>, <code>useSyncExternalStore</code> y <code>useRegisterSW</code> conectan React con el mundo imperativo.</li>
+<li>Los <b>campos controlados</b> eliminaron un defecto real de la S42: la nota que se borraba.</li>
+<li>Las pruebas de la S39 a la S42 pasaron sin cambiar su lógica: red de seguridad de la migración.</li>
+<li>Medido: rendimiento 83 → 91 y CLS 0, pero FCP 1,7 → 2,25 s, JS propio más de cuatro veces mayor y +256 líneas. Nadie «gana» en todo.</li>
+</ul>
+</section>
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Próxima sesión">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Próxima sesión</h2>
+<hr class="rule">
+<div class="callout"><b>Sesión 44: el Atlas 3D en Angular.</b> El mismo proyecto con otro framework: plantillas, servicios e inyección de dependencias, y qué se mantiene.</div>
+</section>
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Referencias</h2>
+<hr class="rule">
+<div class="ref-list">
+<div><b>[1]</b> React, "Learn React" y "You Might Not Need an Effect," react.dev/learn.</div>
+<div><b>[2]</b> React, "useSyncExternalStore" y "StrictMode," react.dev/reference/react.</div>
+<div><b>[3]</b> Vite, "Plugin React" y "Building for Production," vite.dev.</div>
+<div><b>[4]</b> vite-plugin-pwa, "Frameworks → React" (<code>useRegisterSW</code>), vite-pwa-org.netlify.app.</div>
+<div><b>[5]</b> web.dev, "FCP", "TBT" y "Rendering on the Web," web.dev/articles.</div>
+<div><b>[6]</b> W3C, "WebXR DOM Overlays Module" (<code>beforexrselect</code>), w3.org/TR/webxr-dom-overlays-1.</div>
+</div>
+</section>
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Actualiza tu repositorio">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Actualiza tu repositorio</h2>
+<hr class="rule">
+<div class="body-text"><p>Como en cada sesión del Sub-bloque B: sube el cambio de hoy a tu propio repositorio.</p></div>
+<div class="code-block ">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre><code>npm install
+git add .
+git commit -m "Atlas 3D en React: componentes, hooks y useRegisterSW"
+git push</code></pre>
+</div>
+</section>
+
+<div class="fragment-hint" id="fragHint">
+<svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+</div>
+
+<div class="floatnav">
+<button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+<span class="count" id="slideCount">01 / 35</span>
+<button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+<button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>
