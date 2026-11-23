@@ -1,0 +1,13 @@
+diff --git a/src/instalar.ts b/src/instalar.ts
+index 6cd19ce..1711a48 100644
+--- a/src/instalar.ts
++++ b/src/instalar.ts
+@@ -70,7 +70,7 @@ export function iniciarInstalacion(alCambiar: () => void): void {
+ export async function pedirInstalacion(): Promise<"accepted" | "dismissed" | "no-disponible"> {
+   if (!evento) return "no-disponible";
+   const guardado = evento;
+-  evento = null; // un evento solo se puede usar una vez: se suelta antes de esperar la respuesta
++  // evento = null;  ← QUITADA A PROPÓSITO (actividad 41.4)
+   await guardado.prompt();
+   const { outcome } = await guardado.userChoice;
+   rechazada = outcome === "dismissed";

@@ -1,0 +1,82 @@
+diff --git a/index.html b/index.html
+index 08d9b0c..fcc3f7a 100644
+--- a/index.html
++++ b/index.html
+@@ -41,6 +41,7 @@
+       <h2 id="titulo-instalar">Instalar la app</h2>
+       <div class="instalar-barra">
+         <button type="button" id="btn-instalar" hidden>⬇ Instalar Atlas 3D</button>
++        <button type="button" id="btn-ahora-no" class="secundario" hidden>Ahora no</button>
+         <span id="estado-instalacion" class="estado-instalacion" role="status"></span>
+       </div>
+     </section>
+diff --git a/src/main.ts b/src/main.ts
+index 42f829f..bc37a7b 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -575,6 +575,26 @@ btnSalirAR.addEventListener("click", () => {
+ const btnInstalar = document.querySelector<HTMLButtonElement>("#btn-instalar")!;
+ const estadoInstalacionEl = document.querySelector<HTMLElement>("#estado-instalacion")!;
+ const estadoConexionEl = document.querySelector<HTMLElement>("#estado-conexion")!;
++// Actividad 41.1: «Ahora no» esconde la oferta de instalar y lo recuerda 7 días (sin tocar instalar.ts).
++const btnAhoraNo = document.querySelector<HTMLButtonElement>("#btn-ahora-no")!;
++const zonaInstalar = document.querySelector<HTMLElement>(".instalar-zona")!;
++const CLAVE_POSPUESTA = "atlas3d-instalar-pospuesta"; // guarda el instante (ms) en que se pulsó «Ahora no»
++const MS_POSPUESTA = 7 * 24 * 60 * 60 * 1000;
++
++/** Hasta cuándo está pospuesta la oferta, o null si no lo está (o ya pasaron los 7 días). */
++function pospuestaHasta(): number | null {
++  try {
++    const desde = Number(localStorage.getItem(CLAVE_POSPUESTA));
++    if (!desde) return null;
++    if (Date.now() - desde >= MS_POSPUESTA) {
++      localStorage.removeItem(CLAVE_POSPUESTA); // vencida: se olvida y la oferta vuelve a verse
++      return null;
++    }
++    return desde + MS_POSPUESTA;
++  } catch {
++    return null; // sin localStorage (modo privado estricto, almacenamiento bloqueado): no se recuerda
++  }
++}
+ 
+ const TEXTO_INSTALACION = {
+   instalada: "✓ Estás usando Atlas 3D como app instalada.",
+@@ -587,6 +607,12 @@ const TEXTO_INSTALACION = {
+ 
+ function pintarInstalacion(): void {
+   const estado = estadoInstalacion();
++  // Actividad 41.1: con la oferta pospuesta, la sección entera desaparece (botón y texto): un texto que invita
++  // a instalar sin botón seguiría insistiendo. Solo afecta al estado «instalable»; «instalada», «recién
++  // instalada» o «iOS» se siguen mostrando, porque informan y no piden nada.
++  const pospuesta = estado === "instalable" && pospuestaHasta() !== null;
++  zonaInstalar.hidden = pospuesta;
++  btnAhoraNo.hidden = estado !== "instalable" || pospuesta;
+   btnInstalar.hidden = estado !== "instalable";
+   estadoInstalacionEl.textContent =
+     estado === "instalada" ? TEXTO_INSTALACION.instalada
+@@ -605,6 +631,15 @@ btnInstalar.addEventListener("click", async () => {
+     btnInstalar.disabled = false;
+   }
+ });
++btnAhoraNo.addEventListener("click", () => {
++  try {
++    localStorage.setItem(CLAVE_POSPUESTA, String(Date.now()));
++  } catch {
++    /* sin almacenamiento: se esconde solo durante esta visita */
++    zonaInstalar.hidden = true;
++  }
++  pintarInstalacion();
++});
+ iniciarInstalacion(pintarInstalacion);
+ 
+ let estuvoSinConexion = false;
+diff --git a/src/style.css b/src/style.css
+index 19ebc5a..3dd94be 100644
+--- a/src/style.css
++++ b/src/style.css
+@@ -201,3 +201,5 @@ body {
+ .estado-instalacion { font-size: .85em; color: #b9b49f; flex: 1 1 14em; line-height: 1.4; }
+ .estado-conexion { position: sticky; top: 0; z-index: 20; width: 100%; box-sizing: border-box; margin: 0; padding: .5em 1em; text-align: center; font-size: .85em; background: #5b3a12; color: #ffe9c2; border-bottom: 1px solid #a8741f; }
+ .estado-conexion[hidden] { display: none; }
++/* Actividad 41.1: «Ahora no» es la opción secundaria: no compite con «Instalar» */
++.instalar-barra button.secundario { background: transparent; color: #e8e2cf; border: 1px solid #4a5570; font-weight: 500; }

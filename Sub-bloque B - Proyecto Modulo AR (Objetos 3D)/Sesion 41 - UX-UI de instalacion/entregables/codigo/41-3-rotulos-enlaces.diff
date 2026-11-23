@@ -1,0 +1,36 @@
+diff --git a/src/modelos/constructor.ts b/src/modelos/constructor.ts
+index 40c888f..1870507 100644
+--- a/src/modelos/constructor.ts
++++ b/src/modelos/constructor.ts
+@@ -24,6 +24,8 @@ export interface ModeloConstruido {
+ interface FlechaConstruida {
+   enlace: Enlace;
+   materiales: THREE.MeshBasicMaterial[];
++  /** Actividad 41.3: el rótulo del enlace (si tiene) solo se ve con una de sus dos piezas elegida. */
++  rotulo: THREE.Sprite | null;
+ }
+ 
+ // ── Rótulos: texto dibujado en un canvas y pegado a un Sprite ──
+@@ -113,9 +115,11 @@ function crearFlecha(e: Enlace, de: Pieza, a: Pieza, destino: THREE.Group, k: nu
+     else medio.y += 0.3 * k;
+     const rotulo = crearRotulo(e.etiqueta, 0.3 * k, true);
+     rotulo.position.copy(medio);
++    rotulo.visible = false; // actividad 41.3: oculto hasta que se elija una de sus piezas (ver resaltar)
+     destino.add(rotulo);
++    return { enlace: e, materiales: [material], rotulo };
+   }
+-  return { enlace: e, materiales: [material] };
++  return { enlace: e, materiales: [material], rotulo: null };
+ }
+ 
+ export function construirModelo(def: DefinicionModelo): ModeloConstruido {
+@@ -189,6 +193,9 @@ export function construirModelo(def: DefinicionModelo): ModeloConstruido {
+     for (const f of flechas) {
+       const toca = id === null || f.enlace.de === id || f.enlace.a === id;
+       for (const m of f.materiales) m.opacity = toca ? 1 : 0.15;
++      // Actividad 41.3: sin pieza elegida no se ve ningún rótulo de enlace (son los que chocaban al girar);
++      // al elegir una pieza aparecen los de SUS enlaces, que son los únicos que interesan en ese momento.
++      if (f.rotulo) f.rotulo.visible = id !== null && toca;
+     }
+   }
+ 

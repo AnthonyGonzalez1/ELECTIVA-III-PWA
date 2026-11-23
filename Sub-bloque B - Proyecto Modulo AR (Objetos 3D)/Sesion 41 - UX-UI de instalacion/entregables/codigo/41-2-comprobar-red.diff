@@ -1,0 +1,99 @@
+diff --git a/src/conexion.ts b/src/conexion.ts
+index 574ae30..072bf12 100644
+--- a/src/conexion.ts
++++ b/src/conexion.ts
+@@ -20,3 +20,25 @@ export function iniciarConexion(alCambiar: (enLinea: boolean) => void): () => vo
+     window.removeEventListener("offline", alBajar);
+   };
+ }
++
++// ── Actividad 41.2: comprobar si la red LLEGA de verdad ─────────────────────────
++export type ResultadoRed = "llega" | "no llega" | "no hay red";
++
++/**
++ * Pide un archivo pequeño que el Service Worker NO responde desde su caché: una ficha de /modelos/ con un
++ * parámetro distinto cada vez. La ruta de /modelos/ del SW busca la petición en «modelos-3d» con su URL completa;
++ * con el parámetro nunca la encuentra y la pasa a la red. Sin el parámetro, una ficha ya descargada saldría de
++ * la caché y la respuesta sería siempre «llega», aunque el servidor estuviera caído (igual que con un archivo
++ * precacheado). `cache: "no-store"` evita además la caché HTTP del navegador. Cualquier respuesta del servidor,
++ * aunque sea un 404, prueba que la red llega; solo un error de red o el límite de tiempo dicen «no llega».
++ */
++export async function comprobarRed(limiteMs = 4000): Promise<ResultadoRed> {
++  if (!navigator.onLine) return "no hay red"; // «false» sí es fiable: no hay ninguna red conectada
++  const url = `${import.meta.env.BASE_URL}modelos/mvc.json?comprobar=${Date.now()}`;
++  try {
++    await fetch(url, { method: "HEAD", cache: "no-store", signal: AbortSignal.timeout(limiteMs) });
++    return "llega";
++  } catch {
++    return "no llega"; // TypeError (no se pudo conectar) o TimeoutError (no respondió a tiempo)
++  }
++}
+diff --git a/src/main.ts b/src/main.ts
+index bc37a7b..7267cb0 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -20,7 +20,7 @@ import { CATALOGO, modeloPorId } from "./modelos";
+ import { ROLES, type Ficha } from "./modelos/tipos";
+ import { describirRastro, leerRastro, PASO_FINAL } from "./rastro";
+ import { estadoInstalacion, iniciarInstalacion, instalacionRechazada, pedirInstalacion } from "./instalar";
+-import { iniciarConexion } from "./conexion";
++import { iniciarConexion, comprobarRed } from "./conexion";
+ import { diagnosticarAR, mensajeSoporteAR, pedirSesionAR, describirErrorAR } from "./xr";
+ import { iniciarCamaraDeFondo, detenerCamaraDeFondo, describirErrorCamara } from "./camara";
+ 
+@@ -644,19 +644,47 @@ iniciarInstalacion(pintarInstalacion);
+ 
+ let estuvoSinConexion = false;
+ let temporizadorConexion: number | undefined;
+-iniciarConexion((enLinea) => {
++let temporizadorReintento: number | undefined;
++let turnoRed = 0; // si llegan dos cambios seguidos, solo cuenta la comprobación más reciente
++
++function mostrarBanda(texto: string | null): void {
++  estadoConexionEl.hidden = texto === null;
++  if (texto !== null) estadoConexionEl.textContent = texto;
++}
++
++// Actividad 41.2: «en línea» según el navegador solo dice que hay una red; se comprueba que llegue al servidor.
++async function revisarRed(): Promise<void> {
++  const mio = ++turnoRed;
++  window.clearTimeout(temporizadorReintento);
++  const resultado = await comprobarRed();
++  if (mio !== turnoRed) return;
+   window.clearTimeout(temporizadorConexion);
+-  if (!enLinea) {
++  if (resultado === "no hay red") {
++    estuvoSinConexion = true;
++    mostrarBanda("Sin conexión: los modelos y las fichas descargadas siguen disponibles.");
++  } else if (resultado === "no llega") {
+     estuvoSinConexion = true;
+-    estadoConexionEl.hidden = false;
+-    estadoConexionEl.textContent = "Sin conexión: los modelos y las fichas descargadas siguen disponibles.";
++    mostrarBanda("Hay red, pero el servidor no responde: los modelos y las fichas descargadas siguen disponibles.");
++    temporizadorReintento = window.setTimeout(() => void revisarRed(), 10000); // se reintenta mientras no llegue
+   } else if (estuvoSinConexion) {
+     estuvoSinConexion = false;
+-    estadoConexionEl.hidden = false;
+-    estadoConexionEl.textContent = "Volvió la conexión.";
+-    temporizadorConexion = window.setTimeout(() => { estadoConexionEl.hidden = true; }, 3000);
++    mostrarBanda("Volvió la conexión.");
++    temporizadorConexion = window.setTimeout(() => mostrarBanda(null), 3000);
++  } else {
++    mostrarBanda(null);
++  }
++}
++
++iniciarConexion((enLinea) => {
++  if (!enLinea) {
++    // «false» es fiable: no hace falta comprobar nada para decir «sin conexión».
++    turnoRed++;
++    window.clearTimeout(temporizadorConexion);
++    window.clearTimeout(temporizadorReintento);
++    estuvoSinConexion = true;
++    mostrarBanda("Sin conexión: los modelos y las fichas descargadas siguen disponibles.");
+   } else {
+-    estadoConexionEl.hidden = true;
++    void revisarRed();
+   }
+ });
+ 

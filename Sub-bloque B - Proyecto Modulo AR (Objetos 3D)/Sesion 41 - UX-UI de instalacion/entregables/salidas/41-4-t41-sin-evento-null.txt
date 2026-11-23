@@ -1,0 +1,20 @@
+A1) sin evento → botón visible: false | texto: Este navegador no ofrece instalar desde la página. Si ya la instalaste, ábrela desde su icono; si no, usa el menú del navegador → «Instalar app».
+B1) llega beforeinstallprompt → defaultPrevented: true | botón visible: true | texto: Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.
+C1) clic en «Instalar» → prompt() llamado 1 vez | botón visible: true
+   ✗ FALLÓ: el botón no sobrevive al uso del evento
+C2) llega appinstalled → texto: ✓ Instalada. Ábrela desde su icono en la pantalla de inicio.
+D1) usuario cancela → botón visible: true | texto: Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.
+   ✗ FALLÓ: tras cancelar no hay botón hasta que Chrome vuelva a ofrecer
+   ✗ FALLÓ: texto de «Cancelaste…»
+D2) Chrome vuelve a ofrecer la instalación → botón visible: true
+H1) cancelar y volver a pulsar sin evento nuevo → botón visible tras cancelar: true | prompt() llamado 2 veces
+   ✗ FALLÓ: un evento ya usado no debe ofrecer el botón ni llamar dos veces a prompt()
+E1) modo standalone → botón visible: false | texto: ✓ Estás usando Atlas 3D como app instalada.
+F1) iPhone → botón visible: false | texto: En iPhone y iPad no hay botón: en Safari toca Compartir y luego «Añadir a pantalla de inicio».
+G1) en línea → banda: null
+G2) se corta la red → banda: Sin conexión: los modelos y las fichas descargadas siguen disponibles.
+G3) sin red se cambia de modelo → «Niveles apilados: cada capa solo habla con la inme…»
+G4) vuelve la red → banda: Volvió la conexión.
+G5) 3,3 s después → banda: null
+pageerrors: ["InvalidStateError: prompt() ya se llamó para este evento"]
+RESULTADO: hay 4 fallos

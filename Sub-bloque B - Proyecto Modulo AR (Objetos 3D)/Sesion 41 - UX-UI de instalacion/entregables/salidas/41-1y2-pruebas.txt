@@ -1,0 +1,24 @@
+41.1 — «Ahora no»
+N1) llega el evento → {"zona":true,"instalar":true,"ahoraNo":true,"texto":"Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.","clave":null}
+   ✓ se ven «Instalar» y «Ahora no» con su texto
+N2) clic en «Ahora no» → {"zona":false,"instalar":true,"ahoraNo":false,"texto":"Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.","clave":"1795466399511"}
+   ✓ la sección desaparece y la decisión queda guardada
+N3) recargar con evento (al día siguiente) → zona visible: false
+   ✓ recargar no vuelve a insistir
+N4) pasados 8 días, con evento → {"zona":true,"instalar":true,"ahoraNo":true,"texto":"Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.","clave":null}
+   ✓ pasados 7 días la oferta vuelve y la clave vencida se borra
+N5) «Instalar» y el usuario cancela el diálogo → {"zona":true,"instalar":false,"ahoraNo":false,"texto":"Cancelaste la instalación. Chrome decide cuándo volver a ofrecerla; mientras tanto, usa el menú ⋮ → «Instalar app».","clave":null}
+   ✓ sin evento, ni «Instalar» ni «Ahora no»; el texto de «Cancelaste» sigue (lo decide instalar.ts)
+41.2 — comprobarRed()
+R1) servidor arriba, en línea → banda: null | ¿controla el SW?: true
+   ✓ con el servidor arriba no hay banda
+R2) fichas descargadas → ✓ 3 de 3 fichas guardadas: ya puedes consultarlas sin conexión.
+R3) SERVIDOR CAÍDO, navegador en línea → banda: Hay red, pero el servidor no responde: los modelos y las fichas descargadas siguen disponibles. (30 ms)
+   ✓ detecta que la red no llega aunque navigator.onLine sea true y la ficha esté en caché
+R4) control: la MISMA ficha sin parámetro, con el servidor caído → respondió 200 (application/json)  ← por eso no sirve para comprobar
+R5) sin red (offline) → banda: Sin conexión: los modelos y las fichas descargadas siguen disponibles.
+   ✓ «no hay red» sin intentar la petición
+R6) vuelve todo → banda: Volvió la conexión.
+   ✓ al volver, «Volvió la conexión»
+pageerrors: []
+RESULTADO: todo en orden
