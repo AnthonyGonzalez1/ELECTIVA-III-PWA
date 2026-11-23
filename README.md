@@ -42,6 +42,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 38 | Realidad aumentada con WebXR (1/2) | B |
 | 39 | Realidad aumentada con WebXR (2/2) | B |
 | 40 | Modelos de arquitectura en 3D | B |
+| 41 | UX/UI de instalación | B |
 
 ## Proyectos
 

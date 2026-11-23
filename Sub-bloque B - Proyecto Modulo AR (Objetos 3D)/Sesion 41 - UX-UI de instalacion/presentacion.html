@@ -1,0 +1,744 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sesión 41 · UX/UI de instalación · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  .callout.win{background:#f1f9f1; border-color:#2e7d32; border-left-color:#1b5e20;}
+  .callout.win b{color:#1b5e20;}
+  .term-emph{color:var(--gold); font-weight:700;}
+  .rev-grid{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .rev-card{border-radius:10px; padding:.9em 1em; font-size:.84em; line-height:1.45;}
+  .rev-card.has{background:#fff; border:1px solid var(--line);}
+  .rev-card.null{background:#EAF2FD; border:1px solid #8FBBEE;}
+  .rev-card .tag{display:inline-block; font-size:.68em; font-weight:800; letter-spacing:.04em; text-transform:uppercase; padding:.15em .55em; border-radius:20px; margin-bottom:.5em;}
+  .rev-card.has .tag{background:#F0F0F0; color:#555;}
+  .rev-card.null .tag{background:#E9F1FC; color:#1B5FAD; border:1px solid #8FBBEE;}
+  .rev-card code{font-size:.92em;}
+  .callout.warn{background:#fff8e1; border-color:#e0a800; border-left-color:#9a6b00;}
+  .callout.warn b{color:#9a6b00;}
+  .term-prompt{color:#6ad06a;}
+  .code-block.wrap code{white-space:pre-wrap; word-break:break-word;}
+  .code-block.tight pre{padding:.4em 1.1em; line-height:1.2;}
+  .code-block.tight code{font-size:.68em;}
+  .two-cards{display:grid; grid-template-columns:1fr 1fr; gap:1.1em; margin:1em 0;}
+  .two-cards .activity-card h4 code{font-size:.85em;}
+  .activity-card ol{margin:.5em 0 0; padding-left:1.3em; font-size:.82em; color:#3a3a3a; line-height:1.4;}
+  .activity-card ol li{margin-bottom:.3em;}
+  .activity-card a{color:var(--ink);}
+  .slide.dense{padding-top:1.1em;}
+  .slide.dense h2.slide-title{font-size:1.65em;}
+  .slide.dense .rule{margin:0 0 .45em;} .slide.dense .kicker{margin:0 0 .15em;}
+  .code-block.wrap code{white-space:pre-wrap; word-break:break-word;}
+  .grid-4 .card h3 code{font-size:.78em;}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-book" viewBox="0 0 24 24"><path d="M12 6.5c-1.6-1.2-4-1.7-6.5-1.7v13c2.5 0 4.9.5 6.5 1.7 1.6-1.2 4-1.7 6.5-1.7v-13c-2.5 0-4.9.5-6.5 1.7Zm0 0v13" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-arrow-left" viewBox="0 0 24 24"><path d="M19 12H5M11 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+<symbol id="ic-chevron-left" viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="app">
+  <div class="stage" id="stage">
+
+    <aside class="sidebar" id="sidebar">
+      <a class="side-brand" href="../../00%20-%20Pagina%20del%20Bloque%203.html" title="Volver al inicio del curso">
+        <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+        <div class="txt"><b>Electiva - PWA</b>AR · Sesión 15 de 19</div>
+      </a>
+      <nav id="sideNav"></nav>
+      <div class="side-foot">
+        <a class="guide-link" href="guia.html"><svg><use href="#ic-book"/></svg><span>Guía de la sesión</span></a>
+        <div class="inst">UPTC · Facultad de Ingeniería</div>
+      </div>
+    </aside>
+    <button class="sidebar-toggle" id="sidebarToggle" aria-label="Colapsar menú"><svg><use href="#ic-chevron-left"/></svg></button>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="corner-cut"></div>
+        <div class="tb-section-name" id="tbSectionName">Portada</div>
+        <div class="tb-pills" id="tbPills"></div>
+      </div>
+
+      <div class="viewport" id="viewport">
+<section class="slide slide--title active" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Portada">
+<div class="brand-wedge"><div class="gold-slab"></div></div>
+<div class="eyebrow">Electiva · PWA — Sub-bloque B · Proyecto Módulo AR · Sesión 15 de 19</div>
+<h1 style="font-size:3.1em; max-width:10.5em;">UX/UI de instalación</h1>
+<div class="lead">El Atlas ya era instalable, pero nadie se lo decía al usuario. Hoy guarda el aviso de Chrome y lo ofrece en un botón propio, explica qué hacer en iPhone, avisa cuando se queda sin conexión y corrige los rótulos que se pisaban.</div>
+<div class="meta">
+<div><span>Asignatura</span>Electiva - PWA</div>
+<div><span>Sesión</span>15 de 19 · Proyecto Módulo AR</div>
+<div><span>Institución</span>UPTC</div>
+</div>
+<div class="title-illustration">
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<circle cx="200" cy="160" r="150" fill="#FFF6DC"/>
+<rect x="130" y="40" width="140" height="240" rx="22" fill="#fff" stroke="#1A1A1A" stroke-width="3.5"/>
+<rect x="148" y="70" width="104" height="150" rx="8" fill="#0b1220" stroke="#1A1A1A" stroke-width="3"/>
+<rect x="158" y="150" width="84" height="26" rx="8" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+<line x1="170" y1="100" x2="230" y2="100" stroke="#c9d1e3" stroke-width="4" stroke-linecap="round"/>
+<line x1="170" y1="118" x2="215" y2="118" stroke="#c9d1e3" stroke-width="4" stroke-linecap="round"/>
+<circle cx="200" cy="250" r="10" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+</svg>
+</div>
+<div class="title-goldbar"></div>
+</section>
+<section class="slide slide--divider" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Instalar es una conversación">
+<div class="brand-wedge"><div class="gold-slab"></div></div>
+<div class="divider-panel">
+<div class="num">SESIÓN 15</div>
+<h2>Instalar es una conversación</h2>
+<p>El navegador decide cuándo una página es instalable; la página decide cómo ofrecerlo. Hoy escribimos esa mitad: un botón propio, cinco estados, un plan B para iOS y una banda de conexión.</p>
+<div class="tb-preview"><span>beforeinstallprompt</span><span>Cinco estados</span><span>Sin conexión</span></div>
+</div>
+<div class="divider-illustration">
+<svg viewBox="0 0 400 320" xmlns="http://www.w3.org/2000/svg">
+<line x1="40" y1="270" x2="360" y2="60" stroke="#373435" stroke-width="3" stroke-dasharray="3 8" stroke-linecap="round"/>
+<circle cx="40" cy="270" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<text x="40" y="274" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S40</text>
+<circle cx="200" cy="165" r="22" fill="#FFCC29" stroke="#1A1A1A" stroke-width="3"/>
+<text x="200" y="170" text-anchor="middle" font-size="10" font-weight="700" fill="#1A1A1A">S41</text>
+<circle cx="360" cy="60" r="16" fill="#fff" stroke="#1A1A1A" stroke-width="3"/>
+<text x="360" y="64" text-anchor="middle" font-size="9" font-weight="700" fill="#1A1A1A">S42</text>
+</svg>
+</div>
+</section>
+<section class="slide dense" data-section="bienvenida" data-section-label="Bienvenida" data-slide-label="Objetivos y recursos de la sesión">
+<div class="kicker">Antes de empezar</div>
+<h2 class="slide-title">Objetivos de aprendizaje</h2>
+<hr class="rule">
+<ul class="clean" style="font-size:.8em;line-height:1.35;">
+<li><b>Explicar</b> quién decide qué en la instalación: el navegador decide <i>cuándo</i>, la página decide <i>cómo</i>.</li>
+<li><b>Guardar</b> <code>beforeinstallprompt</code> y usarlo en un botón propio, una vez y dentro de un clic.</li>
+<li><b>Distinguir</b> cinco estados de instalación, con el plan B manual de iOS.</li>
+<li><b>Mostrar</b> la conexión con <code>online</code>/<code>offline</code>, sabiendo qué garantiza <code>navigator.onLine</code>.</li>
+<li><b>Probar</b> con un evento simulado, y comprobar que la prueba <i>falla</i> cuando el código se rompe.</li>
+<li><b>Corregir</b> con datos un defecto visual visto en un teléfono real.</li>
+</ul>
+<div class="two-cards" style="margin:.7em 0 0;">
+<div class="activity-card"><div class="a-head"><div class="a-num">.zip</div><h4>Recursos: <a href="recursos/pwa-ar-objetos3d-sesion40.zip">pwa-ar-objetos3d-sesion40.zip</a></h4></div>
+<div class="meta-row">CHECKPOINT · CIERRE DE LA SESIÓN 40 · PUNTO DE PARTIDA</div>
+<p style="font-size:.85em;">El Atlas con los tres modelos, fichas, AR y salida defensiva.</p></div>
+<div class="activity-card"><div class="a-head"><div class="a-num">.zip</div><h4>Recursos: <a href="recursos/pwa-ar-objetos3d-sesion41.zip">pwa-ar-objetos3d-sesion41.zip</a></h4></div>
+<div class="meta-row">VERSIÓN TERMINADA DE ESTA SESIÓN</div>
+<p style="font-size:.85em;">Agrega <code>instalar.ts</code>, <code>conexion.ts</code> y la zona de instalación. Intenta construirlo tú primero.</p></div>
+</div>
+</section>
+<section class="slide dense" data-section="conversacion" data-section-label="Instalar es una conversación" data-slide-label="Quién decide qué">
+<div class="kicker">Instalar · 1.1</div>
+<h2 class="slide-title">El navegador decide cuándo; la página, cómo</h2>
+<hr class="rule">
+<div class="grid-2" style="margin-top:.4em;">
+<div class="activity-card"><div class="a-head"><div class="a-num">1</div><h4>El navegador decide cuándo</h4></div><p style="font-size:.84em;">Para Chrome: no estar instalada, HTTPS, un toque al menos y 30 s viendo la página, y un manifest con nombre, iconos de 192 y 512 px, <code>start_url</code> y <code>display</code>.</p></div>
+<div class="activity-card"><div class="a-head"><div class="a-num">2</div><h4>La página decide cómo</h4></div><p style="font-size:.84em;">Cuando se cumple todo, Chrome dispara <code>beforeinstallprompt</code>. La página puede <b>guardarlo</b> y mostrarlo después en un botón propio.</p></div>
+</div>
+<div class="callout" style="margin-top:.7em;font-size:.8em;line-height:1.4;">Hasta hoy el Atlas solo escuchaba <code>appinstalled</code>, que llega <b>cuando ya se instaló</b>: nada invitaba a instalar. Criterios según web.dev; cambian entre versiones.</div>
+</section>
+<section class="slide" data-section="conversacion" data-section-label="Instalar es una conversación" data-slide-label="manifest.json">
+<div class="kicker">Instalar · 1.2</div>
+<h2 class="slide-title">El manifest ya cumple</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>public/manifest.json</div>
+<pre style="font-size:.72em;line-height:1.3;"><code>{
+  <span class="tok-str">"name"</span>: <span class="tok-str">"Atlas 3D de Arquitectura de Software"</span>,
+  <span class="tok-str">"short_name"</span>: <span class="tok-str">"Atlas 3D"</span>,
+  <span class="tok-str">"description"</span>: <span class="tok-str">"Catálogo interactivo en 3D de patrones y arquitecturas de software, con soporte de realidad aumentada."</span>,
+  <span class="tok-str">"start_url"</span>: <span class="tok-str">"./"</span>,
+  <span class="tok-str">"scope"</span>: <span class="tok-str">"./"</span>,
+  <span class="tok-str">"display"</span>: <span class="tok-str">"standalone"</span>,
+  <span class="tok-str">"background_color"</span>: <span class="tok-str">"#0b1220"</span>,
+  <span class="tok-str">"theme_color"</span>: <span class="tok-str">"#0b1220"</span>,
+  <span class="tok-str">"icons"</span>: [
+    { <span class="tok-str">"src"</span>: <span class="tok-str">"iconos/icon-192.png"</span>, <span class="tok-str">"sizes"</span>: <span class="tok-str">"192x192"</span>, <span class="tok-str">"<span class="tok-kw">type</span>"</span>: <span class="tok-str">"image/png"</span> },
+    { <span class="tok-str">"src"</span>: <span class="tok-str">"iconos/icon-512.png"</span>, <span class="tok-str">"sizes"</span>: <span class="tok-str">"512x512"</span>, <span class="tok-str">"<span class="tok-kw">type</span>"</span>: <span class="tok-str">"image/png"</span> },
+    { <span class="tok-str">"src"</span>: <span class="tok-str">"iconos/icon-512-maskable.png"</span>, <span class="tok-str">"sizes"</span>: <span class="tok-str">"512x512"</span>, <span class="tok-str">"<span class="tok-kw">type</span>"</span>: <span class="tok-str">"image/png"</span>, <span class="tok-str">"purpose"</span>: <span class="tok-str">"maskable"</span> }
+  ]
+}</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Desde la Sesión 27: nombre, iconos (192, 512 y maskable), <code>start_url</code> y <code>display: standalone</code>. Hoy no cambia: cambia lo que la página hace con el aviso.</div>
+</section>
+<section class="slide" data-section="conversacion" data-section-label="Instalar es una conversación" data-slide-label="Dos consecuencias">
+<div class="kicker">Instalar · 1.3</div>
+<h2 class="slide-title">Dos consecuencias prácticas</h2>
+<hr class="rule">
+<div class="grid-2" style="margin-top:.8em;"><div class="activity-card"><div class="a-head"><div class="a-num">1</div><h4>El botón no sale «al abrir»</h4></div><p>Depende de que Chrome ya haya disparado el evento: hay que interactuar con la página y esperar un rato antes de verlo.</p></div><div class="activity-card"><div class="a-head"><div class="a-num">2</div><h4>No existe en todos los navegadores</h4></div><p>Safari de iPhone no lo dispara: ahí la instalación es un gesto manual y la página solo puede explicarlo.</p></div></div>
+</section>
+<section class="slide" data-section="evento" data-section-label="El evento" data-slide-label="El tipo">
+<div class="kicker">El evento · 2.1</div>
+<h2 class="slide-title">Declarar lo que se usa del evento</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/instalar.ts (tipo)</div>
+<pre style="font-size:.86em;line-height:1.3;"><code><span class="tok-kw">interface</span> EventoInstalacion extends Event {
+  <span class="tok-fn">prompt</span>(): Promise&lt;<span class="tok-kw">void</span>&gt;;
+  userChoice: Promise&lt;{ outcome: <span class="tok-str">"accepted"</span> | <span class="tok-str">"dismissed"</span>; platform: string }&gt;;
+}</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">TypeScript no trae este evento: se declara solo lo necesario, <code>prompt()</code> y la promesa <code>userChoice</code>.</div>
+</section>
+<section class="slide dense" data-section="evento" data-section-label="El evento" data-slide-label="Escuchar">
+<div class="kicker">El evento · 2.2</div>
+<h2 class="slide-title">Escuchar y guardar</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/instalar.ts (iniciarInstalacion)</div>
+<pre style="font-size:.66em;line-height:1.3;"><code><span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">iniciarInstalacion</span>(alCambiar: () =&gt; <span class="tok-kw">void</span>): <span class="tok-kw">void</span> {
+  avisar = alCambiar;
+  window.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"beforeinstallprompt"</span>, (e) =&gt; {
+    <span class="tok-com">// Sin esto, Chrome móvil muestra su propia barrita de «Instalar». Se guarda para usarlo en NUESTRO botón.</span>
+    e.<span class="tok-fn">preventDefault</span>();
+    evento = e <span class="tok-kw">as</span> EventoInstalacion;
+    rechazada = false;
+    <span class="tok-fn">avisar</span>();
+  });
+  window.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"appinstalled"</span>, () =&gt; {
+    evento = null;<span class="tok-com"> // ya no sirve</span>
+    recienInstalada = true;
+    <span class="tok-fn">avisar</span>();
+  });
+  <span class="tok-com">// Cambiar entre pestaña del navegador y ventana de app también cambia el modo de visualización.</span>
+  window.<span class="tok-fn">matchMedia</span>(<span class="tok-str">"(display-mode: standalone)"</span>).<span class="tok-fn">addEventListener</span>(<span class="tok-str">"change"</span>, () =&gt; <span class="tok-fn">avisar</span>());
+  <span class="tok-fn">avisar</span>();
+}</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;"><code>preventDefault()</code> evita la barra propia de Chrome y cede la decisión: el evento se guarda para usarlo en <b>nuestro</b> botón.</div>
+</section>
+<section class="slide" data-section="evento" data-section-label="El evento" data-slide-label="Usar">
+<div class="kicker">El evento · 2.3</div>
+<h2 class="slide-title">Usarlo una sola vez</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/instalar.ts (pedirInstalacion)</div>
+<pre style="font-size:.78em;line-height:1.3;"><code><span class="tok-kw">export</span> <span class="tok-kw">async</span> <span class="tok-kw">function</span> <span class="tok-fn">pedirInstalacion</span>(): Promise&lt;<span class="tok-str">"accepted"</span> | <span class="tok-str">"dismissed"</span> | <span class="tok-str">"no-disponible"</span>&gt; {
+  <span class="tok-kw">if</span> (!evento) <span class="tok-kw">return</span> <span class="tok-str">"no-disponible"</span>;
+  <span class="tok-kw">const</span> guardado = evento;
+  evento = null;<span class="tok-com"> // un evento solo se puede usar una vez: se suelta antes de esperar la respuesta</span>
+  <span class="tok-kw">await</span> guardado.<span class="tok-fn">prompt</span>();
+  <span class="tok-kw">const</span> { outcome } = <span class="tok-kw">await</span> guardado.userChoice;
+  rechazada = outcome === <span class="tok-str">"dismissed"</span>;
+  <span class="tok-fn">avisar</span>();
+  <span class="tok-kw">return</span> outcome;
+}</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Se suelta (<code>evento = null</code>) <b>antes</b> de esperar la respuesta: un evento solo sirve una vez.</div>
+</section>
+<section class="slide" data-section="evento" data-section-label="El evento" data-slide-label="Dos reglas">
+<div class="kicker">El evento · 2.4</div>
+<h2 class="slide-title">Dos reglas del navegador</h2>
+<hr class="rule">
+<div class="grid-2" style="margin-top:.8em;"><div class="activity-card"><div class="a-head"><div class="a-num">1</div><h4><code>prompt()</code> pide un gesto</h4></div><p>Solo funciona dentro de un clic o toque del usuario; si no, lanza un error. Por eso el botón es quien lo llama.</p></div><div class="activity-card"><div class="a-head"><div class="a-num">2</div><h4>Un evento, un uso</h4></div><p>Si la persona cancela, el botón no tiene qué reutilizar: espera a que Chrome dispare un evento nuevo.</p></div></div>
+</section>
+<section class="slide dense" data-section="estados" data-section-label="Estados" data-slide-label="Los cinco estados">
+<div class="kicker">Estados · 3.1</div>
+<h2 class="slide-title">Cinco estados, cinco textos</h2>
+<hr class="rule">
+<table class="uptc" style="font-size:.74em;">
+<tr><th>Estado</th><th>Cómo se sabe</th><th>Qué muestra</th></tr>
+<tr><td><b>instalada</b></td><td><code>display-mode: standalone</code> o <code>navigator.standalone</code></td><td>«✓ Estás usando Atlas 3D como app instalada.»</td></tr>
+<tr><td><b>recién instalada</b></td><td><code>appinstalled</code> en esta visita</td><td>«✓ Instalada. Ábrela desde su icono…»</td></tr>
+<tr><td><b>instalable</b></td><td>Hay un evento guardado</td><td>El botón «⬇ Instalar Atlas 3D»</td></tr>
+<tr><td><b>iOS</b></td><td>Agente de iPhone/iPad (o «Mac» táctil)</td><td>Compartir → «Añadir a pantalla de inicio»</td></tr>
+<tr><td><b>no disponible</b></td><td>Ninguno de los anteriores</td><td>Menú del navegador → «Instalar app»</td></tr>
+</table>
+</section>
+<section class="slide" data-section="estados" data-section-label="Estados" data-slide-label="estaInstalada">
+<div class="kicker">Estados · 3.2</div>
+<h2 class="slide-title">Cómo se sabe que ya está instalada</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/instalar.ts (estaInstalada)</div>
+<pre style="font-size:.86em;line-height:1.3;"><code><span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">estaInstalada</span>(): boolean {
+  <span class="tok-com">// Android/escritorio: el modo de visualización del manifest. iOS: la propiedad no estándar «standalone».</span>
+  <span class="tok-kw">return</span> window.<span class="tok-fn">matchMedia</span>(<span class="tok-str">"(display-mode: standalone)"</span>).matches || (navigator <span class="tok-kw">as</span> Navigator &amp; { standalone?: boolean }).standalone === true;
+}</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Android y escritorio: el modo de visualización del manifest. iOS: la propiedad no estándar <code>standalone</code>.</div>
+</section>
+<section class="slide" data-section="estados" data-section-label="Estados" data-slide-label="estadoInstalacion">
+<div class="kicker">Estados · 3.3</div>
+<h2 class="slide-title">El orden de las preguntas</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/instalar.ts (estadoInstalacion)</div>
+<pre style="font-size:.86em;line-height:1.3;"><code><span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">estadoInstalacion</span>(): EstadoInstalacion {
+  <span class="tok-kw">if</span> (<span class="tok-fn">estaInstalada</span>()) <span class="tok-kw">return</span> <span class="tok-str">"instalada"</span>;
+  <span class="tok-kw">if</span> (recienInstalada) <span class="tok-kw">return</span> <span class="tok-str">"recien-instalada"</span>;
+  <span class="tok-kw">if</span> (evento) <span class="tok-kw">return</span> <span class="tok-str">"instalable"</span>;
+  <span class="tok-kw">if</span> (<span class="tok-fn">esIOS</span>()) <span class="tok-kw">return</span> <span class="tok-str">"ios"</span>;
+  <span class="tok-kw">return</span> <span class="tok-str">"no-disponible"</span>;
+}</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;"><b>Instalada va primero:</b> si se preguntara antes por el evento, una app abierta desde su icono podría invitarte a instalar lo que ya instalaste (escenario E).</div>
+</section>
+<section class="slide" data-section="interfaz" data-section-label="Interfaz" data-slide-label="La zona">
+<div class="kicker">Interfaz · 4.1</div>
+<h2 class="slide-title">La zona en index.html</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>index.html</div>
+<pre style="font-size:.86em;line-height:1.3;"><code>&lt;section class=<span class="tok-str">"instalar-zona"</span> aria-labelledby=<span class="tok-str">"titulo-instalar"</span>&gt;
+  &lt;h2 id=<span class="tok-str">"titulo-instalar"</span>&gt;Instalar la app&lt;/h2&gt;
+  &lt;div class=<span class="tok-str">"instalar-barra"</span>&gt;
+    &lt;button <span class="tok-kw">type</span>=<span class="tok-str">"button"</span> id=<span class="tok-str">"btn-instalar"</span> hidden&gt;⬇ Instalar Atlas 3D&lt;/button&gt;
+    &lt;span id=<span class="tok-str">"estado-instalacion"</span> class=<span class="tok-str">"estado-instalacion"</span> role=<span class="tok-str">"status"</span>&gt;&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Un botón que empieza oculto y un texto con <code>role="status"</code>: los lectores de pantalla anuncian los cambios.</div>
+</section>
+<section class="slide dense" data-section="interfaz" data-section-label="Interfaz" data-slide-label="pintarInstalacion">
+<div class="kicker">Interfaz · 4.2</div>
+<h2 class="slide-title">Una función decide qué se ve</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (pintarInstalacion)</div>
+<pre style="font-size:.78em;line-height:1.3;"><code><span class="tok-kw">function</span> <span class="tok-fn">pintarInstalacion</span>(): <span class="tok-kw">void</span> {
+  <span class="tok-kw">const</span> estado = <span class="tok-fn">estadoInstalacion</span>();
+  btnInstalar.hidden = estado !== <span class="tok-str">"instalable"</span>;
+  estadoInstalacionEl.textContent =
+    estado === <span class="tok-str">"instalada"</span> ? TEXTO_INSTALACION.instalada
+    : estado === <span class="tok-str">"recien-instalada"</span> ? TEXTO_INSTALACION.recienInstalada
+    : estado === <span class="tok-str">"instalable"</span> ? TEXTO_INSTALACION.instalable
+    : estado === <span class="tok-str">"ios"</span> ? TEXTO_INSTALACION.ios
+    : <span class="tok-fn">instalacionRechazada</span>() ? TEXTO_INSTALACION.rechazada
+    : TEXTO_INSTALACION.noDisponible;
+}</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Se llama al arrancar y cada vez que algo cambia: llega el evento, se instala, se pasa de pestaña a ventana de app.</div>
+</section>
+<section class="slide" data-section="interfaz" data-section-label="Interfaz" data-slide-label="El clic">
+<div class="kicker">Interfaz · 4.3</div>
+<h2 class="slide-title">El clic solo pide; no pinta</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (clic)</div>
+<pre style="font-size:.86em;line-height:1.3;"><code>btnInstalar.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"click"</span>, <span class="tok-kw">async</span> () =&gt; {
+  btnInstalar.disabled = true;
+  <span class="tok-kw">try</span> {
+    <span class="tok-kw">await</span> <span class="tok-fn">pedirInstalacion</span>();<span class="tok-com"> // el resultado lo pinta pintarInstalacion() vía iniciarInstalacion</span>
+  } finally {
+    btnInstalar.disabled = false;
+  }
+});
+<span class="tok-fn">iniciarInstalacion</span>(pintarInstalacion);</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">El resultado entra por el mismo camino que cualquier otro cambio de estado: <code>iniciarInstalacion(pintarInstalacion)</code>.</div>
+</section>
+<section class="slide dense" data-section="interfaz" data-section-label="Interfaz" data-slide-label="Resultado">
+<div class="kicker">Interfaz · 4.4</div>
+<h2 class="slide-title">Tres momentos de la zona de instalación</h2>
+<hr class="rule">
+<div style="text-align:center;"><img src="img/instalacion-estados.png" alt="Tres capturas de la zona Instalar la app" style="max-width:100%;max-height:56vh;object-fit:contain;border:1px solid #ddd;border-radius:8px;"></div><div class="callout" style="margin-top:.4em;font-size:.72em;">Sin evento · con el evento guardado · tras <code>appinstalled</code>. El evento es simulado (sección de pruebas).</div>
+</section>
+<section class="slide" data-section="conexion" data-section-label="Conexión" data-slide-label="conexion.ts">
+<div class="kicker">Conexión · 5.1</div>
+<h2 class="slide-title">Escuchar online y offline</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/conexion.ts</div>
+<pre style="font-size:.78em;line-height:1.3;"><code><span class="tok-kw">export</span> <span class="tok-kw">function</span> <span class="tok-fn">iniciarConexion</span>(alCambiar: (enLinea: boolean) =&gt; <span class="tok-kw">void</span>): () =&gt; <span class="tok-kw">void</span> {
+  <span class="tok-kw">const</span> alSubir = () =&gt; <span class="tok-fn">alCambiar</span>(true);
+  <span class="tok-kw">const</span> alBajar = () =&gt; <span class="tok-fn">alCambiar</span>(false);
+  window.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"online"</span>, alSubir);
+  window.<span class="tok-fn">addEventListener</span>(<span class="tok-str">"offline"</span>, alBajar);
+  <span class="tok-fn">alCambiar</span>(navigator.onLine);
+  <span class="tok-kw">return</span> () =&gt; {
+    window.<span class="tok-fn">removeEventListener</span>(<span class="tok-str">"online"</span>, alSubir);
+    window.<span class="tok-fn">removeEventListener</span>(<span class="tok-str">"offline"</span>, alBajar);
+  };
+}</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Llama a «alCambiar» al arrancar y cada vez que cambie, y devuelve cómo dejar de escuchar.</div>
+</section>
+<section class="slide" data-section="conexion" data-section-label="Conexión" data-slide-label="onLine miente">
+<div class="kicker">Conexión · 5.2</div>
+<h2 class="slide-title"><code>navigator.onLine</code> miente en una dirección</h2>
+<hr class="rule">
+<table class="uptc" style="font-size:.86em;">
+<tr><th>Valor</th><th>Qué garantiza</th><th>Qué NO garantiza</th></tr>
+<tr><td><code>false</code></td><td><b>Fiable:</b> el dispositivo no tiene red.</td><td>—</td></tr>
+<tr><td><code>true</code></td><td>Hay <i>alguna</i> red (wifi o datos).</td><td>Que llegue a Internet o que el servidor responda: un wifi sin salida también da <code>true</code>.</td></tr>
+</table>
+<div class="callout warn" style="margin-top:.6em;font-size:.82em;line-height:1.4;">Por eso la banda solo habla cuando el navegador dice «sin conexión», y el aviso de vuelta dice «Volvió la conexión», no «el servidor responde». Comprobarlo de verdad: Actividad 2.</div>
+</section>
+<section class="slide dense" data-section="conexion" data-section-label="Conexión" data-slide-label="La banda">
+<div class="kicker">Conexión · 5.3</div>
+<h2 class="slide-title">La banda: se queda, avisa y se esconde</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (banda)</div>
+<pre style="font-size:.72em;line-height:1.3;"><code><span class="tok-kw">let</span> estuvoSinConexion = false;
+<span class="tok-kw">let</span> temporizadorConexion: number | undefined;
+<span class="tok-fn">iniciarConexion</span>((enLinea) =&gt; {
+  window.<span class="tok-fn">clearTimeout</span>(temporizadorConexion);
+  <span class="tok-kw">if</span> (!enLinea) {
+    estuvoSinConexion = true;
+    estadoConexionEl.hidden = false;
+    estadoConexionEl.textContent = <span class="tok-str">"Sin conexión: los modelos y las fichas descargadas siguen disponibles."</span>;
+  } <span class="tok-kw">else</span> <span class="tok-kw">if</span> (estuvoSinConexion) {
+    estuvoSinConexion = false;
+    estadoConexionEl.hidden = false;
+    estadoConexionEl.textContent = <span class="tok-str">"Volvió la conexión."</span>;
+    temporizadorConexion = window.<span class="tok-fn">setTimeout</span>(() =&gt; { estadoConexionEl.hidden = true; }, 3000);
+  } <span class="tok-kw">else</span> {
+    estadoConexionEl.hidden = true;
+  }
+});</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">El texto dice qué <b>sigue</b> funcionando, no solo qué se perdió.</div>
+</section>
+<section class="slide dense" data-section="conexion" data-section-label="Conexión" data-slide-label="Resultado">
+<div class="kicker">Conexión · 5.4</div>
+<h2 class="slide-title">La banda de «sin conexión»</h2>
+<hr class="rule">
+<div style="text-align:center;"><img src="img/conexion-sin-red.png" alt="Captura de la banda ámbar Sin conexión" style="max-width:100%;max-height:40vh;object-fit:contain;border:1px solid #ddd;border-radius:8px;"></div><div class="callout" style="margin-top:.4em;font-size:.74em;">Pegada arriba con <code>position: sticky</code>: se ve aunque la página esté desplazada.</div>
+</section>
+<section class="slide dense" data-section="resultados" data-section-label="Resultados" data-slide-label="npm run build">
+<div class="kicker">Pruebas · 6.1</div>
+<h2 class="slide-title">Compilación real</h2>
+<hr class="rule">
+<div class="code-block compact tight">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.62em;line-height:1.3;"><code><span class="term-prompt">$</span> npm run build
+✓ 27 modules transformed.
+dist/index.html                                    3.99 kB │ gzip:   1.40 kB
+dist/assets/index-B68nsmLq.css                     6.29 kB │ gzip:   1.78 kB
+dist/assets/workbox-window.prod.es5-BqEJf4Xk.js    5.71 kB │ gzip:   2.34 kB
+dist/assets/index-RQVUra6j.js                    544.86 kB │ gzip: 141.78 kB
+✓ built in 3.29s
+PWA v1.3.0
+✓ 89 modules transformed.
+dist/sw.mjs  27.66 kB │ gzip: 9.16 kB
+✓ built in 531ms
+PWA v1.3.0
+mode      injectManifest
+format:   es
+<span class="term-emph">precache  8 entries (557.95 KiB)</span></code></pre>
+</div>
+<div class="callout" style="margin-top:.5em;font-size:.76em;">Precaché: 554,43 → 557,95 KiB, siempre 8 entradas. Paquete principal: 542,45 → 544,86 kB. El Service Worker no cambió.</div>
+</section>
+<section class="slide" data-section="resultados" data-section-label="Resultados" data-slide-label="Evento simulado">
+<div class="kicker">Pruebas · 6.2</div>
+<h2 class="slide-title">Simular el evento que Chrome no dispara</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>test_s41.js (el evento simulado)</div>
+<pre style="font-size:.86em;line-height:1.3;"><code><span class="tok-kw">const</span> EVENTO = (resultado) =&gt; `
+  window.__prompts = 0;
+  window.__simular = (resultado) =&gt; {
+    <span class="tok-kw">const</span> e = <span class="tok-kw">new</span> <span class="tok-fn">Event</span>('beforeinstallprompt', { cancelable: true });
+    e.prompt = <span class="tok-kw">async</span> () =&gt; { window.__prompts++; };
+    e.userChoice = Promise.<span class="tok-fn">resolve</span>({ outcome: resultado, platform: 'web' });
+    window.<span class="tok-fn">dispatchEvent</span>(e);
+    <span class="tok-kw">return</span> e.defaultPrevented;
+  };`;</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">Mismo nombre y mismos dos miembros que usa la página. Prueba <b>la lógica de la página</b>; el evento real se prueba en el teléfono.</div>
+</section>
+<section class="slide dense" data-section="resultados" data-section-label="Resultados" data-slide-label="test_s41.js">
+<div class="kicker">Pruebas · 6.3</div>
+<h2 class="slide-title">Salida literal: instalación y conexión (A a G)</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.64em;line-height:1.28;"><code>$ node test_s41.js
+A1) sin evento → botón visible: false | texto: Este navegador no ofrece instalar desde la página. Si ya la instalaste, ábrela desde su icono; si no, usa el menú del navegador → «Instalar app».
+B1) llega beforeinstallprompt → defaultPrevented: true | botón visible: true | texto: Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.
+C1) clic en «Instalar» → prompt() llamado 1 vez | botón visible: false
+C2) llega appinstalled → texto: ✓ Instalada. Ábrela desde su icono en la pantalla de inicio.
+D1) usuario cancela → botón visible: false | texto: Cancelaste la instalación. Chrome decide cuándo volver a ofrecerla; mientras tanto, usa el menú ⋮ → «Instalar app».
+D2) Chrome vuelve a ofrecer la instalación → botón visible: true
+E1) modo standalone → botón visible: false | texto: ✓ Estás usando Atlas 3D como app instalada.
+F1) iPhone → botón visible: false | texto: En iPhone y iPad no hay botón: en Safari toca Compartir y luego «Añadir a pantalla de inicio».
+G1) en línea → banda: null
+G2) se corta la red → banda: Sin conexión: los modelos y las fichas descargadas siguen disponibles.
+G3) sin red se cambia de modelo → «Niveles apilados: cada capa solo habla con la inme…»
+G4) vuelve la red → banda: Volvió la conexión.
+G5) 3,3 s después → banda: null
+pageerrors: []
+RESULTADO: todo en orden</code></pre>
+</div>
+</section>
+<section class="slide dense" data-section="lectura" data-section-label="Lectura de resultados" data-slide-label="Qué demuestra">
+<div class="kicker">Pruebas · 6.4</div>
+<h2 class="slide-title">Qué demuestra</h2>
+<hr class="rule">
+<div class="callout win"><ul class="clean" style="margin:0;font-size:.74em;line-height:1.33;">
+<li>(A) sin evento no hay botón y el texto manda al menú.</li>
+<li>(B) <code>defaultPrevented: true</code> y aparece el botón.</li>
+<li>(C) <code>prompt()</code> se llamó <b>una</b> vez; el botón no sobrevive al uso del evento; <code>appinstalled</code> confirma.</li>
+<li>(D) cancelar deja «Cancelaste…»; un evento nuevo recupera el botón.</li>
+<li>(E) modo <code>standalone</code>: aunque llegue el evento, no se ofrece.</li>
+<li>(F) iPhone: pasos manuales de Compartir.</li>
+<li>(G) «Sin conexión» al cortar, el visor sigue funcionando, «Volvió la conexión» y la banda desaparece sola a los 3 s.</li>
+</ul></div>
+</section>
+<section class="slide dense" data-section="lectura" data-section-label="Lectura de resultados" data-slide-label="Prueba que falla">
+<div class="kicker">Pruebas · 6.5</div>
+<h2 class="slide-title">¿Y si la prueba estuviera mintiendo?</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.66em;line-height:1.28;"><code>$ sed -i 's|^    e.preventDefault();|    // e.preventDefault();|' src/instalar.ts
+$ npm run build
+$ node test_s41.js | grep -E "B1|FALL|RESULTADO"
+B1) llega beforeinstallprompt → defaultPrevented: false | botón visible: true | texto: Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.
+   ✗ FALLÓ: debe llamar a preventDefault
+RESULTADO: hay 1 fallos</code></pre>
+</div>
+<div class="callout warn" style="margin-top:.5em;font-size:.76em;">Una prueba que nunca ha fallado no ha demostrado nada: con la línea comentada, el escenario B falla. Después se restauró la línea y se recompiló.</div>
+</section>
+<section class="slide dense" data-section="lectura" data-section-label="Lectura de resultados" data-slide-label="test_s39.js sobre S41">
+<div class="kicker">Pruebas · 6.6</div>
+<h2 class="slide-title">Regresión: la prueba de la Sesión 39 sobre el código nuevo</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.6em;line-height:1.28;"><code>$ S39DIR=s41 node test_s39.js
+A1) petición → {"requiredFeatures":["local","hit-test"],"optionalFeatures":["dom-overlay","anchors"],"domOverlay":{"root":{}}}
+A1) estado general → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.
+A2) mirando al suelo → Toca la pantalla para colocar el modelo. | {hitTest:sí,anclas:sí,anclado:no,fase:listo,escala:0.25,giro:0,pos:—}
+A3) tras tocar → Modelo colocado. Toca otro punto para recolocarlo. | {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas creadas/borradas: {"crearAncla":1,"borrarAncla":0}
+A4) el usuario camina 1 m a la derecha → pos del cubo: [0,-1.4,-2.34] (sigue en su sitio: true )
+B1) movimiento de 4 px (menor que el umbral) → pos igual: true
+B2) arrastrar 200 px a la derecha → pos: [0,-1.4,-2.34] → [0.63,-1.4,-2.34] | x aumentó: true | y igual: true
+B3) «select» justo después de un arrastre → NO recoloca: anclas {"crearAncla":1,"borrarAncla":0} → {"crearAncla":1,"borrarAncla":0} | pos: [0.63,-1.4,-2.34]
+B4) separar los dos dedos (200 → 400 px) → escala: 0.25 → 0.5
+B5) separarlos mucho más → escala limitada a 1
+B6) juntarlos casi del todo → escala limitada a 0.1
+B7) girar los dos dedos → giro: 0° → 90°
+B8) tras dos dedos, ¿hubo «gesto»? el siguiente «select» tampoco recoloca: {"crearAncla":1,"borrarAncla":0} → {"crearAncla":1,"borrarAncla":0}
+C1) recolocar mirando más abajo → pos: [0.63,-0.8,-2.34] → [0,-0.8,-1.27] | anclas creadas/borradas: {"crearAncla":2,"borrarAncla":1} | anclado: sí | escala conservada: 1</code></pre>
+</div>
+</section>
+<section class="slide dense" data-section="lectura" data-section-label="Lectura de resultados" data-slide-label="S40 y subruta">
+<div class="kicker">Pruebas · 6.7</div>
+<h2 class="slide-title">Regresión (S40) y subruta</h2>
+<hr class="rule">
+<div class="code-block compact wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre style="font-size:.58em;line-height:1.28;"><code>$ S40DIR=s41 node test_s40.js | tail -8
+I1) base v2 preparada con identificadores de la demo
+I2) tras abrir la app → {"version":3,"progreso":[["microservicios",false,333],["mvc",true,111]],"descargas":[["capas","pendiente"],["mvc","pendiente"]]}
+J1) antes de usar AR → rastro: null
+J2) dentro de AR → rastro: activa | diagnóstico: Última sesión de AR: sin registro.
+J3) tras salir → rastro: fin-ok
+J4) diagnóstico → Última sesión de AR: terminó completa (hace 1 s).
+J5) rastro interrumpido simulado, tras recargar → Última sesión de AR: se interrumpió en el paso «fin-3-ancla» (hace 5 s). | panel abierto: true
+pageerrors: []
+
+$ node test_subruta.js
+subruta → {"scope":"http://localhost:4195/atlas-3d/","activo":true,"manifest":{"start":"./","scope":"./"},"iconoStatus":200,"caches":["modelos-3d","workbox-precache-v2-http://localhost:4195/atlas-3d/"]}
+recarga sin conexión: canvas montado = 1
+ficha → ["http://localhost:4195/atlas-3d/modelos/mvc.json",200]
+descarga desde el botón → caché modelos-3d: ["http://localhost:4195/atlas-3d/modelos/capas.json","http://localhost:4195/atlas-3d/modelos/microservicios.json","http://localhost:4195/atlas-3d/modelos/mvc.json"]
+peticiones fuera de la subruta o 404: [] | pageerrors: []</code></pre>
+</div>
+</section>
+<section class="slide" data-section="lectura" data-section-label="Lectura de resultados" data-slide-label="Qué no comprueba">
+<div class="kicker">Pruebas · 6.8</div>
+<h2 class="slide-title">Qué no puede comprobar la simulación</h2>
+<hr class="rule">
+<div class="callout warn" style="font-size:.84em;line-height:1.4;"><b>La lógica se valida aquí; el comportamiento real, en la mano:</b></div>
+<ol style="margin:.4em 0 0 1.3em;line-height:1.4;font-size:.84em;">
+<li><b>Que Chrome dispare el evento</b> en tu teléfono (criterios e interacción previa).</li>
+<li><b>El diálogo del sistema</b>, su aspecto y su comportamiento.</li>
+<li><b>El icono</b> en la pantalla de inicio y la app a pantalla completa.</li>
+<li><b>Safari en un iPhone de verdad.</b></li>
+</ol>
+</section>
+<section class="slide" data-section="rotulos" data-section-label="Rótulos" data-slide-label="El defecto">
+<div class="kicker">Rótulos · 7.1</div>
+<h2 class="slide-title">Un defecto que solo se vio en el teléfono</h2>
+<hr class="rule">
+<div class="body-text" style="font-size:.9em;"><p>En el teléfono: «publica» se superponía a «Bus de mensajes» al girar, y «Cliente» quedaba cortado por el borde inferior. El emulador probaba la <i>lógica</i>; esto era <i>presentación</i>.</p></div>
+<div class="callout" style="margin-top:.5em;font-size:.8em;line-height:1.4;">Los rótulos son <code>Sprite</code> que miran a la cámara y se dibujan <b>por encima</b> (<code>depthTest = false</code>): nunca los tapa un objeto, pero dos piezas en la misma visual hacen chocar sus textos.</div>
+</section>
+<section class="slide" data-section="rotulos" data-section-label="Rótulos" data-slide-label="Cliente">
+<div class="kicker">Rótulos · 7.2</div>
+<h2 class="slide-title">El arreglo: dos campos de datos</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>microservicios.ts («Cliente»)</div>
+<pre style="font-size:.86em;line-height:1.3;"><code>{ id: <span class="tok-str">"cliente"</span>, nombre: <span class="tok-str">"Cliente"</span>, rol: <span class="tok-str">"actor"</span>, forma: <span class="tok-str">"esfera"</span>, pos: [0, 0, 7.6], tam: [1.2, 1.2, 1.2], rotulo: <span class="tok-str">"frente"</span>, resumen: <span class="tok-str">"App o navegador que hace las peticiones."</span> },</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">«Cliente» pasa de <code>abajo</code> a <code>frente</code> y su esfera se acerca (<code>z</code> 8,2 → 7,6); la cámara se aleja (<code>distancia</code> 0,8 → 0,9).</div>
+</section>
+<section class="slide" data-section="rotulos" data-section-label="Rótulos" data-slide-label="Bus">
+<div class="kicker">Rótulos · 7.3</div>
+<h2 class="slide-title">«Bus de mensajes» sube</h2>
+<hr class="rule">
+<div class="code-block compact tight wrap">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>microservicios.ts («Bus de mensajes»)</div>
+<pre style="font-size:.86em;line-height:1.3;"><code>{ id: <span class="tok-str">"broker"</span>, nombre: <span class="tok-str">"Bus de mensajes"</span>, rol: <span class="tok-str">"infra"</span>, forma: <span class="tok-str">"caja"</span>, pos: [2.2, 0, 0.8], tam: [3.2, 1.2, 1.6], rotulo: <span class="tok-str">"arriba"</span>, resumen: <span class="tok-str">"Reparte eventos entre servicios sin que se llamen unos a otros."</span> },</code></pre>
+</div>
+<div class="callout" style="margin-top:.4em;font-size:.76em;">De <code>frente</code> a <code>arriba</code>: deja libre la franja por donde pasan las flechas «publica» y «entrega». Sin tocar el constructor.</div>
+</section>
+<section class="slide dense" data-section="rotulos" data-section-label="Rótulos" data-slide-label="Antes y después">
+<div class="kicker">Rótulos · 7.4</div>
+<h2 class="slide-title">Antes y después, con el mismo gesto</h2>
+<hr class="rule">
+<div style="text-align:center;"><img src="img/rotulos-antes-despues.png" alt="Cuatro capturas de Microservicios antes y después" style="max-width:100%;max-height:54vh;object-fit:contain;border:1px solid #ddd;border-radius:8px;"></div><div class="callout" style="margin-top:.4em;font-size:.72em;">Izquierda: código de la S40. Derecha: el de hoy. Arriba, vista inicial; abajo, tras girar.</div>
+</section>
+<section class="slide" data-section="rotulos" data-section-label="Rótulos" data-slide-label="Mejora, no resuelve">
+<div class="kicker">Rótulos · 7.5</div>
+<h2 class="slide-title">Mejora, no resuelve</h2>
+<hr class="rule">
+<div class="callout warn" style="font-size:.84em;line-height:1.45;">En la captura de abajo a la derecha, «Bus de mensajes» queda cerca de «Pagos»; a otro ángulo se rozarán otros textos. Con rótulos que siempre miran al espectador, algún ángulo tendrá choques.</div>
+<div class="callout" style="margin-top:.6em;font-size:.84em;line-height:1.45;">La solución de fondo: decidir <i>cuáles</i> rótulos mostrar según el ángulo, o mostrar solo el de la pieza elegida. Es la Actividad 3.</div>
+</section>
+<section class="slide" data-section="telefono" data-section-label="Teléfono" data-slide-label="Publicar la nueva versión">
+<div class="kicker">Teléfono · 8.1</div>
+<h2 class="slide-title">Publica la versión de hoy</h2>
+<hr class="rule">
+<ol style="margin:.2em 0 0 1.3em;line-height:1.5;font-size:.9em;">
+<li><b>Copia</b> el contenido de <code>pwa-ar-objetos3d-sesion41.zip</code> sobre tu carpeta del proyecto (conserva <code>.github/workflows/pages.yml</code>).</li>
+<li><code>git add .</code>, <code>git commit</code>, <code>git push</code>. Si el push se rechaza: <code>git pull --no-rebase -X ours --no-edit</code> y de nuevo.</li>
+<li><b>Espera la marca verde</b> en Actions y <b>recarga dos veces</b> en el teléfono.</li>
+<li><b>Interactúa un rato</b> con la página y <b>espera medio minuto</b>: Chrome no ofrece instalar antes.</li>
+</ol>
+</section>
+<section class="slide dense" data-section="telefono" data-section-label="Teléfono" data-slide-label="Recorrido (1/2)">
+<div class="kicker">Teléfono · 8.2</div>
+<h2 class="slide-title">Qué hacer y qué debes ver (1/2)</h2>
+<hr class="rule">
+<table class="uptc" style="font-size:.76em;">
+<tr><th>Qué hacer</th><th>Qué debes ver</th><th>Si no ocurre</th></tr>
+<tr><td>Baja a «Instalar la app».</td><td>Aparece el botón amarillo «⬇ Instalar Atlas 3D» (puede tardar).</td><td>Si dice que el navegador no ofrece instalar: menú ⋮ → «Instalar app» y anota que el botón no salió.</td></tr>
+<tr><td>Toca «Instalar» y acepta.</td><td>El diálogo del sistema; «✓ Instalada…» y el icono en la pantalla de inicio.</td><td>Si cancelas: «Cancelaste la instalación…».</td></tr>
+<tr><td>Abre Atlas 3D <b>desde su icono</b>.</td><td>Pantalla completa, sin barra; «✓ Estás usando Atlas 3D como app instalada.»</td><td>Si ves la barra de Chrome, usaste el enlace: usa el icono.</td></tr>
+</table>
+</section>
+<section class="slide dense" data-section="telefono" data-section-label="Teléfono" data-slide-label="Recorrido (2/2)">
+<div class="kicker">Teléfono · 8.3</div>
+<h2 class="slide-title">Qué hacer y qué debes ver (2/2)</h2>
+<hr class="rule">
+<table class="uptc" style="font-size:.76em;">
+<tr><th>Qué hacer</th><th>Qué debes ver</th><th>Si no ocurre</th></tr>
+<tr><td>Modo avión.</td><td>Banda ámbar «Sin conexión…»; los modelos y las fichas descargadas siguen.</td><td>—</td></tr>
+<tr><td>Quita el modo avión.</td><td>«Volvió la conexión.» y a los 3 s desaparece.</td><td>—</td></tr>
+<tr><td>Abre «Microservicios» y gíralo.</td><td>«Cliente» entero; «publica» sin pisar «Bus de mensajes».</td><td>Si aún se pisan, anota el ángulo.</td></tr>
+<tr><td>Desde la app instalada: «Ver en AR» y «Salir de AR».</td><td>La AR funciona y la salida no cierra la pestaña.</td><td>Lee la última línea del diagnóstico de AR.</td></tr>
+</table>
+<div class="callout" style="margin-top:.6em;font-size:.8em;">Anota <b>cuánto tardó Chrome en ofrecer la instalación</b> y <b>si la AR funciona igual desde la app instalada</b>: ningún emulador te lo dice.</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 1">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 1: No insistas: recordar «ahora no»</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">1</div><h4>No insistas: recordar «ahora no»</h4></div>
+<div class="meta-row">EN PAREJAS · 60 MIN</div>
+<p>Agreguen un botón «Ahora no» que esconda el botón de instalar y <b>recuerde la decisión</b> (<code>localStorage</code>) siete días, sin tocar <code>instalar.ts</code>. Decidan qué pasa al vencer y si también se oculta el texto.</p>
+<p style="margin-top:.7em;"><b>Para pensar:</b> ¿por qué un recordatorio permanente sería peor que no tener botón?</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> el código y una captura de cada estado.</p>
+</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 2">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 2: Una conexión que se comprueba de verdad</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">2</div><h4>Una conexión que se comprueba de verdad</h4></div>
+<div class="meta-row">INDIVIDUAL · 60 MIN</div>
+<p>Escriban <code>comprobarRed()</code>: una petición pequeña a un recurso <b>que el Service Worker no tenga precacheado</b>, con <code>cache: "no-store"</code> y un límite de tiempo; devuelve «llega», «no llega» o «no hay red».</p>
+<p style="margin-top:.7em;"><b>Para pensar:</b> ¿por qué un archivo precacheado daría siempre «llega»?</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> la función y una prueba con el servidor caído.</p>
+</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 3">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 3: Rótulos que no se pisen</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">3</div><h4>Rótulos que no se pisen</h4></div>
+<div class="meta-row">INDIVIDUAL · 60 MIN</div>
+<p>Propongan <i>dos</i> remedios para los choques que quedan al girar (p. ej., rótulo del enlace solo al elegir la pieza, o tamaño según la distancia). Implementen uno y muestren, con el <b>mismo ángulo</b> antes y después, qué mejoró y qué costó.</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> los dos remedios, la elección razonada y las capturas.</p>
+</div>
+</section>
+<section class="slide" data-section="actividad" data-section-label="Actividades" data-slide-label="Actividad 4">
+<div class="kicker">Actividades</div>
+<h2 class="slide-title">Actividad 4: Una prueba que falle antes de pasar</h2>
+<hr class="rule">
+<div class="activity-card">
+<div class="a-head"><div class="a-num">4</div><h4>Una prueba que falle antes de pasar</h4></div>
+<div class="meta-row">INDIVIDUAL · 45 MIN</div>
+<p>Quiten <code>evento = null;</code> de <code>pedirInstalacion()</code>, recompilen y ejecuten <code>test_s41.js</code>. Si sigue en verde, escriban el escenario que falta para detectar el doble uso del evento.</p>
+<p style="margin-top:.7em;"><b>Entregable:</b> la salida antes y después, y el escenario nuevo si hizo falta.</p>
+</div>
+</section>
+<section class="slide dense" data-section="cierre" data-section-label="Cierre" data-slide-label="Resumen">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Resumen de la sesión</h2>
+<hr class="rule">
+<ul class="clean" style="font-size:.86em;line-height:1.38;">
+<li>El navegador decide <b>cuándo</b> una PWA es instalable; la página decide <b>cómo</b> ofrecerlo.</li>
+<li>El evento se guarda con <code>preventDefault()</code>, se usa <b>en un clic</b> y <b>una sola vez</b>.</li>
+<li>Cinco estados, con «instalada» preguntado primero; iOS no tiene evento y necesita plan B manual.</li>
+<li><code>onLine</code> en <code>false</code> es fiable; en <code>true</code> solo promete «hay alguna red». El aviso dice qué sigue funcionando.</li>
+<li>Un evento simulado prueba la lógica, no el comportamiento real; y una prueba solo es de fiar si se comprobó que <b>falla</b> al romper el código.</li>
+<li>Los defectos de presentación se descubren en el teléfono; al ser datos, se corrigen cambiando datos, y a veces se mejora sin resolver del todo.</li>
+</ul>
+</section>
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Próxima sesión">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Próxima sesión</h2>
+<hr class="rule">
+<div class="callout"><b>Sesión 42: Lighthouse y cierre del proyecto.</b> Auditoría completa del Módulo AR y checklist final, incluida la instalabilidad que hoy solo se simuló.</div>
+</section>
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Referencias">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Referencias</h2>
+<hr class="rule">
+<div class="ref-list">
+<div><b>[1]</b> web.dev, "What does it take to be installable?", web.dev/articles/install-criteria.</div>
+<div><b>[2]</b> MDN Web Docs, "BeforeInstallPromptEvent" y "Window: appinstalled event," developer.mozilla.org.</div>
+<div><b>[3]</b> MDN Web Docs, "display-mode" y "Navigator: onLine property," developer.mozilla.org.</div>
+<div><b>[4]</b> W3C, "Web Application Manifest," w3.org.</div>
+<div><b>[5]</b> three.js, documentación de <code>Sprite</code> y <code>SpriteMaterial</code>, threejs.org/docs.</div>
+</div>
+</section>
+<section class="slide" data-section="cierre" data-section-label="Cierre" data-slide-label="Actualiza tu repositorio">
+<div class="kicker">Cierre</div>
+<h2 class="slide-title">Actualiza tu repositorio</h2>
+<hr class="rule">
+<div class="body-text"><p>Como en cada sesión del Sub-bloque B: sube el cambio de hoy a tu propio repositorio.</p></div>
+<div class="code-block ">
+<div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+<pre><code>git add .
+git commit -m "Instalación guiada, estado de conexión y rótulos de Microservicios"
+git push</code></pre>
+</div>
+</section>
+
+<div class="fragment-hint" id="fragHint">
+<svg><use href="#ic-arrow-right"/></svg><span class="hint-txt">Clic o → para continuar</span>
+</div>
+
+<div class="floatnav">
+<button class="navbtn" id="prevBtn" aria-label="Anterior"><svg><use href="#ic-arrow-left"/></svg></button>
+<span class="count" id="slideCount">01 / 45</span>
+<button class="navbtn" id="nextBtn" aria-label="Siguiente"><svg><use href="#ic-arrow-right"/></svg></button>
+<button class="fsbtn" id="fsBtn" aria-label="Pantalla completa" title="Modo proyección (pantalla completa)"><svg><use href="#ic-expand"/></svg></button>
+</div>
+</div>
+</div>
+
+</div>
+</div>
+
+<script src="../../js/uptc-deck.js"></script>
+</body>
+</html>
