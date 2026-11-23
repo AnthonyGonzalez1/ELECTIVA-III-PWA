@@ -1,0 +1,91 @@
+{
+  "id": "hexagonal",
+  "nombre": "Arquitectura hexagonal (puertos y adaptadores)",
+  "resumen": "Pone el dominio en el centro y lo aísla de todo lo externo: la interfaz de usuario, las pruebas, la base de datos y los servicios ajenos se conectan a través de puertos (interfaces definidas por el núcleo) y adaptadores (implementaciones concretas).",
+  "cuando_usarlo": "Cuando las reglas del negocio deben sobrevivir a cambios de tecnología (otra base de datos, otro canal de entrada) o probarse sin infraestructura real.",
+  "riesgo": "Para una aplicación pequeña o casi sin reglas, los puertos y adaptadores son capas de más: mucho código de paso para poca lógica.",
+  "piezas": {
+    "usuario": {
+      "responsabilidad": "Usa la aplicación a través de la API REST; no conoce el núcleo.",
+      "habla_con": [
+        "api-rest"
+      ]
+    },
+    "pruebas": {
+      "responsabilidad": "Ejercitan los casos de uso por el puerto de entrada, sin servidor HTTP ni base de datos real.",
+      "habla_con": [
+        "arnes"
+      ]
+    },
+    "api-rest": {
+      "responsabilidad": "Adaptador primario (conductor): convierte peticiones HTTP en llamadas al puerto de entrada y las respuestas en JSON.",
+      "habla_con": [
+        "usuario",
+        "puerto-entrada"
+      ]
+    },
+    "arnes": {
+      "responsabilidad": "Adaptador primario para las pruebas: prueba que el núcleo funciona igual sin importar quién lo llame.",
+      "habla_con": [
+        "pruebas",
+        "puerto-entrada"
+      ]
+    },
+    "puerto-entrada": {
+      "responsabilidad": "Interfaz de los casos de uso que el núcleo ofrece. Los adaptadores primarios dependen de ella.",
+      "habla_con": [
+        "api-rest",
+        "arnes",
+        "dominio"
+      ]
+    },
+    "dominio": {
+      "responsabilidad": "Reglas y casos de uso. Solo depende de sus propios puertos; no importa ningún framework ni librería de infraestructura.",
+      "habla_con": [
+        "puerto-entrada",
+        "puerto-repo",
+        "puerto-aviso"
+      ]
+    },
+    "puerto-repo": {
+      "responsabilidad": "Interfaz que el núcleo define para persistir pedidos. La implementa un adaptador secundario (inversión de dependencias).",
+      "habla_con": [
+        "dominio",
+        "sql"
+      ]
+    },
+    "puerto-aviso": {
+      "responsabilidad": "Interfaz que el núcleo define para avisar al cliente. El núcleo no sabe si es correo, SMS o una notificación push.",
+      "habla_con": [
+        "dominio",
+        "correo"
+      ]
+    },
+    "sql": {
+      "responsabilidad": "Adaptador secundario (conducido): implementa el puerto de repositorio con SQL. Cambiar de base de datos es escribir otro adaptador.",
+      "habla_con": [
+        "puerto-repo",
+        "bd"
+      ]
+    },
+    "correo": {
+      "responsabilidad": "Adaptador secundario: implementa el puerto de avisos enviando correos por SMTP.",
+      "habla_con": [
+        "puerto-aviso",
+        "smtp"
+      ]
+    },
+    "bd": {
+      "responsabilidad": "Almacenamiento permanente. Solo el adaptador SQL le habla.",
+      "habla_con": [
+        "sql"
+      ]
+    },
+    "smtp": {
+      "responsabilidad": "Sistema externo que entrega los correos.",
+      "habla_con": [
+        "correo"
+      ]
+    }
+  }
+}

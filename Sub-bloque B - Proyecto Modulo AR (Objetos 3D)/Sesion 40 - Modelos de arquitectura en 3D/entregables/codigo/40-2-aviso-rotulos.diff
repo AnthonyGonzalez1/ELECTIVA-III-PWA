@@ -1,0 +1,104 @@
+diff --git a/src/main.ts b/src/main.ts
+index 974300e..d82b945 100644
+--- a/src/main.ts
++++ b/src/main.ts
+@@ -483,6 +483,8 @@ function ayudaAR(e: EstadoAR): string {
+     case "listo":
+       return "Toca la pantalla para colocar el modelo.";
+     case "colocado":
++      // Actividad 40.2: si la letra de los rótulos queda por debajo de 12 px, se pide agrandar el modelo.
++      if (e.rotulosPequenos) return "Agranda el modelo para leer los nombres: pellizca hacia fuera o acércate.";
+       return e.overlay
+         ? "Arrastra para moverlo, gira con dos dedos, pellizca para el tamaño. Toca otro punto para recolocarlo."
+         : "Modelo colocado. Toca otro punto para recolocarlo.";
+@@ -505,7 +507,7 @@ function pintarEstadoAR(e: EstadoAR): void {
+   const datos =
+     `hit-test: ${si(e.hitTest)} · anclas: ${si(e.anclas)} · anclado: ${si(e.anclado)} · ` +
+     `fase: ${e.fase} · escala: ${e.escala.toFixed(2)} · giro: ${e.giroGrados}° · pos: ${pos} · ` +
+-    `consultas: ${e.consultas} · resultados: ${e.resultados} · poses: ${e.impactos}`;
++    `consultas: ${e.consultas} · resultados: ${e.resultados} · poses: ${e.impactos} · letra: ${e.letraPx} px`;
+   if (xrEstado.textContent !== ayuda) xrEstado.textContent = ayuda;
+   if (xrDatos.textContent !== datos) xrDatos.textContent = datos;
+ }
+diff --git a/src/visor.ts b/src/visor.ts
+index ad31744..92aaa44 100644
+--- a/src/visor.ts
++++ b/src/visor.ts
+@@ -54,6 +54,9 @@ export interface EstadoAR extends CapacidadesAR {
+   impactos: number; // consultas con una pose utilizable
+   /** true si pasaron varios segundos sin superficie: el toque ya coloca delante de la mirada. */
+   sinSuperficie: boolean;
++  /** Actividad 40.2: alto en pantalla (px CSS) de la letra de un rótulo de pieza, y si es demasiado pequeño para leerse. */
++  letraPx: number;
++  rotulosPequenos: boolean;
+ }
+ 
+ export interface OpcionesAR {
+@@ -71,6 +74,11 @@ const CADA_CUANTOS_FOTOGRAMAS = 2; // el hit-test se consulta un fotograma de ca
+ const MS_HASTA_PLAN_B = 6000; // sin superficie tanto tiempo: se avisa y el toque coloca delante de la mirada
+ const CONSULTAS_SIN_IMPACTO = 8; // consultas seguidas sin superficie antes de ocultar la retícula (evita parpadeos)
+ const MITAD = 0.8; // medio cubo: para que apoye la base (y no el centro) en la superficie
++// Actividad 40.2: el rótulo de una pieza mide 0,4·k de alto con k = lado/6, y el modelo se normaliza a lado 1,6,
++// así que en el modelo normalizado mide 0,4 × 1,6 / 6 ≈ 0,107 m a escala 1, sea cual sea el modelo. La letra es
++// el tamaño de la fuente: el lienzo mide 1,7 veces la fuente, así que la letra mide ≈ 0,063 m a escala 1.
++const ALTO_LETRA = (0.4 * 1.6) / 6 / 1.7;
++const MIN_LETRA_PX = 12; // por debajo de 12 px CSS un nombre ya no se lee de un vistazo en un teléfono
+ 
+ export function crearVisor(contenedor: HTMLElement): Visor {
+   const escena = new THREE.Scene();
+@@ -158,6 +166,23 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+     let sinSuperficie = false;
+     let ultimaPose = performance.now(); // cuándo fue la última vez que el hit-test encontró algo
+     let ultimoImpacto: XRRigidTransform | null = null; // pose de la superficie bajo el centro de la pantalla
++    let letraPx = 0; // actividad 40.2
++    // Proyecta a la pantalla un segmento del alto de una letra, en el centro del modelo, y mide cuántos px ocupa.
++    // Así el aviso depende de la escala Y de la distancia (a 1 m un modelo pequeño se lee; a 3 m, no).
++    const p1 = new THREE.Vector3();
++    const p2 = new THREE.Vector3();
++    const q = new THREE.Quaternion();
++    function medirLetra(): number {
++      const xrCam = renderer.xr.getCamera();
++      const cam = xrCam.cameras[0] ?? xrCam;
++      grupo.getWorldPosition(p1);
++      // Los rótulos son sprites: siempre miran a la cámara. Por eso el segmento se mide en la dirección «arriba»
++      // de la cámara (no en la vertical del mundo, que se vería acortada al mirar el modelo desde arriba).
++      p2.set(0, 1, 0).applyQuaternion(cam.getWorldQuaternion(q)).multiplyScalar(ALTO_LETRA * escala).add(p1);
++      p1.project(cam);
++      p2.project(cam);
++      return Math.round((Math.abs(p2.y - p1.y) / 2) * window.innerHeight);
++    }
+ 
+     const estado = (): EstadoAR => {
+       raiz.updateMatrixWorld(true);
+@@ -173,6 +198,8 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+         resultados,
+         impactos: impactosVistos,
+         sinSuperficie,
++        letraPx,
++        rotulosPequenos: fase === "colocado" && letraPx > 0 && letraPx < MIN_LETRA_PX,
+       };
+     };
+     const avisar = () => opciones.alCambiar(estado());
+@@ -306,6 +333,7 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+     // ── Bucle: cada fotograma XR ──
+     let cuadro = 0; // cuenta fotogramas para consultar el hit-test solo uno de cada dos
+     let sinImpacto = 0; // consultas seguidas sin superficie
++    let cuadroLetra = 0; // actividad 40.2
+     renderer.setAnimationLoop((_t, frame) => {
+       const referencia = renderer.xr.getReferenceSpace();
+       if (frame && referencia) {
+@@ -341,6 +369,14 @@ export function crearVisor(contenedor: HTMLElement): Visor {
+             avisar();
+           }
+         }
++        // Actividad 40.2: medir la letra cada 15 fotogramas con el modelo colocado (con o sin hit-test).
++        if (fase === "colocado" && cuadroLetra++ % 15 === 0) {
++          const nueva = medirLetra();
++          if (nueva !== letraPx) {
++            letraPx = nueva;
++            avisar();
++          }
++        }
+         // Con ancla, la posición de `raiz` la corrige el sistema fotograma a fotograma.
+         if (ancla && frame.trackedAnchors?.has(ancla)) {
+           const poseAncla = frame.getPose(ancla.anchorSpace, referencia);

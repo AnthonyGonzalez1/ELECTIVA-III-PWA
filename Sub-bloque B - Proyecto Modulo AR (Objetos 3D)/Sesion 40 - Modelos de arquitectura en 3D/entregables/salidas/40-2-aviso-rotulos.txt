@@ -1,0 +1,7 @@
+lejos (≈2,3 m), escala 0,25 → letra 2 px | Agranda el modelo para leer los nombres: pellizca hacia fuera o acércate.
+cerca (≈1,0 m), escala 0,25 → letra 4 px | Agranda el modelo para leer los nombres: pellizca hacia fuera o acércate.
+   ✓ a escala 0,25 aparece el aviso (4 px)
+tras pellizcar → hit-test: sí · anclas: sí · anclado: sí · fase: colocado · escala: 0.88 · giro: 0° · pos: (0.00, -0.90, -1.03) m · consultas: 180 · resultados: 179 · poses: 179 · letra: 18 px
+   ✓ agrandado: el aviso desaparece (18 px, escala: 0.88)
+   ✓ sin errores en la página
+RESULTADO: todo en orden

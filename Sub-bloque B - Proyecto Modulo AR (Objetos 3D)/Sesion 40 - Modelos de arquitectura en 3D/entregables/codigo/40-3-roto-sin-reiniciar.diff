@@ -1,0 +1,13 @@
+diff --git a/src/db.ts b/src/db.ts
+index bec048a..1ce5341 100644
+--- a/src/db.ts
++++ b/src/db.ts
+@@ -59,7 +59,7 @@ export function abrirBaseDeDatos(): Promise<IDBDatabase> {
+         // con la clave nueva y se borra el viejo, todo dentro de la transacción de la migración.
+         const tx = (event.target as IDBOpenDBRequest).transaction!;
+         migrarIdentificadores(tx.objectStore("progreso"), false);
+-        migrarIdentificadores(tx.objectStore("descargas"), true);
++        migrarIdentificadores(tx.objectStore("descargas"), false); // ROTO A PROPÓSITO (actividad 40.3): sin reiniciarDescarga
+       }
+     };
+ 

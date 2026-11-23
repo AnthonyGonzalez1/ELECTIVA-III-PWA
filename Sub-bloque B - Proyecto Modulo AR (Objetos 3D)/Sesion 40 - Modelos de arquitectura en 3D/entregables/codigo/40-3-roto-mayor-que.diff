@@ -1,0 +1,13 @@
+diff --git a/src/db.ts b/src/db.ts
+index bec048a..530fe57 100644
+--- a/src/db.ts
++++ b/src/db.ts
+@@ -54,7 +54,7 @@ export function abrirBaseDeDatos(): Promise<IDBDatabase> {
+       if (event.oldVersion < 2) {
+         db.createObjectStore("descargas", { keyPath: "modeloId" });
+       }
+-      if (event.oldVersion >= 1 && event.oldVersion < 3) {
++      if (event.oldVersion > 1 && event.oldVersion < 3) { // ROTO A PROPÓSITO (actividad 40.3): > en vez de >=
+         // La clave de un registro no se puede cambiar: se lee cada registro viejo, se escribe
+         // con la clave nueva y se borra el viejo, todo dentro de la transacción de la migración.
+         const tx = (event.target as IDBOpenDBRequest).transaction!;

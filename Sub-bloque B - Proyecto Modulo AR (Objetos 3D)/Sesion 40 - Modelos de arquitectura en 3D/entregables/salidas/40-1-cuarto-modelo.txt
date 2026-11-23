@@ -1,0 +1,7 @@
+pestañas → ["mvc","capas","microservicios","hexagonal"]
+hexagonal: 12 piezas → ["Usuario","Pruebas","API REST","Arnés","Puerto entrada","Dominio","Puerto repo","Puerto avisos","Adapt. SQL","Adapt. correo","Base de datos","SMTP"]
+leyenda → Usuario o sistema externoPresentaciónCoordinaciónLógica de negocioDatosInfraestructura
+resumen → El dominio en el centro, sin depender de nada; todo lo externo entra y sale por puertos.
+detalle → Toca una pieza del modelo, o elígela en la lista, para ver qué hace. Toca la misma pieza otra vez para soltarla.Cuándo usarlo. Cuando las reglas del negocio deb
+pieza «Núcleo de dominio» → Dominio Lógica de negocioReglas del negocio puras. No sabe si lo llaman por HTTP o desde una prueba, ni dónde se guardan los datos.Responsabilidad. Reglas y casos de uso. Solo depende de sus propios puertos; no importa ningún framework ni librería de infraestructura.Habla con: Puerto entrada, Puerto repo, Puerto avisos.
+pageerrors: []

@@ -1,0 +1,8 @@
+I1) base v2 preparada con identificadores de la demo
+I2) tras abrir la app → {"version":3,"progreso":[["microservicios",false,333],["mvc",true,111]],"descargas":[["capas","pendiente"],["mvc","pendiente"]]}
+I4a) la lista marca «disponible sin conexión» en → []
+I4b) SIN CONEXIÓN, ficha de MVC → Toca una pieza del modelo, o elígela en la lista, para ver qué hace. Toca la misma pieza otra vez para soltarla.Detalle ampliado no disponible: descarga las fichas (abajo
+pageerrors: []
+I3a) base v1 preparada con identificadores de la demo
+I3b) tras abrir la app → {"version":3,"progreso":[["microservicios",false,333],["mvc",true,111]],"descargas":[]}
+pageerrors: []
