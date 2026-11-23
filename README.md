@@ -46,8 +46,10 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 42 | Lighthouse y cierre del proyecto | B |
 | 43 | React y PWA | B |
 | 44 | Angular y PWA | B |
+| 45 | Comparación y cierre de Sub-bloque B | B |
 
 ## Proyectos
 
 - `Proyectos/gestor-de-tareas/`: Gestor de Tareas (Sub-bloque A).
-- `Proyectos/pwa-ar-objetos3d/`: Atlas 3D / Módulo AR (Sub-bloque B).
+- `Proyectos/pwa-ar-objetos3d/`: Atlas 3D / Módulo AR (Sub-bloque B). Desde la Sesión 44 es la versión en Angular; las versiones sin framework (S42) y React (S43) están en los zips de `recursos/` de sus sesiones.
+- `Proyectos/checklist-atlas/`: lista de verificación final (Playwright) de la Sesión 45.

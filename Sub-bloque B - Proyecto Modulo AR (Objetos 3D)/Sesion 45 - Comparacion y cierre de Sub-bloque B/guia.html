@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 45 · Comparación y cierre del Sub-bloque B · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .compare-wrap{overflow-x:auto;}
+  .warn-box{border:1px solid #e0a800; background:#fff8e1; border-radius:10px; padding:1em 1.2em; margin:1em 0; font-size:.92em;}
+  .warn-box b{color:#9a6b00;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  .term-box{background:#1c1c1e; color:#cfcac0; border-radius:10px; padding:.9em 1.1em; font-size:.82em; font-family:"Cascadia Code",Consolas,monospace; line-height:1.55; margin:1em 0; overflow-x:auto;}
+  .term-box .prompt{color:#6ad06a;}
+  .win-box{border:2px solid #2e7d32; background:#f1f9f1; border-radius:10px; padding:1em 1.2em; margin:1.2em 0; font-size:.92em;}
+  .win-box b{color:#1b5e20;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 19 de 19</div>
+    <h1>Comparación y cierre del Sub-bloque B</h1>
+    <div class="lead">Hay tres versiones del mismo Atlas 3D: sin framework, con React y con Angular. Hoy se ponen juntas: la misma lista de pruebas, las mismas cifras y una lista de verificación final que sirve para cualquiera. Se decide con preguntas y no con la moda, se dice con claridad lo que las cifras no pueden decir y se cierra el Sub-bloque B con las prácticas que sobreviven a cualquier tecnología.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Comparar</b> tres versiones del mismo proyecto con una <b>misma lista de pruebas</b> y las mismas cifras, y separar lo que la evidencia dice de lo que no dice.</span></li>
+      <li><span class="chk">✓</span><span><b>Ubicar</b> cuánto del proyecto es «motor» (no depende del framework) y cuánto es «pantalla» (sí depende).</span></li>
+      <li><span class="chk">✓</span><span><b>Decidir</b> con preguntas concretas, no con la moda, y dejar la decisión escrita en un registro breve.</span></li>
+      <li><span class="chk">✓</span><span><b>Ejecutar</b> la lista de verificación final del Atlas 3D sobre cualquier versión y leer sus resultados.</span></li>
+      <li><span class="chk">✓</span><span><b>Cerrar</b> el Sub-bloque B reconociendo las prácticas que sobreviven a cualquier tecnología.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/checklist-atlas.zip">Descargar .zip</a><span class="rb-desc"><b>Lista de verificación final.</b> Un script de Node con Playwright que comprueba 13 puntos sobre cualquier versión compilada del Atlas, más su LEEME.</span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-sesion44.zip">Descargar .zip</a><span class="rb-desc"><b>Proyecto en Angular</b> (Sesión 44, con una corrección: ver la sección 4).</span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-sesion43.zip">Descargar .zip</a><span class="rb-desc"><b>Proyecto en React</b> (Sesión 43).</span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-sesion42.zip">Descargar .zip</a><span class="rb-desc"><b>Proyecto sin framework</b> (Sesión 42).</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Qué se comparó, y con qué reglas</h2>
+    <div class="body-text"><p>Hoy hay tres versiones del mismo Atlas 3D: sin framework (Sesión 42), con React (43) y con Angular (44). La comparación solo vale si lo que se compara es <b>lo mismo</b>. Estas fueron las reglas:</p></div>
+    <ul class="clean">
+      <li><b>El mismo motor.</b> <code>visor.ts</code>, <code>xr.ts</code>, <code>sw.ts</code>, <code>db.ts</code>, los sensores, la cámara, los modelos como datos y el manifest son los mismos archivos (con cambios de una línea en tres de ellos para la ruta base).</li>
+      <li><b>El mismo HTML por fuera.</b> Los <code>id</code> y las clases del DOM son idénticos, de modo que una misma prueba, escrita sin saber qué framework hay detrás, sirve para las tres.</li>
+      <li><b>Las mismas condiciones de medida.</b> Lighthouse 13.6.0, móvil, lentitud simulada, cinco corridas por versión, mediana, corridas intercaladas en la misma sesión.</li>
+    </ul>
+    <div class="body-text"><p>Con esas reglas se puede contar algo que a simple vista pasa desapercibido: <b>cuánto del proyecto depende realmente del framework</b>.</p></div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/motor-vs-pantalla.png" alt="Barras apiladas: motor compartido de unas 1800 líneas en las tres versiones y pantalla de 722, 978 y 1020 líneas" style="max-width:100%;max-width:42em;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Líneas de código por versión. El motor (beige) casi no cambia; lo que cambia con el framework es la pantalla: 722, 978 y 1020 líneas (el CSS y la configuración no se cuentan).</div></figure>
+    <div class="callout"><b>Lo que muestra la figura:</b> elegir framework decide entre el 29 % y el 36 % del código de esta app. El otro 64 a 71 % (el visor 3D, la realidad aumentada, el Service Worker, los datos) es igual en las tres. Si en un proyecto el motor pesa menos, la elección pesa más; si pesa más, la elección pesa menos.</div>
+
+    <h2 class="section-title"><span class="num-badge">2</span>La misma lista de pruebas sobre las tres versiones</h2>
+    <div class="body-text"><p>Se ejecutaron, sobre las tres compilaciones, las pruebas de las sesiones 39 a 42 y la de la nota conservada, <b>sin cambiar su lógica</b>. Cada celda es el resultado de la corrida de hoy, con el número de comprobaciones que hizo.</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+<tr><th>Prueba</th><th>Sin framework (S42)</th><th>React (S43)</th><th>Angular (S44)</th></tr>
+<tr><td><b>S39 · AR con superficies</b><br><span style="font-size:.85em;">anillo de superficie, anclas, gestos, plan B sin hit-test ni anclas, reintento</span></td><td>✓ 30 comprobaciónes</td><td>✓ 30 comprobaciónes</td><td>✓ 30 comprobaciónes</td></tr>
+<tr><td><b>S40 · Modelos y AR</b><br><span style="font-size:.85em;">tres modelos, piezas, ficha ampliada, uso sin conexión, rastro de la sesión de AR</span></td><td>✓ 38 comprobaciónes</td><td>✓ 38 comprobaciónes</td><td>✓ 38 comprobaciónes</td></tr>
+<tr><td><b>S41 · Instalación y conexión</b><br><span style="font-size:.85em;">botón «Instalar», cancelar, standalone, iPhone, banda «sin conexión»</span></td><td>✓ 13 comprobaciónes</td><td>✓ 13 comprobaciónes</td><td>✓ 13 comprobaciónes</td></tr>
+<tr><td><b>S42 · Lista de verificación</b><br><span style="font-size:.85em;">manifest, instalabilidad según Chrome, Service Worker, sin conexión, CLS, dibujo bajo demanda</span></td><td>✓ 12 comprobaciónes</td><td>✓ 12 comprobaciónes</td><td>✓ 12 comprobaciónes</td></tr>
+<tr><td><b>Nota conservada</b><br><span style="font-size:.85em;">escribir una nota y marcar un favorito en otra tarjeta no borra lo escrito</span></td><td><b>✗ 1 fallo</b></td><td>✓ 1 comprobación</td><td>✓ 1 comprobación</td></tr>
+    </table>
+    </div>
+    <div class="win-box"><b>Lectura:</b> las tres versiones se comportan igual desde fuera, con una excepción que ya conocías: la versión sin framework <b>no pasa</b> la prueba de la nota, porque reescribe todo el catálogo al marcar un favorito. Es el único resultado distinto de toda la tabla, y es un defecto de la Sesión 42 que React y Angular evitan casi sin proponérselo.</div>
+    <div class="body-text"><p>Las pruebas que dependen del framework no están en la tabla porque no se pueden comparar: la de React (dos lienzos con StrictMode) y la de Angular (el bucle de dibujo tras destruir la aplicación) existen <i>porque</i> cada framework tiene su propia forma de equivocarse. Ese es el único trabajo de pruebas que sí cambia con la elección.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>La lista de verificación final</h2>
+    <div class="body-text"><p>La lista de la Sesión 42 pasó a ser el cierre del proyecto. Se reunió en un solo script, <code>checklist-atlas.js</code>, con una condición de diseño: <b>solo mira lo que se ve desde fuera</b> (ids, clases, lo que dice Chrome, lo que pasa sin red). Por eso se ejecuta igual sobre cualquier versión. Tiene 13 puntos:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Puntos</th><th>Qué comprueba</th></tr>
+      <tr><td>1</td><td>Documento: idioma, viewport, descripción, un solo <code>&lt;main&gt;</code>, contexto seguro</td></tr>
+      <tr><td>2 y 3</td><td>Manifest sin errores y sin errores de instalabilidad, <b>preguntándole a Chrome</b></td></tr>
+      <tr><td>4 y 5</td><td>Service Worker activo, precaché completo y la app abre con el servidor caído</td></tr>
+      <tr><td>6</td><td>Desplazamiento de diseño acumulado (CLS) menor que 0,1</td></tr>
+      <tr><td>7 a 12</td><td>Dibujo bajo demanda: una escena quieta no dibuja; girar, elegir pieza, cambiar de modelo y redimensionar sí</td></tr>
+      <tr><td>13</td><td>Una nota escrita no se pierde al marcar un favorito en otra tarjeta</td></tr>
+    </table>
+    </div>
+    <div class="body-text"><p>Se ejecutó sobre las tres versiones. Estos son los puntos más reveladores de cada corrida:</p></div>
+    <div class="term-box"><span class="prompt">$</span> ATLASDIR=s42 node checklist-atlas.js<br>
+4) service worker → {"activo":true,"controla":true,"precache":9}<br>
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.050<br>
+7) escena quieta durante 1,5 s → llamadas de dibujo: 0<br>
+13) escribir una nota y marcar favorito en otra tarjeta → nota conservada: ""<br>
+&nbsp;&nbsp; ✗ FALLÓ: la nota escrita no debe borrarse al marcar un favorito<br>
+RESULTADO: hay 1 fallos</div>
+    <div class="term-box"><span class="prompt">$</span> ATLASDIR=s43 node checklist-atlas.js<br>
+4) service worker → {"activo":true,"controla":true,"precache":10}<br>
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.008<br>
+7) escena quieta durante 1,5 s → llamadas de dibujo: 0<br>
+13) escribir una nota y marcar favorito en otra tarjeta → nota conservada: "repasar el controlador"<br>
+RESULTADO: todo en orden</div>
+    <div class="term-box"><span class="prompt">$</span> ATLASDIR=s44 node checklist-atlas.js<br>
+4) service worker → {"activo":true,"controla":true,"precache":9}<br>
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.008<br>
+7) escena quieta durante 1,5 s → llamadas de dibujo: 0<br>
+13) escribir una nota y marcar favorito en otra tarjeta → nota conservada: "repasar el controlador"<br>
+RESULTADO: todo en orden</div>
+    <div class="body-text"><p>Observa el punto 4: el precaché de la versión sin framework y el de Angular tienen <b>9</b> entradas, el de React <b>10</b>. El número en sí no importa; importa que <b>el umbral de la prueba (8 o más) delató a la primera versión de Angular</b>, que tenía 7. Una lista de verificación vale por los errores que atrapa.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>Lo que cada versión nos enseñó</h2>
+    <div class="body-text"><p>Cada migración sacó a la luz un problema distinto. Ninguno era del framework en sí, pero cada uno lo provocó el cambio de framework:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Versión</th><th>Problema que apareció</th><th>Cómo se encontró</th></tr>
+      <tr><td>Sin framework (S42)</td><td><code>render()</code> reescribía todo el catálogo: la nota escrita desaparecía al marcar un favorito en otra tarjeta</td><td>Al escribir la prueba de la nota para React y ejecutarla sobre la versión anterior</td></tr>
+      <tr><td>React (S43)</td><td>Un efecto sin limpieza deja dos lienzos con StrictMode; el oyente de instalación se registra tarde; el instrumento de prueba no sabía serializar los nodos de React</td><td>Quitar la limpieza a propósito; leer el código; un error «circular structure» en las pruebas de AR</td></tr>
+      <tr><td>Angular (S44)</td><td>La primera compilación juntaba todo en un solo archivo; Angular no tiene StrictMode; la ruta base y la versión de Node cambiaron; <code>tsc</code> dejaba archivos <code>.js</code> sueltos en <code>src/</code></td><td>La prueba de la Sesión 42 (7 entradas de precaché); construir una prueba de destrucción; leer el error; revisar el contenido del zip</td></tr>
+    </table>
+    </div>
+    <div class="warn-box"><b>Una corrección a la Sesión 44.</b> Al preparar esta sesión se vio que el script de compilación de Angular ejecutaba <code>tsc</code> sin la opción <code>noEmit</code> y dejaba cinco archivos <code>.js</code> (<code>base.js</code>, <code>db.js</code>, <code>descargas.js</code>, <code>sw.js</code> y <code>modelos/tipos.js</code>) dentro de <code>src/</code>. La compilación era idéntica con y sin ellos, pero ensucian el repositorio. El zip de la Sesión 44 que está publicado ya está corregido. <b>Si copiaste la versión anterior</b>, borra esos cinco archivos y, en <code>tsconfig.sw.json</code>, añade <code>"noEmit": true</code> dentro de <code>compilerOptions</code>.</div>
+    <div class="body-text"><p>Es una buena lección para el cierre: el defecto estaba en un lugar donde ninguna de las pruebas miraba (el contenido del zip), y todas pasaban. <b>Una lista de verificación comprueba lo que se pensó en comprobar</b>; revisar el producto con ojos frescos sigue haciendo falta.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>Las cifras, juntas</h2>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Medida</th><th>Sin framework</th><th>React</th><th>Angular (visor diferido)</th></tr>
+      <tr><td>Rendimiento (mediana de 5)</td><td>86</td><td><b>94</b></td><td>79</td></tr>
+      <tr><td>FCP (primer contenido)</td><td><b>1704 ms</b></td><td>2234 ms</td><td>1722 ms</td></tr>
+      <tr><td>LCP (contenido más grande)</td><td><b>2256 ms</b></td><td>2371 ms</td><td>2773 ms</td></tr>
+      <tr><td>TBT (tiempo de bloqueo)</td><td>455 ms</td><td><b>132 ms</b></td><td>620 ms</td></tr>
+      <tr><td>CLS</td><td>0,05</td><td><b>0</b></td><td><b>0</b></td></tr>
+      <tr><td>Precaché del Service Worker</td><td><b>9 · 558,82 KiB</b></td><td>10 · 778,17 KiB</td><td>9 · 753,84 KiB</td></tr>
+      <tr><td>Líneas de pantalla</td><td><b>722</b></td><td>978</td><td>1020</td></tr>
+      <tr><td>Archivos de pantalla</td><td><b>2</b></td><td>16</td><td>28</td></tr>
+      <tr><td>Pasa la lista de verificación de 13 puntos</td><td>12 de 13 puntos (falla el 13, la nota)</td><td>13 de 13</td><td>13 de 13</td></tr>
+      <tr><td>Node en la publicación</td><td>20</td><td>20</td><td><b>22.22.3 o superior</b></td></tr>
+      <tr><td>Integración del Service Worker propio</td><td>vite-plugin-pwa</td><td>vite-plugin-pwa</td><td>Dos scripts propios</td></tr>
+    </table>
+    </div>
+    <div class="body-text"><p>La fila de la lista de verificación se explica en la sección 3. La de herramientas es un costo real que no sale en Lighthouse: Angular obliga a una versión de Node más reciente y, con un Service Worker propio, a escribir el puente de compilación que Vite resolvía con un plugin.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">6</span>Cómo decidir: preguntas, no recetas</h2>
+    <div class="body-text"><p>Ninguna de las tres versiones «ganó». Cada una es mejor en algo distinto, y el peso de cada medida depende de tu proyecto. Estas son las preguntas que las cifras permiten contestar, y lo que esta app dice en cada una:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Pregunta</th><th>Qué dice esta app</th></tr>
+      <tr><td><b>¿Cuánta pantalla hay?</b></td><td>Aquí es el 29 al 36 % del código. Con pocos estados y un solo desarrollador, la versión sin framework es la más liviana y la que muestra antes el primer contenido. Su costo es que la disciplina de no reescribir todo la pone el programador.</td></tr>
+      <tr><td><b>¿Va a crecer?</b></td><td>La pantalla creció un 35 a 41 % al pasar a framework, repartida en archivos pequeños que se pueden probar y reutilizar. Es lo que se compra con ese peso extra.</td></tr>
+      <tr><td><b>¿Quién la mantiene?</b></td><td>Esto no sale en ninguna cifra y suele decidir. Un equipo que ya conoce un framework rinde más con él que con el «mejor» del benchmark.</td></tr>
+      <tr><td><b>¿Importa el primer contenido?</b></td><td>React tardó 530 ms más que la versión sin framework en mostrar algo (2234 contra 1704 ms). Angular, con el visor diferido, casi nada (1722). Generar el HTML antes (prerender o servidor) es el remedio conocido, pero <b>no se probó</b> en este curso.</td></tr>
+      <tr><td><b>¿Hay motor propio que conservar?</b></td><td>Con el 64 a 71 % del código fuera del framework, migrar costó sobre todo pantalla. Si el motor hubiera estado mezclado con la interfaz, no habría sido así: separarlo primero fue la mejor decisión de todo el Sub-bloque.</td></tr>
+      <tr><td><b>¿Tienes pruebas?</b></td><td>Sin ellas, cada migración habría sido a ciegas. Con ellas, las dos migraciones expusieron varios defectos reales (sección 4).</td></tr>
+      <tr><td><b>¿Qué herramientas exige?</b></td><td>React con Vite se integró con un plugin; Angular pidió dos scripts propios y una versión de Node más nueva. Es un costo de arranque, no de uso diario.</td></tr>
+    </table>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">7</span>Lo que estas cifras no pueden decir</h2>
+    <ul class="clean">
+      <li><b>Una sola aplicación, pequeña.</b> Con diez veces más pantalla las proporciones podrían cambiar. No hay forma de saberlo con este experimento.</li>
+      <li><b>Un solo entorno de medida.</b> Chromium sin tarjeta gráfica y lentitud simulada. Sirve para comparar versiones entre sí, no para decir cuánto tarda en tu teléfono.</li>
+      <li><b>El LCP de Angular con carga diferida (2773 ms) no se explicó.</b> La hipótesis es que el visor llega más tarde; no se midió qué elemento es el LCP en cada versión.</li>
+      <li><b>No se probó el prerender</b> ni el renderizado en servidor, que son lo que más cambiaría el primer contenido de React y Angular.</li>
+      <li><b>La dispersión es grande.</b> Cinco corridas de Angular con visor diferido fueron de 73 a 86. Entre 79 y 75 hay menos diferencia que entre dos corridas de la misma versión.</li>
+      <li><b>Mantenimiento a largo plazo, contratación, ecosistema y curva de aprendizaje</b> no se midieron y suelen pesar más que 50 ms de FCP.</li>
+    </ul>
+
+    <h2 class="section-title"><span class="num-badge">8</span>Pruébalo tú</h2>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Descomprime</b> <code>checklist-atlas.zip</code> en una carpeta nueva y ejecuta <code>npm install</code> y <code>npx playwright install chromium</code> (la segunda baja el navegador de pruebas, unos 150 MB).</li>
+      <li><b>Compila</b> tu proyecto con <code>npm run build</code>. Debe existir su carpeta <code>dist</code>.</li>
+      <li><b>Ejecuta la lista:</b> <code>ATLASDIR=ruta/a/tu/proyecto node checklist-atlas.js</code>. En Windows (PowerShell): <code>$env:ATLASDIR="ruta\a\tu\proyecto"; node checklist-atlas.js</code>.</li>
+      <li><b>Lee el resultado:</b> cada línea tiene un número; una línea con <code>✗ FALLÓ</code> dice qué punto falla. La última dice <code>RESULTADO: todo en orden</code> o cuántos fallos hay.</li>
+      <li><b>En tu teléfono</b>, abre la versión publicada y recorre una vez más: gira, piezas, «Ver en AR», «Instalar», modo avión.</li>
+    </ol>
+
+    <h2 class="section-title"><span class="num-badge">9</span>Actividades</h2>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>Ejecuta la lista sobre dos versiones</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>Ejecuta <code>checklist-atlas.js</code> sobre tu versión elegida y sobre la de la Sesión 42 (descomprime su zip, instala y compila). Compara los resultados punto por punto.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> las dos salidas y un párrafo sobre cada diferencia (debe aparecer el punto 13).</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">2</div><h4>Rompe un punto a propósito</h4></div>
+      <div class="meta-row">EN PAREJAS · 45 MIN</div>
+      <p>Elijan un punto de la lista (por ejemplo, quitar <code>meta name="description"</code> o cambiar el <code>start_url</code> del manifest), compilen, ejecuten la lista y confirmen que el punto correspondiente <b>falla</b>. Restauren y repitan.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> ¿qué tipo de defecto no podría detectar nunca esta lista? (Pista: la sección 4.)</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el cambio que hicieron, la línea que falló y su respuesta.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">3</div><h4>Un registro de decisión</h4></div>
+      <div class="meta-row">INDIVIDUAL · 90 MIN</div>
+      <p>Imagina que debes construir <b>un proyecto distinto</b> (tú lo describes en dos o tres líneas: qué hace, cuántas pantallas, quién lo mantiene). Con la tabla de la sección 6, escribe un registro de decisión de una página con este formato y decide cuál de las tres opciones usarías.</p>
+      <div class="code-block"><div class="code-file"><span class="dots"><span></span><span></span><span></span></span>decision.md</div><pre><code>Contexto: qué se construye y qué restricciones hay.
+Opciones: sin framework / React / Angular (u otra).
+Decisión: cuál se elige.
+Razones: tres, cada una apoyada en una cifra o una prueba.
+Riesgos: lo que esta decisión puede salir mal.
+Qué no sabemos: lo que habría que medir antes de estar seguros.</code></pre></div>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el registro. Se valora más la sección «Qué no sabemos» que una decisión «correcta».</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">4</div><h4>Mide tu versión</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>Con Lighthouse (incógnito, «Móvil») corre <b>tres</b> veces tu versión publicada y anota la mediana de rendimiento, FCP, LCP y TBT. Compara la <i>dirección</i> con la tabla de la sección 5.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> tu tabla y una frase sobre qué número cambia más de una corrida a otra.</p>
+    </div>
+
+    <h2 class="section-title">Cierre del Sub-bloque B</h2>
+    <div class="body-text"><p>En diecinueve sesiones el Atlas pasó de una página sin nada a una aplicación instalable, que funciona sin conexión, dibuja modelos en 3D, los apoya en tu mesa con realidad aumentada, y existe en tres versiones que se pueden comparar. Lo que queda no es una tecnología sino cinco prácticas que sobrevivieron a todas:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Práctica</th><th>Dónde se vio</th></tr>
+      <tr><td><b>Separar el motor de la pantalla</b></td><td>Dos migraciones (React y Angular) sin tocar visor, AR ni Service Worker</td></tr>
+      <tr><td><b>Probar antes de cambiar</b></td><td>Las pruebas de las sesiones 39 a 42 pasaron intactas sobre React y Angular</td></tr>
+      <tr><td><b>Probar la prueba</b></td><td>Quitar la limpieza a propósito y ver que la prueba falla (S43 y S44)</td></tr>
+      <tr><td><b>Medir con método</b></td><td>Cinco corridas, mediana, corridas intercaladas y una dispersión que se reporta</td></tr>
+      <tr><td><b>Decir lo que no se probó</b></td><td>El LCP sin explicar, el prerender sin probar, la corrección de la S44</td></tr>
+    </table>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>El <b>motor</b> es el 64 a 71 % del código y es igual en las tres versiones; el framework decide el resto.</li>
+      <li>La misma lista de pruebas pasa sobre las tres, salvo la de la nota, que delata el defecto de la versión sin framework.</li>
+      <li><b>Ninguna versión gana en todo:</b> la sin framework tiene el mejor primer contenido, React el mejor puntaje, Angular el costo de herramientas más alto.</li>
+      <li>Se decide con <b>preguntas</b> (cuánta pantalla, quién mantiene, qué tan crítico es el primer contenido, si hay pruebas), no con la moda.</li>
+      <li>Lo que las cifras <b>no dicen</b> (una app pequeña, un entorno simulado, sin prerender, sin mantenimiento a largo plazo) importa tanto como lo que dicen.</li>
+      <li>Una lista de verificación comprueba lo que se pensó en comprobar: también hay que revisar el producto con ojos frescos.</li>
+    </ul>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> web.dev, "Core Web Vitals" y "Rendering on the Web" (CSR, SSR, prerender), web.dev/articles.</div>
+      <div><b>[2]</b> Lighthouse, "Performance scoring" y "Throttling," developer.chrome.com/docs/lighthouse.</div>
+      <div><b>[3]</b> web.dev, "Install criteria" (las condiciones de instalabilidad que comprueba Chrome), web.dev/articles/install-criteria.</div>
+      <div><b>[4]</b> Playwright, "Library" (<code>chromium.launch</code> y el protocolo CDP), playwright.dev/docs/library.</div>
+      <div><b>[5]</b> M. Nygard, "Documenting Architecture Decisions" (el formato de registro de decisión), cognitect.com/blog.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 19 de 19</span>
+  </div>
+</div>
+</body>
+</html>
