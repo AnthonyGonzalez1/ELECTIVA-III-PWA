@@ -1,0 +1,72 @@
+diff --git a/src/instalar.ts b/src/instalar.ts
+index c15f361..47189ef 100644
+--- a/src/instalar.ts
++++ b/src/instalar.ts
+@@ -19,7 +19,7 @@ export type EstadoInstalacion =
+ let evento: EventoInstalacion | null = null;
+ let rechazada = false;
+ let recienInstalada = false;
+-let avisar: () => void = () => {};
++let avisar: () => void = () => {}; // se reemplaza abajo: avisa a todos los suscriptores
+ 
+ /** ¿La página se está mostrando como app instalada? */
+ export function estaInstalada(): boolean {
+@@ -46,34 +46,32 @@ export function instalacionRechazada(): boolean {
+   return rechazada;
+ }
+ 
+-/** Empieza a escuchar. «alCambiar» se llama cada vez que el estado puede haber cambiado. Devuelve cómo dejar de escuchar. */
+-export function iniciarInstalacion(alCambiar: () => void): () => void {
+-  avisar = alCambiar;
+-  const alOfrecer = (e: Event) => {
+-    // Sin esto, Chrome móvil muestra su propia barrita de «Instalar». Se guarda para usarlo en NUESTRO botón.
+-    e.preventDefault();
+-    evento = e as EventoInstalacion;
+-    rechazada = false;
+-    avisar();
+-  };
+-  const alInstalar = () => {
+-    evento = null; // ya no sirve
+-    recienInstalada = true;
+-    avisar();
+-  };
+-  // Cambiar entre pestaña del navegador y ventana de app también cambia el modo de visualización.
+-  const modo = window.matchMedia("(display-mode: standalone)");
+-  const alCambiarModo = () => avisar();
+-  window.addEventListener("beforeinstallprompt", alOfrecer);
+-  window.addEventListener("appinstalled", alInstalar);
+-  modo.addEventListener("change", alCambiarModo);
++// Actividad 43.4: los oyentes se instalan AL CARGAR EL MÓDULO, antes de que React dibuje nada.
++// Si Chrome manda beforeinstallprompt mientras React todavía no se ha suscrito, el evento ya no se pierde:
++// queda guardado en `evento` y el primer dibujo de React lo lee con estadoInstalacion().
++const suscriptores = new Set<() => void>();
++avisar = () => suscriptores.forEach((f) => f());
++
++window.addEventListener("beforeinstallprompt", (e) => {
++  // Sin esto, Chrome móvil muestra su propia barrita de «Instalar». Se guarda para usarlo en NUESTRO botón.
++  e.preventDefault();
++  evento = e as EventoInstalacion;
++  rechazada = false;
+   avisar();
+-  // Sesión 43: en React todo efecto que empieza algo debe saber deshacerlo.
++});
++window.addEventListener("appinstalled", () => {
++  evento = null; // ya no sirve
++  recienInstalada = true;
++  avisar();
++});
++// Cambiar entre pestaña del navegador y ventana de app también cambia el modo de visualización.
++window.matchMedia("(display-mode: standalone)").addEventListener("change", () => avisar());
++
++/** Suscribirse a los cambios: ya NO empieza a escuchar (eso ocurre al cargar el módulo). Devuelve cómo dejar de hacerlo. */
++export function iniciarInstalacion(alCambiar: () => void): () => void {
++  suscriptores.add(alCambiar);
+   return () => {
+-    window.removeEventListener("beforeinstallprompt", alOfrecer);
+-    window.removeEventListener("appinstalled", alInstalar);
+-    modo.removeEventListener("change", alCambiarModo);
+-    avisar = () => {};
++    suscriptores.delete(alCambiar);
+   };
+ }
+ 

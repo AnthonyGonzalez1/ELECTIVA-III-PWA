@@ -1,0 +1,13 @@
+diff --git a/src/App.tsx b/src/App.tsx
+index 8c843d8..e697e01 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -37,7 +37,7 @@ export function App() {
+     const nuevo = crearVisor(contenedor.current!);
+     setVisor(nuevo);
+     return () => {
+-      nuevo.destruir(); // la limpieza: sin ella, StrictMode dejaría dos lienzos
++      // nuevo.destruir(); ← COMENTADA A PROPÓSITO (actividad 43.2) // la limpieza: sin ella, StrictMode dejaría dos lienzos
+       setVisor(null);
+     };
+   }, []);

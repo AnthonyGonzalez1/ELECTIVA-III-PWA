@@ -1,0 +1,3 @@
+npm run dev SIN nuevo.destruir(): lienzos en #visor = 2 ["webgl","webgl"] | pageerrors: []
+npm run dev CON nuevo.destruir() (restaurada): lienzos en #visor = 1 ["webgl"] | pageerrors: []
+versión COMPILADA (npm run build) SIN nuevo.destruir(): lienzos en #visor = 1

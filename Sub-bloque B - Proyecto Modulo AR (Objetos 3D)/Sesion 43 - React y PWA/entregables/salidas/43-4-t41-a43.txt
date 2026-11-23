@@ -1,0 +1,17 @@
+A1) sin evento → botón visible: false | texto: Este navegador no ofrece instalar desde la página. Si ya la instalaste, ábrela desde su icono; si no, usa el menú del navegador → «Instalar app».
+B1) llega beforeinstallprompt → defaultPrevented: true | botón visible: true | texto: Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.
+C1) clic en «Instalar» → prompt() llamado 1 vez | botón visible: false
+C2) llega appinstalled → texto: ✓ Instalada. Ábrela desde su icono en la pantalla de inicio.
+D1) usuario cancela → botón visible: false | texto: Cancelaste la instalación. Chrome decide cuándo volver a ofrecerla; mientras tanto, usa el menú ⋮ → «Instalar app».
+D2) Chrome vuelve a ofrecer la instalación → botón visible: true
+H1) cancelar y volver a pulsar sin evento nuevo → botón visible tras cancelar: false | prompt() llamado 1 veces
+I1) (nuevo, actividad 43.4) el evento llega antes del primer dibujo → defaultPrevented: true | botón visible: true | texto: Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.
+E1) modo standalone → botón visible: false | texto: ✓ Estás usando Atlas 3D como app instalada.
+F1) iPhone → botón visible: false | texto: En iPhone y iPad no hay botón: en Safari toca Compartir y luego «Añadir a pantalla de inicio».
+G1) en línea → banda: null
+G2) se corta la red → banda: Sin conexión: los modelos y las fichas descargadas siguen disponibles.
+G3) sin red se cambia de modelo → «Niveles apilados: cada capa solo habla con la inme…»
+G4) vuelve la red → banda: Volvió la conexión.
+G5) 3,3 s después → banda: null
+pageerrors: []
+RESULTADO: todo en orden

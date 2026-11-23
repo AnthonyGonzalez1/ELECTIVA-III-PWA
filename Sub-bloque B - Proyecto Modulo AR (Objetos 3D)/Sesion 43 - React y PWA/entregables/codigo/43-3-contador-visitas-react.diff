@@ -1,0 +1,44 @@
+diff --git a/src/componentes/Catalogo.tsx b/src/componentes/Catalogo.tsx
+index 1d2fed2..f0be015 100644
+--- a/src/componentes/Catalogo.tsx
++++ b/src/componentes/Catalogo.tsx
+@@ -24,6 +24,8 @@ interface TarjetaProps extends Acciones {
+ function Tarjeta({ modelo, progreso, descargado, destacada, ver3D, marcarVisto, alternarFavorito, guardarNota, verNota }: TarjetaProps) {
+   const [nota, setNota] = useState("");
+   const ultimaVisita = progreso?.ultimaVisita ? new Date(progreso.ultimaVisita).toLocaleString() : "nunca";
++  // Actividad 43.3: el contador NO es estado de la tarjeta: es parte del progreso guardado (db.ts) y llega por props.
++  const visitas = progreso?.visitas ?? 0;
+ 
+   // Una notificación puede abrir la app con ?modelo=ID para destacar esa ficha (Sesión 37).
+   useEffect(() => {
+@@ -40,7 +42,7 @@ function Tarjeta({ modelo, progreso, descargado, destacada, ver3D, marcarVisto,
+       <h2>{modelo.nombre}</h2>
+       <p className="resumen-card">{modelo.resumen}</p>
+       <p className="meta">
+-        Última visita: {ultimaVisita}
++        Última visita: {ultimaVisita} · <span className="visitas">Visitado {visitas} {visitas === 1 ? "vez" : "veces"}</span>
+         {descargado && <> · <span className="disponible">✓ disponible sin conexión</span></>}
+       </p>
+       <div className="acciones">
+diff --git a/src/db.ts b/src/db.ts
+index bec048a..1cab57f 100644
+--- a/src/db.ts
++++ b/src/db.ts
+@@ -22,6 +22,9 @@ export interface ProgresoModelo {
+   ultimaVisita: number | null;
+   notaCifrada: ArrayBuffer | null;
+   notaIv: Uint8Array | null;
++  /** Actividad 43.3: cuántas veces se pulsó «Marcar como visto». Opcional: los registros viejos no lo tienen
++   *  y valen 0. IndexedDB guarda el objeto entero, así que no hace falta subir la versión de la base. */
++  visitas?: number;
+ }
+ 
+ /** Reescribe los registros con identificador viejo. En «descargas» vuelven a «pendiente»: la caché de modelos aún no tiene los archivos nuevos. */
+@@ -83,6 +86,7 @@ export function marcarModeloVisto(db: IDBDatabase, modeloId: string): Promise<Pr
+       const registro: ProgresoModelo =
+         peticion.result || { modeloId, favorito: false, ultimaVisita: null, notaCifrada: null, notaIv: null };
+       registro.ultimaVisita = Date.now();
++      registro.visitas = (registro.visitas ?? 0) + 1; // actividad 43.3
+       const escritura = store.put(registro);
+       escritura.onsuccess = () => resolve(registro);
+       escritura.onerror = () => reject(escritura.error);
