@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 39 · Realidad aumentada con WebXR (2/2) · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .compare-wrap{overflow-x:auto;}
+  .warn-box{border:1px solid #e0a800; background:#fff8e1; border-radius:10px; padding:1em 1.2em; margin:1em 0; font-size:.92em;}
+  .warn-box b{color:#9a6b00;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  .term-box{background:#1c1c1e; color:#cfcac0; border-radius:10px; padding:.9em 1.1em; font-size:.82em; font-family:"Cascadia Code",Consolas,monospace; line-height:1.55; margin:1em 0; overflow-x:auto;}
+  .term-box .prompt{color:#6ad06a;}
+  .win-box{border:2px solid #2e7d32; background:#f1f9f1; border-radius:10px; padding:1em 1.2em; margin:1.2em 0; font-size:.92em;}
+  .win-box b{color:#1b5e20;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 13 de 19</div>
+    <h1>Realidad aumentada con WebXR (2/2)</h1>
+    <div class="lead">Ayer el cubo flotaba a metro y medio. Hoy se apoya: el Atlas le pregunta al sistema dónde hay una superficie real, muestra un anillo que la sigue, coloca el cubo con un toque, lo ancla para que no se mueva del sitio y deja que lo muevas, gires y agrandes con los dedos. Y, como no todos los dispositivos ofrecen todo, cada pieza tiene su plan B.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Explicar</b> qué agregan el <i>hit-test</i> y las <i>anclas</i> a una sesión AR: el cubo deja de flotar en un punto cualquiera y pasa a apoyarse en una superficie que el sistema encontró.</span></li>
+      <li><span class="chk">✓</span><span><b>Pedir</b> funciones opcionales de WebXR y <b>averiguar cuáles concedió</b> el navegador, diseñando un plan B para cada una que falte.</span></li>
+      <li><span class="chk">✓</span><span><b>Buscar</b> superficies con un <code>XRHitTestSource</code> en el espacio <code>viewer</code>, dibujar una retícula que las siga y <b>colocar</b> el objeto con un toque (<code>select</code>).</span></li>
+      <li><span class="chk">✓</span><span><b>Anclar</b> el objeto con un <code>XRAnchor</code>, seguir su pose fotograma a fotograma y limpiar las anclas viejas al recolocar.</span></li>
+      <li><span class="chk">✓</span><span><b>Implementar</b> gestos (mover, girar, escalar) con Pointer Events y la geometría de un rayo que corta un plano, sin que un arrastre se confunda con un «tocar para colocar».</span></li>
+      <li><span class="chk">✓</span><span><b>Probar</b> todo con IWER y una sala sintética, y saber qué comprueba un emulador y qué solo un teléfono.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion38.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 38.</b> El Atlas 3D con la sesión AR de la sesión anterior (detección, «Ver en AR», «Salir de AR» y publicación en GitHub Pages). <b>Es el punto de partida: este .zip NO tiene retícula, ni colocación, ni gestos.</b></span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-sesion39.zip">Descargar .zip</a><span class="rb-desc"><b>Versión terminada de esta sesión.</b> Agrega <code>gestos.ts</code>, el hit-test, las anclas y el plan B. Úsalo para ejecutar el resultado y comparar con tu propio trabajo; intenta construirlo tú primero a partir del checkpoint.</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>De «flotando a metro y medio» a «apoyado en la mesa»</h2>
+    <div class="body-text"><p>Al terminar la <a href="../../Sub-bloque%20B%20-%20Proyecto%20Modulo%20AR%20(Objetos%203D)/Sesion%2038%20-%20Realidad%20aumentada%20con%20WebXR%20(1%20de%202)/guia.html">Sesión 38</a> el cubo estaba en <code>(0, −0.2, −1.5)</code>: un punto del espacio <code>local</code> elegido por nosotros. El sistema sabía dónde estaba el teléfono, pero nadie le había preguntado <i>dónde hay un piso o una mesa</i>. Hoy se lo preguntamos. Hay tres piezas nuevas, y cada una responde a una pregunta distinta:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Pregunta</th><th>Pieza de WebXR</th><th>Qué devuelve</th></tr>
+      <tr><td><b>¿Qué superficie hay en esa dirección?</b></td><td><i>Hit-test</i>: <code>XRHitTestSource</code> y <code>frame.getHitTestResults()</code></td><td>Una lista de impactos; de cada uno, una <b>pose</b> (posición y orientación) sobre la superficie</td></tr>
+      <tr><td><b>¿Cómo hago que el cubo se quede ahí?</b></td><td><i>Anchors</i>: <code>frame.createAnchor()</code> y <code>XRAnchor</code></td><td>Un punto del mundo real que el sistema <b>sigue corrigiendo</b> a medida que entiende mejor la escena</td></tr>
+      <tr><td><b>¿Cómo sé que el usuario quiere colocarlo?</b></td><td>Evento <code>select</code> de la sesión</td><td>Un toque en la pantalla, con el <code>XRFrame</code> de ese instante</td></tr>
+    </table>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>La idea central de un <b>hit-test</b> es la del <i>rayo</i>: el sistema lanza una recta desde algún origen en alguna dirección y dice dónde choca con una superficie que conoce. Hoy el origen será el propio teléfono, apuntando hacia donde mira la cámara. Y la gran lección del diseño es la de siempre en este curso: <b>ninguna de estas funciones está garantizada</b>. Un teléfono sin ARCore completo puede abrir una sesión AR y aun así no ofrecer hit-test; otro puede ofrecer hit-test y no anclas. La app tiene que seguir siendo útil en cada combinación.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Pedir funciones opcionales y comprobar cuáles te dieron</h2>
+    <div class="body-text"><p>En la sesión anterior la petición llevaba <code>dom-overlay</code> como opcional. Ahora se suman <code>hit-test</code> y <code>anchors</code>. La regla general es pedir como <i>opcional</i> lo que tiene plan B: si fuera requerido, un dispositivo sin esa función ni siquiera abriría la sesión. <code>anchors</code> y <code>dom-overlay</code> siguen esa regla. <code>hit-test</code> tiene una historia distinta, que se cuenta en la sección 9: se pide primero como <b>requerida</b> y solo si el dispositivo no la ofrece (<code>NotSupportedError</code>) se reintenta como opcional, con el plan B.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/xr.ts (pedir la sesión)</div>
+      <pre><code>/**
+ * Pide la sesión AR. DEBE llamarse desde el manejador de un clic: sin gesto del
+ * usuario, el navegador la rechaza con SecurityError.
+ *
+ * Primer intento: `hit-test` como función REQUERIDA. Con ella opcional, Chrome en Android
+ * concedía la función y creaba la fuente, pero nunca entregaba una superficie; como requerida,
+ * el anillo sale. Si el dispositivo no la ofrece (NotSupportedError), se reintenta con todo
+ * opcional: la sesión se abre igual y la app usa su plan B.
+ */
+export async function pedirSesionAR(overlay: HTMLElement | null): Promise&lt;XRSession&gt; {
+  const abrir = (requeridas: string[], opcionales: string[]) =&gt; {
+    const opciones: XRSessionInit &amp; { domOverlay?: { root: Element } } = {
+      requiredFeatures: requeridas, // «local»: el origen (0,0,0) es donde está el usuario al empezar
+      optionalFeatures: opcionales,
+    };
+    if (overlay) opciones.domOverlay = { root: overlay };
+    return navigator.xr!.requestSession("immersive-ar", opciones);
+  };
+  try {
+    return await abrir(["local", "hit-test"], ["dom-overlay", "anchors"]);
+  } catch (error) {
+    if ((error as DOMException).name !== "NotSupportedError") throw error;
+    return abrir(["local"], ["dom-overlay", "hit-test", "anchors"]);
+  }
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Pedir una función opcional <b>no significa recibirla</b>. La sesión lo dice en <code>enabledFeatures</code>, una lista con los nombres de las funciones concedidas. Como no todos los navegadores la exponen todavía, <code>capacidadesDe</code> usa un respaldo: si la lista no existe, mira si las funciones de la API están disponibles. El resultado es un objeto con tres booleanos que el resto de la app consulta:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/xr.ts (qué concedió el navegador)</div>
+      <pre><code>/** Qué funciones opcionales concedió de verdad el navegador en esta sesión. */
+export interface CapacidadesAR {
+  overlay: boolean; // dom-overlay: botones HTML y gestos de dedos sobre la cámara
+  hitTest: boolean; // hit-test: preguntar «¿dónde está la superficie en esta dirección?»
+  anclas: boolean; // anchors: fijar un punto del mundo real y que el sistema lo siga corrigiendo
+}</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/xr.ts (leer las capacidades)</div>
+      <pre><code>/**
+ * Pedir una función no garantiza recibirla. `enabledFeatures` lista las concedidas;
+ * si el navegador aún no la ofrece, se mira si existen las funciones de la API.
+ */
+export function capacidadesDe(sesion: XRSession): CapacidadesAR {
+  const concedidas = (sesion as XRSession &amp; { enabledFeatures?: string[] }).enabledFeatures;
+  const tiene = (nombre: string, respaldo: boolean) =&gt; (Array.isArray(concedidas) ? concedidas.includes(nombre) : respaldo);
+  return {
+    overlay: Boolean(sesion.domOverlayState),
+    hitTest: tiene("hit-test", typeof sesion.requestHitTestSource === "function"),
+    anclas: tiene("anchors", typeof XRFrame !== "undefined" &amp;&amp; "createAnchor" in XRFrame.prototype),
+  };
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Con esas tres respuestas la app decide, y el usuario lo ve en la pantalla: tras abrir la sesión, la línea de estado enumera lo que <i>no</i> se concedió. La tabla resume el plan B de cada caso:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Falta…</th><th>Qué hace la app</th><th>Qué pierde el usuario</th></tr>
+      <tr><td><code>anchors</code></td><td>Coloca igual; el objeto queda fijo en el espacio <code>local</code>, sin que el sistema lo corrija.</td><td>Con el tiempo puede «derivar» respecto al mundo real.</td></tr>
+      <tr><td><code>hit-test</code></td><td>No hay retícula: el cubo se coloca a 1,5 m delante de la mirada, y un toque lo trae de nuevo delante.</td><td>El cubo no se apoya en una superficie real.</td></tr>
+      <tr><td><code>dom-overlay</code></td><td>Se puede colocar con un toque, pero no hay botón «Salir» ni gestos con los dedos.</td><td>Mover, girar y escalar; el botón sobre la cámara.</td></tr>
+      <tr><td>Las tres</td><td>Es exactamente la Sesión 38: un cubo flotando.</td><td>La app sigue abriendo AR; solo es menos útil.</td></tr>
+    </table>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>Dos niveles en la escena: quién manda sobre qué</h2>
+    <div class="body-text"><p>El cubo ahora tiene <b>dos</b> jefes. El sistema decide <i>dónde está el punto de apoyo</i> (la superficie, y después el ancla, que se corrige sola). El usuario decide <i>qué hace el cubo respecto a ese punto</i> (lo desplaza, lo gira, lo agranda). Si ambos escribieran en el mismo objeto, se pisarían: cada fotograma el ancla devolvería el cubo a su sitio y deshacería el arrastre del usuario. La solución es separar las responsabilidades con dos nodos anidados:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (dos niveles)</div>
+      <pre><code>  // Dos niveles: `raiz` sigue a la superficie o al ancla (lo manda el sistema);
+  // `grupo` es el objeto con lo que decide el usuario (mover, girar, escalar).
+  const raiz = new THREE.Group();
+  const grupo = new THREE.Group();
+  const cubo = new THREE.Mesh(
+    new THREE.BoxGeometry(1.6, 1.6, 1.6),
+    new THREE.MeshStandardMaterial({ color: 0xffcc29, roughness: 0.45 })
+  );
+  const aristas = new THREE.LineSegments(
+    new THREE.EdgesGeometry(cubo.geometry),
+    new THREE.LineBasicMaterial({ color: 0x0b1220 })
+  );
+  grupo.add(cubo, aristas);
+  raiz.add(grupo);
+  escena.add(raiz);</code></pre>
+    </div>
+    <ul class="clean">
+      <li><b><code>raiz</code></b> es el punto de apoyo. Su matriz (posición y orientación) viene <b>entera</b> del sistema: de la retícula al colocar y, después, del ancla. Por eso en AR se le apaga <code>matrixAutoUpdate</code>: Three.js no debe recalcularla desde <code>position</code> y <code>rotation</code>, porque se la damos ya hecha con <code>matrix.fromArray(...)</code>.</li>
+      <li><b><code>grupo</code></b> es el cubo, hijo de <code>raiz</code>. Sus <code>position</code>, <code>rotation.y</code> y <code>scale</code> son <b>locales</b>: el usuario los cambia con los dedos y siguen valiendo aunque el ancla se corrija.</li>
+    </ul>
+    <div class="body-text" style="margin-top:1em;"><p>Otro detalle de unidades: el cubo mide 1,6 y su origen está en el <i>centro</i>. Si la superficie está en y = 0 y dejamos el cubo en y = 0, queda <b>medio hundido</b>. Por eso la posición local en y es <code>MITAD × escala</code> (0,8 × 0,25 = 0,2 m): así la <i>base</i> apoya en la superficie. Cada vez que cambia la escala, esa altura se recalcula. Estas son las constantes y el estado que usa todo lo demás:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (estado y constantes)</div>
+      <pre><code>/** En qué punto está la colocación del objeto. */
+export type FaseAR = "buscando" | "listo" | "colocado";
+
+export interface EstadoAR extends CapacidadesAR {
+  fase: FaseAR;
+  /** true si el objeto está anclado: el sistema sigue corrigiendo su posición. */
+  anclado: boolean;
+  escala: number; // 1 = el tamaño del modelo (1,6 m); empieza en 0,25
+  giroGrados: number;
+  /** Centro del objeto en el espacio «local» (metros): x derecha, y arriba, -z adelante. */
+  posicion: { x: number; y: number; z: number };
+  /** Diagnóstico: cuántas veces se preguntó al hit-test y cuántas respondió con una superficie. */
+  consultas: number;
+  resultados: number; // consultas en que el sistema devolvió algo
+  impactos: number; // consultas con una pose utilizable
+  /** true si pasaron varios segundos sin superficie: el toque ya coloca delante de la mirada. */
+  sinSuperficie: boolean;
+}
+
+export interface OpcionesAR {
+  overlay: HTMLElement;
+  alCambiar: (estado: EstadoAR) =&gt; void;
+  alTerminar: () =&gt; void;
+}
+
+const ESCALA_INICIAL = 0.25; // el cubo de 1,6 m queda en 40 cm
+const ESCALA_MIN = 0.1;
+const ESCALA_MAX = 1;
+const CADA_CUANTOS_FOTOGRAMAS = 2; // el hit-test se consulta un fotograma de cada dos: basta para una retícula fluida
+const MS_HASTA_PLAN_B = 6000; // sin superficie tanto tiempo: se avisa y el toque coloca delante de la mirada
+const CONSULTAS_SIN_IMPACTO = 8; // consultas seguidas sin superficie antes de ocultar la retícula (evita parpadeos)
+const MITAD = 0.8; // medio cubo: para que apoye la base (y no el centro) en la superficie</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (estado de la colocación)</div>
+      <pre><code>    // ── Estado de la colocación ──
+    let fase: FaseAR = caps.hitTest ? "buscando" : "colocado";
+    let ancla: XRAnchor | null = null;
+    let escala = ESCALA_INICIAL;
+    let consultas = 0;
+    let resultados = 0;
+    let impactosVistos = 0;
+    let sinSuperficie = false;
+    let ultimaPose = performance.now(); // cuándo fue la última vez que el hit-test encontró algo
+    let ultimoImpacto: XRRigidTransform | null = null; // pose de la superficie bajo el centro de la pantalla
+
+    const estado = (): EstadoAR =&gt; {
+      raiz.updateMatrixWorld(true);
+      const p = grupo.getWorldPosition(new THREE.Vector3());
+      return {
+        ...caps,
+        fase,
+        anclado: ancla !== null,
+        escala,
+        giroGrados: ((aGrados(grupo.rotation.y) % 360) + 360) % 360,
+        posicion: { x: p.x, y: p.y, z: p.z },
+        consultas,
+        resultados,
+        impactos: impactosVistos,
+        sinSuperficie,
+      };
+    };
+    const avisar = () =&gt; opciones.alCambiar(estado());
+
+    // `raiz` deja de calcular su matriz sola: se la damos nosotros desde la superficie o el ancla.
+    raiz.matrixAutoUpdate = false;
+    grupo.position.set(0, MITAD * escala, 0); // la base apoya en la superficie
+    grupo.scale.setScalar(escala);
+    grupo.rotation.set(0, 0, 0);</code></pre>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>La retícula: un hit-test desde el centro de la pantalla</h2>
+    <div class="body-text"><p>Para preguntar «¿qué hay en esta dirección?» hace falta decir <i>desde dónde</i> sale el rayo. WebXR lo expresa con un <b>espacio de referencia</b>. Usamos el espacio <code>viewer</code>: su origen es el teléfono y su «adelante» es hacia donde mira la cámara. Un rayo desde <code>viewer</code> sale, entonces, del centro de la pantalla. La fuente de hit-test se crea una sola vez, al entrar a AR:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (crear la fuente de hit-test)</div>
+      <pre><code>    // ── Hit-test: un rayo desde el centro de la pantalla («viewer») ──
+    let fuente: XRHitTestSource | null = null;
+    if (caps.hitTest) {
+      try {
+        const espacioViewer = await sesion.requestReferenceSpace("viewer");
+        try {
+          // «plane» exige que el sistema haya reconocido un plano (tarda y falla en superficies lisas);
+          // «point» acepta también puntos de característica sueltos: el anillo sale casi de inmediato.
+          fuente = (await sesion.requestHitTestSource?.({ space: espacioViewer, entityTypes: ["plane", "point"] })) ?? null;
+        } catch {
+          fuente = (await sesion.requestHitTestSource?.({ space: espacioViewer })) ?? null; // el navegador no admite «point»
+        }
+      } catch {
+        fuente = null;
+      }
+      if (!fuente) {
+        caps.hitTest = false; // lo concedió pero no funciona: plan B
+        fase = "colocado";
+        raiz.visible = true;
+        raiz.matrix.makeTranslation(0, -0.5, -1.5);
+      }
+    }</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Dos cosas para notar. <code>requestHitTestSource</code> puede fallar aunque <code>enabledFeatures</code> diga que existe, así que el <code>try/catch</code> convierte ese fallo en «sin hit-test» y activa el plan B. Y <code>requestReferenceSpace("viewer")</code> es asíncrona, como casi todo en esta API.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>La retícula es un anillo de Three.js. Se crea <i>acostado</i> (<code>rotateX(−π/2)</code>) porque <code>RingGeometry</code> nace en el plano XY, de pie, y la pose del hit-test usa el eje <b>Y como la normal de la superficie</b>: un piso tiene la normal hacia arriba. Su matriz se la damos entera, igual que a <code>raiz</code>:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (la retícula)</div>
+      <pre><code>    // Retícula: un anillo verde que se pega a la superficie que el hit-test encuentra.
+    const reticula = new THREE.Mesh(
+      new THREE.RingGeometry(0.1, 0.13, 40).rotateX(-Math.PI / 2), // acostado: su cara mira hacia arriba
+      new THREE.MeshBasicMaterial({ color: 0x4ade80 })
+    );
+    reticula.matrixAutoUpdate = false; // su matriz viene entera del hit-test
+    reticula.visible = false;
+    escena.add(reticula);</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Y en cada fotograma XR se consulta la fuente. <code>frame.getHitTestResults(fuente)</code> devuelve los impactos ordenados de más cerca a más lejos; <code>getPose(referencia)</code> convierte el primero a una pose en el espacio <code>local</code> que ya usamos para todo lo demás, y <code>pose.transform.matrix</code> es la matriz de 16 números lista para <code>fromArray</code>. Si no hay impactos (miras al cielo, o el sistema aún no entiende la escena), la retícula se oculta. Este es el bucle completo; la parte de las anclas se explica en la sección 6:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (el bucle XR)</div>
+      <pre><code>    renderer.setAnimationLoop((_t, frame) =&gt; {
+      const referencia = renderer.xr.getReferenceSpace();
+      if (frame &amp;&amp; referencia) {
+        if (fuente &amp;&amp; cuadro++ % CADA_CUANTOS_FOTOGRAMAS === 0) {
+          const impactos = frame.getHitTestResults(fuente);
+          const pose = impactos.length ? impactos[0].getPose(referencia) : null;
+          consultas++;
+          if (impactos.length) resultados++;
+          if (pose) impactosVistos++;
+          if (consultas % 30 === 0) avisar(); // refresca el diagnóstico (el overlay lo limita a 5 veces por segundo)
+          if (pose) {
+            sinImpacto = 0;
+            sinSuperficie = false;
+            ultimaPose = performance.now();
+            reticula.visible = true;
+            reticula.matrix.fromArray(pose.transform.matrix);
+            ultimoImpacto = pose.transform;
+            if (fase === "buscando") {
+              fase = "listo";
+              avisar();
+            }
+          } else if (++sinImpacto &gt;= CONSULTAS_SIN_IMPACTO) {
+            // Una superficie que aparece y desaparece cada fotograma haría parpadear el texto del overlay.
+            reticula.visible = false;
+            ultimoImpacto = null;
+            if (fase === "listo") {
+              fase = "buscando";
+              avisar();
+            }
+          }
+          if (!pose &amp;&amp; fase === "buscando" &amp;&amp; !sinSuperficie &amp;&amp; performance.now() - ultimaPose &gt; MS_HASTA_PLAN_B) {
+            sinSuperficie = true; // el texto de ayuda cambia y el toque ya coloca
+            avisar();
+          }
+        }
+        // Con ancla, la posición de `raiz` la corrige el sistema fotograma a fotograma.
+        if (ancla &amp;&amp; frame.trackedAnchors?.has(ancla)) {
+          const poseAncla = frame.getPose(ancla.anchorSpace, referencia);
+          if (poseAncla) raiz.matrix.fromArray(poseAncla.transform.matrix);
+        }
+      }
+      renderer.render(escena, camara);
+    });</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>La variable <code>fase</code> es una pequeña máquina de estados que la interfaz usa para decirle algo útil al usuario: <b>buscando</b> (no hay superficie: «mueve el teléfono despacio»), <b>listo</b> (hay superficie: «toca para colocar») y <b>colocado</b>. Mientras no se coloque, <code>raiz</code> está oculta: solo se ve la retícula.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>Colocar con un toque</h2>
+    <div class="body-text"><p>En una sesión XR, un toque en la pantalla llega como el evento <code>select</code> de la <i>sesión</i> (no de un elemento HTML), y trae el <code>XRFrame</code> de ese instante, el único momento en que se pueden crear anclas. El código distingue los dos caminos, con y sin hit-test:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (colocar)</div>
+      <pre><code>    let turno = 0; // numera los toques: si llegan dos seguidos, solo vale el último
+    async function colocar(frame: XRFrame) {
+      const referencia = renderer.xr.getReferenceSpace();
+      if (!referencia) return;
+      const mio = ++turno;
+      let impacto: XRRigidTransform | null = null;
+      const hayImpacto = fuente !== null &amp;&amp; reticula.visible &amp;&amp; ultimoImpacto !== null;
+      if (fuente &amp;&amp; !hayImpacto &amp;&amp; !sinSuperficie) return; // no hay superficie: no se coloca en el aire (todavía)
+      if (hayImpacto) {
+        impacto = ultimoImpacto;
+        raiz.matrix.copy(reticula.matrix); // el cubo aparece donde está la retícula
+      } else {
+        // Plan B (sin hit-test, o sin superficie tras varios segundos): delante de la mirada actual, a 1,5 m.
+        const posicion = new THREE.Vector3().setFromMatrixPosition(camara.matrixWorld);
+        const delante = camara.getWorldDirection(new THREE.Vector3()).setY(0).normalize();
+        posicion.addScaledVector(delante, 1.5);
+        posicion.y -= 0.5;
+        raiz.matrix.makeTranslation(posicion.x, posicion.y, posicion.z);
+      }
+      grupo.position.set(0, MITAD * escala, 0); // vuelve al centro de la nueva posición
+      raiz.visible = true;
+      fase = "colocado";
+      // ── Ancla: el sistema recuerda ESE punto del mundo real y lo sigue corrigiendo ──
+      ancla?.delete(); // al volver a colocar, la ancla anterior ya no sirve
+      ancla = null;
+      avisar();
+      if (impacto &amp;&amp; caps.anclas) {
+        try {
+          const nueva = await frame.createAnchor!(impacto, referencia);
+          if (mio !== turno || !sesionAR) nueva.delete(); // llegó tarde: otro toque o la sesión ya terminó
+          else ancla = nueva;
+        } catch {
+          ancla = null; // el navegador rechazó anclar: el objeto queda fijo en el espacio «local»
+        }
+        avisar();
+      }
+    }</code></pre>
+    </div>
+    <ul class="clean">
+      <li><b>No se coloca en el aire.</b> Si hay fuente de hit-test pero no hay impacto en este instante, el toque se ignora: el objeto aparece donde está la retícula o no aparece. La excepción es el <b>plan B por tiempo</b>: si pasan 6 s (<code>MS_HASTA_PLAN_B</code>) sin encontrar ninguna superficie, el texto cambia a «No encuentro superficies…» y el toque coloca el cubo delante de la mirada, como en el plan B sin hit-test.</li>
+      <li><b>Recolocar es volver a tocar.</b> Cada toque mueve <code>raiz</code> a la retícula y vuelve el cubo a su centro; la escala y el giro que el usuario eligió se conservan.</li>
+      <li><b>Plan B sin hit-test.</b> La posición sale de la cámara: se toma hacia dónde mira (sin la inclinación vertical, con <code>setY(0)</code>), se avanza 1,5 m y se baja 0,5 m. Es la misma idea de la Sesión 38, pero relativa a donde está el usuario ahora.</li>
+    </ul>
+    <div class="body-text" style="margin-top:1em;"><p>El evento se registra con <code>sesion.addEventListener("select", …)</code>. Antes de colocar, pregunta a los gestos si ese toque ya se convirtió en un arrastre (sección 7):</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (el evento select)</div>
+      <pre><code>    sesion.addEventListener("select", (ev) =&gt; {
+      if (gestos.huboGesto()) return; // un arrastre no cuenta como «tocar para colocar»
+      void colocar((ev as XRInputSourceEvent).frame);
+    });</code></pre>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">6</span>Anclas: que el cubo se quede donde lo pusiste</h2>
+    <div class="body-text"><p>Una pose del hit-test es una <i>foto</i> de la superficie en ese instante, expresada en el espacio <code>local</code>. Pero el sistema de seguimiento no es perfecto: a medida que camina por la habitación y ve más detalles, ARCore refina su mapa y puede «reubicar» el mundo unos centímetros. Si el cubo estuviera pegado a coordenadas fijas, parecería deslizarse respecto a la mesa. Un <b>ancla</b> le pide al sistema que recuerde <i>ese punto del mundo real</i>, no esas coordenadas; en cada fotograma, la pose del ancla es la mejor estimación actual de dónde está ese punto.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>El código ya mostrado tiene las tres partes del ciclo de vida de un ancla:</p></div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Crearla</b> en el toque: <code>frame.createAnchor(impacto, referencia)</code>, con la pose del hit-test. Devuelve una promesa.</li>
+      <li><b>Seguirla</b> en el bucle: si <code>frame.trackedAnchors</code> la contiene, <code>frame.getPose(ancla.anchorSpace, referencia)</code> da su pose actual y se copia a <code>raiz.matrix</code>. Si el sistema pierde el seguimiento un momento, el cubo se queda donde estaba y no desaparece.</li>
+      <li><b>Borrarla</b>: <code>ancla.delete()</code> al recolocar y al terminar la sesión. Un ancla viva le cuesta trabajo al sistema; las que ya no se usan deben soltarse.</li>
+    </ol>
+    <div class="warn-box"><b>La carrera de los dos toques.</b> <code>createAnchor</code> es asíncrona. Si el usuario toca dos veces seguidas, la segunda ancla puede resolverse <i>antes</i> que la primera, y al llegar tarde la primera pisaría a la segunda y dejaría el cubo siguiendo el punto equivocado. Por eso cada toque toma un número (<code>turno</code>) y, al resolverse, una ancla «vieja» se borra en vez de adoptarse. Los errores de este tipo no aparecen al probar despacio con un dedo: aparecen con usuarios reales.</div>
+    <div class="body-text" style="margin-top:1em;"><p>Y la rama de fallo: si <code>createAnchor</code> se rechaza (por ejemplo, el sistema perdió el seguimiento justo en ese instante), el cubo queda colocado pero <b>no anclado</b>; la línea de datos del overlay lo muestra con <code>anclado: no</code>. Al terminar la sesión todo se libera:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (al terminar la sesión)</div>
+      <pre><code>    sesion.addEventListener(
+      "end",
+      () =&gt; {
+        renderer.setAnimationLoop(null);
+        renderer.xr.enabled = false;
+        sesionAR = null;
+        gestos.destruir();
+        fuente?.cancel();
+        ancla?.delete();
+        escena.remove(reticula);
+        reticula.geometry.dispose();
+        (reticula.material as THREE.Material).dispose();
+        escena.background = fondoPrevio;
+        controles.enabled = !porSensores;
+        raiz.matrixAutoUpdate = true;
+        raiz.matrix.identity();
+        raiz.visible = true;
+        grupo.position.set(0, 0, 0);
+        grupo.scale.set(1, 1, 1);
+        grupo.rotation.set(0, 0, 0);
+        ajustarTamano(); // el visor XR cambió el tamaño del canvas
+        bucle(); // vuelve el requestAnimationFrame normal
+        opciones.alTerminar();
+      },
+      { once: true }
+    );</code></pre>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">7</span>Gestos: mover, girar y escalar</h2>
+    <div class="body-text"><p>En AR de teléfono, la pantalla es el overlay DOM que ya usamos para «Salir de AR». Eso nos regala algo: los dedos sobre el overlay llegan como <b>Pointer Events</b> normales (<code>pointerdown</code>, <code>pointermove</code>, <code>pointerup</code>), con coordenadas de pantalla. Un módulo nuevo, <code>gestos.ts</code>, los traduce a tres intenciones:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Qué hace el usuario</th><th>Intención</th><th>Cómo se calcula</th></tr>
+      <tr><td>Un dedo se arrastra</td><td>Mover</td><td>Posición del dedo, tras superar un umbral de 10 px</td></tr>
+      <tr><td>Dos dedos se separan o se juntan</td><td>Escalar</td><td>Distancia actual ÷ distancia anterior</td></tr>
+      <tr><td>Dos dedos giran entre sí</td><td>Girar</td><td>Cambio del ángulo de la recta que une los dos dedos (<code>atan2</code>)</td></tr>
+    </table>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/gestos.ts (el módulo)</div>
+      <pre><code>const UMBRAL_ARRASTRE_PX = 10; // por debajo de esto es un toque, no un arrastre
+
+export function crearGestos(el: HTMLElement, acciones: AccionesGestos): Gestos {
+  const dedos = new Map&lt;number, { x: number; y: number }&gt;();
+  let inicio = { x: 0, y: 0 };
+  let arrastrando = false;
+  let hubo = false;
+  let distanciaPrev = 0;
+  let anguloPrev = 0;
+
+  const medida = () =&gt; {
+    const [a, b] = [...dedos.values()];
+    return { distancia: Math.hypot(b.x - a.x, b.y - a.y), angulo: Math.atan2(b.y - a.y, b.x - a.x) };
+  };
+
+  function alBajar(e: PointerEvent) {
+    // Los botones del overlay (como «Salir de AR») no inician gestos.
+    if ((e.target as HTMLElement).closest("button")) return;
+    if (dedos.size === 0) {
+      hubo = false;
+      arrastrando = false;
+      inicio = { x: e.clientX, y: e.clientY };
+    }
+    dedos.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (dedos.size === 2) {
+      const m = medida();
+      distanciaPrev = m.distancia;
+      anguloPrev = m.angulo;
+      hubo = true; // con dos dedos nunca es un toque
+    }
+  }
+
+  function alMoverDedo(e: PointerEvent) {
+    const dedo = dedos.get(e.pointerId);
+    if (!dedo) return;
+    dedo.x = e.clientX;
+    dedo.y = e.clientY;
+    if (dedos.size === 1) {
+      if (!arrastrando &amp;&amp; Math.hypot(e.clientX - inicio.x, e.clientY - inicio.y) &lt; UMBRAL_ARRASTRE_PX) return;
+      const primero = !arrastrando;
+      arrastrando = true;
+      hubo = true;
+      acciones.alMover(e.clientX, e.clientY, primero);
+    } else if (dedos.size === 2) {
+      const m = medida();
+      if (distanciaPrev &gt; 0) acciones.alEscalar(m.distancia / distanciaPrev);
+      let d = m.angulo - anguloPrev;
+      if (d &gt; Math.PI) d -= 2 * Math.PI; // el ángulo da la vuelta en ±180°: se normaliza
+      if (d &lt; -Math.PI) d += 2 * Math.PI;
+      acciones.alGirar(d);
+      distanciaPrev = m.distancia;
+      anguloPrev = m.angulo;
+    }
+  }
+
+  function alSubir(e: PointerEvent) {
+    dedos.delete(e.pointerId);
+    if (dedos.size === 0) arrastrando = false;
+  }
+
+  el.addEventListener("pointerdown", alBajar);
+  el.addEventListener("pointermove", alMoverDedo);
+  el.addEventListener("pointerup", alSubir);
+  el.addEventListener("pointercancel", alSubir);
+  return {
+    huboGesto: () =&gt; hubo,
+    destruir() {
+      el.removeEventListener("pointerdown", alBajar);
+      el.removeEventListener("pointermove", alMoverDedo);
+      el.removeEventListener("pointerup", alSubir);
+      el.removeEventListener("pointercancel", alSubir);
+      dedos.clear();
+    },
+  };
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Tres decisiones de diseño que vale la pena releer en el código:</p></div>
+    <ul class="clean">
+      <li><b>El umbral.</b> Un dedo nunca está perfectamente quieto: un «toque» tiene microdesplazamientos. Por debajo de 10 px el movimiento se descarta; solo por encima, el toque se convierte en arrastre.</li>
+      <li><b><code>huboGesto()</code> resuelve el conflicto entre tocar y arrastrar.</b> Soltar un arrastre también genera un <code>select</code>, que sin esta guarda recolocaría el cubo justo después de moverlo. La bandera se levanta cuando el toque pasa el umbral (o cuando entra un segundo dedo) y se baja al apoyar un dedo nuevo.</li>
+      <li><b>Se ignoran los botones.</b> Si el <code>pointerdown</code> cae sobre un <code>&lt;button&gt;</code> (por ejemplo, «Salir de AR»), no inicia gestos.</li>
+    </ul>
+    <div class="body-text" style="margin-top:1em;"><p>Girar y escalar son directos: se suman al <code>grupo</code>, el escalado con un tope (entre 0,1 y 1: de 16 cm a 1,6 m) y recalculando la altura para que la base siga apoyada. <b>Mover</b> es más interesante, porque hay que pasar de un punto de la pantalla (2D) a un punto de la superficie (3D). Es un problema de geometría de rayos:</p></div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li>Se convierte la posición del dedo a <i>coordenadas normalizadas</i> (de −1 a 1 en cada eje, con Y hacia arriba).</li>
+      <li>Three.js construye el <b>rayo</b> que sale de la cámara y pasa por ese punto (<code>setFromCamera</code>).</li>
+      <li>Se define el <b>plano de la superficie</b>: pasa por el origen de <code>raiz</code> y su normal es el eje Y de <code>raiz</code> (la normal que nos dio el hit-test).</li>
+      <li>Se calcula dónde el rayo corta el plano (<code>intersectPlane</code>). Si el rayo no baja hasta el plano (miras al cielo), no hay punto y no se mueve nada.</li>
+      <li>El punto está en coordenadas del mundo; <code>raiz.worldToLocal</code> lo expresa respecto a <code>raiz</code>, que es lo que necesita <code>grupo.position</code>. Como moverse es deslizarse <i>sobre</i> la superficie, solo cambian x y z; la altura no.</li>
+      <li>En el primer movimiento se guarda la distancia entre el punto tocado y el centro del cubo (<code>desfase</code>), para que el cubo no «salte» a quedar centrado bajo el dedo.</li>
+    </ol>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (mover, girar y escalar)</div>
+      <pre><code>    const rayo = new THREE.Raycaster();
+    const plano = new THREE.Plane();
+    const desfase = new THREE.Vector2();
+    const tmp = new THREE.Vector3();
+    function mover(clientX: number, clientY: number, primero: boolean) {
+      if (fase !== "colocado") return;
+      // Pantalla → rayo → punto donde ese rayo corta el plano de la superficie.
+      rayo.setFromCamera(new THREE.Vector2((clientX / window.innerWidth) * 2 - 1, -(clientY / window.innerHeight) * 2 + 1), camara);
+      raiz.updateMatrixWorld(true);
+      const normal = new THREE.Vector3(0, 1, 0).transformDirection(raiz.matrixWorld);
+      plano.setFromNormalAndCoplanarPoint(normal, tmp.setFromMatrixPosition(raiz.matrixWorld));
+      const punto = rayo.ray.intersectPlane(plano, new THREE.Vector3());
+      if (!punto) return; // el rayo no baja hasta el plano (miras al cielo)
+      const local = raiz.worldToLocal(punto);
+      // En el primer movimiento se recuerda a cuánto del centro del objeto tocó el dedo, para que no salte.
+      if (primero) desfase.set(grupo.position.x - local.x, grupo.position.z - local.z);
+      grupo.position.x = local.x + desfase.x;
+      grupo.position.z = local.z + desfase.y;
+      avisar();
+    }
+    const gestos = crearGestos(opciones.overlay, {
+      alMover: mover,
+      alGirar(rad) {
+        if (fase !== "colocado") return;
+        grupo.rotation.y += rad;
+        avisar();
+      },
+      alEscalar(factor) {
+        if (fase !== "colocado") return;
+        escala = Math.min(ESCALA_MAX, Math.max(ESCALA_MIN, escala * factor));
+        grupo.scale.setScalar(escala);
+        grupo.position.y = MITAD * escala; // la base sigue apoyada
+        avisar();
+      },
+    });</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>En <code>main.ts</code> quedan dos detalles de integración. El texto de ayuda cambia según la fase (y según si hay <code>dom-overlay</code>, porque sin él no hay gestos), y se muestra una línea de datos con lo que la sesión concedió y la posición del cubo en metros: sirve para depurar y para las pruebas automáticas.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (texto de ayuda y datos)</div>
+      <pre><code>// Texto de ayuda sobre la cámara según en qué punto va la colocación.
+function ayudaAR(e: EstadoAR): string {
+  if (!e.hitTest) return "Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti.";
+  switch (e.fase) {
+    case "buscando":
+      return e.sinSuperficie
+        ? "No encuentro superficies. Prueba con una zona con textura y buena luz, o toca la pantalla para colocar el cubo delante de ti."
+        : "Mueve el teléfono despacio hasta ver el anillo verde sobre una superficie.";
+    case "listo":
+      return "Toca la pantalla para colocar el cubo.";
+    case "colocado":
+      return e.overlay
+        ? "Arrastra para moverlo, gira con dos dedos, pellizca para el tamaño. Toca otro punto para recolocarlo."
+        : "Cubo colocado. Toca otro punto para recolocarlo.";
+  }
+}</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (escribir el overlay con calma)</div>
+      <pre><code>// Cada cambio del texto del overlay obliga al navegador a volver a dibujarlo
+// encima de la cámara, y eso cuesta. Por eso: (1) solo se escribe si el texto
+// cambió y (2) como máximo cada 200 ms (los gestos avisan decenas de veces por segundo).
+const INTERVALO_OVERLAY_MS = 200;
+let ultimoPintado = 0;
+let pendienteAR: EstadoAR | null = null;
+let temporizadorAR = 0;
+
+function pintarEstadoAR(e: EstadoAR): void {
+  const si = (v: boolean) =&gt; (v ? "sí" : "no");
+  const { x, y, z } = e.posicion;
+  const pos = e.fase === "colocado" ? `(${x.toFixed(2)}, ${y.toFixed(2)}, ${z.toFixed(2)}) m` : "—";
+  const ayuda = ayudaAR(e);
+  const datos =
+    `hit-test: ${si(e.hitTest)} · anclas: ${si(e.anclas)} · anclado: ${si(e.anclado)} · ` +
+    `fase: ${e.fase} · escala: ${e.escala.toFixed(2)} · giro: ${e.giroGrados}° · pos: ${pos} · ` +
+    `consultas: ${e.consultas} · resultados: ${e.resultados} · poses: ${e.impactos}`;
+  if (xrEstado.textContent !== ayuda) xrEstado.textContent = ayuda;
+  if (xrDatos.textContent !== datos) xrDatos.textContent = datos;
+}</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (línea de datos)</div>
+      <pre><code>function mostrarEstadoAR(e: EstadoAR): void {
+  if (performance.now() - ultimoPintado &gt;= INTERVALO_OVERLAY_MS) {
+    ultimoPintado = performance.now();
+    pintarEstadoAR(e);
+    return;
+  }
+  pendienteAR = e; // se pintará el último estado cuando venza el intervalo
+  if (temporizadorAR) return;
+  temporizadorAR = window.setTimeout(() =&gt; {
+    temporizadorAR = 0;
+    ultimoPintado = performance.now();
+    if (pendienteAR) pintarEstadoAR(pendienteAR);
+    pendienteAR = null;
+  }, INTERVALO_OVERLAY_MS);
+}</code></pre>
+    </div>
+    <div class="warn-box"><b>Lección de rendimiento: en AR cada trabajo extra se paga en cada fotograma.</b> La primera versión de esta sesión, en un teléfono real, tardaba en mostrar el anillo y Chrome llegó a cerrar la pestaña con el aviso «¡Oh, no!». Dos hábitos sospechosos de ese coste: escribir texto en el overlay HTML en cada cambio (cada escritura obliga a redibujar el overlay sobre la imagen de la cámara, y los gestos avisan decenas de veces por segundo) y consultar el hit-test en todos los fotogramas. La versión del paquete aplica tres medidas: el texto se escribe solo si cambió y como máximo cada 200 ms; el hit-test se consulta uno de cada dos fotogramas (<code>CADA_CUANTOS_FOTOGRAMAS</code>); y la retícula solo se oculta tras ocho consultas seguidas sin superficie (<code>CONSULTAS_SIN_IMPACTO</code>), para que no parpadee. Regla práctica: lo que cambia más rápido que la vista humana no necesita pintarse en el DOM.</div>
+    <div class="body-text" style="margin-top:1em;"><p>Y un último problema, propio de los overlays: el navegador también convierte en <code>select</code> un toque sobre un botón del overlay. Tocar «Salir de AR» saldría de la sesión, pero <i>también</i> intentaría colocar el cubo. Antes de procesar el <code>select</code>, el navegador emite <code>beforexrselect</code> sobre el elemento tocado, y cancelarlo avisa de que ese toque es del botón y no de la escena:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (el botón no es la escena)</div>
+      <pre><code>// Un toque sobre un botón del overlay NO debe contar como «tocar para colocar»:
+// el navegador avisa con `beforexrselect` y basta cancelarlo.
+btnSalirAR.addEventListener("beforexrselect", (e) =&gt; e.preventDefault());</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Por último, <code>touch-action: none</code> en el CSS del overlay evita que el navegador interprete el arrastre como un desplazamiento de página o el pellizco como un zoom.</p></div>
+    <div class="warn-box"><b>Los gestos dependen del overlay.</b> Sin <code>dom-overlay</code> no hay dónde escuchar los dedos y el usuario solo puede colocar con un toque. Es otra razón para comprobar <code>capacidades.overlay</code> y decirlo en pantalla, en vez de dejar al usuario preguntándose por qué «no pasa nada» al arrastrar.</div>
+
+    <h2 class="section-title"><span class="num-badge">8</span>Probar con IWER y una sala sintética</h2>
+    <div class="body-text"><p>Sin una superficie real, el hit-test no tiene qué encontrar. IWER lo resuelve con un módulo aparte, <code>@iwer/sem</code> (<i>Synthetic Environment Module</i>): carga una <b>sala simulada</b> (planos con etiquetas como suelo, mesa o pared) y responde a los hit-tests lanzando rayos contra ella. En las pruebas de esta sesión la sala es lo mínimo que hace falta: <b>un suelo de 6 × 6 m</b> en y = 0.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>test_s39.js (la sala sintética)</div>
+      <pre><code>// Sala sintética: UN suelo de 6 × 6 m en y = 0. En las capturas de Meta el «frente» del plano es su -Y local: media vuelta sobre X (1,0,0,0) lo deja mirando hacia arriba.
+const SALA = JSON.stringify({ type: 'scene', version: 1, spatialEntities: [{
+  uuid: '11111111-0000-4000-8000-000000000001', semanticLabel_META: 'FLOOR',
+  locatable_META: { orientation: { x: 1, y: 0, z: 0, w: 0 }, position: { x: 0, y: 0, z: 0 } },
+  bounded2D_META: { offset: { x: -3, y: -3 }, extent: { width: 6, height: 6 } } }] });</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Tres detalles que costó descubrir y que conviene saber si construyes tu propia sala:</p></div>
+    <ul class="clean">
+      <li><b>La orientación del plano.</b> En las capturas de Meta, el «frente» de un plano es su eje −Y local. Un suelo con el frente hacia arriba necesita media vuelta sobre X: el cuaternión <code>(1, 0, 0, 0)</code>. Con la orientación «lógica» (un cuarto de vuelta) el suelo queda <i>vertical</i>, y el hit-test «choca» con él en el propio punto de partida: la retícula aparece a 0 m.</li>
+      <li><b>El origen <code>local</code> es la cabeza al empezar.</b> El visor emulado está a 1,6 m de altura, así que el suelo queda en <code>y = −1,6</code> en el espacio <code>local</code>, y un cubo sobre él, a <code>−1,6 + 0,2 = −1,4</code>.</li>
+      <li><b>Hay que mirar hacia abajo.</b> El rayo del <code>viewer</code> sale horizontal si no inclinas la cabeza, y nunca toca el suelo. La prueba inclina el visor 0,6 rad (unos 34°): el rayo corta el suelo a 1,6 ÷ tan(0,6) ≈ 2,34 m.</li>
+    </ul>
+    <div class="body-text" style="margin-top:1em;"><p>El arnés de la prueba instala el emulador y la sala, fija la pose de la cabeza, y define tres ayudas: <code>__tocar()</code> (pulsar y soltar el gatillo del control: genera un <code>select</code>), <code>__dedo()</code> (un <code>PointerEvent</code> sobre el overlay: un dedo virtual) y un contador de anclas creadas y borradas.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>test_s39.js (el arnés)</div>
+      <pre><code>// Instala el visor simulado y, si `conSala`, la sala. La cabeza empieza a 1,6 m de altura, mirando 34° hacia abajo.
+const instalar = (conSala, extra = '') =&gt; IWER + SEM + `
+;(() =&gt; {
+  const dev = new IWER.XRDevice(IWER.metaQuest3);
+  dev.installRuntime({ forceInstall: true });
+  ${conSala ? `dev.installSEM(IWER_SEM.SyntheticEnvironmentModule); dev.sem.loadEnvironment(${SALA});` : ''}
+  window.__dev = dev;
+  window.__mirar = (alturaX, y, cabeceo) =&gt; { dev.position.set(alturaX, y, 0); dev.quaternion.set(Math.sin(-cabeceo / 2), 0, 0, Math.cos(cabeceo / 2)); };
+  window.__mirar(0, 1.6, 0.6);
+  window.__cuenta = { crearAncla: 0, borrarAncla: 0 };
+  { const c0 = XRFrame.prototype.createAnchor; XRFrame.prototype.createAnchor = function (...a) { window.__cuenta.crearAncla++; return c0.apply(this, a).then((anc) =&gt; { const d0 = anc.delete.bind(anc); anc.delete = () =&gt; { window.__cuenta.borrarAncla++; return d0(); }; return anc; }); }; }
+  const rs = navigator.xr.requestSession.bind(navigator.xr);
+  navigator.xr.requestSession = async (modo, op) =&gt; { window.__peticion = J(op); const s = await rs(modo, op); window.__ses = s; return s; };
+  function J(x) { return JSON.stringify(x); }
+  // Tocar la pantalla en AR = «select» del control; los dedos sobre el overlay son Pointer Events.
+  window.__tocar = async () =&gt; { const c = dev.controllers.right; c.updateButtonValue('trigger', 1); await new Promise(r =&gt; setTimeout(r, 100)); c.updateButtonValue('trigger', 0); await new Promise(r =&gt; setTimeout(r, 150)); };
+  window.__dedo = (tipo, id, x, y) =&gt; document.querySelector('#xr-overlay').dispatchEvent(new PointerEvent(tipo, { pointerId: id, clientX: x, clientY: y, bubbles: true }));
+  ${extra}
+})();`;</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Salida literal de la compilación:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build<br>
+&gt; pwa-ar-objetos3d@0.0.0 build<br>
+&gt; tsc &amp;&amp; tsc -p tsconfig.sw.json &amp;&amp; vite build<br>
+<br>
+vite v5.4.21 building for production...<br>
+transforming...<br>
+✓ 18 modules transformed.<br>
+rendering chunks...<br>
+computing gzip size...<br>
+dist/index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2.73 kB │ gzip:&nbsp;&nbsp; 1.09 kB<br>
+dist/assets/index-BKndAtWK.css&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 4.00 kB │ gzip:&nbsp;&nbsp; 1.25 kB<br>
+dist/assets/workbox-window.prod.es5-BqEJf4Xk.js&nbsp;&nbsp;&nbsp;&nbsp;5.71 kB │ gzip:&nbsp;&nbsp; 2.34 kB<br>
+dist/assets/index-CyNS8abR.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;516.92 kB │ gzip: 132.98 kB<br>
+<br>
+(!) Some chunks are larger than 500 kB after minification. Consider:<br>
+- Using dynamic import() to code-split the application<br>
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks<br>
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.<br>
+✓ built in 1.77s<br>
+<br>
+PWA v1.3.0<br>
+Building src/sw.ts service worker ("es" format)...<br>
+vite v5.4.21 building for production...<br>
+transforming...<br>
+✓ 89 modules transformed.<br>
+rendering chunks...<br>
+computing gzip size...<br>
+dist/sw.mjs&nbsp;&nbsp;27.27 kB │ gzip: 9.03 kB<br>
+✓ built in 462ms<br>
+<br>
+PWA v1.3.0<br>
+mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;injectManifest<br>
+format:&nbsp;&nbsp; es<br>
+<b>precache&nbsp;&nbsp;8 entries (527.14 KiB)</b><br>
+files generated<br>
+&nbsp;&nbsp;dist/sw.js</div>
+    <div class="fig-caption">El precaché pasó de 518,70 KiB (Sesión 38) a 527,14 KiB y sigue en 8 entradas; el paquete principal, de 508,47 a 516,92 kB. El Service Worker casi no cambió (27,27 kB).</div>
+    <div class="body-text" style="margin-top:1em;"><p>Y la prueba, con sus escenarios: <b>A</b> sala con hit-test y anclas (retícula, colocar, caminar); <b>B</b> los tres gestos y sus límites; <b>C</b> recolocar; <b>D</b> mirar al techo; <b>E</b> salir; <b>F</b> tocar sin superficie; <b>G</b> sin hit-test (plan B); <b>H</b> sin <code>anchors</code>; <b>I</b> <code>createAnchor</code> rechazado; <b>J</b> el dispositivo rechaza <code>hit-test</code> como requerida y la app reintenta con todo opcional.</p></div>
+    <div class="term-box"><span class="prompt">$</span> node test_s39.js<br>
+A1) petición → {"requiredFeatures":["local","hit-test"],"optionalFeatures":["dom-overlay","anchors"],"domOverlay":{"root":{}}}<br>
+A1) estado general → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.<br>
+A2) mirando al suelo → Toca la pantalla para colocar el cubo. | {hitTest:sí,anclas:sí,anclado:no,fase:listo,escala:0.25,giro:0,pos:—}<br>
+A3) tras tocar → Cubo colocado. Toca otro punto para recolocarlo. | {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas creadas/borradas: {"crearAncla":1,"borrarAncla":0}<br>
+A4) el usuario camina 1 m a la derecha → pos del cubo: [0,-1.4,-2.34] (sigue en su sitio: true )<br>
+B1) movimiento de 4 px (menor que el umbral) → pos igual: true<br>
+B2) arrastrar 200 px a la derecha → pos: [0,-1.4,-2.34] → [0.63,-1.4,-2.34] | x aumentó: true | y igual: true<br>
+B3) «select» justo después de un arrastre → NO recoloca: anclas {"crearAncla":1,"borrarAncla":0} → {"crearAncla":1,"borrarAncla":0} | pos: [0.63,-1.4,-2.34]<br>
+B4) separar los dos dedos (200 → 400 px) → escala: 0.25 → 0.5<br>
+B5) separarlos mucho más → escala limitada a 1<br>
+B6) juntarlos casi del todo → escala limitada a 0.1<br>
+B7) girar los dos dedos → giro: 0° → 90°<br>
+B8) tras dos dedos, ¿hubo «gesto»? el siguiente «select» tampoco recoloca: {"crearAncla":1,"borrarAncla":0} → {"crearAncla":1,"borrarAncla":0}<br>
+C1) recolocar mirando más abajo → pos: [0.63,-0.8,-2.34] → [0,-0.8,-1.27] | anclas creadas/borradas: {"crearAncla":2,"borrarAncla":1} | anclado: sí | escala conservada: 1<br>
+D1) mirando al techo → Cubo colocado. Toca otro punto para recolocarlo. | fase: colocado | tocar: anclas {"crearAncla":2,"borrarAncla":1} → {"crearAncla":2,"borrarAncla":1} | el cubo no se movió: true<br>
+D2) vuelve a mirar al suelo → colocado<br>
+E1) tras salir → La sesión de realidad aumentada terminó. | anclas borradas en total: {"crearAncla":2,"borrarAncla":2} | canvas: 1 | botón AR: true<br>
+F1) arranca mirando al techo → Mueve el teléfono despacio hasta ver el anillo verde sobre una superficie. | {hitTest:sí,anclas:sí,anclado:no,fase:buscando,escala:0.25,giro:0,pos:—}<br>
+F2) tocar sin superficie → fase: buscando | anclas: {"crearAncla":0,"borrarAncla":0}<br>
+F3) 6 s sin superficie → No encuentro superficies. Prueba con una zona con textura y buena luz, o toca la pantalla para colocar el cubo delante de ti. | {hitTest:sí,anclas:sí,anclado:no,fase:buscando,escala:0.25,giro:0,pos:—}<br>
+F4) tocar tras el plazo → coloca delante de la mirada: {hitTest:sí,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-0.31,-1.49]} | anclas: {"crearAncla":0,"borrarAncla":0}<br>
+G1) sin hit-test → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, hit-test.<br>
+G1)&nbsp;&nbsp;Este dispositivo no ofrece hit-test: el cubo está a 1,5 m delante. Toca para traerlo delante de ti. | {hitTest:no,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-0.3,-1.5]}<br>
+G2) tras tocar (de pie en x=1, mirando al frente) →&nbsp;&nbsp;{hitTest:no,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[1,-0.3,-1.48]}<br>
+G3) los gestos también funcionan sin hit-test → escala: 0.5<br>
+H1) sin «anchors» → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, anchors.<br>
+H2) tocar →&nbsp;&nbsp;{hitTest:sí,anclas:no,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas creadas: {"crearAncla":0,"borrarAncla":0}<br>
+I1) createAnchor rechazado →&nbsp;&nbsp;{hitTest:sí,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+J1) intentos de petición → ["[\"local\",\"hit-test\"]","[\"local\"]"] | estado: Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.<br>
+J2) tocar tras el reintento → {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+pageerrors: []</div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/emulador-hit-test.png" alt="Cuatro capturas del emulador IWER: un anillo verde sobre el suelo; el cubo colocado; el cubo movido, agrandado y girado; y el cubo en el plan B sin hit-test" style="max-width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Capturas de la misma prueba en IWER. Las líneas son la rejilla del entorno del emulador. (1) La retícula sigue el suelo. (2) Un toque apoya el cubo y lo ancla. (3) Tras arrastrar a la derecha, pellizcar y girar con dos dedos (escala 0,64, giro 51°). (4) Sin hit-test no hay retícula: el cubo está delante, a 1,5 m.</div></figure>
+    <div class="win-box"><b>Qué demuestra:</b> (1) la petición pide <code>hit-test</code> como requerida y <code>dom-overlay</code> y <code>anchors</code> como opcionales; (2) con la sala, la retícula aparece y la fase pasa de «buscando» a «listo», y el cubo no existe hasta tocar; (3) un toque coloca el cubo sobre el suelo (y = −1,4: la base en −1,6 + media altura 0,2) y crea <b>una</b> ancla; (4) si el usuario camina 1 m, el cubo sigue en el mismo sitio del mundo; (5) un movimiento de 4 px no mueve nada, y uno de 200 px desplaza el cubo 0,63 m a la derecha <b>sin cambiar su altura</b>; (6) un <code>select</code> justo después de un arrastre <b>no recoloca</b>; (7) la escala sube con la separación de los dedos y se limita a 1 y a 0,1; el giro suma 90°; (8) recolocar crea una segunda ancla y <b>borra la primera</b>, y conserva la escala; (9) mirando al techo, tocar no hace nada hasta que pasan 6 s sin superficie; entonces el texto cambia y el toque coloca el cubo delante de la mirada; (10) al salir se borra la última ancla (2 creadas, 2 borradas); (11) sin hit-test el cubo queda a 1,5 m delante, un toque lo trae delante de donde mira el usuario, y los gestos siguen funcionando; (12) sin <code>anchors</code> o con <code>createAnchor</code> rechazado el cubo se coloca igual con <code>anclado: no</code>; (13) cero <code>pageerror</code>.</div>
+    <div class="body-text" style="margin-top:1em;"><p>La prueba de publicación en subruta de la sesión anterior se repitió con el código nuevo, para comprobar que nada escribe rutas a mano:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build -- --base=/atlas-3d/ --outDir /tmp/dist-sub<br>
+<span class="prompt">$</span> node test_subruta.js<br>
+subruta → {"scope":"http://localhost:4195/atlas-3d/","activo":true,"manifest":{"start":"./","scope":"./"},"iconoStatus":200,"caches":["workbox-precache-v2-http://localhost:4195/atlas-3d/"]}<br>
+recarga sin conexión: canvas montado = 1<br>
+ficha → ["http://localhost:4195/atlas-3d/modelos/modelo-demo-1.json",200]<br>
+descarga desde el botón → caché modelos-3d: ["http://localhost:4195/atlas-3d/modelos/modelo-demo-1.json","http://localhost:4195/atlas-3d/modelos/modelo-demo-2.json","http://localhost:4195/atlas-3d/modelos/modelo-demo-3.json"]<br>
+peticiones fuera de la subruta o 404: [] | pageerrors: []</div>
+    <div class="warn-box"><b>Qué no puede comprobar un emulador.</b> (1) <b>Que el ancla corrija la posición.</b> En IWER el mundo no se «reubica», así que el ancla no se mueve nunca: la prueba comprueba el ciclo de vida (crear, seguir, borrar), no el beneficio. Ese beneficio es visible en un teléfono, durante varios minutos. (2) <b>Que el hit-test encuentre superficies reales.</b> ARCore necesita textura y luz: una pared blanca o un piso brillante pueden no dar impactos. (3) <b>El overlay y los dedos reales.</b> IWER no implementa <code>dom-overlay</code>: los dedos son <code>PointerEvent</code> fabricados. Según la especificación de DOM Overlays, el mismo toque llega también como <code>select</code>; la guarda <code>huboGesto</code> existe por eso y solo se ejerce de verdad ahí. (4) <b>El tamaño real.</b> «40 cm» son números; ver el cubo sobre tu escritorio es la comprobación. (5) <b>iOS.</b> Safari no ofrece WebXR.</div>
+
+    <h2 class="section-title"><span class="num-badge">9</span>Pruébalo en tu teléfono</h2>
+    <div class="body-text"><p>Esta sesión sí necesita un teléfono: hit-test y anclas trabajan con la cámara y el seguimiento reales. Usa el mismo repositorio de GitHub Pages de la <a href="../../Sub-bloque%20B%20-%20Proyecto%20Modulo%20AR%20(Objetos%203D)/Sesion%2038%20-%20Realidad%20aumentada%20con%20WebXR%20(1%20de%202)/guia.html">Sesión 38</a>:</p></div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Actualiza el repositorio.</b> Descomprime <code>pwa-ar-objetos3d-sesion39.zip</code> y sube el contenido al repositorio (<b>Add file → Upload files</b>), reemplazando los archivos. Conserva <code>.github/workflows/pages.yml</code>: el flujo vuelve a compilar y publicar solo.</li>
+      <li><b>Espera la marca verde</b> en la pestaña <b>Actions</b>.</li>
+      <li><b>Actualiza la app en el teléfono.</b> El Service Worker puede seguir sirviendo la versión anterior: abre la página, recarga <b>dos veces</b> y comprueba el texto bajo el visor: debe decir que el anillo verde busca una superficie. Si sigue la versión vieja, borra los datos del sitio (Chrome → ⋮ → Información del sitio → Borrar datos).</li>
+      <li><b>Abre «Ver en AR»</b> y haz el recorrido de la tabla.</li>
+    </ol>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Qué hacer</th><th>Qué debes ver</th><th>Si no ocurre</th></tr>
+      <tr><td>Entra en AR y mueve el teléfono despacio sobre el piso o una mesa.</td><td>Mensaje «Mueve el teléfono despacio…»; tras unos segundos aparece el <b>anillo verde</b> pegado a la superficie, y el mensaje pasa a «Toca la pantalla para colocar el cubo».</td><td>Mira la línea de datos: <code>hit-test: no</code> indica que el navegador no lo concedió. Si dice <code>sí</code> y no sale el anillo, mira <code>consultas · resultados · poses</code> (ver «Lo que pasó en dos teléfonos reales», abajo); si pasan 6 s sin superficie el texto lo dice y el toque coloca igual.</td></tr>
+      <tr><td>Toca la pantalla.</td><td>El cubo aparece <b>apoyado</b> en el anillo, de unos 40 cm, y la línea de datos dice <code>anclado: sí</code>.</td><td><code>anclas: no</code> significa que el navegador no concedió <code>anchors</code>: el cubo se coloca igual.</td></tr>
+      <tr><td>Camina alrededor del cubo y aléjate unos metros.</td><td>El cubo se queda en su sitio de la habitación, visto desde todos los lados.</td><td>Si «flota» o se desliza mucho, anota cuándo ocurre: es el comportamiento que las anclas mitigan.</td></tr>
+      <tr><td>Arrastra con un dedo sobre la pantalla.</td><td>El cubo se desliza sobre la superficie, sin subir ni bajar, y <b>no se recoloca</b> al soltar.</td><td>Si se recoloca al soltar, la guarda <code>huboGesto</code> no está actuando.</td></tr>
+      <tr><td>Pellizca con dos dedos; gíralos.</td><td>El cubo crece y se encoge (entre 16 cm y 1,6 m) y gira sobre su eje vertical.</td><td>Sin <code>dom-overlay</code> no hay gestos: el mensaje lo dice.</td></tr>
+      <tr><td>Toca en otro punto de la superficie.</td><td>El cubo salta a la nueva posición, conservando su tamaño y giro.</td><td>—</td></tr>
+      <tr><td>Apunta al techo y toca.</td><td>No pasa nada: no hay superficie, no se coloca en el aire.</td><td>—</td></tr>
+      <tr><td>Toca «Salir de AR».</td><td>La sesión termina <b>sin</b> colocar un cubo nuevo antes de salir, y el visor normal vuelve.</td><td>Si coloca un cubo al salir, falta el <code>beforexrselect</code> del botón.</td></tr>
+    </table>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Si algún paso no se comporta como dice la tabla, <b>eso es un resultado</b>: anota el modelo del teléfono, la versión de Chrome y la línea de datos del overlay, y compártelos con tu compañero y con el docente. WebXR varía entre dispositivos, y un informe preciso vale más que una captura «de cuando funcionó».</p></div>
+
+    <h3 style="margin:1.4em 0 .4em;">Lo que pasó en dos teléfonos reales</h3>
+    <div class="body-text"><p>La primera versión de esta sesión se probó en dos teléfonos Android con Chrome, y <b>el anillo no salía</b>, aunque la línea de datos decía <code>hit-test: sí</code> y la fase se quedaba en «buscando» durante minutos, moviendo el teléfono despacio por una mesa, el piso y otras superficies:</p></div>
+    <figure class="fig-img" style="margin:1em 0;text-align:center;"><img src="img/telefono-hit-test-opcional.png" alt="Captura de un teléfono dentro de la sesión AR, apuntando a una mesa oscura de un aula: el texto dice «Mueve el teléfono despacio…» y la línea de datos marca hit-test sí, fase buscando" style="max-width:260px;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Con <code>hit-test</code> pedido como <i>opcional</i>: la función aparece como concedida, pero la fase sigue en «buscando» y el anillo no sale.</div></figure>
+    <figure class="fig-img" style="margin:1em 0;text-align:center;"><img src="img/telefono-diagnostico.png" alt="Recorte de la línea de datos: consultas 870, impactos 0" style="max-width:100%;width:345px;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Para entender qué pasaba se añadió a la línea de datos un contador: tras <b>870 consultas</b> al hit-test, <b>0 impactos</b>. El sistema aceptaba crear la fuente y no devolvía ni una superficie.</div></figure>
+    <div class="body-text" style="margin-top:1em;"><p>No era la superficie (se probaron varias) ni el teléfono: el <b>ejemplo oficial de Three.js</b> (<code>webxr_ar_hittest</code>) sí dibujaba su anillo en el mismo aparato. Había que encontrar qué hacía distinto esta app. La diferencia importante estaba en cómo se pedía la función: el ejemplo pide <code>hit-test</code> como <b>requerida</b>; esta app, como opcional. Para comparar variantes sin cambiar el código entre pruebas, se agregó un parámetro temporal en la URL (<code>?lab=req</code>, <code>?lab=floor</code>…), y con <code>?lab=req</code> el anillo apareció.</p></div>
+    <div class="warn-box"><b>Conclusión de diseño.</b> En estos teléfonos, una función pedida como opcional podía figurar como concedida y, aun así, no entregar resultados. La app ahora pide <code>hit-test</code> como requerida y, solo si el navegador responde <code>NotSupportedError</code>, vuelve a intentarlo con todo opcional y activa el plan B. No se aisló si el motivo es el modo en que Chrome configura el seguimiento al abrir la sesión: lo comprobado es el efecto. Y la línea de datos con <code>consultas · resultados · poses</code> se queda en la app: cuando algo «no sale», sirve para distinguir si el sistema no responde o si el código descarta la respuesta.</div>
+    <div class="win-box"><b>Resultado con la versión final:</b> publicada en el repositorio y abierta en el teléfono, el anillo verde sale sobre la superficie y se puede colocar el cubo. Es la versión que contiene el zip de esta sesión.</div>
+    <div class="body-text" style="margin-top:1em;"><p>Dos medidas más salieron de esta prueba. La primera, el <b>plan B por tiempo</b> (sección 5): si pasan 6 s sin superficie, la app lo dice y deja colocar el cubo delante de ti, de modo que un dispositivo con seguimiento pobre nunca deja al usuario sin poder hacer nada. La segunda, la <b>lección de rendimiento</b> de la sección 7: la primera versión llegó a cerrar la pestaña de Chrome.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">10</span>Actividades</h2>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>El plan B, desactivado pieza por pieza</h4></div>
+      <div class="meta-row">EN PAREJAS · 40 MIN</div>
+      <p>Usando el arnés de la sección 8 (o modificando temporalmente las listas de funciones de <code>pedirSesionAR</code>), abran la sesión <b>cuatro veces</b>: con todo; sin <code>anchors</code>; sin <code>hit-test</code>; sin las dos. En cada una, coloquen el cubo y anoten el texto de ayuda, la línea de datos y la posición.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> ¿en cuál de las cuatro combinaciones un usuario no se daría cuenta de que falta algo? ¿Es bueno o malo que no se dé cuenta?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> una tabla combinación / mensaje / ¿anclado? / posición, y su respuesta a las preguntas.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">2</div><h4>Una retícula con significado</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>La pose del hit-test trae también la <b>orientación</b> de la superficie: el eje Y de <code>pose.transform.matrix</code> es su normal. Haz que la retícula sea <b>verde</b> en superficies horizontales (normal casi vertical, <code>|y| &gt; 0.8</code>) y <b>naranja</b> en las demás, y que <b>solo se pueda colocar</b> en las horizontales.</p>
+      <p style="margin-top:.8em;"><b>Pista:</b> los elementos 4, 5 y 6 del arreglo de 16 números son el eje Y. Cambia el color del material, no crees otro. Añade un caso a la prueba automática con una pared (una segunda entidad en la sala).</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el diff del código, la prueba nueva con su salida y una captura.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">3</div><h4>Quitar el cubo</h4></div>
+      <div class="meta-row">INDIVIDUAL · 45 MIN</div>
+      <p>Agrega al overlay un botón «Quitar cubo» que borre el ancla, oculte el cubo y devuelva la fase a «buscando» o «listo». Antes de escribirlo, <b>predice</b> qué le pasaría al botón si olvidaras el <code>beforexrselect</code>, y compruébalo con el teléfono o con el arnés.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> ¿hace falta alguna precaución con una creación de ancla que esté todavía pendiente cuando se pulsa el botón?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el código, la predicción y lo observado.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>git add .
+git commit -m "Realidad aumentada 2/2: hit-test, retícula, anclas y gestos"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>Una sesión AR sin hit-test deja el objeto flotando; con un <code>XRHitTestSource</code> en el espacio <code>viewer</code> el sistema dice dónde hay una superficie, y una retícula se lo muestra al usuario.</li>
+      <li><code>anchors</code> y <code>dom-overlay</code> se piden como opcionales y se <b>comprueban</b> con <code>enabledFeatures</code>; <code>hit-test</code> se pide como requerida y, si el dispositivo no la ofrece, se reintenta como opcional. Cada ausencia tiene su plan B y se le dice al usuario.</li>
+      <li>La escena tiene dos niveles: <code>raiz</code> (la manda el sistema: retícula, luego ancla) y <code>grupo</code> (lo manda el usuario: mover, girar, escalar). Mezclarlos haría que el ancla deshiciera los gestos.</li>
+      <li>El objeto se coloca con el evento <code>select</code>, que trae el único <code>XRFrame</code> desde el que se pueden crear anclas; recolocar borra la ancla anterior, y un número de turno evita que una ancla tardía pise a una más nueva.</li>
+      <li>Los gestos usan Pointer Events sobre el overlay; mover es la intersección de un rayo con el plano de la superficie; <code>huboGesto</code> impide que un arrastre cuente como «colocar», y <code>beforexrselect</code> impide que un botón lo haga.</li>
+      <li>IWER con una sala sintética comprueba el ciclo de vida y la lógica; que el ancla corrija de verdad, que ARCore encuentre superficies reales y que los dedos se comporten solo se comprueban en un teléfono.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 41: UX/UI de instalación.</b> <code>beforeinstallprompt</code>, estados de conexión y una experiencia de instalación cuidada para el Atlas 3D.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> W3C Immersive Web Working Group, "WebXR Hit Test Module" y "WebXR Anchors Module," immersive-web.github.io.</div>
+      <div><b>[2]</b> MDN Web Docs, "XRHitTestSource," "XRFrame: getHitTestResults()," "XRFrame: createAnchor()" y "XRAnchor," developer.mozilla.org.</div>
+      <div><b>[3]</b> three.js, ejemplo <code>webxr_ar_hittest</code> y código fuente de <code>WebXRManager</code> (r169), github.com/mrdoob/three.js.</div>
+      <div><b>[4]</b> Meta, "Immersive Web Emulation Runtime (IWER)" y "@iwer/sem (Synthetic Environment Module)," github.com/meta-quest/immersive-web-emulation-runtime.</div>
+      <div><b>[5]</b> W3C, "Pointer Events" y "WebXR DOM Overlays Module" (evento <code>beforexrselect</code>), w3.org e immersive-web.github.io.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 13 de 19</span>
+  </div>
+</div>
+</body>
+</html>
