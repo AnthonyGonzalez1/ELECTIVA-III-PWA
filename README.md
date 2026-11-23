@@ -41,6 +41,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 37 | Avisos y descargas en segundo plano en el proyecto | B |
 | 38 | Realidad aumentada con WebXR (1/2) | B |
 | 39 | Realidad aumentada con WebXR (2/2) | B |
+| 40 | Modelos de arquitectura en 3D | B |
 
 ## Proyectos
 

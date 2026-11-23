@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 40 · Modelos de arquitectura en 3D · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .compare-wrap{overflow-x:auto;}
+  .warn-box{border:1px solid #e0a800; background:#fff8e1; border-radius:10px; padding:1em 1.2em; margin:1em 0; font-size:.92em;}
+  .warn-box b{color:#9a6b00;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  .term-box{background:#1c1c1e; color:#cfcac0; border-radius:10px; padding:.9em 1.1em; font-size:.82em; font-family:"Cascadia Code",Consolas,monospace; line-height:1.55; margin:1em 0; overflow-x:auto;}
+  .term-box .prompt{color:#6ad06a;}
+  .win-box{border:2px solid #2e7d32; background:#f1f9f1; border-radius:10px; padding:1em 1.2em; margin:1.2em 0; font-size:.92em;}
+  .win-box b{color:#1b5e20;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 14 de 19</div>
+    <h1>Modelos de arquitectura en 3D</h1>
+    <div class="lead">Hasta hoy el Atlas 3D mostraba un cubo de prueba. Hoy llegan los modelos de verdad: el patrón MVC, la arquitectura en capas y los microservicios, dibujados con Three.js a partir de <b>datos</b> (sin archivos .glb). Los ves en 3D, tocas una pieza para leer qué hace, los apoyas en tu mesa con realidad aumentada y recorres sus piezas con ◀ ▶ — y todo sigue funcionando sin conexión.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Describir</b> un modelo de arquitectura como <i>datos</i> (piezas y enlaces) y explicar por qué agregar un patrón nuevo es escribir una tabla, no geometría.</span></li>
+      <li><span class="chk">✓</span><span><b>Construir</b> con Three.js un generador que convierta esos datos en mallas, flechas y rótulos, y <b>normalizarlo</b> a un tamaño y un apoyo fijos para que la lógica de AR no cambie.</span></li>
+      <li><span class="chk">✓</span><span><b>Elegir</b> una pieza tocándola (<code>Raycaster</code>), distinguiendo un toque de un arrastre, y <b>resaltarla</b> atenuando el resto.</span></li>
+      <li><span class="chk">✓</span><span><b>Servir</b> la explicación de cada pieza desde una ficha JSON que viaja por tres caminos: caché, red o, si no hay ninguno, el texto que ya está en el código.</span></li>
+      <li><span class="chk">✓</span><span><b>Migrar</b> una base IndexedDB que cambia de clave (de <code>modelo-demo-1</code> a <code>mvc</code>) sin perder favoritos ni notas.</span></li>
+      <li><span class="chk">✓</span><span><b>Diseñar</b> la interacción en AR cuando «tocar» ya significa «colocar»: botones ◀ ▶ en el overlay, protegidos con <code>beforexrselect</code>.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion39.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 39.</b> El Atlas 3D con la realidad aumentada completa (retícula, anclas y gestos) y el cubo de prueba. Es el punto de partida de hoy.</span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-sesion40.zip">Descargar .zip</a><span class="rb-desc"><b>Versión terminada de esta sesión.</b> Agrega la carpeta <code>src/modelos/</code> (tipos, constructor y los tres modelos), las fichas <code>public/modelos/*.json</code> y los cambios en <code>visor.ts</code>, <code>main.ts</code>, <code>db.ts</code> y <code>descargas.ts</code>.</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Del cubo de prueba a un catálogo de modelos</h2>
+    <div class="body-text"><p>Desde la <a href="../../Sub-bloque%20B%20-%20Proyecto%20Modulo%20AR%20(Objetos%203D)/Sesion%2035%20-%20APIs%20de%20dispositivo%20en%20el%20proyecto%20(1%20de%202)/guia.html">Sesión 35</a> el Atlas dibuja un cubo: sirvió para aprender sensores, cámara, WebXR, hit-test y anclas sin distraerse con el contenido. Hoy el contenido llega. Tenemos que decidir <i>cómo se guarda</i> un modelo de arquitectura, y la decisión condiciona todo lo demás.</p></div>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Opción</th><th>Cómo es</th><th>Lo bueno</th><th>Lo malo para este curso</th></tr>
+      <tr><td><b>Archivos <code>.glb</code></b></td><td>Un modelo 3D exportado desde Blender u otra herramienta</td><td>Cualquier forma, texturas, animaciones</td><td>Hay que modelar, exportar y cargar cada uno; son binarios que no se leen ni se corrigen con un editor de texto; y pesan.</td></tr>
+      <tr><td><b>Una función por modelo</b></td><td><code>crearMVC()</code>, <code>crearCapas()</code>… con <code>new Mesh(…)</code> a mano</td><td>Control total</td><td>Mucho código repetido: cada modelo reescribe flechas, rótulos y colores.</td></tr>
+      <tr><td><b>Datos + un constructor genérico</b></td><td>Cada modelo es una lista de <i>piezas</i> y de <i>enlaces</i>; <b>un</b> constructor los convierte en objetos 3D</td><td>Un patrón nuevo son 20 líneas de datos; se leen, se revisan y se prueban como texto</td><td>Solo cajas, cilindros y esferas: es un esquema didáctico, no una réplica realista.</td></tr>
+    </table>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Elegimos la tercera. Es la misma idea que en el curso aparece una y otra vez: <b>separar lo que cambia (los datos) de lo que no (el motor)</b>. Y encaja con un diagrama de arquitectura, que ya <i>es</i> una lista de cajas y de flechas. Tres tipos de TypeScript la describen:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/tipos.ts (una pieza)</div>
+      <pre><code>export interface Pieza {
+  id: string;
+  nombre: string;
+  rol: Rol;
+  forma: Forma;
+  /** Centro de la pieza (x derecha, y arriba, z hacia el espectador). */
+  pos: [number, number, number];
+  /** Ancho, alto y fondo. */
+  tam: [number, number, number];
+  /** Frase corta: viaja con el código, así se lee aunque no haya conexión. */
+  resumen: string;
+  /** Dónde va el rótulo: «arriba» de la pieza (por defecto), «abajo», o «frente», sobre su cara delantera. */
+  rotulo?: "arriba" | "abajo" | "frente";
+}</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/tipos.ts (un enlace)</div>
+      <pre><code>/** Cómo se comunican dos piezas: una llamada directa, un evento, o un flujo de datos. */
+export type TipoEnlace = "llamada" | "evento" | "datos";
+
+export interface Enlace {
+  de: string;
+  a: string;
+  etiqueta?: string;
+  tipo: TipoEnlace;
+  /** Desplaza la flecha entera, para dibujar dos flechas paralelas entre las mismas piezas. */
+  desvio?: [number, number, number];
+}</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/tipos.ts (un modelo y su ficha)</div>
+      <pre><code>export interface DefinicionModelo {
+  id: string;
+  nombre: string;
+  /** Una línea para la lista de modelos. */
+  resumen: string;
+  piezas: Pieza[];
+  enlaces: Enlace[];
+  /** Altura de la cámara de la vista normal, en grados sobre el horizonte (cada modelo se lee mejor desde un ángulo distinto). */
+  elevacion?: number;
+  /** Factor de la distancia de la cámara (menor = más cerca). Por defecto 1. */
+  distancia?: number;
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Tres decisiones de diseño que conviene notar:</p></div>
+    <ul class="clean">
+      <li><b>El <i>rol</i> decide el color.</b> Una pieza no dice «soy azul»; dice «soy de presentación», y una tabla (<code>ROLES</code>) asigna el color y el texto de la leyenda. Así el mismo azul significa lo mismo en los tres modelos: quien aprende MVC reconoce la «vista» en capas y en microservicios.</li>
+      <li><b>Hay dos textos por pieza, a propósito.</b> El <code>resumen</code> (una frase) viaja <i>dentro del código</i>: se lee siempre, incluso sin conexión y sin haber descargado nada. La explicación larga (<code>Ficha</code>) vive en un JSON aparte que se descarga: es el contenido que la <a href="../../Sub-bloque%20B%20-%20Proyecto%20Modulo%20AR%20(Objetos%203D)/Sesion%2037%20-%20Avisos%20y%20descargas%20en%20segundo%20plano%20en%20el%20proyecto/guia.html">Sesión 37</a> ya sabía bajar en segundo plano.</li>
+      <li><b>El tipo de enlace</b> (<code>llamada</code>, <code>evento</code>, <code>datos</code>) se dibuja con un color distinto. «La vista llama al controlador» y «el modelo notifica a la vista» son flechas de naturaleza distinta, y el dibujo debe poder mostrarlo.</li>
+    </ul>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Los tres modelos, escritos como datos</h2>
+    <div class="body-text"><p>Con los tipos listos, un modelo completo cabe en una pantalla. Este es MVC entero: cuatro piezas (el usuario y las tres del patrón) y cuatro enlaces.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/mvc.ts</div>
+      <pre><code>export const MVC: DefinicionModelo = {
+  id: "mvc",
+  nombre: "Patrón MVC",
+  resumen: "Tres responsabilidades separadas: datos y reglas, pantalla, y quien las coordina.",
+  elevacion: 34,
+  piezas: [
+    { id: "usuario", nombre: "Usuario", rol: "actor", forma: "esfera", pos: [-6.6, 0, 4], tam: [1.1, 1.1, 1.1], rotulo: "abajo", resumen: "Quien toca la pantalla y mira el resultado." },
+    { id: "vista", nombre: "Vista", rol: "presentacion", forma: "caja", pos: [-3.8, 0, 1.8], tam: [2.6, 1.2, 1.5], rotulo: "frente", resumen: "Dibuja los datos y capta lo que hace el usuario. No toma decisiones." },
+    { id: "controlador", nombre: "Controlador", rol: "coordinacion", forma: "caja", pos: [0, 0, -3.4], tam: [2.8, 1.2, 1.5], rotulo: "frente", resumen: "Recibe las acciones de la vista y decide qué debe hacer el modelo." },
+    { id: "modelo", nombre: "Modelo", rol: "datos", forma: "caja", pos: [3.8, 0, 1.8], tam: [2.6, 1.6, 1.5], rotulo: "frente", resumen: "Guarda los datos y aplica las reglas del negocio. No sabe cómo se ven." },
+  ],
+  enlaces: [
+    { de: "usuario", a: "vista", etiqueta: "toca", tipo: "llamada" },
+    { de: "vista", a: "controlador", etiqueta: "acción", tipo: "llamada" },
+    { de: "controlador", a: "modelo", etiqueta: "actualiza", tipo: "llamada" },
+    { de: "modelo", a: "vista", etiqueta: "notifica el cambio", tipo: "evento" },
+  ],
+};</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Las coordenadas son las de un plano cualquiera, en «unidades del modelo»: <code>x</code> a la derecha, <code>y</code> arriba, <code>z</code> hacia quien mira. No importa la escala absoluta, porque el constructor la normaliza (sección 5). Lo que sí importa es la <b>disposición</b>: el controlador al fondo y la vista y el modelo en primer plano forman el triángulo clásico de MVC, y se lee de un vistazo.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Capas se dispone en vertical: tres losas apiladas y la base de datos debajo. Fíjate en los dos enlaces entre cada par de capas: <code>solicita</code> baja y <code>responde</code> sube. Son dos flechas entre las mismas piezas, así que cada una lleva un <code>desvio</code> (a la izquierda y a la derecha) para que no se encimen:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/capas.ts</div>
+      <pre><code>export const CAPAS: DefinicionModelo = {
+  id: "capas",
+  nombre: "Arquitectura en capas",
+  resumen: "Niveles apilados: cada capa solo habla con la inmediatamente inferior.",
+  elevacion: 10,
+  piezas: [
+    { id: "usuario", nombre: "Usuario", rol: "actor", forma: "esfera", pos: [0, 6.3, 0], tam: [1.1, 1.1, 1.1], resumen: "Quien usa la aplicación." },
+    { id: "presentacion", nombre: "Presentación", rol: "presentacion", forma: "caja", pos: [0, 4.2, 0], tam: [7, 0.8, 3.2], rotulo: "frente", resumen: "Pantallas y formularios. Muestra datos y recoge acciones." },
+    { id: "negocio", nombre: "Lógica de negocio", rol: "logica", forma: "caja", pos: [0, 2.1, 0], tam: [7, 0.8, 3.2], rotulo: "frente", resumen: "Las reglas: validar, calcular, decidir. Aquí vive lo que hace valiosa a la aplicación." },
+    { id: "acceso", nombre: "Acceso a datos", rol: "datos", forma: "caja", pos: [0, 0, 0], tam: [7, 0.8, 3.2], rotulo: "frente", resumen: "Traduce la lógica en consultas: lee y escribe sin que las capas de arriba conozcan el almacenamiento." },
+    { id: "bd", nombre: "Base de datos", rol: "infra", forma: "cilindro", pos: [0, -2.4, 0], tam: [2.8, 1, 2.8], rotulo: "frente", resumen: "Donde los datos viven de forma permanente." },
+  ],
+  enlaces: [
+    { de: "usuario", a: "presentacion", etiqueta: "usa", tipo: "llamada" },
+    { de: "presentacion", a: "negocio", etiqueta: "solicita", tipo: "llamada", desvio: [-2, 0, 0] },
+    { de: "negocio", a: "presentacion", etiqueta: "responde", tipo: "datos", desvio: [2, 0, 0] },
+    { de: "negocio", a: "acceso", etiqueta: "solicita", tipo: "llamada", desvio: [-2, 0, 0] },
+    { de: "acceso", a: "negocio", etiqueta: "responde", tipo: "datos", desvio: [2, 0, 0] },
+    { de: "acceso", a: "bd", etiqueta: "consulta", tipo: "llamada" },
+  ],
+};</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Microservicios es el más grande: nueve piezas. Un cliente, un <i>API Gateway</i> ancho como una barra, tres servicios y un bus de mensajes en una fila, y una base de datos <b>propia</b> detrás de cada servicio (cilindros). La «base de datos por servicio» es justo la idea que el dibujo debe transmitir: no hay un cilindro compartido. Además hay dos enlaces de tipo <code>evento</code> (rosa): <i>Pedidos publica</i> en el bus y el bus <i>entrega</i> a Pagos, sin que Pedidos conozca a Pagos.</p></div>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Modelo</th><th>Piezas</th><th>Enlaces</th><th>Qué debe entenderse al verlo</th></tr>
+      <tr><td><b>MVC</b></td><td>4</td><td>4 (3 llamadas, 1 evento)</td><td>La vista no decide; el controlador orquesta; el modelo avisa de sus cambios sin saber quién escucha.</td></tr>
+      <tr><td><b>Capas</b></td><td>5</td><td>6 (4 llamadas, 2 de datos)</td><td>Cada capa solo habla con la de abajo; la petición baja y la respuesta sube.</td></tr>
+      <tr><td><b>Microservicios</b></td><td>9</td><td>9 (7 llamadas, 2 eventos)</td><td>Una puerta de entrada, servicios independientes con su propia base y un bus que los desacopla.</td></tr>
+    </table>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Un archivo de índice junta los tres en un <b>catálogo</b>, y toda la aplicación —pestañas, tarjetas, descargas— se construye recorriéndolo. Agregar un cuarto modelo será agregar un archivo y una línea aquí:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/index.ts</div>
+      <pre><code>export const CATALOGO: DefinicionModelo[] = [MVC, CAPAS, MICROSERVICIOS];
+
+export function modeloPorId(id: string): DefinicionModelo | undefined {
+  return CATALOGO.find((m) =&gt; m.id === id);
+}</code></pre>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>El constructor: de datos a mallas</h2>
+    <div class="body-text"><p><code>construirModelo(def)</code> es el único sitio que sabe de Three.js. Recibe una definición y devuelve un objeto con lo que el visor necesita: la <b>raíz</b> que se cuelga de la escena, un mapa <code>id → malla</code> de lo que se puede tocar, y dos funciones (<code>resaltar</code> y <code>destruir</code>).</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/constructor.ts (lo que devuelve)</div>
+      <pre><code>export interface ModeloConstruido {
+  /** Raíz ya normalizada: se cuelga de `grupo` en el visor. */
+  raiz: THREE.Group;
+  /** Altura del centro del modelo ya normalizado (su base está en -0,8). */
+  centroY: number;
+  /** Mallas de las piezas por id (con `userData.piezaId`): lo que se puede tocar. */
+  piezas: Map&lt;string, THREE.Mesh&gt;;
+  /** Resalta una pieza y atenúa el resto; null quita el resalte. */
+  resaltar(id: string | null): void;
+  destruir(): void;
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>La primera mitad convierte cada pieza en una malla. La forma decide la geometría; el rol, el color; y a las cajas se les dibujan las aristas para que se distingan los volúmenes. Cada malla guarda su <code>id</code> en <code>userData.piezaId</code>: es el hilo que, más adelante, une «lo que el dedo tocó» con «la pieza del modelo».</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/constructor.ts (una malla por pieza)</div>
+      <pre><code>  for (const p of def.piezas) {
+    const [w, h, d] = p.tam;
+    const geometria =
+      p.forma === "esfera" ? new THREE.SphereGeometry(w / 2, 32, 20) : p.forma === "cilindro" ? new THREE.CylinderGeometry(w / 2, w / 2, h, 36) : new THREE.BoxGeometry(w, h, d);
+    const color = ROLES[p.rol].color;
+    const material = new THREE.MeshStandardMaterial({ color, roughness: 0.5, metalness: 0.05, transparent: true, emissive: color, emissiveIntensity: 0 });
+    const malla = new THREE.Mesh(geometria, material);
+    malla.position.set(...p.pos);
+    malla.userData.piezaId = p.id;
+    if (p.forma === "caja") {
+      const aristas = new THREE.LineSegments(new THREE.EdgesGeometry(geometria), new THREE.LineBasicMaterial({ color: 0x0b1220 }));
+      malla.add(aristas);
+    }
+    solido.add(malla);
+    piezas.set(p.id, malla);
+
+    const rotulo = crearRotulo(p.nombre, 0.4 * k);
+    if (p.rotulo === "frente") rotulo.position.set(p.pos[0], p.pos[1], p.pos[2] + d / 2 + 0.05);
+    else if (p.rotulo === "abajo") rotulo.position.set(p.pos[0], p.pos[1] - h / 2 - 0.45 * k, p.pos[2]);
+    else rotulo.position.set(p.pos[0], p.pos[1] + h / 2 + 0.45 * k, p.pos[2]);
+    decorado.add(rotulo);
+  }</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Tres cosas de esta función que parecen detalles y no lo son:</p></div>
+    <ul class="clean">
+      <li><b><code>transparent: true</code> desde el principio.</b> El resaltado atenúa las piezas no elegidas bajando su opacidad. Cambiar un material de opaco a transparente en caliente obliga a recompilarlo; dejarlo transparente de entrada evita un parpadeo.</li>
+      <li><b>Dos grupos, <code>solido</code> y <code>decorado</code>.</b> Los rótulos y las flechas no deben contar al medir el tamaño del modelo (un rótulo ancho lo «ensancharía»). Se mide solo <code>solido</code>.</li>
+      <li><b>La base.</b> Una placa oscura bajo todo el modelo. Sin ella el esquema flota; con ella «apoya» en algo, y en AR eso es literal: la placa es lo que descansa sobre la mesa.</li>
+    </ul>
+
+    <h2 class="section-title"><span class="num-badge">4</span>Flechas y rótulos que se leen</h2>
+    <div class="body-text"><p>Una flecha es un cilindro (el cuerpo) y un cono (la punta). Lo que da trabajo es <i>dónde empieza y dónde acaba</i>: si la flecha va de centro a centro, atraviesa las cajas y se pierde. Debe salir del <b>borde</b> de una pieza y llegar al borde de otra. <code>puntoDeBorde</code> calcula ese punto según la forma:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/constructor.ts (el punto de borde)</div>
+      <pre><code>function puntoDeBorde(p: Pieza, centro: THREE.Vector3, dir: THREE.Vector3): THREE.Vector3 {
+  const [w, h, d] = p.tam;
+  let t: number;
+  if (p.forma === "esfera") {
+    t = w / 2;
+  } else if (p.forma === "cilindro") {
+    const radial = Math.hypot(dir.x, dir.z);
+    const tRadial = radial &gt; 1e-6 ? w / 2 / radial : Infinity;
+    const tAxial = Math.abs(dir.y) &gt; 1e-6 ? h / 2 / Math.abs(dir.y) : Infinity;
+    t = Math.min(tRadial, tAxial);
+  } else {
+    const k = Math.max(Math.abs(dir.x) / w, Math.abs(dir.y) / h, Math.abs(dir.z) / d);
+    t = 0.5 / k;
+  }
+  return centro.clone().addScaledVector(dir, t);
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>La idea: desde el centro, caminar en la dirección de la flecha una distancia <code>t</code> hasta tocar el borde. Para una esfera, <code>t</code> es el radio. Para una caja, el eje que «llega primero» es el que tiene el mayor cociente entre la componente de la dirección y la medida de la caja, y <code>t = 0,5 / k</code>. Para un cilindro hay dos candidatos —la pared lateral y las tapas— y vale el menor.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Los rótulos son <code>Sprite</code>s (planos que siempre miran a la cámara) con una textura dibujada en un <code>&lt;canvas&gt;</code> 2D. Así el texto se dibuja con la fuente del sistema, con acentos y sin cargar ninguna imagen:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/constructor.ts (un rótulo con canvas)</div>
+      <pre><code>function crearRotulo(texto: string, altura: number, pequeno = false): THREE.Sprite {
+  const px = pequeno ? 40 : 56;
+  const lienzo = document.createElement("canvas");
+  const ctx = lienzo.getContext("2d")!;
+  const fuente = `600 ${px}px system-ui, -apple-system, "Segoe UI", sans-serif`;
+  ctx.font = fuente;
+  const ancho = Math.ceil(ctx.measureText(texto).width) + px;
+  lienzo.width = ancho;
+  lienzo.height = Math.round(px * 1.7);
+  ctx.font = fuente; // cambiar el tamaño del canvas borra el contexto
+  ctx.fillStyle = "rgba(11, 18, 32, 0.82)";
+  const r = lienzo.height / 2;
+  ctx.beginPath();
+  ctx.roundRect(0, 0, lienzo.width, lienzo.height, r);
+  ctx.fill();
+  ctx.fillStyle = "#ffffff";
+  ctx.textBaseline = "middle";
+  ctx.textAlign = "center";
+  ctx.fillText(texto, lienzo.width / 2, lienzo.height / 2 + 2);
+  const textura = new THREE.CanvasTexture(lienzo);
+  textura.colorSpace = THREE.SRGBColorSpace;
+  const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: textura, transparent: true, depthTest: false }));
+  sprite.renderOrder = 10; // siempre encima: el texto debe poder leerse
+  sprite.scale.set((lienzo.width / lienzo.height) * altura, altura, 1);
+  return sprite;
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p><code>depthTest: false</code> y <code>renderOrder = 10</code> hacen que el rótulo se pinte <i>por encima</i> de todo, aunque haya una caja delante. Es la diferencia entre un diagrama que se lee y uno donde el «Gateway» queda tapado por el «Cliente».</p></div>
+    <div class="callout"><b>Lo que aprendió el primer dibujo.</b> La primera versión tenía rótulos de un tamaño fijo y los tres modelos se leían mal: en Microservicios (14 unidades de ancho) los textos se encimaban, y en MVC (≈10) eran enormes. Tres correcciones, todas en datos o en una línea del constructor: (1) el tamaño de rótulos y flechas se multiplica por <code>k = lado / 6</code>, donde <code>lado</code> es la medida mayor del modelo, así un modelo grande no se llena de texto diminuto ni uno chico de texto gigante; (2) el campo <code>rotulo</code> de la pieza (<code>"arriba"</code>, <code>"abajo"</code>, <code>"frente"</code>) permite poner el nombre sobre la cara delantera de una caja plana, donde no estorba; (3) cada modelo trae su propia <code>elevacion</code> de cámara (MVC 34°, Capas 10°, Microservicios 40°) y, si hace falta, una <code>distancia</code>: unas losas apiladas se leen de frente, pero una fila de servicios se lee mejor desde arriba. Ninguna exigió tocar el constructor más allá de <code>k</code>.</div>
+    <div class="body-text" style="margin-top:1em;"><p>Quitar la etiqueta «petición» del enlace Cliente → Gateway fue otra de esas correcciones: su rótulo caía justo sobre el nombre del Gateway. Cuando dos textos compiten, a veces la respuesta es que uno sobra: el significado de esa flecha ya lo cuenta la ficha del Cliente.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>Normalizar: un modelo que cabe en 1,6 con la base en −0,8</h2>
+    <div class="body-text"><p>Los tres modelos miden cosas distintas (6, 10 y 14 unidades). Pero la lógica de AR de las sesiones 38 y 39 se escribió para un cubo de <b>1,6</b> con el centro en el origen: su base está en <code>y = −0,8</code>, y todo el código de colocación («sube medio cubo para apoyarlo en la superficie») depende de ese número. Hay dos caminos: reescribir la lógica de AR para cada modelo, o hacer que <b>todo modelo se parezca al cubo</b> en las dos cosas que AR mira. Elegimos el segundo, y es la razón de esta parte del constructor:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/constructor.ts (normalizar)</div>
+      <pre><code>  // Normalizar: caber en TAM_NORMALIZADO, centrado en x/z y con la base en y = -TAM/2.
+  const medida = new THREE.Box3().setFromObject(solido);
+  const tamano = medida.getSize(new THREE.Vector3());
+  const centro = medida.getCenter(new THREE.Vector3());
+  const escala = TAM_NORMALIZADO / Math.max(tamano.x, tamano.y, tamano.z);
+  interior.scale.setScalar(escala);
+  interior.position.set(-centro.x * escala, -TAM_NORMALIZADO / 2 - medida.min.y * escala, -centro.z * escala);
+  const raiz = new THREE.Group();
+  raiz.add(interior);</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Tres líneas hacen el trabajo: se mide la caja que contiene el modelo, se calcula una escala para que su lado mayor valga 1,6, y se coloca el interior de modo que quede centrado en <code>x</code> y <code>z</code> y con la <b>base en −0,8</b>. Desde fuera, un modelo normalizado es indistinguible del cubo antiguo: el hit-test, el ancla, los gestos y la escala inicial de 0,25 (40 cm) siguen valiendo sin cambiar una línea.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Fuera de AR hace falta lo contrario: que el modelo gire alrededor de su <i>centro</i>, no de su base. Por eso el constructor también devuelve <code>centroY</code>, la altura del centro ya normalizado, y el visor desplaza el modelo <code>−centroY</code> en la vista normal y lo devuelve a 0 al entrar en AR (y viceversa al salir). Antes se medía ese centro con una <code>Box3</code> sobre el objeto, y salía descentrado: el objeto ya estaba escalado y <code>Box3</code> mide en coordenadas del mundo. Calcularlo una sola vez, donde se conocen las medidas, evita el error.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (mostrar un modelo)</div>
+      <pre><code>  function mostrarModelo(def: DefinicionModelo) {
+    if (modelo) {
+      grupo.remove(modelo.raiz);
+      modelo.destruir();
+    }
+    modelo = construirModelo(def);
+    grupo.add(modelo.raiz);
+    centroY = modelo.centroY;
+    piezaElegida = null;
+    if (!sesionAR) {
+      modelo.raiz.position.y = -centroY; // en la vista normal el modelo gira alrededor de su centro; en AR, apoyado por la base
+      grupo.rotation.set(0, 0, 0);
+      const elev = ((def.elevacion ?? 30) * Math.PI) / 180;
+      const dist = DISTANCIA_VISTA * (def.distancia ?? 1);
+      camara.position.set(0, dist * Math.sin(elev), dist * Math.cos(elev));
+      controles.target.set(0, 0, 0);
+      controles.update();
+    }
+  }</code></pre>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">6</span>Verlo en la página y tocar una pieza</h2>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/visor-tres-modelos.png" alt="Tres capturas del visor del Atlas 3D: MVC con el controlador al fondo y la vista y el modelo al frente; arquitectura en capas con tres losas apiladas y una base de datos; microservicios con un gateway, tres servicios, un bus y tres bases de datos" style="max-width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Los tres modelos en el visor de escritorio. Los colores son los roles: azul presentación, naranja coordinación, amarillo lógica, verde datos, morado infraestructura; las flechas rosadas son eventos.</div></figure>
+    <div class="body-text"><p>Elegir una pieza con el dedo es un problema de geometría resuelto por Three.js: un <code>Raycaster</code> lanza un rayo desde la cámara a través del punto tocado y devuelve los objetos que corta, del más cercano al más lejano. Solo hay que convertir la posición del dedo (píxeles) a coordenadas normalizadas de pantalla (de −1 a 1, con la <code>y</code> invertida) y pasarle la lista de mallas tocables:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (tocar una pieza)</div>
+      <pre><code>  // ── Sesión 40: elegir una pieza tocándola (solo fuera de AR) ──
+  const rayoToque = new THREE.Raycaster();
+  let avisarToque: ((id: string | null) =&gt; void) | null = null;
+  let inicioToque: { x: number; y: number; t: number } | null = null;
+  const lienzo = renderer.domElement;
+  const alPulsar = (ev: PointerEvent) =&gt; {
+    inicioToque = { x: ev.clientX, y: ev.clientY, t: performance.now() };
+  };
+  const alSoltar = (ev: PointerEvent) =&gt; {
+    const ini = inicioToque;
+    inicioToque = null;
+    // Un arrastre (girar la vista) no es un toque: se mide cuánto se movió el dedo.
+    if (!ini || sesionAR || !modelo) return;
+    if (Math.hypot(ev.clientX - ini.x, ev.clientY - ini.y) &gt; 8 || performance.now() - ini.t &gt; 600) return;
+    const caja = lienzo.getBoundingClientRect();
+    rayoToque.setFromCamera(new THREE.Vector2(((ev.clientX - caja.left) / caja.width) * 2 - 1, -((ev.clientY - caja.top) / caja.height) * 2 + 1), camara);
+    const impactos = rayoToque.intersectObjects([...modelo.piezas.values()], false);
+    const id = (impactos[0]?.object.userData.piezaId as string | undefined) ?? null;
+    seleccionar(id === piezaElegida ? null : id); // volver a tocar la misma pieza la suelta
+    avisarToque?.(piezaElegida);
+  };
+  lienzo.addEventListener("pointerdown", alPulsar);
+  lienzo.addEventListener("pointerup", alSoltar);</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>El mismo canvas ya sirve para <i>girar</i> la vista arrastrando (los controles de órbita), así que un dedo apoyado puede querer dos cosas. La regla que separa un toque de un arrastre mide <b>cuánto se movió el dedo y cuánto tardó</b>: menos de 8 px y menos de 600 ms es un toque; si no, es un gesto de giro o una pulsación larga y no se selecciona nada. Tocar la misma pieza dos veces la suelta; tocar el vacío también.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>Y la guarda <code>sesionAR</code> al principio: en AR no se eligen piezas con el dedo, por una razón que se ve en la sección 9.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>El resaltado vive en el constructor, porque es el que conoce las mallas y las flechas. La pieza elegida brilla (<code>emissive</code>), las demás bajan a 28 % de opacidad, y de las flechas solo se mantienen visibles las que entran o salen de la pieza: la pregunta «¿con quién habla el Controlador?» queda respondida <i>en el dibujo</i>.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/modelos/constructor.ts (resaltar)</div>
+      <pre><code>  function resaltar(id: string | null) {
+    for (const [pid, malla] of piezas) {
+      const m = malla.material as THREE.MeshStandardMaterial;
+      const activa = id === null || pid === id;
+      m.opacity = activa ? 1 : 0.28;
+      m.depthWrite = activa;
+      m.emissiveIntensity = id !== null &amp;&amp; pid === id ? 0.55 : 0;
+    }
+    for (const f of flechas) {
+      const toca = id === null || f.enlace.de === id || f.enlace.a === id;
+      for (const m of f.materiales) m.opacity = toca ? 1 : 0.15;
+    }
+  }</code></pre>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">7</span>El panel: leyenda, lista de piezas y ficha</h2>
+    <div class="body-text"><p>Tocar una pieza en un canvas no es la única forma de elegirla, y no debería serlo: es difícil acertar a una pieza pequeña con un dedo, un lector de pantalla no ve el canvas y un ratón fino no es lo mismo que un pulgar. Por eso, bajo el visor, hay una <b>lista de piezas</b> (chips) que hace exactamente lo mismo que tocar, más una <b>leyenda</b> de colores con los roles que aparecen en ese modelo. Todo se genera desde los datos:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (elegir un modelo)</div>
+      <pre><code>function elegirModelo(id: string): void {
+  const def = modeloPorId(id);
+  if (!def) return;
+  modeloActualId = id;
+  piezaActual = null;
+  fichaActual = null;
+  visor.mostrarModelo(def);
+  tabsModelo.innerHTML = CATALOGO.map((m) =&gt; `&lt;button type="button" class="tab" data-id="${m.id}" aria-pressed="${m.id === id}"&gt;${m.nombre}&lt;/button&gt;`).join("");
+  tabsModelo.querySelectorAll&lt;HTMLButtonElement&gt;(".tab").forEach((b) =&gt; b.addEventListener("click", () =&gt; elegirModelo(b.dataset.id!)));
+  resumenModelo.textContent = def.resumen;
+  const roles = [...new Set(def.piezas.map((p) =&gt; p.rol))];
+  leyendaEl.innerHTML = roles.map((r) =&gt; `&lt;span class="leyenda-item"&gt;&lt;i style="background:${ROLES[r].css}"&gt;&lt;/i&gt;${ROLES[r].nombre}&lt;/span&gt;`).join("");
+  chipsPiezas.innerHTML = def.piezas.map((p) =&gt; `&lt;button type="button" class="chip" data-id="${p.id}" aria-pressed="false"&gt;&lt;i style="background:${ROLES[p.rol].css}"&gt;&lt;/i&gt;${p.nombre}&lt;/button&gt;`).join("");
+  chipsPiezas.querySelectorAll&lt;HTMLButtonElement&gt;(".chip").forEach((b) =&gt;
+    b.addEventListener("click", () =&gt; {
+      const nueva = piezaActual === b.dataset.id ? null : b.dataset.id!;
+      visor.seleccionar(nueva);
+      sincronizarPieza(nueva);
+    })
+  );
+  pintarDetalle();
+  pintarPiezaAR();
+  // La ficha ampliada llega de la caché (sin conexión) o de la red; si no hay ninguna, se usa solo el código.
+  void leerFicha(id).then((f) =&gt; {
+    if (modeloActualId !== id) return;
+    fichaActual = f;
+    pintarDetalle();
+    pintarPiezaAR();
+  });
+}</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Un detalle importante: el toque sobre el canvas y el clic en un chip llegan por caminos distintos pero terminan en la <b>misma</b> función, <code>sincronizarPieza</code>, que actualiza los chips, el detalle y el texto del overlay. Con una sola vía de actualización es imposible que el canvas muestre una pieza y la lista otra.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>El panel de detalle muestra el <code>resumen</code> que ya está en el código y, <i>si hay ficha</i>, la responsabilidad ampliada y con quién habla la pieza. La ficha se pide con <code>leerFicha</code>, que prueba tres caminos en orden:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/descargas.ts (leer una ficha)</div>
+      <pre><code>export async function leerFicha(id: string): Promise&lt;Ficha | null&gt; {
+  try {
+    const cache = await caches.open(CACHE_MODELOS);
+    const guardada = await cache.match(urlDeModelo(id));
+    if (guardada) return (await guardada.json()) as Ficha;
+  } catch {
+    /* sin Cache Storage: se intenta la red */
+  }
+  try {
+    const resp = await fetch(urlDeModelo(id));
+    if (resp.ok) return (await resp.json()) as Ficha;
+  } catch {
+    /* sin red */
+  }
+  return null;
+}</code></pre>
+    </div>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Situación</th><th>De dónde sale la ficha</th><th>Qué ve el usuario</th></tr>
+      <tr><td>Descargó las fichas (Sesión 37)</td><td>Caché <code>modelos-3d</code></td><td>Explicación completa, con o sin conexión.</td></tr>
+      <tr><td>No descargó, pero hay red</td><td>Se pide a la red en el momento</td><td>Explicación completa.</td></tr>
+      <tr><td>No descargó y no hay red</td><td>Ninguna</td><td>El resumen de cada pieza (del código) y un aviso: «Detalle ampliado no disponible: descarga las fichas».</td></tr>
+    </table>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>El tercer caso es el que define el diseño: <b>la app nunca se queda en blanco</b>. Siempre hay algo útil que leer, y lo que falta se dice con claridad en lugar de fallar en silencio. El Service Worker, por su parte, no cambió: sigue sirviendo <code>/modelos/*.json</code> desde la caché si están y pidiéndolos a la red si no.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">8</span>Migrar la base: de <code>modelo-demo-1</code> a <code>mvc</code></h2>
+    <div class="body-text"><p>Hay un problema que no se ve en el código nuevo y que solo sufren los usuarios que ya tenían la app: sus datos (favoritos, notas, estado de las descargas) están guardados bajo las claves <code>modelo-demo-1</code>, <code>-2</code> y <code>-3</code>. Los modelos se llaman ahora <code>mvc</code>, <code>capas</code> y <code>microservicios</code>. Si no hacemos nada, el favorito marcado ayer «desaparece» —sigue en la base, bajo una clave que nadie lee— y las notas cifradas quedan huérfanas.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>En IndexedDB <b>la clave de un registro no se puede cambiar</b>: hay que leer el registro, escribirlo con la clave nueva y borrar el viejo. Y esto debe ocurrir en el único momento en que se puede tocar la estructura, el evento <code>upgradeneeded</code>, dentro de la transacción de migración. Es la tercera versión de la base, y las migraciones ya iban «por tramos»:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/db.ts (las correspondencias)</div>
+      <pre><code>/** Sesión 40: correspondencia entre los identificadores viejos y los nuevos. */
+export const RENOMBRES_V3: Record&lt;string, string&gt; = {
+  "modelo-demo-1": "mvc",
+  "modelo-demo-2": "capas",
+  "modelo-demo-3": "microservicios",
+};</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/db.ts (renombrar registros)</div>
+      <pre><code>/** Reescribe los registros con identificador viejo. En «descargas» vuelven a «pendiente»: la caché de modelos aún no tiene los archivos nuevos. */
+function migrarIdentificadores(store: IDBObjectStore, reiniciarDescarga: boolean) {
+  for (const [viejo, nuevo] of Object.entries(RENOMBRES_V3)) {
+    const lectura = store.get(viejo);
+    lectura.onsuccess = () =&gt; {
+      const registro = lectura.result;
+      if (!registro) return;
+      store.delete(viejo);
+      store.put({ ...registro, modeloId: nuevo, ...(reiniciarDescarga ? { estado: "pendiente" } : {}) });
+    };
+  }
+}</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/db.ts (el tramo de la versión 3)</div>
+      <pre><code>      if (event.oldVersion &gt;= 1 &amp;&amp; event.oldVersion &lt; 3) {
+        // La clave de un registro no se puede cambiar: se lee cada registro viejo, se escribe
+        // con la clave nueva y se borra el viejo, todo dentro de la transacción de la migración.
+        const tx = (event.target as IDBOpenDBRequest).transaction!;
+        migrarIdentificadores(tx.objectStore("progreso"), false);
+        migrarIdentificadores(tx.objectStore("descargas"), true);
+      }</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Dos matices. El primero es la condición <code>oldVersion &gt;= 1</code>: quien instala la app por primera vez no tiene nada que migrar (sus almacenes se acaban de crear vacíos). El segundo: en el almacén <code>descargas</code> el estado vuelve a <b>«pendiente»</b>, porque la caché <code>modelos-3d</code> todavía guarda las fichas viejas (<code>modelo-demo-N.json</code>), no las nuevas; la app debe volver a descargarlas.</p></div>
+    <div class="warn-box"><b>La migración no se puede deshacer, y se prueba antes de publicarla.</b> Una migración que falla a medias deja la base en un estado que ni la versión nueva ni la vieja entienden. Por eso la prueba de la sección 10 (escenario I) crea una base en versión 2 con datos reales de la demo, abre la app nueva y comprueba <i>clave por clave</i> qué hay después.</div>
+
+    <h2 class="section-title"><span class="num-badge">9</span>En AR, «tocar» ya significa «colocar»</h2>
+    <div class="body-text"><p>En la vista normal un toque sobre el modelo elige una pieza. En una sesión de AR, un toque en la pantalla es el evento <code>select</code> de WebXR, y desde la Sesión 39 ese evento <b>coloca o recoloca</b> el modelo. Dos significados para el mismo gesto no pueden convivir: si tocar eligiera piezas, cada elección movería el modelo. Por eso en AR el toque sobre el modelo se desactiva (la guarda <code>sesionAR</code> de la sección 6) y las piezas se recorren con <b>dos botones del overlay</b>: ◀ y ▶.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (recorrer las piezas en AR)</div>
+      <pre><code>// En AR un toque sobre el modelo coloca o recoloca: no puede elegir piezas. Se eligen con ◀ ▶
+// (botones del overlay), que recorren las piezas una por una: ninguna → 1.ª → 2.ª … → ninguna.
+function recorrerPiezas(paso: number): void {
+  const def = modeloPorId(modeloActualId ?? "");
+  if (!def) return;
+  const ids: (string | null)[] = [null, ...def.piezas.map((p) =&gt; p.id)];
+  const i = ids.indexOf(piezaActual);
+  const siguiente = ids[(i + paso + ids.length) % ids.length];
+  visor.seleccionar(siguiente);
+  sincronizarPieza(siguiente);
+}
+btnPiezaAnt.addEventListener("click", () =&gt; recorrerPiezas(-1));
+btnPiezaSig.addEventListener("click", () =&gt; recorrerPiezas(1));</code></pre>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>La lista de ids lleva un <code>null</code> al principio, así que el recorrido es cíclico: <i>ninguna → primera → segunda … → última → ninguna</i>, y con el módulo se da la vuelta hacia los dos lados. Y como los botones van sobre la cámara, deben protegerse con el mismo <code>beforexrselect</code> que ya protege «Salir de AR»: si no, pulsar ▶ también dispararía un <code>select</code> y recolocaría el modelo.</p></div>
+    <div class="body-text" style="margin-top:1em;"><p>El texto del overlay (<code>#xr-pieza</code>) muestra el nombre de la pieza elegida y su responsabilidad, de la ficha si existe y del resumen si no, con un detalle de rendimiento heredado de la Sesión 39: solo se reescribe <i>si cambió</i>, porque tocar el DOM del overlay en cada fotograma ya cerró una pestaña de Chrome.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">10</span>Probar: construcción, selección, AR, fichas y migración</h2>
+    <div class="body-text"><p>Salida literal de la compilación:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build<br>
+&gt; pwa-ar-objetos3d@0.0.0 build<br>
+&gt; tsc &amp;&amp; tsc -p tsconfig.sw.json &amp;&amp; vite build<br>
+<br>
+vite v5.4.21 building for production...<br>
+transforming...<br>
+✓ 25 modules transformed.<br>
+rendering chunks...<br>
+computing gzip size...<br>
+dist/index.html&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3.55 kB │ gzip:&nbsp;&nbsp; 1.32 kB<br>
+dist/assets/index-BuZvi9F9.css&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 5.55 kB │ gzip:&nbsp;&nbsp; 1.63 kB<br>
+dist/assets/workbox-window.prod.es5-BqEJf4Xk.js&nbsp;&nbsp;&nbsp;&nbsp;5.71 kB │ gzip:&nbsp;&nbsp; 2.34 kB<br>
+dist/assets/index-Dsgx3CjQ.js&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;542.45 kB │ gzip: 140.95 kB<br>
+<br>
+(!) Some chunks are larger than 500 kB after minification. Consider:<br>
+- Using dynamic import() to code-split the application<br>
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks<br>
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.<br>
+✓ built in 2.75s<br>
+<br>
+PWA v1.3.0<br>
+Building src/sw.ts service worker ("es" format)...<br>
+vite v5.4.21 building for production...<br>
+transforming...<br>
+✓ 89 modules transformed.<br>
+rendering chunks...<br>
+computing gzip size...<br>
+dist/sw.mjs&nbsp;&nbsp;27.66 kB │ gzip: 9.16 kB<br>
+✓ built in 696ms<br>
+<br>
+PWA v1.3.0<br>
+mode&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;injectManifest<br>
+format:&nbsp;&nbsp; es<br>
+<b>precache&nbsp;&nbsp;8 entries (554.43 KiB)</b><br>
+files generated<br>
+&nbsp;&nbsp;dist/sw.js</div>
+    <div class="fig-caption">El precaché pasó de 527,14 KiB (Sesión 39) a 554,43 KiB y sigue en 8 entradas; el paquete principal, de 516,92 a 542,45 kB; el Service Worker, de 27,27 a 27,66 kB. Las fichas JSON <b>no</b> están en el precaché: se excluyeron en <code>vite.config.ts</code> y se descargan bajo demanda.</div>
+    <div class="body-text" style="margin-top:1em;"><p>La prueba nueva (<code>test_s40.js</code>) usa Playwright con Chromium y, para AR, IWER con la sala sintética de la sesión anterior. Sus escenarios: <b>A</b> las tres pestañas, sus piezas y su leyenda; <b>B</b> selección por lista y por toque directo (con un barrido de puntos sobre el canvas que localiza una pieza, y las pruebas de «arrastrar no selecciona» y «pulsación larga no selecciona»); <b>C</b> AR con Capas: petición, colocar, ◀ ▶ sin recolocar y <code>beforexrselect</code>; <b>D</b> MVC y Microservicios colocados en AR; <b>E</b> el plan B sin hit-test con un modelo nuevo; <b>F</b> el reintento si el dispositivo rechaza el hit-test; <b>G</b> fichas: por red, descargadas y <b>sin conexión</b>; <b>H</b> sin red y sin haber descargado; <b>I</b> la migración de IndexedDB; <b>J</b> el «rastro» de la salida de AR (sección 11).</p></div>
+    <div class="term-box"><span class="prompt">$</span> node test_s40.js<br>
+A1) pestañas → ["mvc*","capas","microservicios"]<br>
+A2) mvc: 4 piezas · leyenda: Usuario o sistema externo, Presentación, Coordinación, Datos · resumen: Tres responsabilidades separadas: datos y reglas, pantalla, …<br>
+A2) capas: 5 piezas · leyenda: Usuario o sistema externo, Presentación, Lógica de negocio, Datos, Infraestructura · resumen: Niveles apilados: cada capa solo habla con la inmediatamente…<br>
+A2) microservicios: 9 piezas · leyenda: Usuario o sistema externo, Coordinación, Lógica de negocio, Infraestructura, Datos · resumen: Servicios pequeños e independientes, cada uno con sus datos,…<br>
+B1) sin selección → Toca una pieza del modelo, o elígela en la lista, para ver qué hace. Toca la mis…<br>
+B2) chip «Controlador» → Controlador Coordinación Recibe las acciones de la vista y decide qué debe hacer el modelo. Responsabilidad. Interpreta cada acción y decide qué cambio pedirle al modelo. Es el único que orquesta; si crece demasiado, hay que partirlo. Habla con: Vista, Modelo. | chips activos: ["Controlador"]<br>
+B3) mismo chip otra vez → chips activos: [] | Toca una pieza del modelo, o elígela en …<br>
+B4) toque directo sobre el modelo (barrido de puntos) → primera pieza tocada: {"x":551,"y":235,"pieza":"Controlador"} | Controlador Coordinación Recibe las acciones de la vista y decide qué …<br>
+B5) tocar la misma pieza otra vez → chips activos: []<br>
+B6) arrastrar 60 px (girar la vista) NO selecciona → chips activos: []<br>
+B7) pulsación larga (750 ms) NO selecciona → chips activos: []<br>
+B8) cambiar de modelo con una pieza elegida → chips activos: []<br>
+C1) petición → {"requiredFeatures":["local","hit-test"],"optionalFeatures":["dom-overlay","anchors"],"domOverlay":{"root":{}}}<br>
+C2) estado → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay. | texto de pieza en el overlay: Arquitectura en capas. Usa ◀ ▶ para recorrer sus piezas.<br>
+C3) tras tocar → {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas: {"crearAncla":1,"borrarAncla":0}<br>
+C4) ▶ → Usuario: Quien usa la aplicación; solo ve la capa de presentación. | chips: ["Usuario"]<br>
+C5) ▶ → Presentación: Pantallas, formularios y validaciones de forma. Nunca consulta datos por su cuenta: pide a la lógica de negocio.<br>
+C6) ◀ ×3 (da la vuelta: ninguna → última) → Base de datos: Almacenamiento permanente. Solo la capa de acceso a datos le habla.<br>
+C7) el modelo no se movió ni se recolocó: true | anclas igual: true<br>
+C8) beforexrselect en los botones ◀ ▶ → [ true, true ]<br>
+C9) tras salir → canvas: 1 | pieza elegida sigue (la selección se conserva en la vista normal): ["Base de datos"]<br>
+D) mvc: fase colocado · pos [0,-1.4,-2.34] · ▶ → Usuario: Origina las acciones: un toque, un clic, un formulario enviado.<br>
+D) microservicios: fase colocado · pos [0,-1.4,-2.34] · ▶ → Cliente: Aplicación web o móvil. Solo conoce la dirección del API Gateway.<br>
+E1) sin hit-test, tocar → {hitTest:no,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-0.3,-1.48]}<br>
+F1) intentos → ["[\"local\",\"hit-test\"]","[\"local\"]"] | estado: Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.<br>
+G1) ficha por red → Toca una pieza del modelo, o elígela en la lista, para ver qué hace. Toca la misma pieza otra vez para soltarl…<br>
+G2) controla el SW: true<br>
+G3) tras recargar, controla el SW: true<br>
+G4) descarga → ✓ 3 de 3 fichas guardadas: ya puedes consultarlas sin conexión. | cachés: {"modelos-3d":["/modelos/capas.json","/modelos/microservicios.json","/modelos/mvc.json"],"workbox-precache-v2-http://localhost:4197/":[]}<br>
+G5) SIN CONEXIÓN, recargado → ficha de Microservicios: Toca una pieza del modelo, o elígela en la lista, para ver qué hace. Toca la misma pieza otra vez para soltarla. Cuándo …<br>
+G6) SIN CONEXIÓN, pieza «API Gateway» → API Gateway Coordinación Puerta de entrada única: recibe la petición y la reparte al servicio que corresponde. Responsabilidad. Punto de entrada único: enruta, autentica y limita el tráfico. Oculta al cliente cuántos servicios hay. Habla con: Cliente, Usuarios, Pedidos, Pagos.<br>
+H1) sin red y sin descargar → Toca una pieza del modelo, o elígela en la lista, para ver qué hace. Toca la misma pieza otra vez para soltarla. Detalle ampliado no disponible: descarga las fichas (abajo) para leerlo sin conexión.<br>
+H2) pieza «Negocio» → Lógica de negocio Lógica de negocio Las reglas: validar, calcular, decidir. Aquí vive lo que hace valiosa a la aplicación. Detalle ampliado no disponible: descarga las fichas (abajo) para leerlo sin conexión.<br>
+I1) base v2 preparada con identificadores de la demo<br>
+I2) tras abrir la app → {"version":3,"progreso":[["microservicios",false,333],["mvc",true,111]],"descargas":[["capas","pendiente"],["mvc","pendiente"]]}<br>
+J1) antes de usar AR → rastro: null<br>
+J2) dentro de AR → rastro: activa | diagnóstico: Última sesión de AR: sin registro.<br>
+J3) tras salir → rastro: fin-ok<br>
+J4) diagnóstico → Última sesión de AR: terminó completa (hace 1 s).<br>
+J5) rastro interrumpido simulado, tras recargar → Última sesión de AR: se interrumpió en el paso «fin-3-ancla» (hace 5 s). | panel abierto: true<br>
+pageerrors: []</div>
+    <div class="win-box"><b>Qué demuestra:</b> (A) hay tres pestañas, con 4, 5 y 9 piezas, y la leyenda solo lista los roles que usa cada modelo; (B) el chip elige y vuelve a soltar; un toque real sobre el canvas elige el Controlador de MVC; un arrastre de 60 px y una pulsación de 750 ms <b>no</b> seleccionan; cambiar de modelo limpia la selección; (C) la petición AR no cambió, el modelo se coloca con <b>una</b> ancla y ◀ ▶ recorren las piezas sin moverlo ni crear anclas, y ambos botones cancelan <code>beforexrselect</code>; (D) los tres modelos se colocan; (E) sin hit-test el modelo queda a 1,5 m delante; (G) con las fichas descargadas, <b>con el servidor caído</b> y la página recargada, la ficha del API Gateway se lee completa; (H) sin descargar y sin red solo se ve el resumen, con el aviso; (I) la base v2 pasa a v3, <code>modelo-demo-1</code> se vuelve <code>mvc</code> conservando favorito y fecha, <code>modelo-demo-3</code> se vuelve <code>microservicios</code>, y las descargas vuelven a «pendiente»; (J) el rastro vale <code>activa</code> dentro de AR y <code>fin-ok</code> tras salir, y un rastro interrumpido (simulado) se muestra al reabrir la app con el panel de diagnóstico abierto.</div>
+    <div class="body-text" style="margin-top:1em;"><p>Una trampa del propio arnés vale la pena contarla. La primera versión del escenario de «sin conexión» usaba <code>context.setOffline(true)</code> de Playwright, y <b>la ficha aparecía incluso sin haberla descargado</b>. La causa: ese interruptor corta las peticiones de la <i>página</i>, pero no las que hace el <b>Service Worker</b>, que seguían llegando al servidor local. La prueba «pasaba» sin probar nada. La corrección fue hacer que el servidor de pruebas corte las conexiones (<code>caido = true</code>), que es lo que de verdad ocurre cuando se pierde la red:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>test_s40.js (el servidor que se «cae»)</div>
+      <pre><code>let caido = false; // «sin conexión»: el servidor corta toda conexión (setOffline de Playwright no alcanza al Service Worker)
+const srv = http.createServer((q, r) =&gt; { if (caido) { q.socket.destroy(); return; } let p = q.url.split('?')[0]; if (p === '/') p = '/index.html'; const f = path.join(DIST, p);</code></pre>
+    </div>
+    <div class="warn-box"><b>Un resultado verde también hay que sospecharlo.</b> Si una prueba de «sin conexión» pasa, pregúntate qué habría pasado si la función no existiera. Aquí la pregunta fue: «¿cómo se lee una ficha que nunca se descargó?». La respuesta correcta era «no se lee» y la prueba decía «se lee»; esa contradicción la delató. El escenario H existe para fijar ese caso.</div>
+    <div class="body-text" style="margin-top:1em;"><p>Las pruebas de las sesiones 38 y 39 se repitieron con el código nuevo para comprobar que la AR no se rompió. La salida de la 39 es la misma, con una sola diferencia, deliberada: donde decía «cubo» ahora dice «modelo» (los mismos números de posición, anclas y escala).</p></div>
+    <div class="term-box"><span class="prompt">$</span> S39DIR=s40 node test_s39.js<br>
+A1) petición → {"requiredFeatures":["local","hit-test"],"optionalFeatures":["dom-overlay","anchors"],"domOverlay":{"root":{}}}<br>
+A1) estado general → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.<br>
+A2) mirando al suelo → Toca la pantalla para colocar el modelo. | {hitTest:sí,anclas:sí,anclado:no,fase:listo,escala:0.25,giro:0,pos:—}<br>
+A3) tras tocar → Modelo colocado. Toca otro punto para recolocarlo. | {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas creadas/borradas: {"crearAncla":1,"borrarAncla":0}<br>
+A4) el usuario camina 1 m a la derecha → pos del cubo: [0,-1.4,-2.34] (sigue en su sitio: true )<br>
+B1) movimiento de 4 px (menor que el umbral) → pos igual: true<br>
+B2) arrastrar 200 px a la derecha → pos: [0,-1.4,-2.34] → [0.63,-1.4,-2.34] | x aumentó: true | y igual: true<br>
+B3) «select» justo después de un arrastre → NO recoloca: anclas {"crearAncla":1,"borrarAncla":0} → {"crearAncla":1,"borrarAncla":0} | pos: [0.63,-1.4,-2.34]<br>
+B4) separar los dos dedos (200 → 400 px) → escala: 0.25 → 0.5<br>
+B5) separarlos mucho más → escala limitada a 1<br>
+B6) juntarlos casi del todo → escala limitada a 0.1<br>
+B7) girar los dos dedos → giro: 0° → 90°<br>
+B8) tras dos dedos, ¿hubo «gesto»? el siguiente «select» tampoco recoloca: {"crearAncla":1,"borrarAncla":0} → {"crearAncla":1,"borrarAncla":0}<br>
+C1) recolocar mirando más abajo → pos: [0.63,-0.8,-2.34] → [0,-0.8,-1.27] | anclas creadas/borradas: {"crearAncla":2,"borrarAncla":1} | anclado: sí | escala conservada: 1<br>
+D1) mirando al techo → Modelo colocado. Toca otro punto para recolocarlo. | fase: colocado | tocar: anclas {"crearAncla":2,"borrarAncla":1} → {"crearAncla":2,"borrarAncla":1} | el cubo no se movió: true<br>
+D2) vuelve a mirar al suelo → colocado<br>
+E1) tras salir → La sesión de realidad aumentada terminó. | anclas borradas en total: {"crearAncla":2,"borrarAncla":2} | canvas: 1 | botón AR: true<br>
+F1) arranca mirando al techo → Mueve el teléfono despacio hasta ver el anillo verde sobre una superficie. | {hitTest:sí,anclas:sí,anclado:no,fase:buscando,escala:0.25,giro:0,pos:—}<br>
+F2) tocar sin superficie → fase: buscando | anclas: {"crearAncla":0,"borrarAncla":0}<br>
+F3) 6 s sin superficie → No encuentro superficies. Prueba con una zona con textura y buena luz, o toca la pantalla para colocar el modelo delante de ti. | {hitTest:sí,anclas:sí,anclado:no,fase:buscando,escala:0.25,giro:0,pos:—}<br>
+F4) tocar tras el plazo → coloca delante de la mirada: {hitTest:sí,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-0.31,-1.49]} | anclas: {"crearAncla":0,"borrarAncla":0}<br>
+G1) sin hit-test → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, hit-test.<br>
+G1)&nbsp;&nbsp;Este dispositivo no ofrece hit-test: el modelo está a 1,5 m delante. Toca para traerlo delante de ti. | {hitTest:no,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-0.3,-1.5]}<br>
+G2) tras tocar (de pie en x=1, mirando al frente) →&nbsp;&nbsp;{hitTest:no,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[1,-0.3,-1.48]}<br>
+G3) los gestos también funcionan sin hit-test → escala: 0.5<br>
+H1) sin «anchors» → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, anchors.<br>
+H2) tocar →&nbsp;&nbsp;{hitTest:sí,anclas:no,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas creadas: {"crearAncla":0,"borrarAncla":0}<br>
+I1) createAnchor rechazado →&nbsp;&nbsp;{hitTest:sí,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+J1) intentos de petición → ["[\"local\",\"hit-test\"]","[\"local\"]"] | estado: Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.<br>
+J2) tocar tras el reintento → {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+pageerrors: []</div>
+    <div class="body-text" style="margin-top:1em;"><p>Y la prueba de publicación en subruta, con los nombres nuevos de las fichas:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build -- --base=/atlas-3d/ --outDir /tmp/dist-sub<br>
+<span class="prompt">$</span> node test_subruta.js<br>
+subruta → {"scope":"http://localhost:4195/atlas-3d/","activo":true,"manifest":{"start":"./","scope":"./"},"iconoStatus":200,"caches":["modelos-3d","workbox-precache-v2-http://localhost:4195/atlas-3d/"]}<br>
+recarga sin conexión: canvas montado = 1<br>
+ficha → ["http://localhost:4195/atlas-3d/modelos/mvc.json",200]<br>
+descarga desde el botón → caché modelos-3d: ["http://localhost:4195/atlas-3d/modelos/capas.json","http://localhost:4195/atlas-3d/modelos/microservicios.json","http://localhost:4195/atlas-3d/modelos/mvc.json"]<br>
+peticiones fuera de la subruta o 404: [] | pageerrors: []</div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/emulador-ar-modelos.png" alt="Tres capturas del emulador IWER con cada modelo colocado sobre el suelo y una pieza resaltada: el Controlador en MVC, la Lógica de negocio en Capas y el API Gateway en Microservicios" style="max-width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Los tres modelos colocados sobre el suelo de la sala sintética de IWER, con una pieza elegida con ◀ ▶ (las demás están atenuadas). Las líneas horizontales son la rejilla del entorno del emulador; la resolución de la imagen es la del emulador.</div></figure>
+    <div class="warn-box"><b>Qué no puede comprobar un emulador.</b> Que los rótulos se lean <i>a 1,5 m en una pantalla de teléfono</i>, que 40 cm de modelo sean un tamaño cómodo para tocar los botones ◀ ▶ con el pulgar, o que la iluminación de la habitación real combine con los colores: todo eso depende de un teléfono, de una luz y de unos ojos. El emulador valida la <i>lógica</i> (qué se coloca, qué se elige, qué se guarda); la <i>experiencia</i> se valida en la mano.</div>
+
+    <h2 class="section-title"><span class="num-badge">11</span>Pruébalo en tu teléfono</h2>
+    <div class="body-text"><p>Usa el mismo repositorio de GitHub Pages de las sesiones anteriores:</p></div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Actualiza el repositorio.</b> Descomprime <code>pwa-ar-objetos3d-sesion40.zip</code> y copia su contenido sobre tu carpeta del proyecto, reemplazando archivos. Conserva <code>.github/workflows/pages.yml</code>.</li>
+      <li><b>Súbelo:</b> <code>git add .</code>, <code>git commit</code> y <code>git push</code>. Si el push se rechaza, <code>git pull --no-rebase -X ours --no-edit</code> y vuelve a empujar.</li>
+      <li><b>Espera la marca verde</b> en la pestaña <b>Actions</b>.</li>
+      <li><b>Actualiza la app en el teléfono.</b> Recarga <b>dos veces</b>: el Service Worker puede servir la versión anterior. Debes ver tres pestañas (MVC, Arquitectura en capas, Microservicios) bajo el visor.</li>
+    </ol>
+    <div class="compare-wrap">
+    <table class="uptc" style="margin-top:.6em;">
+      <tr><th>Qué hacer</th><th>Qué debes ver</th><th>Si no ocurre</th></tr>
+      <tr><td>Abre la app y recorre las tres pestañas.</td><td>Cada una cambia el modelo, el resumen, la leyenda y la lista de piezas.</td><td>Si ves un cubo, es la versión anterior: recarga dos veces o borra los datos del sitio.</td></tr>
+      <tr><td>Toca una pieza del modelo con el dedo.</td><td>Brilla y las demás se atenúan; bajo el visor aparece su explicación.</td><td>Si la pieza es pequeña y no la aciertas, usa la lista: hace lo mismo.</td></tr>
+      <tr><td>Arrastra con el dedo sobre el modelo.</td><td>La vista gira y <b>no</b> se elige ninguna pieza.</td><td>—</td></tr>
+      <tr><td>Toca «⬇ Descargar fichas», espera «3 de 3», pon el modo avión y recarga.</td><td>La app abre y la explicación de cada pieza sigue completa.</td><td>Si dice «Detalle ampliado no disponible», las fichas no llegaron a la caché: repite la descarga con red.</td></tr>
+      <tr><td>Entra en «Ver en AR», apunta al piso y toca.</td><td>El <b>modelo elegido</b> (no un cubo) aparece apoyado sobre el anillo.</td><td>Mira la línea de datos del overlay (Sesión 39).</td></tr>
+      <tr><td>Pulsa ▶ varias veces.</td><td>Cada pieza se resalta en el modelo y su nombre y función aparecen en el overlay; el modelo <b>no se mueve</b>.</td><td>Si el modelo salta a otro sitio, falta el <code>beforexrselect</code> en los botones.</td></tr>
+      <tr><td>Toca «Salir de AR» (varias veces, con distintos modelos).</td><td>Vuelves a la página con el visor normal, sin recargar, y en «Diagnóstico de realidad aumentada» la última línea dice «terminó completa».</td><td>Si la pestaña se cierra («¡Oh, no!»), reabre la app y lee esa última línea: dirá en qué paso se interrumpió (sección siguiente).</td></tr>
+      <tr><td>Pellizca para agrandarlo hasta que los rótulos se lean.</td><td>El modelo crece hasta 1,6 m; con el pulgar sobre ◀ ▶ todavía puedes recorrer las piezas.</td><td>—</td></tr>
+    </table>
+    </div>
+    <div class="body-text" style="margin-top:1em;"><p>Anota lo que veas: el modelo del teléfono, la versión de Chrome, y sobre todo <b>a qué tamaño se leen los rótulos</b>. Es el dato que un emulador no puede darte y el que decide si estos esquemas sirven como material de estudio en AR.</p></div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Lo que pasó en un teléfono real</h3>
+    <div class="body-text"><p>La versión anterior de esta sesión se probó en un teléfono Android con Chrome. Estas son las capturas (recortadas para quitar la barra del navegador). Primero, el visor de la página con el modelo de Microservicios y la pieza «Bus de mensajes» elegida desde la lista, en dos ángulos:</p></div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/telefono-visor.png" alt="Dos capturas del visor en un teléfono con el modelo de Microservicios: el Bus de mensajes resaltado, la leyenda de roles, los chips de piezas y la ficha del Bus de mensajes bajo el visor" style="max-width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">El visor en un teléfono real: pestañas de modelos, leyenda por roles, chips de piezas y la ficha de la pieza elegida. A la izquierda, el ángulo inicial; a la derecha, tras girar con el dedo.</div></figure>
+    <div class="body-text"><p>Y el modelo ya colocado en AR: el de MVC apoyado sobre el teclado de un portátil, y el de Microservicios sobre una mesa de madera, con el anillo del hit-test visible. Las dos capturas muestran el overlay con la línea de datos de la Sesión 39 y los botones ◀ ▶ con el nombre y la función de la pieza.</p></div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/telefono-ar.png" alt="Dos capturas de AR en un teléfono: el modelo MVC sobre un teclado y el de Microservicios sobre una mesa, con el overlay de datos, los botones anterior y siguiente y el botón Salir de AR" style="max-width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">AR en un teléfono real. Izquierda: MVC con la Vista elegida, escala 0,99. Derecha: Microservicios, escala 0,57, con el anillo del hit-test bajo el modelo.</div></figure>
+    <div class="body-text"><p>Lo que confirman las capturas: las tres pestañas funcionan, la pieza elegida se resalta y las demás se atenúan, la ficha cambia con la pieza, el hit-test coloca el modelo con <b>una</b> ancla (<code>anclado: sí</code>), ◀ ▶ recorren las piezas sin mover el modelo, y a escala 0,57 los rótulos se leen. Lo que muestran además, y que el emulador no podía mostrar:</p></div>
+    <ul class="clean">
+      <li><b>Rótulos que se pisan.</b> Al girar, «publica» se superpone al rótulo «Bus de mensajes» (captura de la derecha del visor). Los rótulos se dibujan siempre por encima (<code>depthTest = false</code>), así que cuando dos piezas quedan casi en la misma visual, sus textos chocan. Es el material de la actividad 2.</li>
+      <li><b>Piezas cortadas por el borde.</b> A ángulo bajo, «Cliente» queda cortado por el borde inferior del lienzo (captura izquierda del visor): la cámara de Microservicios enmarca el ancho pero no el fondo.</li>
+      <li><b>Una posición vertical de −4,02 m.</b> En la captura de MVC la línea de datos dice <code>pos: (0.90, −4.02, −1.75)</code>: el hit-test devolvió una superficie estimada 4 m por debajo del punto de partida, un valor poco creíble para un teclado sobre una mesa. El modelo se ve pequeño aun a escala 0,99 porque está lejos de la cámara, no porque la escala sea pequeña. Cada dispositivo estima las superficies a su manera; el emulador, con un suelo exacto, no produce este caso. Con los datos de la línea (escala y posición) se distingue «el modelo es pequeño» de «el modelo está lejos».</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Un cierre al salir de AR</h3>
+    <div class="body-text"><p>Hubo un hallazgo menos agradable: <b>después de ver el modelo en AR, al pulsar «Salir de AR», la pestaña de Chrome se cerró</b> y apareció la pantalla de «¡Oh, no!».</p></div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/telefono-cierre-oh-no.png" alt="Pantalla de Chrome en el teléfono con el mensaje ¡Oh, no! Se produjo un error cuando se mostraba la página web, y el botón Volver a cargar" style="max-width:340px;width:100%;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">La pantalla que Chrome muestra cuando el proceso de la pestaña muere. No es una excepción de JavaScript: no hay consola, ni <code>try/catch</code>, ni mensaje que leer.</div></figure>
+    <div class="body-text"><p>Esta pantalla significa que el <b>proceso de la pestaña terminó</b> (por memoria, por un fallo del controlador gráfico o de la cámara). La Sesión 39 ya había registrado el mismo aviso con su primera versión (mientras tardaba en aparecer el anillo), aunque en un momento distinto. Con lo que se sabe hasta ahora no hay una causa demostrada, y por eso esta sección se limita a lo que sí se midió.</p></div>
+    <div class="body-text"><p><b>Primero se descartó una fuga de recursos.</b> Si cada entrada y salida de AR dejara texturas, buffers o programas de WebGL sin liberar, la memoria crecería ciclo tras ciclo. La prueba <code>test_ciclos_ar.js</code> entra y sale de AR ocho veces alternando los tres modelos y cuenta, parcheando <code>create*</code> y <code>delete*</code> de WebGL, cuántos recursos siguen vivos:</p></div>
+    <div class="term-box"><span class="prompt">$</span> node test_ciclos_ar.js<br>
+inicio {"Texture":16,"Framebuffer":3,"Buffer":57,"Program":5,"Shader":0,"VertexArray":17}<br>
+ciclo 0 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 1 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+ciclo 2 microservicios {"Texture":19,"Framebuffer":3,"Buffer":121,"Program":6,"Shader":0,"VertexArray":35}<br>
+ciclo 3 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 4 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+ciclo 5 microservicios {"Texture":19,"Framebuffer":3,"Buffer":121,"Program":6,"Shader":0,"VertexArray":35}<br>
+ciclo 6 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 7 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+errores []</div>
+    <div class="win-box"><b>Qué demuestra:</b> los números dependen <i>del modelo</i> (por ejemplo, Microservicios siempre deja 121 buffers) y <b>no crecen con los ciclos</b>: el ciclo 3 con MVC es idéntico al 0, y el 4 con Capas al 1. No hay fuga en la lógica de la página. Que el emulador no muestre fallo no prueba que el teléfono no lo tenga: el emulador no tiene cámara real, ni compositor de Android, ni la memoria de un teléfono modesto.</div>
+    <div class="body-text"><p>Como el fallo ocurre en la salida y no se puede reproducir, se tomaron dos medidas. Ninguna de ellas se presenta como «la solución»: son prudencia razonable y una forma de obtener datos.</p></div>
+    <div class="body-text"><p><b>Medida 1: una salida defensiva.</b> Al terminar la sesión, la página ya no hace todo de golpe. Detiene el bucle, cancela la fuente de hit-test y borra el ancla dentro de un <code>try/catch</code> (en la salida, la sesión puede estar ya muerta y esas llamadas lanzar errores), restaura la escena, y <b>espera 250 ms antes de dibujar el primer fotograma normal</b>, para no mezclar ese primer dibujo con el momento en que el navegador desmonta el visor y la cámara.</p></div>
+    <div class="body-text"><p><b>Medida 2: migas de pan.</b> Si el proceso muere no queda registro. La solución es escribir, <i>antes</i> de cada paso delicado, su nombre en <code>localStorage</code> (una escritura síncrona llega al almacenamiento aunque la pestaña muera un instante después). Al reabrir la app se lee la última anotación y se muestra en el panel de diagnóstico: si dice <code>fin-ok</code>, la salida terminó; si dice otro paso, la pestaña murió justo ahí.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/rastro.ts (anotar y leer)</div>
+      <pre><code>const CLAVE = "atlas3d-rastro-ar";
+export const PASO_FINAL = "fin-ok";
+
+export function anotar(paso: string): void {
+  try {
+    localStorage.setItem(CLAVE, `${paso}|${Date.now()}`);
+  } catch {
+    /* sin almacenamiento (modo privado): el rastro es opcional */
+  }
+}</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/rastro.ts (qué se muestra)</div>
+      <pre><code>export function describirRastro(): string {
+  const r = leerRastro();
+  if (!r) return "Última sesión de AR: sin registro.";
+  if (r.paso === PASO_FINAL) return `Última sesión de AR: terminó completa (hace ${r.hace} s).`;
+  return `Última sesión de AR: se interrumpió en el paso «${r.paso}» (hace ${r.hace} s).`;
+}</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/visor.ts (la salida de AR)</div>
+      <pre><code>    anotar("activa");
+    sesion.addEventListener(
+      "end",
+      () =&gt; {
+        // Cada paso se anota ANTES de hacerlo: si la pestaña muere, el último nombre dice dónde.
+        anotar("fin-1-bucle");
+        renderer.setAnimationLoop(null);
+        renderer.xr.enabled = false;
+        sesionAR = null;
+        gestos.destruir();
+        anotar("fin-2-fuente");
+        try { fuente?.cancel(); } catch { /* la sesión ya terminó */ }
+        anotar("fin-3-ancla");
+        try { ancla?.delete(); } catch { /* idem */ }
+        anotar("fin-4-escena");
+        escena.remove(reticula);
+        reticula.geometry.dispose();
+        (reticula.material as THREE.Material).dispose();
+        escena.background = fondoPrevio;
+        controles.enabled = !porSensores;
+        raiz.matrixAutoUpdate = true;
+        raiz.matrix.identity();
+        raiz.visible = true;
+        grupo.position.set(0, 0, 0);
+        grupo.scale.setScalar(ESCALA_VISTA);
+        if (modelo) modelo.raiz.position.y = -centroY;
+        grupo.rotation.set(0, 0, 0);
+        opciones.alTerminar();
+        // El primer fotograma normal NO se dibuja en el mismo instante en que el navegador desmonta
+        // la cámara y el visor XR: se espera un momento para que termine de soltar sus recursos.
+        anotar("fin-5-espera");
+        window.setTimeout(() =&gt; {
+          anotar("fin-6-tamano");
+          ajustarTamano(); // el visor XR cambió el tamaño del canvas
+          anotar("fin-7-bucle");
+          bucle(); // vuelve el requestAnimationFrame normal
+          anotar(PASO_FINAL);
+        }, 250);
+      },
+      { once: true }</code></pre>
+    </div>
+    <div class="body-text"><p>Las pruebas confirman que el mecanismo funciona (escenario J de la sección 10) y que el rastro se lee tras recargar. Eso no basta para saber si la pestaña deja de cerrarse: solo se sabe con el teléfono en la mano. Se probó con la versión nueva en el mismo teléfono y <b>la salida de AR terminó sin que Chrome cerrara la pestaña</b>.</p></div>
+    <div class="warn-box"><b>Qué se sabe y qué no.</b> Se sabe: la pestaña se cerró al salir de AR con la versión anterior; no hay fuga de recursos en ocho ciclos del emulador; con la salida defensiva y las migas de pan, el mismo teléfono salió bien de AR. No se sabe: <i>cuál</i> de las dos medidas lo evitó (la espera de 250 ms, los <code>try/catch</code>, o el simple cambio de momento en que se dibuja), ni si bastará en otros teléfonos. Si el cierre vuelve a aparecer, reabre la app, abre «Diagnóstico de realidad aumentada» y lee la última línea: «se interrumpió en el paso …» indica el paso al que se llegó. Con ese dato la siguiente sesión puede atacar la causa real en lugar de adivinarla. Un error que no se puede reproducir se estudia con instrumentos, no con suposiciones.</div>
+
+    <h2 class="section-title"><span class="num-badge">12</span>Actividades</h2>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>Un cuarto modelo, solo con datos</h4></div>
+      <div class="meta-row">EN PAREJAS · 60 MIN</div>
+      <p>Agreguen la <b>arquitectura hexagonal</b> (puertos y adaptadores) o la <b>orientada a eventos</b> al catálogo: un archivo en <code>src/modelos/</code>, una línea en <code>index.ts</code> y su ficha en <code>public/modelos/</code>. No pueden tocar <code>constructor.ts</code>.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> ¿qué parte de su modelo no pudieron expresar con <code>Pieza</code> y <code>Enlace</code>? ¿Cambiarían los tipos o el dibujo?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> los tres archivos, una captura del modelo en el visor y la respuesta.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">2</div><h4>Auditar los rótulos</h4></div>
+      <div class="meta-row">INDIVIDUAL · 45 MIN</div>
+      <p>Midan con una regla en pantalla la altura de un rótulo en el visor del teléfono y la que tiene en AR a escala 0,25 (40 cm). Calculen cuántos centímetros de texto real son. Con ese dato, propongan un <b>tamaño mínimo de escala</b> en AR por debajo del cual la app avise «agranda el modelo para leer los nombres».</p>
+      <p style="margin-top:.8em;"><b>Segunda parte:</b> en el modelo de Microservicios, «publica» se pisa con «Bus de mensajes» al girar el modelo (sección 11). Propongan <i>dos</i> remedios distintos (por ejemplo, otra posición del rótulo o quitar el rótulo del enlace y mostrarlo solo al elegir la pieza) y justifiquen cuál elegirían.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> las medidas, la cuenta, el fragmento de código que mostraría el aviso y los dos remedios.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">3</div><h4>Una prueba que falle antes de pasar</h4></div>
+      <div class="meta-row">INDIVIDUAL · 45 MIN</div>
+      <p>Rompan a propósito la migración de la sección 8 (por ejemplo, quiten <code>reiniciarDescarga</code> o cambien <code>oldVersion &gt;= 1</code> por <code>oldVersion &gt; 1</code>) y ejecuten el escenario I. Describan <b>qué línea de la salida cambia</b> y por qué esa condición protegía a algún tipo de usuario.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> ¿quién se vería afectado: el usuario nuevo, el de la versión 1 o el de la 2?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> la salida antes y después, y su explicación.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>git add .
+git commit -m "Modelos de arquitectura: MVC, capas y microservicios en 3D"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>Un modelo de arquitectura es una lista de <b>piezas</b> y <b>enlaces</b>; un único constructor los convierte en mallas, flechas y rótulos. Agregar un patrón es escribir datos.</li>
+      <li>El rol de cada pieza decide su color y la leyenda; el tipo de enlace decide el de la flecha. Rótulos y flechas se escalan con el tamaño del modelo (<code>k</code>), y cada modelo elige su ángulo de cámara.</li>
+      <li>Todo modelo se <b>normaliza</b> a un lado de 1,6 con la base en −0,8: así la lógica de AR (hit-test, ancla, gestos) no cambió.</li>
+      <li>Una pieza se elige tocándola (<code>Raycaster</code>; un toque se distingue de un arrastre por 8 px y 600 ms) o desde la lista; las dos vías terminan en la misma función.</li>
+      <li>La explicación larga viaja en una ficha JSON: caché, red o, si no hay ninguna, el resumen que ya está en el código. La app nunca se queda en blanco.</li>
+      <li>Cambiar la clave de los registros exige una migración de IndexedDB (<code>upgradeneeded</code>): leer, escribir con la clave nueva, borrar la vieja, y reiniciar el estado de las descargas.</li>
+      <li>En AR «tocar» coloca, así que las piezas se recorren con ◀ ▶ (protegidos con <code>beforexrselect</code>).</li>
+      <li>Una pestaña que muere («¡Oh, no!») no deja consola. Se instrumenta con <b>migas de pan</b> en <code>localStorage</code>, escritas antes de cada paso delicado y leídas al reabrir; una salida de AR se hace defensiva (<code>try/catch</code> y una espera antes del primer fotograma normal).</li>
+      <li>Una prueba de «sin conexión» debe cortar la red <i>también al Service Worker</i>; <code>setOffline</code> de Playwright no lo hace.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 41: UX/UI de instalación.</b> <code>beforeinstallprompt</code>, estados de conexión y una experiencia de instalación cuidada para el Atlas 3D.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> three.js, documentación de <code>Raycaster</code>, <code>Sprite</code>, <code>CanvasTexture</code> y <code>Box3</code> (r169), threejs.org/docs.</div>
+      <div><b>[2]</b> MDN Web Docs, "IndexedDB API: Using IndexedDB" (<code>onupgradeneeded</code>, versionado y migraciones) y "CanvasRenderingContext2D", developer.mozilla.org.</div>
+      <div><b>[3]</b> W3C, "WebXR DOM Overlays Module" (evento <code>beforexrselect</code>) y "Pointer Events", w3.org.</div>
+      <div><b>[4]</b> MDN Web Docs, "Cache" y "Service Worker API", developer.mozilla.org.</div>
+      <div><b>[5]</b> Playwright, "Network: emulate offline" (alcance de <code>setOffline</code>), playwright.dev.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 14 de 19</span>
+  </div>
+</div>
+</body>
+</html>
