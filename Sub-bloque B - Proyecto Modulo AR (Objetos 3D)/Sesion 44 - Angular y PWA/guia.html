@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía · Sesión 44 · Angular y PWA · Electiva - PWA</title>
+<link rel="stylesheet" href="../../css/uptc-theme.css">
+<style>
+  html,body{height:auto; overflow:auto; background:#f4f1e8;}
+  body{font-size:16px;}
+  .page{max-width:980px; margin:0 auto; background:#fff; box-shadow:0 0 60px rgba(0,0,0,.08); min-height:100vh;}
+  .guide-header{background:linear-gradient(180deg, var(--ink) 0%, #000 100%); color:#fff; padding:2.2em 2.4em 1.8em; position:relative; overflow:hidden;}
+  .guide-header .brand-wedge{opacity:.9;}
+  .guide-header .brand-wedge::before{background:rgba(255,246,220,.08);}
+  .guide-header img{height:2.6em; margin-bottom:1em; position:relative; z-index:1;}
+  .guide-header .eyebrow{font-weight:700; letter-spacing:.12em; text-transform:uppercase; font-size:.78em; color:var(--gold); position:relative; z-index:1;}
+  .guide-header h1{font-family:var(--serif); font-size:2.1em; margin:.25em 0 .2em; line-height:1.15; position:relative; z-index:1; max-width:26em;}
+  .guide-header .lead{color:#d9d3b8; font-size:1em; max-width:36em; position:relative; z-index:1;}
+  .guide-header .goldbar{position:absolute; left:0; bottom:0; width:100%; height:8px; background:linear-gradient(90deg, var(--gold-dark), var(--gold)); z-index:2;}
+  .content{padding:2.2em 2.4em 4em;}
+  .content h2.section-title{font-family:var(--serif); font-size:1.7em; margin:1.8em 0 .3em; color:var(--ink); border-top:1px solid var(--line); padding-top:1em; display:flex; align-items:center; gap:.45em;}
+  .content h2.section-title:first-of-type{border-top:none; padding-top:0; margin-top:0;}
+  .content h2.section-title .num-badge{flex:0 0 auto; width:1.35em; height:1.35em; border-radius:50%; background:var(--ink); color:var(--gold); font-size:.62em; display:flex; align-items:center; justify-content:center; font-weight:800;}
+  .content h3.sub-title{font-family:var(--serif); font-size:1.2em; margin:1.3em 0 .5em; color:var(--gold-deep);}
+  .obj-list{list-style:none; margin:1em 0 0; padding:0; display:grid; gap:.6em;}
+  .obj-list li{display:flex; gap:.7em; align-items:flex-start; font-size:.98em; line-height:1.5;}
+  .obj-list li .chk{flex:0 0 auto; width:1.5em; height:1.5em; border-radius:50%; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); display:flex; align-items:center; justify-content:center; font-size:.8em; font-weight:800;}
+  .footer-note{border-top:3px solid var(--gold); margin-top:2.5em; padding:1.6em 2.4em; font-size:.85em; color:var(--gray); display:flex; justify-content:space-between; flex-wrap:wrap; gap:.5em;}
+  .guide-nav{display:flex; gap:1.2em; position:relative; z-index:1; margin-bottom:1em; font-size:.8em;}
+  .guide-nav a{color:#d9d3b8; text-decoration:none; font-weight:700; display:flex; align-items:center; gap:.4em;}
+  .guide-nav a:hover{color:var(--gold);}
+  .fig-caption{font-size:.8em; color:var(--gray); text-align:center; margin-top:.5em; font-style:italic;}
+  .compare-wrap{overflow-x:auto;}
+  .warn-box{border:1px solid #e0a800; background:#fff8e1; border-radius:10px; padding:1em 1.2em; margin:1em 0; font-size:.92em;}
+  .warn-box b{color:#9a6b00;}
+  .recursos-box{background:var(--gold-tint); border:1px solid var(--gold); border-left:6px solid var(--gold-dark); border-radius:6px; padding:1.1em 1.4em; margin:1.4em 0 0;}
+  .recursos-box h3{font-family:var(--serif); font-size:1.05em; margin:0 0 .5em; color:var(--gold-deep);}
+  .recursos-list{list-style:none; margin:0; padding:0; display:grid; gap:.4em;}
+  .recursos-list a{font-weight:700; color:var(--ink);}
+  .rb-desc{display:block; font-size:.88em; color:var(--gray); margin-top:.2em; font-weight:400;}
+  .term-box{background:#1c1c1e; color:#cfcac0; border-radius:10px; padding:.9em 1.1em; font-size:.82em; font-family:"Cascadia Code",Consolas,monospace; line-height:1.55; margin:1em 0; overflow-x:auto;}
+  .term-box .prompt{color:#6ad06a;}
+  .win-box{border:2px solid #2e7d32; background:#f1f9f1; border-radius:10px; padding:1em 1.2em; margin:1.2em 0; font-size:.92em;}
+  .win-box b{color:#1b5e20;}
+  @media (max-width:700px){ .guide-header, .content{padding-left:1.3em; padding-right:1.3em;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+  .db-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:.8em; margin:1.2em 0;}
+  .db-card{border:1px solid var(--line); border-radius:10px; padding:.85em 1em;}
+  .db-card .op-name{display:inline-block; font-size:.8em; font-weight:800; background:var(--gold-tint); border:1px solid var(--gold); color:var(--gold-deep); padding:.1em .6em; border-radius:6px; font-family:"Cascadia Code",Consolas,monospace; margin-bottom:.4em;}
+  .db-card p{margin:0; font-size:.84em; color:#444; line-height:1.4;}
+  @media (max-width:700px){ .db-grid{grid-template-columns:1fr;} }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute">
+<defs>
+<symbol id="ic-check" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.6"/><path d="M8 12.5l2.5 2.5L16 9.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+</defs>
+</svg>
+
+<div class="page">
+  <div class="guide-header">
+    <div class="brand-wedge"><div class="gold-slab"></div></div>
+    <div class="guide-nav">
+      <a href="../../00%20-%20Pagina%20del%20Bloque%203.html">← Inicio del curso</a>
+      <a href="presentacion.html">Ver presentación →</a>
+    </div>
+    <img src="../../assets/uptc-blanco.svg" onerror="this.src='../../assets/uptc-color.svg'" alt="UPTC">
+    <div class="eyebrow">Electiva - PWA · Guía del estudiante · Sub-bloque B · Proyecto Módulo AR · Sesión 18 de 19</div>
+    <h1>Angular y PWA</h1>
+    <div class="lead">Hoy el Atlas 3D se reconstruye con Angular. El visor de Three.js, la AR y el Service Worker siguen igual: cambia cómo se organiza la pantalla (componentes con plantillas) y dónde vive la lógica (servicios con señales e inyección de dependencias). Se pasan otra vez las pruebas de siempre sobre el código nuevo, se prueba que la limpieza del visor funciona y se mide con las tres versiones lado a lado, incluida la que sale peor.</div>
+    <div class="goldbar"></div>
+  </div>
+
+  <div class="content">
+
+    
+    <h2 class="section-title" style="margin-top:0;border-top:none;padding-top:0;">Objetivos de aprendizaje</h2>
+    <ul class="obj-list">
+      <li><span class="chk">✓</span><span><b>Reconocer</b> cómo organiza Angular una aplicación (componentes con plantilla, servicios, inyección de dependencias y señales) y qué trabajo <b>sigue sin ser suyo</b> (Three.js, WebXR, el Service Worker).</span></li>
+      <li><span class="chk">✓</span><span><b>Preparar</b> un proyecto de Angular 22 con su compilador, y los tres ajustes que exigió un código que no se escribió para él.</span></li>
+      <li><span class="chk">✓</span><span><b>Repartir</b> la lógica en servicios con señales y la pantalla en componentes, comparando cada decisión con la de React.</span></li>
+      <li><span class="chk">✓</span><span><b>Cuidar la frontera</b> con el código imperativo: <code>DestroyRef</code>, <code>afterNextRender</code> y la carga diferida con <code>import()</code>.</span></li>
+      <li><span class="chk">✓</span><span><b>Mantener</b> el Service Worker propio y conectarlo a un compilador que no es Vite.</span></li>
+      <li><span class="chk">✓</span><span><b>Comparar</b> tres versiones del mismo Atlas con cifras reales y aceptar que ninguna gana en todo.</span></li>
+    </ul>
+
+    <div class="recursos-box">
+      <h3>Recursos de esta sesión</h3>
+      <ul class="recursos-list">
+        <li><a href="recursos/pwa-ar-objetos3d-sesion43.zip">Descargar .zip</a><span class="rb-desc"><b>Checkpoint — cierre de la Sesión 43.</b> El Atlas 3D en React. Es el punto de partida de hoy.</span></li>
+        <li><a href="recursos/pwa-ar-objetos3d-sesion44.zip">Descargar .zip</a><span class="rb-desc"><b>Versión terminada de esta sesión.</b> El mismo Atlas en Angular: <code>app.ts</code>, nueve servicios y siete componentes. Incluye el LEEME y el flujo de GitHub Pages actualizado.</span></li>
+        <li><a href="recursos/lighthouse-s42.html">Informe de Lighthouse (S42)</a><span class="rb-desc">Sin framework. Una de las cinco corridas (la de la mediana de rendimiento).</span></li>
+        <li><a href="recursos/lighthouse-s43.html">Informe de Lighthouse (S43)</a><span class="rb-desc">Con React. Una de las cinco corridas (la de la mediana).</span></li>
+        <li><a href="recursos/lighthouse-s44.html">Informe de Lighthouse (S44)</a><span class="rb-desc">Con Angular y carga diferida del visor. Una de las cinco corridas (la de la mediana).</span></li>
+      </ul>
+    </div>
+
+    <h2 class="section-title"><span class="num-badge">1</span>Qué cambia al pasar de React a Angular</h2>
+    <div class="body-text"><p>La Sesión 43 enseñó una idea: <b>lo que es pantalla pasa al framework; lo que es motor se queda como estaba</b>. Hoy se repite el experimento con otro framework, y la regla no cambia. <code>visor.ts</code>, <code>xr.ts</code>, <code>sw.ts</code>, <code>db.ts</code> y los modelos como datos siguen intactos. Lo que cambia es <i>cómo piensa</i> el framework la pantalla.</p></div>
+    <div class="body-text"><p>React es una biblioteca: da componentes y hooks, y el resto (compilador, rutas, formularios) se elige aparte. Angular es un <b>marco completo</b>: trae su compilador, su sistema de plantillas, un contenedor de <b>inyección de dependencias</b>, formularios y más. A cambio, pide aceptar sus convenciones. Para esta sesión interesan cuatro piezas:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Idea</th><th>En React (S43)</th><th>En Angular (S44)</th></tr>
+      <tr><td>La pantalla</td><td>Una función que devuelve JSX</td><td>Una clase con una <b>plantilla</b> HTML aparte (<code>.ts</code> + <code>.html</code>)</td></tr>
+      <tr><td>El estado</td><td><code>useState</code> dentro de hooks</td><td><b>Señales</b> (<code>signal</code>, <code>computed</code>) dentro de servicios</td></tr>
+      <tr><td>Compartir lógica</td><td>Un hook que se llama en cada componente</td><td>Un <b>servicio</b> que Angular crea una vez y entrega a quien lo pide con <code>inject()</code></td></tr>
+      <tr><td>Efectos y limpieza</td><td><code>useEffect</code> y su función de retorno</td><td><code>effect</code> con <code>onCleanup</code>, <code>afterNextRender</code> y <code>DestroyRef</code></td></tr>
+      <tr><td>Formularios</td><td>Campo controlado: <code>value</code> y <code>onChange</code></td><td><code>[(ngModel)]</code>: enlace en los dos sentidos con una señal</td></tr>
+    </table>
+    </div>
+    <div class="callout"><b>Un detalle del Angular actual que simplifica todo:</b> desde hace unas versiones, los proyectos nuevos son <b>sin zone.js</b> («zoneless»). Antes, Angular parchaba el navegador para enterarse de cualquier cambio; ahora se entera por las <b>señales</b>: si una señal cambia, se redibuja lo que la lee. Es la misma idea que «estado → pantalla» de React, con otro mecanismo. La prueba C1 de la sección 4 comprueba que <code>zone.js</code> no está en la página.</div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/arbol-componentes-angular.png" alt="Árbol de componentes: App contiene ZonaVisor (con PanelModelo), ZonaInstalar, ZonaDescargas, OverlayAR y Catalogo (con tres Tarjetas); debajo, nueve servicios y una nota que dice que visor, xr, sw y db no cambian" style="max-width:100%;max-width:46em;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">La estructura del Atlas en Angular. Arriba, componentes que dibujan; abajo, servicios que guardan la lógica y el estado; en rojo, lo que está fuera del framework y es idéntico al de la Sesión 42.</div></figure>
+
+    <h2 class="section-title"><span class="num-badge">2</span>Preparar el proyecto</h2>
+    <div class="warn-box"><b>Requisito nuevo: Node 22.22.3 o superior.</b> Angular 22 se niega a ejecutarse con una versión menor (el primer intento de esta sesión, con Node 22.22.0, terminó con ese error). Comprueba con <code>node -v</code> antes de empezar. Es la razón por la que el flujo de GitHub Pages cambia en esta sesión (sección 9).</div>
+    <div class="body-text"><p>Un proyecto nuevo se crea con <code>ng new</code>, que hace preguntas (hoja de estilos: CSS; renderizado en servidor: no). Aquí el proyecto se preparó <b>en un directorio limpio</b> y se llevó el código de la Sesión 43 encima. Eso obligó a cuatro decisiones de configuración, todas pequeñas y todas con un motivo:</p></div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>El punto de entrada.</b> <code>main.ts</code> pasó de 649 líneas (Sesión 42) a 13, y solo dice qué componente arrancar.</li>
+      <li><b>Una opción del compilador.</b> Angular activa por defecto <code>noPropertyAccessFromIndexSignature</code>, que prohíbe escribir <code>userData.piezaId</code> (el visor lo hace desde la Sesión 40). Se desactivó en <code>tsconfig.json</code> con un comentario que lo explica, en lugar de reescribir un motor que ya está probado.</li>
+      <li><b>La carpeta de salida.</b> En <code>angular.json</code>, <code>outputPath</code> queda como <code>{ base: "dist", browser: "" }</code>, para que los archivos queden directamente en <code>dist/</code> (por defecto Angular los mete en <code>dist/browser/</code>), como en las sesiones anteriores y como espera el flujo de publicación.</li>
+      <li><b>Una variable que ya no existe.</b> Los archivos <code>avisos.ts</code>, <code>descargas.ts</code> y <code>sw.ts</code> leían <code>import.meta.env.BASE_URL</code>, una variable que define Vite. Angular no la define.</li>
+    </ol>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/main.ts (el punto de entrada)</div>
+      <pre><code>bootstrapApplication(App, appConfig)
+  .then((app) =&gt; {
+    // Solo en desarrollo: un asa para que las pruebas puedan destruir la aplicación y comprobar la limpieza.
+    if (isDevMode()) (window as unknown as { __atlas: { destruir: () =&gt; void } }).__atlas = { destruir: () =&gt; app.destroy() };
+  })
+  .catch((err) =&gt; console.error(err));</code></pre>
+    </div>
+    <div class="body-text"><p>La cuarta decisión merece detenerse. La ruta base de la app (<code>/</code> en local, <code>/nombre-del-repo/</code> en GitHub Pages) la fija Angular en la etiqueta <code>&lt;base href&gt;</code> del <code>index.html</code>, con <code>ng build --base-href=...</code>. Entonces la ruta base se <b>lee de ahí</b>. Pero el mismo archivo lo usa el Service Worker, que no tiene <code>document</code>; allí la ruta es el <i>alcance</i> con que se registró. Un solo archivo resuelve los dos casos:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/base.ts (una variable, dos entornos)</div>
+      <pre><code>const g = globalThis as unknown as { document?: { baseURI: string }; registration?: { scope: string } };
+export const BASE_URL = new URL(g.document?.baseURI ?? g.registration!.scope).pathname;</code></pre>
+    </div>
+    <div class="body-text"><p>Con ese archivo, <code>avisos.ts</code>, <code>descargas.ts</code> y <code>sw.ts</code> cambiaron <b>una línea cada uno</b> (el <code>import</code> de <code>BASE_URL</code>). El resto del motor no se tocó. Y la compilación:</p></div>
+    <div class="term-box"><span class="prompt">$</span> npm run build<br>
+✔ Building...<br>
+Initial chunk files | Names&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;Raw size | Estimated transfer size<br>
+<b>main-2QDUYDRM.js&nbsp;&nbsp;&nbsp;&nbsp;| main&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| 222.02 kB |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;62.66 kB</b><br>
+styles-NF7OE3ID.css | styles&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;|&nbsp;&nbsp; 6.44 kB |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.53 kB<br>
+chunk-GD7SK6UO.js&nbsp;&nbsp; | -&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp; 3.56 kB |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 1.50 kB<br>
+<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;| Initial total | 232.01 kB |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;65.69 kB<br>
+<br>
+Lazy chunk files&nbsp;&nbsp;&nbsp;&nbsp;| Names&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; |&nbsp;&nbsp;Raw size | Estimated transfer size<br>
+<b>chunk-XFRBEUET.js&nbsp;&nbsp; | visor&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; | 528.26 kB |&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 110.71 kB</b><br>
+<br>
+PWA · Service Worker propio<br>
+<b>precache&nbsp;&nbsp;9 entries (753.84 KiB)</b><br>
+&nbsp;&nbsp;dist/sw.js</div>
+    <div class="fig-caption">Angular entrega un archivo inicial (<b>main</b>: la app y Angular) y uno <b>diferido</b> (<b>visor</b>: Three.js y el código del visor). El precaché del Service Worker los registró solo: <b>9 entradas, 753,84 KiB</b> (React: 10 entradas y 778,17 KiB; sin framework: 9 y 558,82 KiB).</div>
+
+    <h2 class="section-title"><span class="num-badge">3</span>Servicios y componentes</h2>
+    <div class="body-text"><p>En la Sesión 43 la lógica vivía en <b>siete hooks</b> que cada componente llamaba. En Angular vive en <b>nueve servicios</b>. Un servicio es una clase con <code>@Injectable({ providedIn: "root" })</code>: Angular crea <b>una sola instancia</b> y se la entrega a cualquier componente que la pida con <code>inject()</code>. Es el reparto del Atlas:</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Servicio</th><th>Qué guarda o hace</th><th>Equivalente en React (S43)</th></tr>
+      <tr><td><code>PanelService</code></td><td>Modelo y pieza elegidos; la ficha ampliada</td><td><code>usePanel</code></td></tr>
+      <tr><td><code>ProgresoService</code></td><td>Visitas, favoritos y notas (IndexedDB)</td><td><code>useProgreso</code></td></tr>
+      <tr><td><code>VisorService</code></td><td>Crea y destruye el visor de Three.js</td><td>Un efecto en <code>App.tsx</code></td></tr>
+      <tr><td><code>ARService</code>, <code>SensoresService</code>, <code>CamaraService</code></td><td>Entrar y salir de AR; sensores; cámara de fondo</td><td><code>useAR</code>, <code>useSensores</code>, <code>useCamara</code></td></tr>
+      <tr><td><code>ConexionService</code>, <code>InstalacionService</code></td><td>Banda «sin conexión»; botón y texto de instalación</td><td><code>useConexion</code>, <code>useInstalacion</code></td></tr>
+      <tr><td><code>SwService</code></td><td>Registro del Service Worker y «listo sin conexión»</td><td><code>useRegisterSW</code> (de vite-plugin-pwa)</td></tr>
+    </table>
+    </div>
+    <div class="body-text"><p>Observa el primero. <code>PanelService</code> guarda el estado en <b>señales</b> y deriva lo demás con <code>computed</code>: la definición del modelo, la pieza y la ficha se recalculan solas cuando cambia el identificador. Y repite el patrón de la Sesión 43: un manejador habla con el visor (imperativo) y actualiza el estado (declarativo).</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/servicios/panel.service.ts (el estado y lo derivado)</div>
+      <pre><code>  readonly modeloId = signal(CATALOGO[0].id);
+  readonly piezaId = signal&lt;string | null&gt;(null);
+  private readonly fichaCargada = signal&lt;{ id: string; datos: Ficha | null } | null&gt;(null);
+
+  readonly def = computed(() =&gt; modeloPorId(this.modeloId())!);
+  readonly pieza = computed(() =&gt; this.def().piezas.find((p) =&gt; p.id === this.piezaId()));
+  readonly ficha = computed(() =&gt; {
+    const f = this.fichaCargada();
+    return f?.id === this.modeloId() ? f.datos : null;
+  });</code></pre>
+    </div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/servicios/panel.service.ts (un manejador que habla con el visor y con el estado)</div>
+      <pre><code>  // Un manejador de eventos habla con el visor (imperativo) y actualiza el estado (declarativo).
+  elegirModelo(id: string): void {
+    const def = modeloPorId(id);
+    const visor = this.visorSvc.visor();
+    if (!def || !visor) return;
+    visor.mostrarModelo(def);
+    this.modeloId.set(id);
+    this.piezaId.set(null);
+  }</code></pre>
+    </div>
+    <div class="body-text"><p>La ficha ampliada llega de la caché o de la red, y puede tardar. Si cambias de modelo antes de que llegue, la respuesta vieja no debe pisar a la nueva. En React eso es la bandera <code>cancelado</code> de un <code>useEffect</code>; en Angular, el <code>effect</code> recibe una función <code>onCleanup</code> que se ejecuta antes de la siguiente ejecución:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/servicios/panel.service.ts (descartar la respuesta vieja)</div>
+      <pre><code>    effect((alLimpiar) =&gt; {
+      const id = this.modeloId();
+      let vigente = true; // si cambias de modelo antes de que llegue, la respuesta vieja se descarta
+      alLimpiar(() =&gt; (vigente = false));
+      void leerFicha(id).then((datos) =&gt; {
+        if (vigente) this.fichaCargada.set({ id, datos });
+      });
+    });</code></pre>
+    </div>
+    <h3 class="sub-title">Componentes que son el elemento que ya existía</h3>
+    <div class="body-text"><p>En Angular, un componente suele ser una <i>etiqueta nueva</i> (<code>&lt;app-zona-visor&gt;</code>) que envuelve su contenido. Aquí se hizo otra cosa: el selector es de <b>atributo</b>. <code>section[zonaVisor]</code> significa «el componente es el <code>&lt;section&gt;</code> que lleve ese atributo». Así el HTML resultante tiene <b>los mismos elementos, ids y clases</b> que la versión sin framework, y las pruebas de las sesiones anteriores, que buscan por esos ids, no se enteran del cambio (sección 7). Lo mismo hace <code>host: { ... }</code> para poner el <code>id</code> o las clases del propio elemento.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/componentes/zona-visor.ts (selector de atributo y el visor)</div>
+      <pre><code>@Component({
+  selector: "section[zonaVisor]",
+  imports: [PanelModelo],
+  templateUrl: "./zona-visor.html",
+  host: { class: "visor-zona" },
+})
+export class ZonaVisor {
+  protected readonly visorSvc = inject(VisorService);
+  protected readonly sensores = inject(SensoresService);
+  protected readonly camara = inject(CamaraService);
+  protected readonly ar = inject(ARService);
+
+  private readonly contenedor = viewChild.required&lt;ElementRef&lt;HTMLDivElement&gt;&gt;("contenedor");
+  private readonly video = viewChild.required&lt;ElementRef&lt;HTMLVideoElement&gt;&gt;("video");
+
+  constructor() {
+    // El &lt;div id="visor"&gt; existe recién después del primer dibujo: entonces se crea el visor.
+    afterNextRender(() =&gt; {
+      this.camara.registrarVideo(this.video().nativeElement);
+      this.visorSvc.montar(this.contenedor().nativeElement);
+    });
+  }</code></pre>
+    </div>
+    <div class="callout"><b>Una excepción.</b> <code>App</code> sí es una etiqueta propia, <code>&lt;app-root&gt;</code>, porque no hay elemento previo que reutilizar. Una regla de <code>styles.css</code> (<code>display: contents</code>) hace que esa etiqueta no cuente en el diseño de la página.</div>
+
+    <h2 class="section-title"><span class="num-badge">4</span>La frontera con Three.js: crear, destruir y diferir</h2>
+    <div class="body-text"><p>El visor se crea cuando el <code>&lt;div&gt;</code> que lo contiene ya existe. Angular ofrece <code>afterNextRender</code>: una función que corre <b>una vez, después del primer dibujo</b> (y solo en el navegador). Y para deshacer, <code>DestroyRef</code>: cada servicio o componente puede apuntar qué limpiar cuando Angular lo destruya.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/servicios/visor.service.ts (crear, destruir y diferir)</div>
+      <pre><code>@Injectable({ providedIn: "root" })
+export class VisorService {
+  readonly visor = signal&lt;Visor | null&gt;(null);
+  /** Mensaje de aviso bajo la barra de botones (cámara, sensores, AR). */
+  readonly aviso = signal("");
+
+  private destruido = false;
+
+  constructor() {
+    // La limpieza: sin ella, el canvas, los oyentes y los recursos de la GPU quedarían vivos.
+    inject(DestroyRef).onDestroy(() =&gt; {
+      this.destruido = true;
+      this.visor()?.destruir();
+    });
+  }
+
+  async montar(contenedor: HTMLElement): Promise&lt;void&gt; {
+    // import() dinámico: el compilador de Angular saca visor.ts y Three.js del archivo principal y los deja
+    // en un archivo aparte que se descarga DESPUÉS de dibujar la página (Sesión 42: el mismo remedio, otra técnica).
+    const { crearVisor } = await import("../../visor");
+    if (this.destruido) return; // la aplicación se destruyó mientras se descargaba el archivo
+    this.visor.set(crearVisor(contenedor));
+  }
+}</code></pre>
+    </div>
+    <div class="body-text"><p>Tres líneas importan. <code>this.visor()?.destruir()</code> es la limpieza: sin ella el <code>canvas</code>, los oyentes y los recursos de la GPU quedan vivos. <code>await import("../../visor")</code> es la <b>carga diferida</b> (la ventaja y el problema de esto se miden en la sección 8). Y <code>if (this.destruido) return</code> cubre un caso fino: la aplicación puede destruirse mientras el archivo diferido se descarga, y entonces no hay que crear nada.</p></div>
+    <div class="body-text"><p>En React, StrictMode montaba y desmontaba cada componente <i>a propósito</i> para delatar efectos sin limpieza. <b>Angular no tiene ese mecanismo</b>, así que hubo que construir la prueba. En modo desarrollo se expone un asa (<code>window.__atlas.destruir()</code>, definida en <code>main.ts</code> solo si <code>isDevMode()</code>) que destruye la aplicación; la prueba la llama y cuenta cuántas veces el visor sigue pidiendo cuadros de animación (<code>requestAnimationFrame</code>). Si la limpieza funciona, esa cuenta debe caer a cero.</p></div>
+    <div class="term-box"><span class="prompt">$</span> node test_s44.js<br>
+A1) desarrollo → lienzos en el visor: 1<br>
+A2) cambiar de modelo en desarrollo → piezas: 5 | errores de página: []<br>
+A3) con la app viva el bucle de dibujo sigue pidiendo cuadros → llamadas en 0,5 s: 30<br>
+A4) tras destruir la aplicación → llamadas de requestAnimationFrame en 0,7 s: 0 | errores de página: []<br>
+B1) escribir una nota y marcar favorito otra tarjeta → nota conservada: "repasar el controlador" | botón: ★ Favorito<br>
+C1) zone.js en la página → undefined<br>
+RESULTADO: todo en orden</div>
+    <div class="body-text" style="margin-top:1em;"><p>Y la prueba de la prueba, otra vez: <b>quitar la limpieza y ver que falla</b>.</p></div>
+    <div class="term-box">$ sed -i 's|^&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;this.visor()?.destruir();|&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;// this.visor()?.destruir();|' src/app/servicios/visor.service.ts&nbsp;&nbsp; (se comenta la limpieza del visor)<br>
+$ node test_s44.js<br>
+A1) desarrollo → lienzos en el visor: 1<br>
+A2) cambiar de modelo en desarrollo → piezas: 5 | errores de página: []<br>
+A3) con la app viva el bucle de dibujo sigue pidiendo cuadros → llamadas en 0,5 s: 30<br>
+A4) tras destruir la aplicación → llamadas de requestAnimationFrame en 0,7 s: 42 | errores de página: []<br>
+&nbsp;&nbsp; ✗ FALLÓ: tras destruir la aplicación el bucle de dibujo debe detenerse (la limpieza del visor)<br>
+B1) escribir una nota y marcar favorito otra tarjeta → nota conservada: "repasar el controlador" | botón: ★ Favorito<br>
+C1) zone.js en la página → undefined<br>
+RESULTADO: hay 1 fallos</div>
+    <div class="win-box"><b>Sin <code>destruir()</code>, el bucle de dibujo sigue vivo.</b> Tras destruir la aplicación hubo 42 llamadas a <code>requestAnimationFrame</code> en 0,7 s en lugar de 0, y la prueba falló. Se restauró la línea y volvió a pasar. La prueba C1 comprueba además que <code>zone.js</code> no está cargado: confirma que la app es de verdad «zoneless», no solo que lo dice la configuración.</div>
+
+    <h2 class="section-title"><span class="num-badge">5</span>Estado que vive fuera de Angular: la instalación y el Service Worker</h2>
+    <div class="body-text"><p>El evento <code>beforeinstallprompt</code> de la Sesión 41 se guarda en una variable de <code>instalar.ts</code>, que no es de Angular. En React hizo falta <code>useSyncExternalStore</code> para suscribirse a ella, con sus reglas sobre «fotos» y funciones fuera del hook. En Angular basta una <b>señal</b>: <code>instalar.ts</code> avisa (con su propia función de aviso) y el servicio vuelve a leer el estado y se lo pone a la señal.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/servicios/instalacion.service.ts (suscribir y limpiar)</div>
+      <pre><code>  constructor() {
+    const dejarDeEscuchar = iniciarInstalacion(() =&gt; {
+      this.estado.set(estadoInstalacion());
+      this.rechazada.set(instalacionRechazada());
+    });
+    inject(DestroyRef).onDestroy(dejarDeEscuchar);
+  }</code></pre>
+    </div>
+    <div class="body-text"><p>Un detalle que mejora lo de la Sesión 43. Allí, el oyente de <code>beforeinstallprompt</code> se registraba en un efecto, <i>después</i> del primer dibujo, y la guía advertía que era una carrera. En Angular, el servicio se <b>crea cuando alguien lo pide</b>, y <code>App</code> lo pide en su constructor, antes de que nada se dibuje:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/app.ts (pedirlo antes del primer dibujo)</div>
+      <pre><code>  constructor() {
+    // Pedir el servicio aquí lo crea ahora, ANTES del primer dibujo: el oyente de beforeinstallprompt
+    // ya está puesto cuando la página aparece. (En React se ponía en un efecto, después del primer dibujo.)
+    inject(InstalacionService);
+    const sw = inject(SwService);
+    afterNextRender(() =&gt; sw.iniciar());
+
+    // appinstalled se dispara cuando el usuario instala la PWA.
+    const alInstalar = () =&gt; void mostrarAviso("Atlas 3D instalado", "Ya puedes abrirlo desde tu pantalla de inicio.", BASE_URL, "atlas-instalado");
+    window.addEventListener("appinstalled", alInstalar);
+    inject(DestroyRef).onDestroy(() =&gt; window.removeEventListener("appinstalled", alInstalar));
+  }</code></pre>
+    </div>
+    <div class="body-text"><p><code>inject(InstalacionService)</code> sin guardar el resultado puede parecer raro: solo se pide para que <b>exista ya</b>. La carrera de la Sesión 43 queda cerrada, y la actividad 4 de aquella sesión tiene aquí su respuesta.</p></div>
+    <h3 class="sub-title">El Service Worker: por qué se conserva el propio</h3>
+    <div class="body-text"><p>Angular trae su propio Service Worker (<code>ngsw</code>), que se activa con <code>provideServiceWorker()</code> o con <code>ng add @angular/pwa</code>. Es bueno para el caso común: precaché de archivos y caché de peticiones, configurados con un archivo JSON. Pero el Service Worker del Atlas ya hace cosas que <code>ngsw</code> no ofrece como piezas listas: la descarga voluntaria de fichas, la sincronización en segundo plano y los avisos que abren la app con <code>?modelo=ID</code> (Sesiones 26, 37 y 40). Por eso se <b>conserva <code>sw.ts</code></b> y se cambia solo quién lo compila y quién lo registra.</p></div>
+    <div class="body-text"><p><b>Quién lo compila.</b> Con Vite, <code>vite-plugin-pwa</code> lo hacía dentro de <code>vite build</code>. Angular no tiene ese plugin, así que un script en dos pasos hace lo mismo: <code>esbuild</code> junta <code>sw.ts</code> con Workbox y con <code>db.ts</code> en un solo archivo, y <code>workbox-build</code> recorre <code>dist/</code> y escribe la lista de precaché donde <code>sw.ts</code> dice <code>self.__WB_MANIFEST</code>. Un guion, <code>scripts/build.mjs</code>, encadena los tres pasos: <code>ng build</code>, la comprobación de tipos del Service Worker (el compilador de Angular no lo ve) y el empaquetado.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>scripts/build-sw.mjs (el precaché, inyectado)</div>
+      <pre><code>const { count, size, warnings } = await injectManifest({
+  swSrc: temporal,
+  swDest: "dist/sw.js",
+  globDirectory: "dist",
+  globPatterns: ["**/*.{html,js,css,png,json}"],
+  // Las fichas de modelos NO se precachean: se descargan bajo demanda (la descarga «voluntaria» de la Sesión 37).
+  // Tampoco el propio Service Worker ni su archivo temporal.
+  globIgnores: ["modelos/**", "sw.js", ".sw-empaquetado.js"],
+});</code></pre>
+    </div>
+    <div class="body-text"><p><b>Quién lo registra.</b> <code>SwService</code> usa <code>workbox-window</code>, la biblioteca de Workbox para el lado de la página. Hace lo mismo que <code>useRegisterSW</code>: avisar cuando el precaché quedó completo y recargar cuando una versión nueva toma el control.</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/servicios/sw.service.ts (registrar con workbox-window)</div>
+      <pre><code>    const wb = new Workbox(`${BASE_URL}sw.js`, { scope: BASE_URL });
+    // Primera instalación: el precaché quedó completo.
+    wb.addEventListener("activated", (e) =&gt; {
+      if (e.isUpdate) return;
+      this.offlineReady.set(true);
+      // El usuario está mirando la pantalla: la notificación solo si NO la está mirando.
+      if (document.visibilityState !== "visible") {
+        void mostrarAviso("Atlas 3D listo", "Ya funciona sin conexión.", BASE_URL, "atlas-offline");
+      }
+    });
+    // Versión nueva (autoUpdate): cuando toma el control, se recarga para usarla.
+    wb.addEventListener("controlling", (e) =&gt; {
+      if (e.isUpdate) window.location.reload();
+    });
+    wb.register().catch((error) =&gt; console.error("Error al registrar el SW de Workbox:", error));</code></pre>
+    </div>
+    <div class="warn-box"><b>Lo que cambia para ti: <code>npm run dev</code> ya no tiene Service Worker.</b> <code>ng serve</code> no genera <code>sw.js</code> (lo produce la compilación de producción), y <code>SwService</code> no intenta registrarlo en desarrollo (<code>isDevMode()</code>). Para probar el modo sin conexión, usa <code>npm run build</code> y <code>npm run preview</code>.</div>
+
+    <h2 class="section-title"><span class="num-badge">6</span>Dos casos de frontera: un evento poco común y los formularios</h2>
+    <h3 class="sub-title">La capa de AR y <code>beforexrselect</code></h3>
+    <div class="body-text"><p>WebXR pide <b>un</b> elemento como «dom-overlay», que debe existir antes de pedir la sesión y no reemplazarse mientras dure. <code>OverlayAR</code> es ese elemento (el componente <i>es</i> el <code>&lt;div id="xr-overlay"&gt;</code>) y se lo entrega al servicio en su constructor. Los botones del overlay no deben contar como «tocar para colocar»: el navegador avisa con el evento <code>beforexrselect</code> y basta cancelarlo.</p></div>
+    <div class="body-text"><p>En React no había propiedad para ese evento y hubo que enlazarlo a mano con <code>addEventListener</code> en un efecto. Angular enlaza <b>cualquier</b> evento del DOM con la misma sintaxis, <code>(nombre)="..."</code>, sea de los conocidos o no:</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/componentes/overlay-ar.html (un evento cualquiera, en la plantilla)</div>
+      <pre><code>  &lt;button type="button" id="btn-pieza-ant" aria-label="Pieza anterior" (click)="panel.recorrerPiezas(-1)" (beforexrselect)="$event.preventDefault()"&gt;◀&lt;/button&gt;
+  &lt;p id="xr-pieza" class="xr-pieza"&gt;{{ textoPieza() }}&lt;/p&gt;
+  &lt;button type="button" id="btn-pieza-sig" aria-label="Pieza siguiente" (click)="panel.recorrerPiezas(1)" (beforexrselect)="$event.preventDefault()"&gt;▶&lt;/button&gt;</code></pre>
+    </div>
+    <h3 class="sub-title">Las notas: el defecto de la Sesión 42, otra vez resuelto</h3>
+    <div class="body-text"><p>Recuerda el defecto de la Sesión 42: escribir una nota en una tarjeta y marcar favorito en otra rehacía todo el catálogo y <b>borraba la nota</b>. Angular lo evita por la misma razón que React: no reescribe el catálogo, solo cambia lo que cambió. Cada tarjeta es un componente con su propia señal <code>nota</code>, enlazada al campo con <code>[(ngModel)]</code> (el «enlace en los dos sentidos» del módulo de formularios):</p></div>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>src/app/componentes/tarjeta.html (el campo enlazado a una señal)</div>
+      <pre><code>&lt;div class="nota-zona"&gt;
+  &lt;input type="text" class="nota-input" placeholder="Nota de estudio..." [(ngModel)]="nota" /&gt;
+  &lt;button class="btn-guardar-nota" [attr.data-id]="modelo().id" (click)="guardar()"&gt;🔒 Guardar nota&lt;/button&gt;
+  &lt;button class="btn-ver-nota" [attr.data-id]="modelo().id" [disabled]="!progreso()?.notaCifrada" (click)="progresoSvc.verNota(modelo().id)"&gt;👁 Ver nota&lt;/button&gt;
+&lt;/div&gt;</code></pre>
+    </div>
+    <div class="body-text"><p>La prueba B1 (escribir una nota, marcar favorito en otra tarjeta y mirar si la nota sigue) pasa, como se vio arriba con el resto de <code>test_s44.js</code>. Ya se había comprobado en la Sesión 43 que esta prueba <b>sí detecta el defecto</b> cuando se la dirige a la versión sin framework.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">7</span>Las pruebas de siempre, sin tocar</h2>
+    <div class="body-text"><p>Como en la Sesión 43, todas las pruebas anteriores se ejecutaron contra la compilación nueva <b>sin cambiar su lógica</b>. Hay un matiz esta vez, y es instructivo. La primera compilación de Angular salía con <b>un solo archivo grande</b> (la app, Angular, Three.js y el visor juntos), y la prueba de la Sesión 42 la rechazó:</p></div>
+    <div class="term-box">4) service worker → {"activo":true,"controla":true,"precache":7}<br>
+&nbsp;&nbsp; ✗ FALLÓ: precaché completo</div>
+    <div class="body-text"><p>La prueba exige al menos 8 archivos en el precaché; la compilación tenía 7. Es un indicador indirecto (<i>muchos archivos = Three.js separado</i>), pero acertó: la Sesión 42 había separado Three.js del código de la app, y la primera versión de Angular lo había <b>deshecho sin que nadie lo notara</b>. El remedio es el <code>import()</code> dinámico de la sección 4: Angular saca el visor y Three.js a un archivo aparte, el precaché sube a 9 entradas y la misma prueba, <b>sin cambiarla</b>, pasa:</p></div>
+    <div class="term-box"><span class="prompt">$</span> S42DIR=s44 node test_s42.js<br>
+1) documento → {"lang":"es","viewport":"width=device-width, initial-scale=1.0","descr":140,"tema":"#0b1220","main":1,"h1":1,"contextoSeguro":true,"titulo":"Atlas 3D de Arquitectura de Software"}<br>
+2) manifest → errores de Chrome: [] | name: Atlas 3D de Arquitectura de Software | display: standalone | start_url: ./ | iconos: ["192x192","512x512","512x512/maskable"]<br>
+3) Chrome dice: errores de instalabilidad → []<br>
+4) service worker → {"activo":true,"controla":true,"precache":9}<br>
+5) servidor caído y recarga → {"canvas":1,"pestanas":3}<br>
+6) desplazamiento de diseño acumulado (CLS) al cargar → 0.008<br>
+7) escena quieta durante 1,5 s → llamadas de dibujo: 0<br>
+8) arrastrar para girar → llamadas de dibujo nuevas: sí (744)<br>
+9) tras soltar y pasar la inercia → vuelve a quedarse quieta: sí<br>
+10) elegir una pieza → llamadas de dibujo nuevas: sí<br>
+11) cambiar de modelo → llamadas de dibujo nuevas: sí<br>
+12) cambiar el tamaño de la ventana → llamadas de dibujo nuevas: sí<br>
+pageerrors: []<br>
+RESULTADO: todo en orden</div>
+    <div class="win-box"><b>Lo que esto confirma:</b> el manifest y la instalabilidad según Chrome siguen sin errores (2 y 3); el Service Worker controla la página con 9 entradas de precaché (4); sin servidor, el visor se monta con una sola capa de dibujo y 3 pestañas (5); el CLS medido por la prueba es 0,008 (6); y el dibujo bajo demanda de la Sesión 42 se conserva (7 a 12).</div>
+    <div class="term-box"><span class="prompt">$</span> S41DIR=s44 node test_s41.js | tail -14<br>
+B1) llega beforeinstallprompt → defaultPrevented: true | botón visible: true | texto: Puedes instalarla: se abre a pantalla completa, desde su icono, y funciona sin conexión.<br>
+C1) clic en «Instalar» → prompt() llamado 1 vez | botón visible: false<br>
+C2) llega appinstalled → texto: ✓ Instalada. Ábrela desde su icono en la pantalla de inicio.<br>
+D1) usuario cancela → botón visible: false | texto: Cancelaste la instalación. Chrome decide cuándo volver a ofrecerla; mientras tanto, usa el menú ⋮ → «Instalar app».<br>
+D2) Chrome vuelve a ofrecer la instalación → botón visible: true<br>
+E1) modo standalone → botón visible: false | texto: ✓ Estás usando Atlas 3D como app instalada.<br>
+F1) iPhone → botón visible: false | texto: En iPhone y iPad no hay botón: en Safari toca Compartir y luego «Añadir a pantalla de inicio».<br>
+G1) en línea → banda: null<br>
+G2) se corta la red → banda: Sin conexión: los modelos y las fichas descargadas siguen disponibles.<br>
+G3) sin red se cambia de modelo → «Niveles apilados: cada capa solo habla con la inme…»<br>
+G4) vuelve la red → banda: Volvió la conexión.<br>
+G5) 3,3 s después → banda: null<br>
+pageerrors: []<br>
+RESULTADO: todo en orden</div>
+    <div class="term-box"><span class="prompt">$</span> S40DIR=s44 node test_s40.js | tail -8<br>
+I1) base v2 preparada con identificadores de la demo<br>
+I2) tras abrir la app → {"version":3,"progreso":[["microservicios",false,333],["mvc",true,111]],"descargas":[["capas","pendiente"],["mvc","pendiente"]]}<br>
+J1) antes de usar AR → rastro: null<br>
+J2) dentro de AR → rastro: activa | diagnóstico: Última sesión de AR: sin registro.<br>
+J3) tras salir → rastro: fin-ok<br>
+J4) diagnóstico → Última sesión de AR: terminó completa (hace 1 s).<br>
+J5) rastro interrumpido simulado, tras recargar → Última sesión de AR: se interrumpió en el paso «fin-3-ancla» (hace 4 s). | panel abierto: true<br>
+pageerrors: []</div>
+    <div class="term-box"><span class="prompt">$</span> S39DIR=s44 node test_s39.js | tail -8<br>
+G2) tras tocar (de pie en x=1, mirando al frente) →&nbsp;&nbsp;{hitTest:no,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[1,-0.3,-1.48]}<br>
+G3) los gestos también funcionan sin hit-test → escala: 0.5<br>
+H1) sin «anchors» → Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay, anchors.<br>
+H2) tocar →&nbsp;&nbsp;{hitTest:sí,anclas:no,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]} | anclas creadas: {"crearAncla":0,"borrarAncla":0}<br>
+I1) createAnchor rechazado →&nbsp;&nbsp;{hitTest:sí,anclas:sí,anclado:no,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+J1) intentos de petición → ["[\"local\",\"hit-test\"]","[\"local\"]"] | estado: Sesión de realidad aumentada activa. El navegador no concedió: dom-overlay.<br>
+J2) tocar tras el reintento → {hitTest:sí,anclas:sí,anclado:sí,fase:colocado,escala:0.25,giro:0,pos:[0,-1.4,-2.34]}<br>
+pageerrors: []</div>
+    <div class="body-text" style="margin-top:1em;"><p>Los recursos de la GPU al dar ocho vueltas entre modelos (los números vuelven a los mismos valores cada tres modelos: el visor se limpia bien) y la publicación en una subruta, como en GitHub Pages (<code>ng build --base-href=/atlas-3d/</code>):</p></div>
+    <div class="term-box">inicio {"Texture":16,"Framebuffer":3,"Buffer":57,"Program":5,"Shader":0,"VertexArray":17}<br>
+ciclo 0 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 1 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+ciclo 2 microservicios {"Texture":19,"Framebuffer":3,"Buffer":121,"Program":6,"Shader":0,"VertexArray":35}<br>
+ciclo 3 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 4 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+ciclo 5 microservicios {"Texture":19,"Framebuffer":3,"Buffer":121,"Program":6,"Shader":0,"VertexArray":35}<br>
+ciclo 6 mvc {"Texture":16,"Framebuffer":3,"Buffer":59,"Program":6,"Shader":0,"VertexArray":18}<br>
+ciclo 7 capas {"Texture":19,"Framebuffer":3,"Buffer":79,"Program":6,"Shader":0,"VertexArray":23}<br>
+errores []</div>
+    <div class="term-box"><span class="prompt">$</span> node test_subruta.js<br>
+subruta → {"scope":"http://localhost:4195/atlas-3d/","activo":true,"manifest":{"start":"./","scope":"./"},"iconoStatus":200,"caches":["modelos-3d","workbox-precache-v2-http://localhost:4195/atlas-3d/"]}<br>
+recarga sin conexión: canvas montado = 1<br>
+ficha → ["http://localhost:4195/atlas-3d/modelos/mvc.json",200]<br>
+descarga desde el botón → caché modelos-3d: ["http://localhost:4195/atlas-3d/modelos/capas.json","http://localhost:4195/atlas-3d/modelos/microservicios.json","http://localhost:4195/atlas-3d/modelos/mvc.json"]<br>
+peticiones fuera de la subruta o 404: [] | pageerrors: []</div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/comparacion-s42-s43-s44.png" alt="Tres capturas del Atlas 3D en ancho de teléfono, de las Sesiones 42, 43 y 44, casi idénticas" style="max-width:100%;max-width:46em;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">La misma pantalla, a 412 px de ancho, en las tres versiones: sin framework, React y Angular. Migrar no debe cambiar lo que ve el usuario, y aquí no cambió.</div></figure>
+
+    <h2 class="section-title"><span class="num-badge">8</span>Tres versiones, medidas igual</h2>
+    <div class="body-text"><p>El método es el de la Sesión 42: Lighthouse 13.6.0, móvil, lentitud simulada, <b>cinco corridas por versión</b> y la mediana. Una novedad: las corridas de las tres versiones se hicieron <b>intercaladas, en la misma sesión</b>, así que comparten las mismas condiciones del equipo. Por eso las cifras de S42 y S43 difieren de las de la guía anterior (83 y 91 allí; 86 y 94 aquí): Lighthouse varía de una tanda a otra, y solo son comparables las de una misma tanda. Además de la versión final de Angular, se midió la <b>primera versión, con un solo archivo</b>, porque la diferencia cuenta una historia.</p></div>
+    <div class="compare-wrap">
+    <table class="uptc">
+      <tr><th>Medida (mediana de 5)</th><th>Sin framework (S42)</th><th>React (S43)</th><th>Angular, un solo archivo</th><th>Angular, visor diferido (final)</th></tr>
+      <tr><td>Rendimiento</td><td>86</td><td><b>94</b></td><td>75</td><td>79</td></tr>
+      <tr><td>Accesibilidad / buenas prácticas / SEO</td><td>100 / 100 / 100</td><td>100 / 100 / 100</td><td>100 / 100 / 100</td><td>100 / 100 / 100</td></tr>
+      <tr><td>FCP (primer contenido)</td><td><b>1704 ms</b></td><td>2234 ms</td><td>1810 ms</td><td>1722 ms</td></tr>
+      <tr><td>LCP (contenido más grande)</td><td><b>2256 ms</b></td><td>2371 ms</td><td>2342 ms</td><td>2773 ms</td></tr>
+      <tr><td>TBT (tiempo de bloqueo)</td><td>455 ms</td><td><b>132 ms</b></td><td>995 ms</td><td>620 ms</td></tr>
+      <tr><td>CLS (desplazamiento de diseño)</td><td>0,05</td><td><b>0</b></td><td><b>0</b></td><td><b>0</b></td></tr>
+      <tr><td>Precaché del Service Worker</td><td><b>9 · 558,82 KiB</b></td><td>10 · 778,17 KiB</td><td>7 entradas</td><td>9 · 753,84 KiB</td></tr>
+      <tr><td>Líneas de código de la interfaz</td><td><b>722</b></td><td>978</td><td colspan="2" style="text-align:center;">1020 (ts + html + base + main)</td></tr>
+    </table>
+    </div>
+    <figure class="fig-img" style="margin:1.2em 0;text-align:center;"><img src="img/lighthouse-s42-s43-s44.png" alt="Cuatro gráficos con las cinco corridas de cada versión: rendimiento, FCP, LCP y TBT" style="max-width:100%;max-width:50em;border:1px solid var(--line);border-radius:8px;"><div class="fig-caption">Las cinco corridas de cada versión (puntos) y la mediana. La dispersión de Angular con carga diferida es visible: va de 73 a 86.</div></figure>
+    <h3 class="sub-title">Cómo leer estas cifras</h3>
+    <ul class="clean">
+      <li><b>React obtiene el mejor puntaje, pero el peor primer contenido.</b> El HTML llega vacío y hay que ejecutar JavaScript antes de ver nada: FCP 2,23 s. Lo compensa un TBT bajísimo (132 ms).</li>
+      <li><b>Angular en un solo archivo sale peor que las otras dos</b> (75 y TBT de casi 1 s). La explicación más probable, y la que muestra el informe: Three.js y Angular se descargan y se ejecutan juntos en una tarea larga de unos 970 ms que bloquea el hilo principal. Las cinco corridas dieron 74 o 75: aquí no hay dispersión que se esconda tras la mediana.</li>
+      <li><b>Diferir el visor mejora lo que se pretendía</b> (rendimiento 75 → 79, TBT 995 → 620 ms) y deja el mejor FCP entre las dos versiones con framework (1722 ms). La tarea larga se divide: la app aparece antes y el visor llega después.</li>
+      <li><b>Pero el LCP empeora</b> (2342 → 2773 ms). Es el precio de diferir: el elemento más grande de la pantalla incluye el visor, y ahora llega más tarde. Es una explicación plausible, no probada: no se aisló qué elemento es el LCP en cada versión.</li>
+      <li><b>La dispersión es grande.</b> Las cinco corridas de Angular diferido van de 73 a 86. Con esa varianza, la diferencia entre 79 y 75 es pequeña frente al ruido; la de TBT (995 → 620) es más firme porque las corridas del archivo único casi no varían.</li>
+      <li><b>Más líneas, otra vez, no es peor ni mejor.</b> Los 1020 de Angular incluyen las plantillas HTML, que antes eran texto dentro de <code>main.ts</code> y de <code>index.html</code>.</li>
+    </ul>
+    <div class="warn-box"><b>Estas cifras no son las de tu teléfono.</b> Se tomaron en un Chromium sin tarjeta gráfica y con lentitud simulada. Sirven para comparar versiones <i>en las mismas condiciones</i>. En la sección siguiente repites tú la medición, en tu equipo.</div>
+    <div class="body-text"><p><b>¿Qué framework conviene?</b> Esta sesión no lo decide, y la Sesión 45 lo retoma con las tres versiones lado a lado. Lo que sí muestran las cifras es que <b>la forma de cargar importa tanto como el framework</b>: el mismo Angular pasó de 75 a 79 por una sola línea (<code>import()</code>), y la versión mejor puntuada es la que más tarda en mostrar algo.</p></div>
+
+    <h2 class="section-title"><span class="num-badge">9</span>Pruébalo tú</h2>
+    <div class="warn-box"><b>Esta vez el repositorio no se actualiza «encima».</b> La estructura cambió por completo (ya no hay <code>vite.config.ts</code> ni <code>.tsx</code>) y el flujo de GitHub Pages también. Sigue los pasos en orden.</div>
+    <ol style="margin:.4em 0 1em 1.4em; line-height:1.55;">
+      <li><b>Comprueba Node:</b> <code>node -v</code> debe mostrar 22.22.3 o superior (o 24.15 o superior). Si no, actualiza Node antes de seguir.</li>
+      <li><b>Vacía tu carpeta del proyecto, salvo <code>.git</code></b> (incluye borrar <code>node_modules</code> y <code>package-lock.json</code>; son de otro conjunto de dependencias). Descomprime <code>pwa-ar-objetos3d-sesion44.zip</code> y copia su contenido dentro. El zip trae <code>.github/workflows/pages.yml</code>: <b>esta vez sí debe reemplazar al que tenías</b> (usa Node 22 y <code>--base-href</code> en lugar de <code>--base</code>). Si conservas el viejo, la publicación falla.</li>
+      <li><b>Instala y prueba en tu computador:</b> <code>npm install</code>; <code>npm run dev</code> abre el modo desarrollo (sin Service Worker); <code>npm run build</code> y <code>npm run preview</code> abren la versión de producción en <code>http://localhost:4173</code>.</li>
+      <li><b>Súbelo:</b> <code>git add .</code>, <code>git commit</code> y <code>git push</code>. Espera la marca verde en <b>Actions</b>.</li>
+      <li><b>En tu teléfono</b>, recarga dos veces la app y comprueba: (a) el modelo gira con el dedo y se queda quieto al soltar; (b) elegir pieza y cambiar de modelo funciona; (c) «Ver en AR» entra y sale; (d) la rotación con el teléfono; (e) el botón «Instalar» y su texto; (f) en modo avión la app abre y muestra el visor.</li>
+      <li><b>Mide tú</b> con Lighthouse en una ventana de incógnito (F12 → Lighthouse → «Móvil»): <b>tres corridas</b> de la versión de la Sesión 43 y tres de la de hoy. Anota la mediana de rendimiento, FCP, LCP y TBT. Tus números serán otros; importa si la <i>dirección</i> coincide.</li>
+    </ol>
+
+    <h2 class="section-title"><span class="num-badge">10</span>Actividades</h2>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">1</div><h4>Mide las tres versiones</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>Sirve localmente las versiones de las Sesiones 42, 43 y 44 y corre Lighthouse tres veces en cada una (incógnito, móvil). Arma una tabla de medianas: rendimiento, FCP, LCP y TBT. Compárala con la de la sección 8.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> tu tabla y un párrafo que diga qué coincide con lo medido y qué no.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">2</div><h4>Rompe la limpieza del visor</h4></div>
+      <div class="meta-row">EN PAREJAS · 45 MIN</div>
+      <p>Comenten la línea <code>this.visor()?.destruir();</code> de <code>visor.service.ts</code> y ejecuten <code>npm run dev</code>. Con la página abierta, peguen esto en la consola del navegador: cuenta las veces que algo pide un cuadro de animación después de destruir la aplicación.</p>
+      <div class="code-block"><div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Consola del navegador</div><pre><code>let n = 0; const o = requestAnimationFrame;
+requestAnimationFrame = (f) => { n++; return o(f); };
+__atlas.destruir();
+setTimeout(() => console.log("llamadas:", n), 700);</code></pre></div>
+      <p>Restauren la línea y repitan.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> en React, StrictMode delataba el defecto solo. ¿Por qué en Angular hizo falta construir una prueba para verlo?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el número con y sin la línea (en este proyecto fue 42 y 0), y la respuesta a la pregunta.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">3</div><h4>Un servicio nuevo: el contador de visitas</h4></div>
+      <div class="meta-row">INDIVIDUAL · 90 MIN</div>
+      <p>Añade a cada <code>Tarjeta</code> un texto «Visitado N veces» que cuente cuántas veces se pulsó «Marcar como visto». Piensa antes: ¿el contador es una señal de la tarjeta o ya existe en <code>ProgresoService</code>? Implementa lo más simple y explica por qué.</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el código cambiado y una frase que justifique dónde vive el dato.</p>
+    </div>
+    <div class="activity-card">
+      <div class="a-head"><div class="a-num">4</div><h4>Cuesta lo mismo, ¿pesa lo mismo?</h4></div>
+      <div class="meta-row">INDIVIDUAL · 60 MIN</div>
+      <p>Quita el <code>import()</code> dinámico de <code>visor.service.ts</code> (vuelve al <code>import</code> estático de arriba) y compila. Mira cuántas entradas tiene el precaché y ejecuta <code>S42DIR=s44 node test_s42.js</code>.</p>
+      <p style="margin-top:.8em;"><b>Para pensar:</b> ¿qué otra forma habría de que el visor y Three.js queden en un archivo aparte sin <code>import()</code>?</p>
+      <p style="margin-top:.8em;"><b>Entregable:</b> el número de entradas, el resultado de la prueba y tu respuesta.</p>
+    </div>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Cierre: actualiza tu repositorio</h3>
+    <div class="code-block">
+      <div class="code-file"><span class="dots"><span></span><span></span><span></span></span>Terminal</div>
+      <pre><code>node -v
+npm install
+npm run build
+git add .
+git commit -m "Atlas 3D en Angular: componentes, servicios y señales"
+git push</code></pre>
+    </div>
+
+    <h2 class="section-title">Resumen de la sesión</h2>
+    <ul class="clean">
+      <li>Angular organiza la pantalla en <b>componentes con plantilla</b> y la lógica en <b>servicios</b> que se piden con <code>inject()</code>; el estado vive en <b>señales</b> y la app es <b>zoneless</b>.</li>
+      <li>Lo que es <b>motor</b> (Three.js, WebXR, Service Worker, IndexedDB) se queda fuera: <code>visor.ts</code>, <code>xr.ts</code>, <code>sw.ts</code> y <code>db.ts</code> no cambiaron.</li>
+      <li>Hicieron falta cuatro ajustes de configuración: Node 22.22.3, una opción del compilador, la carpeta de salida y una ruta base propia (<code>base.ts</code>).</li>
+      <li>En la frontera: <code>afterNextRender</code> para crear, <code>DestroyRef</code> para deshacer, y una prueba construida a propósito porque Angular no tiene StrictMode.</li>
+      <li>Se <b>conservó el Service Worker propio</b> y un guion de compilación (<code>build.mjs</code> y <code>build-sw.mjs</code>) ocupa el lugar de <code>vite-plugin-pwa</code>.</li>
+      <li>Las pruebas de las sesiones 39 a 42 pasaron sin tocar su lógica, y una de ellas delató un deshacer silencioso de la Sesión 42 (Three.js otra vez en un solo archivo).</li>
+      <li>Medido: Angular con un solo archivo es la peor versión (75); diferir el visor lo mejora (79) pero empeora el LCP. <b>React sigue siendo la mejor puntuada y la de peor FCP.</b> Ninguna versión gana en todo.</li>
+    </ul>
+
+    <h3 class="sub-title" style="margin-top:1.6em;">Próxima sesión</h3>
+    <div class="callout"><b>Sesión 45: comparación y cierre del Sub-bloque B.</b> Las tres versiones del Atlas puestas lado a lado: qué se gana y qué se paga con cada una, y cómo decidir sin quedarse en la moda.</div>
+
+    <h2 class="section-title">Referencias</h2>
+    <div class="ref-list">
+      <div><b>[1]</b> Angular, "Signals", "Dependency injection" y "Zoneless", angular.dev/guide.</div>
+      <div><b>[2]</b> Angular, "afterNextRender" y "DestroyRef", angular.dev/api/core.</div>
+      <div><b>[3]</b> Angular, "Application builder" (<code>@angular/build:application</code>), angular.dev/tools/cli/build-system-migration.</div>
+      <div><b>[4]</b> Angular, "Service workers" (<code>ngsw</code> y <code>@angular/pwa</code>), angular.dev/ecosystem/service-workers.</div>
+      <div><b>[5]</b> Workbox, "workbox-window" y "workbox-build: injectManifest", developer.chrome.com/docs/workbox.</div>
+      <div><b>[6]</b> web.dev, "First Contentful Paint", "Largest Contentful Paint" y "Total Blocking Time", web.dev/articles.</div>
+      <div><b>[7]</b> W3C, "WebXR DOM Overlays Module" (el evento <code>beforexrselect</code>), w3.org/TR/webxr-dom-overlays-1.</div>
+    </div>
+
+  </div>
+
+  <div class="footer-note">
+    <span>UPTC · Facultad de Ingeniería</span>
+    <span>Electiva - PWA · Sub-bloque B · Sesión 18 de 19</span>
+  </div>
+</div>
+</body>
+</html>

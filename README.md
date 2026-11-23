@@ -45,6 +45,7 @@ Abre **`00 - Pagina del Bloque 3.html`** para navegar las presentaciones y guía
 | 41 | UX/UI de instalación | B |
 | 42 | Lighthouse y cierre del proyecto | B |
 | 43 | React y PWA | B |
+| 44 | Angular y PWA | B |
 
 ## Proyectos
 
