@@ -10,7 +10,8 @@ equivalente a incógnito), en un contenedor Linux sin tarjeta gráfica. Script: 
 
 ## Actividad 1 · Mide tu propia página, con método (individual)
 
-Proyecto medido: **el Gestor de Tareas** (`Proyectos/gestor-de-tareas`, versión de la Sesión 26), servido en local
+Proyecto medido: **el Gestor de Tareas** (versión de la Sesión 26; ahora está en su propio repositorio,
+[GESTOR-DE-TAREAS-PWA](https://github.com/AnthonyGonzalez1/GESTOR-DE-TAREAS-PWA), carpeta `Proyectos/gestor-de-tareas`), servido en local
 porque no está publicado. Tres corridas (`salidas/42-1-gestor-base.md`):
 
 | Corrida | Rendimiento | Accesibilidad | Buenas prácticas | SEO | FCP | LCP | TBT | CLS |
